@@ -35,7 +35,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Deploy the app
         run: |
-          php artisan migrate:fresh
+          cp /home/ubuntu/actions-runner/_work/env-backup/.env $GITHUB_WORKSPACE
+          #php artisan migrate:fresh --force
           sudo cp -rf * /var/www/html/laravel/
           sudo chown -R www-data. /var/www/html/laravel
           sudo systemctl restart apache2.service
