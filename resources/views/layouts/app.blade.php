@@ -385,7 +385,9 @@
                                     <!--begin::Toggle-->
                                     <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px"
                                         aria-expanded="false">
-                                        <strong> {{Auth::user()->name}} &nbsp;</strong>
+                                        <strong> 
+
+                                                {{Auth::user()->name}} &nbsp; ({{ Auth::user()->roles->pluck('name')[0] ?? '' }}) </strong>
                                         <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
                                             <span class="svg-icon svg-icon-xl svg-icon-primary">
                                                 

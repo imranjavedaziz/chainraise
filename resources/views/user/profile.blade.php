@@ -21,7 +21,8 @@
                     </ul>
                 </div>
             </div>
-            <form method="post" enctype="multipart/form-data" id="updateSettingForm">
+            <form method="post" enctype="multipart/form-data" id="updateSettingForm" action="{{ route('user.profile.update')}}" >
+                @csrf
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card card-custom card-stretch gutter-b">
@@ -80,18 +81,13 @@
                                                 <input type="password" class="form-control" placeholder="Re-enter password"
                                                     name="password_confirmation" id="confirm_password">
                                             </div>
-                                            <div class="col-lg-12 text-danger" id="passwordError" style="display: none">
-                                                <small> Password & confirm password not matched </small>
-                                            </div>
-
-                                            <div class="col-lg-12 text-danger" id="nameError" style="display: none">
-                                                <small> Name field is required </small>
-                                            </div>
-                                            <div class="col-lg-12 text-danger" id="emailError" style="display: none">
-                                                <small> Email field is required </small>
-                                            </div>
+                                           
                                         </div>
                                     </div>
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-success btn-square"> Update</button>
+                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>

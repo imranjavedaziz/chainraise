@@ -9,7 +9,7 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
-                <form class="form" method="post" action="{{ route('user.create') }}">
+                <form class="form" method="post" action="#">
                     <div class="modal-body">
                         <div class="card card-custom">
                             @csrf

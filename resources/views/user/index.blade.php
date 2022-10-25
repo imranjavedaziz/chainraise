@@ -16,7 +16,6 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('dashboard') }}"><i class="fa fa-home"></i></a>
                         </li>
-
                         <li class="breadcrumb-item">
                             Users
                         </li>
@@ -27,17 +26,30 @@
                 <div class="card-header">
                     <div class="card-title">
                         <span class="card-icon">
-                            <i class="flaticon2-supermarket text-primary"></i>
+                            <i class="flaticon2-user text-primary"></i>
                         </span>
                         <h3 class="card-label"> Users</h3>
                     </div>
                     <div class="card-toolbar">
 
-                        <a href="#" class="btn-square btn btn-primary font-weight-bolder" data-toggle="modal"
+                        {{-- <a href="#" class="btn-square btn btn-primary font-weight-bolder" data-toggle="modal"
                             data-target="#modal-addUser">
                             Add New
-                        </a>
-                        <!--end::Button-->
+                        </a> --}}
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-square font-weight-bold btn-sm dropdown-toggle"
+                                type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="flaticon-plus"></i> Add Account
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('user.investor.create') }}">Individual Investor</a>
+                                <a class="dropdown-item" href="{{ route('user.issuer.create') }}">Issuer</a>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -46,41 +58,16 @@
                         <thead>
                             <tr>
                                 <th>S#</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Actions</th>
+                                <th>Name(User)</th>
+                                <th>Account Name</th>
+                                <th>Account Type</th>
+                                <th>Page <br> View</th>
+                                <th>Time <br> Spent(s)</th>
+                                <th> <small> Last Seen</small> </th>
+                                <th>Date <br> <small>Created</small></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td> {{ $loop->iteration }}</td>
-                                    <td> {{ $user->name }} </td>
-                                    <td> {{ $user->email }} </td>
-                                    <td>
-                                        <span
-                                            class="label label-inline @if ($user->status == 'active') label-light-primary @else label-light-danger @endif font-weight-bold">
-                                            {{ ucfirst($user->status) }} </span>
-                                    </td>
-                                    <td>
-                                        <a href='#' class='edit-user btn btn-sm btn-icon btn-light-warning btn-square'
-                                            data-toggle="modal" data-target="#modal-editUser" data-id="{{ $user->id }}"
-                                            data-name="{{ $user->name }}" data-email="{{ $user->email }}"
-                                            data-status="{{ $user->status }}">
-                                            <i class='icon-1x text-dark-5 flaticon-edit'></i>
-                                        </a>
-                                        <a href='#' class='btn btn-sm btn-icon btn-light-danger btn-square'
-                                           onclick="deleteUser({{ $user->id }})" >
-                                            <i class='icon-1x text-dark-5 flaticon-delete'></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-
-
-
-
 
                         </tbody>
                     </table>
@@ -102,14 +89,55 @@
         var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
     </script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('user.index') !!}',
+                columns: [{
+                        data: function(data) {
+                            return data.DT_RowIndex;
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data:function(data){
+                                return data.account_type;
+                        },name:'account_type'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions'
+                    }
+                ]
+            });
+        });
+    </script>
+
+
     <script>
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
 
-         $("#users-table").on("click", ".edit-user", function(e) {
+        $("#users-table").on("click", ".edit-user", function(e) {
             var id = $(this).data('id');
             var name = $(this).data('name');
             var email = $(this).data('email');
@@ -119,6 +147,7 @@
             $('#user-email').val(email);
             $('#user-status').val(status);
         });
+
         function deleteUser(id) {
             Swal.fire({
                 title: "Are you sure to delete ?",
@@ -145,8 +174,8 @@
                             } else {
                                 toastr.error(response.message, "error");
                             }
-                            
-                            
+
+
                         }
                     });
                 }
