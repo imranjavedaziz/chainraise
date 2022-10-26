@@ -1,267 +1,220 @@
 <!DOCTYPE html>
-<!--
-Template Name: Metronic - Bootstrap 4 HTML, React, Angular 10 & VueJS Admin Dashboard Theme
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: https://1.envato.market/EA4JP
-Renew Support: https://1.envato.market/EA4JP
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="en">
 <!--begin::Head-->
 
 <head>
- 
+
+    <title>Chainraise | Login</title>
     <meta charset="utf-8" />
-    <title>V2-  Login Chainraise </title>
-    <meta name="description" content="Login page example" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="canonical" href="https://keenthemes.com/metronic" />
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <meta name="description"
+        content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Flask & Laravel versions. Grab your copy now and get life-time updates for free." />
+    <meta name="keywords"
+        content="metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Flask & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+        content="Metronic | Bootstrap HTML, VueJS, React, Angular, Asp.Net Core, Rails, Spring, Blazor, Django, Flask & Laravel Admin Dashboard Theme" />
+    <meta property="og:url" content="https://keenthemes.com/metronic" />
+    <meta property="og:site_name" content="Keenthemes | Metronic" />
+    <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <!--begin::Fonts(mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <!--end::Fonts-->
-    <!--begin::Page Custom Styles(used by this page)-->
-    <link href="{{ asset('assets/css/pages/login/classic/login-5.css')}}" rel="stylesheet" type="text/css" />
-    <!--end::Page Custom Styles-->
-    <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <!--end::Global Theme Styles-->
-    <!--begin::Layout Themes(used by all pages)-->
-    <link href="{{ asset('assets/css/themes/layout/header/base/light.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/header/menu/light.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/brand/dark.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css" />
-    <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico')}}" />
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 
-<body id="kt_body"
-    class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
-    <!--begin::Main-->
-    <div class="d-flex flex-column flex-root">
-        <!--begin::Login-->
-        <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
-            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid"
-                style="background-image: url(assets/media/bg/bg-2.jpg);">
-                <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
-                    <!--begin::Login Header-->
-                    <div class="d-flex flex-center mb-15">
-                        <a href="#">
-                            <img src="{{ asset('assets/logo/logo.png')}}" class="max-h-75px" alt="" />
-                        </a>
-                    </div>
-
-                  
-
-                    
-                    <!--end::Login Header-->
-                    <!--begin::Login Sign in form-->
-                    <div class="login-signin">
-                        <div class="mb-20">
-                            <h3 class="opacity-40 font-weight-normal">Sign In To Admin</h3>
-                            <p class="opacity-40">Enter your details to login to your account</p>
-                        </div>
-
-                        @if ($errors->any())
-                        <div >
-                            <br>
-                            <div class="font-medium text-red-600 text-danger">
-                                 Whoops! Something went wrong
-                            </div>
-                            @foreach ($errors->all() as $error)
-                                    <p class="mb-0 text-danger"> {{ $error }}</p>
-                            @endforeach
-                        </div>
-                        <br>
-                        @endif
-                        <form class="form" id="" method="post" action="{{ route('login') }}">
-                            @csrf
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="email" placeholder="Email" name="email" autocomplete="off" required />
-                            </div>
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="password" placeholder="Password" name="password" required/>
-                            </div>
-                            <div
-                                class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox checkbox-outline checkbox-white text-white m-0">
-                                        <input type="checkbox" name="remember" />
-                                        <span></span>Remember me</label>
-                                </div>
-                                {{-- <a href="javascript:;" id="kt_login_forgot" class="text-white font-weight-bold">Forget
-                                    Password ?</a> --}}
-                            </div>
-                            <div class="form-group text-center mt-10">
-                                <button id="kt_login_signin_submit"class="btn btn-pill btn-primary opacity-90 px-15 py-3">Sign In</button>
-                            </div>
-                        </form>
-
-                        <div class="mt-10">
-                            {{-- <span class="opacity-40 mr-4">Don't have an account yet?</span> --}}
-                            {{-- <a href="javascript:;" id="kt_login_signup"
-                                class="text-white opacity-30 font-weight-normal">Sign Up</a> --}}
-                        </div>
-                    </div>
-                    <!--end::Login Sign in form-->
-                    <!--begin::Login Sign up form-->
-                    <div class="login-signup">
-                        <div class="mb-20">
-                            <h3 class="opacity-40 font-weight-normal">Sign Up</h3>
-                            <p class="opacity-40">Enter your details to create your account</p>
-                        </div>
-                        <form class="form text-center" id=" ">
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Fullname" name="fullname" />
-                            </div>
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Email" name="email" autocomplete="off" />
-                            </div>
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="password" placeholder="Password" name="password" />
-                            </div>
-                            <div class="form-group">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="password" placeholder="Confirm Password" name="cpassword" />
-                            </div>
-                            <div class="form-group text-left px-8">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox checkbox-outline checkbox-white opacity-60 text-white m-0">
-                                        <input type="checkbox" name="agree" />
-                                        <span></span>I Agree the
-                                        <a href="#" class="text-white font-weight-bold ml-1">terms and
-                                            conditions</a>.</label>
-                                </div>
-                                <div class="form-text text-muted text-center"></div>
-                            </div>
-                            <div class="form-group">
-                                <button id="kt_login_signup_submit"
-                                    class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">Sign Up</button>
-                                <button id="kt_login_signup_cancel"
-                                    class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!--end::Login Sign up form-->
-                    <!--begin::Login forgot password form-->
-                    <div class="login-forgot">
-                        <div class="mb-20">
-                            <h3 class="opacity-40 font-weight-normal">Forgotten Password ?</h3>
-                            <p class="opacity-40">Enter your email to reset your password</p>
-                        </div>
-                        <form class="form" id="kt_login_forgot_form">
-                            <div class="form-group mb-10">
-                                <input
-                                    class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8"
-                                    type="text" placeholder="Email" name="email" autocomplete="off" />
-                            </div>
-                            <div class="form-group">
-                                <button id="kt_login_forgot_submit"
-                                    class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">Request</button>
-                                <button id="kt_login_forgot_cancel"
-                                    class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!--end::Login forgot password form-->
-                </div>
-            </div>
-        </div>
-        <!--end::Login-->
-    </div>
-    <!--end::Main-->
+<body id="kt_body" class="app-blank app-blank bgi-size-cover bgi-position-center bgi-no-repeat">
+    <!--begin::Theme mode setup on page load-->
     <script>
-        var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-    </script>
-    <!--begin::Global Config(global config for global JS scripts)-->
-    <script>
-        var KTAppSettings = {
-            "breakpoints": {
-                "sm": 576,
-                "md": 768,
-                "lg": 992,
-                "xl": 1200,
-                "xxl": 1400
-            },
-            "colors": {
-                "theme": {
-                    "base": {
-                        "white": "#ffffff",
-                        "primary": "#3699FF",
-                        "secondary": "#E5EAEE",
-                        "success": "#1BC5BD",
-                        "info": "#8950FC",
-                        "warning": "#FFA800",
-                        "danger": "#F64E60",
-                        "light": "#E4E6EF",
-                        "dark": "#181C32"
-                    },
-                    "light": {
-                        "white": "#ffffff",
-                        "primary": "#E1F0FF",
-                        "secondary": "#EBEDF3",
-                        "success": "#C9F7F5",
-                        "info": "#EEE5FF",
-                        "warning": "#FFF4DE",
-                        "danger": "#FFE2E5",
-                        "light": "#F3F6F9",
-                        "dark": "#D6D6E0"
-                    },
-                    "inverse": {
-                        "white": "#ffffff",
-                        "primary": "#ffffff",
-                        "secondary": "#3F4254",
-                        "success": "#ffffff",
-                        "info": "#ffffff",
-                        "warning": "#ffffff",
-                        "danger": "#ffffff",
-                        "light": "#464E5F",
-                        "dark": "#ffffff"
-                    }
-                },
-                "gray": {
-                    "gray-100": "#F3F6F9",
-                    "gray-200": "#EBEDF3",
-                    "gray-300": "#E4E6EF",
-                    "gray-400": "#D1D3E0",
-                    "gray-500": "#B5B5C3",
-                    "gray-600": "#7E8299",
-                    "gray-700": "#5E6278",
-                    "gray-800": "#3F4254",
-                    "gray-900": "#181C32"
+        var defaultThemeMode = "light";
+        var themeMode;
+        if (document.documentElement) {
+            if (document.documentElement.hasAttribute("data-theme-mode")) {
+                themeMode = document.documentElement.getAttribute("data-theme-mode");
+            } else {
+                if (localStorage.getItem("data-theme") !== null) {
+                    themeMode = localStorage.getItem("data-theme");
+                } else {
+                    themeMode = defaultThemeMode;
                 }
-            },
-            "font-family": "Poppins"
-        };
+            }
+            if (themeMode === "system") {
+                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            document.documentElement.setAttribute("data-theme", themeMode);
+        }
     </script>
-    <!--end::Global Config-->
-    <!--begin::Global Theme Bundle(used by all pages)-->
-    <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script src="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
-    <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
-    <!--end::Global Theme Bundle-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="{{asset('assets/js/pages/custom/login/login-general.js')}}"></script>
-    <!--end::Page Scripts-->
+    <!--end::Theme mode setup on page load-->
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+        <!--begin::Page bg image-->
+        <style>
+            body {
+                background-image: url(' {{ asset('assets/media/auth/bg4.jpg') }}');
+            }
+
+            [data-theme="dark"] body {
+                background-image: url(' {{ asset('assets/media/auth/bg4-dark.jpg') }}');
+            }
+        </style>
+        <!--end::Page bg image-->
+        <!--begin::Authentication - Sign-in -->
+        <div class="d-flex flex-column flex-column-fluid flex-lg-row">
+            <!--begin::Aside-->
+            <div class="d-flex flex-center w-lg-50 pt-15 pt-lg-0 px-10">
+                <!--begin::Aside-->
+                <div class="d-flex flex-center flex-lg-start flex-column">
+                    <!--begin::Logo-->
+                    <a href="{{ route('login') }}" class="mb-7">
+                        <img alt="Logo" src="{{asset('assets/logo/logo.png')}}" class="h-50px me-3" />
+                    </a>
+                    <!--end::Logo-->
+                    <!--begin::Title-->
+                    <h2 class="text-white fw-normal m-0">Branding tools designed for your business</h2>
+                    <!--end::Title-->
+                </div>
+                <!--begin::Aside-->
+            </div>
+            <!--begin::Aside-->
+            <!--begin::Body-->
+            <div class="d-flex flex-center w-lg-50 p-10">
+                <!--begin::Card-->
+                <div class="card rounded-3 w-md-550px">
+                    <!--begin::Card body-->
+                    <div class="card-body p-10 p-lg-20">
+                        <!--begin::Form-->
+                        <form class="form w-100" novalidate="novalidate" action="{{ route('login') }}" method="post">
+                            @csrf
+                            <!--begin::Heading-->
+                            <div class="text-center mb-11">
+                                <!--begin::Title-->
+                                <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
+                                <!--end::Title-->
+                                <!--begin::Subtitle-->
+                                <div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
+                                <!--end::Subtitle=-->
+                            </div>
+                            <!--begin::Heading-->
+                            <!--begin::Login options-->
+                            <div class="row g-3 mb-9">
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Google link=-->
+                                    <a href="#"
+                                        class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
+                                        <img alt="Logo"
+                                            src="{{ asset('assets/media/svg/brand-logos/google-icon.svg') }}"
+                                            class="h-15px me-3" />Sign in with Google</a>
+                                    <!--end::Google link=-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Google link=-->
+                                    <a href="#"
+                                        class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
+                                        <img alt="Logo"
+                                            src="{{ asset('assets/media/svg/brand-logos/apple-black.svg') }}"
+                                            class="theme-light-show h-15px me-3" />
+                                        <img alt="Logo"
+                                            src="{{ asset('assets/media/svg/brand-logos/apple-black-dark.svg') }}"
+                                            class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
+                                    <!--end::Google link=-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Login options-->
+                            <!--begin::Separator-->
+                            <div class="separator separator-content my-14">
+                                <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
+                            </div>
+                            @if ($errors->any())
+                                <div>
+
+
+                                    @foreach ($errors->all() as $error)
+                                        <div class="fv-plugins-message-container invalid-feedback mb-3 text-center">
+                                            <div data-field="email" data-validator="notEmpty"> {{ $error }}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <br>
+                            @endif
+
+
+                            <!--end::Separator-->
+                            <!--begin::Input group=-->
+                            <div class="fv-row mb-8">
+                                <!--begin::Email-->
+                                <input type="text" placeholder="Email" name="email" autocomplete="off"
+                                    class="form-control bg-transparent" required />
+                                <!--end::Email-->
+                            </div>
+                            <!--end::Input group=-->
+                            <div class="fv-row mb-3">
+                                <!--begin::Password-->
+                                <input type="password" placeholder="Password" name="password" autocomplete="off"
+                                    class="form-control bg-transparent" required />
+                                <!--end::Password-->
+                            </div>
+                            <!--end::Input group=-->
+                            <!--begin::Wrapper-->
+                            <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
+                                <div></div>
+                                <!--begin::Link-->
+                                <a href="#" class="link-primary">Forgot Password ?</a>
+                                <!--end::Link-->
+                            </div>
+                            <!--end::Wrapper-->
+                            <!--begin::Submit button-->
+                            <div class="d-grid mb-10">
+                                <button type="submit" id="" class="btn btn-primary">
+                                    <!--begin::Indicator label-->
+                                    <span class="indicator-label">Sign In</span>
+                                    <!--end::Indicator label-->
+                                    <!--begin::Indicator progress-->
+                                    <span class="indicator-progress">Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                    <!--end::Indicator progress-->
+                                </button>
+                            </div>
+                            <!--end::Submit button-->
+                            <!--begin::Sign up-->
+                            <div class="text-gray-500 text-center fw-semibold fs-6">Not a Member yet?
+                                <a href="{{ route('register') }}" class="link-primary">Sign up</a>
+                            </div>
+                            <!--end::Sign up-->
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Card-->
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Authentication - Sign-in-->
+    </div>
+    <!--end::Root-->
+    <!--begin::Javascript-->
+
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Custom Javascript(used for this page only)-->
+    <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
+    <!--end::Custom Javascript-->
+    <!--end::Javascript-->
+    <script></script>
 </body>
 <!--end::Body-->
 

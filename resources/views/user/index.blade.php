@@ -1,87 +1,225 @@
 @extends('layouts.app')
 @section('title', 'Account Users')
+@section('page_name','Listings')
 @section('page_head')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endsection
-@section('content')
-
-    <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container">
-            <div class="row mb-6">
-                <div class="col-lg-12">
-                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('dashboard') }}"><i class="fa fa-home"></i></a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            Users
-                        </li>
-                    </ul>
-                </div>
+@section('page_content')
+    
+<div class="d-flex flex-column flex-column-fluid">
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                <!--begin::Title-->
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Listing</h1>
+                <!--end::Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">
+                        <a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a>
+                    </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                    </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">Listing</li>
+                    <!--end::Item-->
+                </ul>
+                <!--end::Breadcrumb-->
             </div>
-            <div class="card card-custom">
-                <div class="card-header">
-                    <div class="card-title">
-                        <span class="card-icon">
-                            <i class="flaticon2-user text-primary"></i>
-                        </span>
-                        <h3 class="card-label"> Users</h3>
-                    </div>
+            <!--end::Page title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <!--begin::Filter menu-->
+                
+              
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar container-->
+    </div>
+    <div id="kt_app_content" class="app-content flex-column-fluid">
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <div class="card mb-5 mb-xl-8">
+                <!--begin::Header-->
+                <div class="card-header border-0 pt-5">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold fs-3 mb-1">Users</span>
+                        <span class="text-muted mt-1 fw-semibold fs-7">Over 500 members</span>
+                    </h3>
                     <div class="card-toolbar">
+                        <!--begin::Menu-->
+                        <button type="button" class="btn btn-sm  btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="5" y="5" width="5" height="5" rx="1" fill="currentColor"></rect>
+                                        <rect x="14" y="5" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                        <rect x="5" y="14" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                        <rect x="14" y="14" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                    </g>
+                                </svg>
+                            </span>
+                            Add Account
+                            <!--end::Svg Icon-->
+                        </button>
 
-                        {{-- <a href="#" class="btn-square btn btn-primary font-weight-bolder" data-toggle="modal"
-                            data-target="#modal-addUser">
-                            Add New
-                        </a> --}}
-
-                        <div class="btn-group">
-                            <button class="btn btn-primary btn-square font-weight-bold btn-sm dropdown-toggle"
-                                type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="flaticon-plus"></i> Add Account
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('user.investor.create') }}">Individual Investor</a>
-                                <a class="dropdown-item" href="{{ route('user.issuer.create') }}">Issuer</a>
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true" style="">
+                            <!--begin::Heading-->
+                            <div class="menu-item px-3">
+                                <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">Create User</div>
+                            </div>
+                            <!--end::Heading-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a href="{{ route('user.investor.create') }}" class="menu-link px-3"> Individual Investor </a>
+                            </div>
+                            <div class="menu-item px-3">
+                                <a href="{{ route('user.issuer.create') }}" class="menu-link px-3"> Issuer </a>
                             </div>
                         </div>
-
-
-
+                         
                     </div>
                 </div>
-                <div class="card-body">
-                    <!--begin: Datatable-->
-                    <table class="table table-sm" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>S#</th>
-                                <th>Name(User)</th>
-                                <th>Account Name</th>
-                                <th>Account Type</th>
-                                <th>Page <br> View</th>
-                                <th>Time <br> Spent(s)</th>
-                                <th> <small> Last Seen</small> </th>
-                                <th>Date <br> <small>Created</small></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <!--end::Header-->
+                <!--begin::Body-->
+                <div class="card-body py-3">
+                    <!--begin::Table container-->
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table class="table align-middle gs-0 gy-4">
+                            <!--begin::Table head-->
+                            <thead>
+                                <tr class="fw-bold text-muted bg-light">
+                                    <th class="min-w-15px"> </th>
+                                    <th class="ps-4 min-w-150px rounded-start">Name (User)</th>
+                                    <th class="min-w-125px">Account Name</th>
+                                    <th class="min-w-125px">Account Type</th>
+                                    <th class="min-w-100px">Page <small> Views </small>    </th>
+                                    <th class="min-w-150px">Time <small> Spent (s) </small>    </th>
+                                    <th class="min-w-150px">Total <small> Events </small>    </th>
+                                    <th class="min-w-150px">Last Seen  </th>
+                                    <th class="min-w-150px text-left rounded-end">Date  </th>
+                                </tr>
+                            </thead>
+                            <!--end::Table head-->
+                            <!--begin::Table body-->
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-50px me-5">
+                                                <span class="symbol-label bg-light">
+                                                    <img src="https://wealthblock-profile.s3.amazonaws.com/image/cb52635198a690e8e20722be2fd1ccb3.jpeg" class="h-75 align-self-end" alt="">
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> Umer Saleem </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  Kwamee' Salley </a>
+                                         
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Individual</a>
+                                    </td>
 
-                        </tbody>
-                    </table>
-                    <!--end: Datatable-->
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">8</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">1.5 min</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                    </td>
+                                   
+                                    
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-50px me-5">
+                                                <span class="symbol-label bg-light">
+                                                    <img src="https://wealthblock-profile.s3.amazonaws.com/image/cb52635198a690e8e20722be2fd1ccb3.jpeg" class="h-75 align-self-end" alt="">
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> Umer Saleem </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  Kwamee' Salley </a>
+                                         
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Individual</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">8</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">1.5 min</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                    </td>
+                                   
+                                    
+                                </tr>
+                                 
+                            </tbody>
+                            <!--end::Table body-->
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                    <!--end::Table container-->
                 </div>
+                <!--begin::Body-->
             </div>
-
         </div>
-        <!--end::Container-->
-
+        <!--end::Content container-->
     </div>
+</div>
 
-
-    @include('user.partials.index')
+ 
 @endsection
 @section('page_js')
     <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
