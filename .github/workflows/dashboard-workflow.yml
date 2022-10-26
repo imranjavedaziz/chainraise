@@ -32,9 +32,6 @@ jobs:
       - name: Install libraries
         run: composer install
 
-      - name: Install Npm
-        run: sudo apt install nodejs
-
       # Runs a set of commands using the runners shell
       - name: Deploy the app
         run: |
