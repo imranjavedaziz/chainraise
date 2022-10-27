@@ -16,39 +16,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->ajax()){
-            return Datatables::of(User::query())
-            ->addIndexColumn()
-            ->addColumn('account_type',function($user){
-                return $user->roles->pluck('name')[0] ?? '';   
-            })
-            ->addColumn('actions', function ($user) {
-                return "
-                <a href='#' class='edit-user btn btn-sm btn-icon btn-light-warning btn-square'
-                data-toggle='modal' data-target='#modal-editUser' data-id='$user->id'
-                data-name='$user->name' data-email='$user->email'
-                data-status='$user->status'>
-                    <i class='icon-1x text-dark-5 flaticon-edit'></i>
-                </a>
-                
-                <a href='#' class='btn btn-sm btn-icon btn-light-danger btn-square'
-                onclick='deleteUser($user->id)'>
-                 <i class='icon-1x text-dark-5 flaticon-delete'></i>
-                </a> ";
-
-
-            })
-            ->editColumn('status', function ($user) {
-                if($user->status == 'active'){
-                    return '<span class="label label-inline label-light-primary    font-weight-bold">' . ucfirst($user->status) .' </span>';
-                }else{
-                    return '<span class="label label-inline  label-light-danger font-weight-bold">' .  ucfirst($user->status) .' </span>';
-                }
-            })
-            ->rawColumns(['actions','status'])
-            ->make(true);
-        }
-        return view('user.index');
+        $users = User::get();
+        return view('user.index',compact('users'));
     }
 
     public function list()
@@ -159,7 +128,7 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-
+        
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
@@ -174,10 +143,13 @@ class UserController extends Controller
             if($request->has('password') && $request->password != null){
                 $user->password  =  Hash::make($request->password);
             }
-            
             $user->phone  = $request->phone;
             $user->status  = 'active';
             $user->save();
+            if($request->hasFile('photo')) {
+               
+                $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
+            }
             $user_detail = new UserDetail;
             $user_detail->user_id = $user->id;
             $user_detail->middle_name = $request->middle_name;
@@ -197,13 +169,9 @@ class UserController extends Controller
             // -- End Issuer detail
             $user_detail->save();
             if($request->account_type == 'investor'){
-                
                 $user->assignRole('investor');
-
             }elseif($request->account_type == 'issuer') {
-                
                 $user->assignRole('issuer');
-            
             }
             
             DB::commit();

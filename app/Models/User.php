@@ -8,10 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
-class User extends Authenticatable
-{
-    use HasRoles, HasApiTokens, HasFactory, Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Contracts\Auth\CanResetPassword;
+ 
+class User extends Authenticatable  implements HasMedia
+{ 
+    
+    use HasApiTokens, HasFactory, Notifiable, HasRoles,InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.

@@ -133,7 +133,7 @@
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-kt-initialized="1">
                                             <i class="bi bi-pencil-fill fs-7"></i>
                                             <!--begin::Inputs-->
-                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
+                                            <input type="file" name="photo" accept=".png, .jpg, .jpeg">
                                             <input type="hidden" name="avatar_remove" value="1">
                                             <!--end::Inputs-->
                                         </label>

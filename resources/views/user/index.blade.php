@@ -2,8 +2,7 @@
 @section('title', 'Account Users')
 @section('page_name','Listings')
 @section('page_head')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    
 @endsection
 @section('page_content')
     
@@ -97,7 +96,7 @@
                     <!--begin::Table container-->
                     <div class="table-responsive">
                         <!--begin::Table-->
-                        <table class="table align-middle gs-0 gy-4">
+                        <table class="table align-middle gs-0 gy-4" id="account-table">
                             <!--begin::Table head-->
                             <thead>
                                 <tr class="fw-bold text-muted bg-light">
@@ -107,9 +106,9 @@
                                     <th class="min-w-125px">Account Type</th>
                                     <th class="min-w-100px">Page <small> Views </small>    </th>
                                     <th class="min-w-150px">Time <small> Spent (s) </small>    </th>
-                                    <th class="min-w-150px">Total <small> Events </small>    </th>
-                                    <th class="min-w-150px">Last Seen  </th>
-                                    <th class="min-w-150px text-left rounded-end">Date  </th>
+                                    <th class="min-w-140px">Total <small> Events </small>    </th>
+                                    <th class="min-w-135px">Last Seen  </th>
+                                    <th class="min-w-135px text-left rounded-end">Date  </th>
                                 </tr>
                             </thead>
                             <!--end::Table head-->
@@ -158,53 +157,7 @@
                                     </td>
                                    
                                     
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="symbol symbol-50px me-5">
-                                                <span class="symbol-label bg-light">
-                                                    <img src="https://wealthblock-profile.s3.amazonaws.com/image/cb52635198a690e8e20722be2fd1ccb3.jpeg" class="h-75 align-self-end" alt="">
-                                                </span>
-                                            </div>
-                                            
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> Umer Saleem </a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  Kwamee' Salley </a>
-                                         
-                                    </td>
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Individual</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">8</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">1.5 min</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
-                                    </td>
-                                   
-                                    
-                                </tr>
-                                 
+                                </tr>                                
                             </tbody>
                             <!--end::Table body-->
                         </table>
@@ -222,15 +175,12 @@
  
 @endsection
 @section('page_js')
-    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-    <script>
-        var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
-    </script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 
+    <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
     <script>
+         
         $(function() {
-            $('#users-table').DataTable({
+            $('#account-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{!! route('user.index') !!}',

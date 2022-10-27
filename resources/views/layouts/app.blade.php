@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
-
 <head>
-
     <title> @yield('title') | Chainraise </title>
     <meta charset="utf-8" />
-
     <link rel="shortcut icon" href="{{asset('assets/media/logos/favicon.ico')}}" />
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
@@ -26,9 +23,6 @@
     @section('page_head')
     @show
 </head>
-<!--end::Head-->
-<!--begin::Body-->
-
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
     data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
     data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
@@ -777,5 +771,4 @@
     @show
 
 </body>
-
 </html>
