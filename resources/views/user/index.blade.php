@@ -114,50 +114,58 @@
                             <!--end::Table head-->
                             <!--begin::Table body-->
                             <tbody>
+                                @foreach($users as $user)
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="symbol symbol-50px me-5">
                                                 <span class="symbol-label bg-light">
-                                                    <img src="https://wealthblock-profile.s3.amazonaws.com/image/cb52635198a690e8e20722be2fd1ccb3.jpeg" class="h-75 align-self-end" alt="">
+                                                    @if($user->getFirstMediaUrl('profile_photo', 'thumb'))
+                                                        @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                                                    @else
+                                                        @php $photo_path = "https://invest.chainraise.io/assets/images/account/male_user.png";  @endphp
+                                                    @endif
+                                                  
+                                                    <img src="{{ $photo_path }}" class="h-75 align-self-end" alt="">
                                                 </span>
                                             </div>
                                             
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> Umer Saleem </a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  {{ $user->name}} </a>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  Kwamee' Salley </a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->userDetail->middle_name }}</a>
                                          
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Individual</a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))}} </a>
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">8</a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> - </a>
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">1.5 min</a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> - min</a>
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> - </a>
                                     </td>
 
                                     <td>
                                         <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">10/26/2022</a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->created_at}} </a>
                                     </td>
                                    
                                     
-                                </tr>                                
+                                </tr>  
+                                @endforeach                              
                             </tbody>
                             <!--end::Table body-->
                         </table>

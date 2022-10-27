@@ -38,6 +38,7 @@ jobs:
           cp /home/ubuntu/actions-runner/_work/env-backup/.env $GITHUB_WORKSPACE
           php artisan migrate:fresh --seed
           php artisan cache:clear
+          php artisan storage:link
           sudo cp -rf * /var/www/html/laravel/
           sudo chown -R www-data. /var/www/html/laravel
           sudo systemctl restart apache2.service

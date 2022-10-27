@@ -49,4 +49,9 @@ class User extends Authenticatable  implements HasMedia
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userDetail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
 }
