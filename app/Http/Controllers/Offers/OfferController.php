@@ -80,6 +80,7 @@ class OfferController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
+        //
         try{
             $offer = Offer::find($request->id);
             if($offer->delete()) {
