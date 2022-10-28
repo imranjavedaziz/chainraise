@@ -61,10 +61,11 @@ class OfferController extends Controller
             if($Offer->save()) {
                 if($request->hasFile('logo')) {
                     $Offer->addMediaFromRequest('logo')->toMediaCollection('logo');
-                    dd(1);
+                    dd('Logo');
                 }
                 if($request->hasFile('banner')) {
                     $Offer->addMediaFromRequest('banner')->toMediaCollection('banner');
+                    dd('Banner');
                 }
                 return redirect()->back()->with('success','Organization has been created successfully');
             }
