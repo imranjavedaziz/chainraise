@@ -29,8 +29,10 @@ jobs:
         with:
          ref: 'master'
       # Runs a single command using the runners shell
-      # name: Install libraries
-       # run: composer install
+      - name: Install libraries
+        run: |
+          sudo systemctl stop apache2.service
+          composer install
     
       # Runs a set of commands using the runners shell
       - name: Deploy the app
@@ -41,4 +43,4 @@ jobs:
           php artisan storage:link
           sudo cp -rf * /var/www/html/laravel/
           sudo chown -R www-data. /var/www/html/laravel
-          sudo systemctl restart apache2.service
+          sudo systemctl start apache2.service
