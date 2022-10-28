@@ -45,6 +45,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
 });
 
 
+
 Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Offers'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
@@ -53,6 +54,8 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
 });
+
+
 
 Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Organizations'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OrganizationsController@index']);

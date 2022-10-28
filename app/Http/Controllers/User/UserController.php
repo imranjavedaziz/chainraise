@@ -147,7 +147,6 @@ class UserController extends Controller
             $user->status  = 'active';
             $user->save();
             if($request->hasFile('photo')) {
-               
                 $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
             }
             $user_detail = new UserDetail;

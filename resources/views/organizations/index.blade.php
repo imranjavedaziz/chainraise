@@ -31,10 +31,9 @@
                         <h3 class="card-label"> Organizations</h3>
                     </div>
                     <div class="card-toolbar">
-                         
-                        <a href="#" class="btn-square btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" class="btn btn-sm  btn-color-primary btn-active-light-primary" data-bs-toggle="modal" data-bs-target="#create_organization">
                            Create Organizations
-                        </a>
+                        </button>
                         <!--end::Button-->
                     </div>
                 </div>

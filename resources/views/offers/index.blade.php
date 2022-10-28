@@ -32,10 +32,11 @@
                         <h3 class="card-label"> Offers</h3>
                     </div>
                     <div class="card-toolbar">
-                         
-                        <a href="#" class="btn-square btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#create_offer">
+                        
+                        <button type="button" class="btn btn-sm  btn-color-primary btn-active-light-primary" data-bs-toggle="modal" data-bs-target="#create_offer">
                            Create Offer
-                        </a>
+                        </button>
+                        
                         <!--end::Button-->
                     </div>
                 </div>

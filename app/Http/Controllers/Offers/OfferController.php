@@ -18,8 +18,7 @@ class OfferController extends Controller
     }
 
     public function edit($id)
-    {  
-        
+    {
         $offer = Offer::find($id);
          $organizations = Organization::get();
         return view('offers.edit',compact('offer','organizations'));
@@ -40,13 +39,11 @@ class OfferController extends Controller
             'start_time' => 'required',
             'end_time' => 'required',
         ]);
-        
-        
         try{
             $Offer = new Offer;
             $Offer->organization_id =  $request->organization;
-            $Offer->name =              $request->name;   
-            $Offer->slug =              $request->slug; 
+            $Offer->name =              $request->name;
+            $Offer->slug =              $request->slug;
             $Offer->min_investment =              $request->min_investment;
             $Offer->goal =              $request->goal;
             $Offer->pledged =              $request->pledged;
@@ -62,15 +59,20 @@ class OfferController extends Controller
             $Offer->description =              $request->description;
             $Offer->status =              'active' ;
             if($Offer->save()) {
+                if($request->hasFile('logo')) {
+                    $Offer->addMediaFromRequest('logo')->toMediaCollection('logo');
+                }
+                if($request->hasFile('banner')) {
+                    $Offer->addMediaFromRequest('banner')->toMediaCollection('banner');
+                }
                 return redirect()->back()->with('success','Organization has been created successfully');
-            }    
-        
+            }
+
         }catch(Exception $error){
             return $error;
             return redirect()->back()->with('error','Error while creating Organization');
         }
     }
-    
     public function delete(Request $request)
     {
         $request->validate([
@@ -90,9 +92,7 @@ class OfferController extends Controller
                 'message'=> 'Error while deleting Offer'
             ]);
         }
-        
 
     }
-    
 
 }

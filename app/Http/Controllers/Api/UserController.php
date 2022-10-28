@@ -4,15 +4,38 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InvestorResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserDetail;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        $login =  $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string'
+        ]);
+        if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
+            $user = Auth::user();
+            return [
+                'status' => true,
+                'data' => UserResource::make($user)
+            ];
+       }else{
+            return response()->json([
+                'status' => true,
+                'message' => "No user found with given username or email",
+            ], 404);
+        }
+    }
+
     public function investors()
     {
             $users = User::role('investor')->with('userDetail')->get();
@@ -23,8 +46,6 @@ class UserController extends Controller
             
     }
 
-
-    
     public function investor_create(Request $request)
     {
          
