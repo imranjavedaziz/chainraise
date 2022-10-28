@@ -61,7 +61,7 @@ class OfferController extends Controller
             if($Offer->save()) {
                 if($request->hasFile('logo')) {
                     $Offer->addMediaFromRequest('logo')->toMediaCollection('logo');
-                    
+                    dd(1);
                 }
                 if($request->hasFile('banner')) {
                     $Offer->addMediaFromRequest('banner')->toMediaCollection('banner');
