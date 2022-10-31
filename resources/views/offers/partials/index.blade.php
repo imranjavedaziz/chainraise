@@ -20,7 +20,7 @@
 
                                 <div class="form-group col-lg-6">
                                     <label for=""> Slug  </label>
-                                    <input type="" class="form-control" placeholder="Slug" name="name" >
+                                    <input type="" class="form-control" placeholder="Slug" name="slug" >
                                 </div>
                             </div>
                             <div class="row mb-4">

@@ -134,8 +134,6 @@
                             </div>
                             @if ($errors->any())
                                 <div>
-
-
                                     @foreach ($errors->all() as $error)
                                         <div class="fv-plugins-message-container invalid-feedback mb-3 text-center">
                                             <div data-field="email" data-validator="notEmpty"> {{ $error }}
