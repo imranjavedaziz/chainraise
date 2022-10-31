@@ -26,7 +26,7 @@
                             <div class="row mb-4">
                                 <div class="form-group col-lg-6">
                                     <label for=""> Minimum Investment <span class="text-danger"> *</span> </label>
-                                    <input type="text" class="form-control" placeholder="Minimum Investment" name="min_investment"  required>
+                                    <input type="number" class="form-control" placeholder="Minimum Investment" name="min_investment"  required>
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -42,13 +42,13 @@
 
                                 <div class="form-group col-lg-6">
                                     <label for=""> Max Raise  <span class="text-danger"> *</span></label>
-                                    <input type="" class="form-control" placeholder="Max Raise*" name="max_raise" required>
+                                    <input type="number" class="form-control" placeholder="Max Raise*" name="max_raise" required>
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="form-group col-lg-6">
                                     <label for=""> Price Per Unit </label>
-                                    <input type="text" class="form-control" placeholder="Price Per Unit" name="price_per_unit">
+                                    <input type="number" class="form-control" placeholder="Price Per Unit" name="price_per_unit">
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -81,10 +81,10 @@
                             <div class="row mb-4">
                                 <div class="form-group col-lg-6">
                                     <label for=""> Organizations  <span class="text-danger"> *</span> </label>
-                                    <select name="organization"  class="form-control" required>
+                                    <select name="issuer"  class="form-control" required>
                                             <option value="" selected disabled > Select Organization </option>
-                                            @foreach($organizations as $organization)
-                                                <option value="{{ $organization->id }}" > {{$organization->name}} </option>
+                                            @foreach($issuers as $issuer)
+                                                <option value="{{ $issuer->id }}" > {{ ucfirst($issuer->name)}} </option>
                                             @endforeach
                                     </select>
                                 </div>

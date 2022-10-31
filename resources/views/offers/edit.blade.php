@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Edit')
+@section('title', 'Offers')
 @section('page_head')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endsection
-@section('content')
+@section('page_content')
 
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
@@ -18,10 +18,11 @@
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a href="{{ route('offers.index') }}"> Offers </a>
+                            Offers
                         </li>
+
                         <li class="breadcrumb-item">
-                            {{ $offer->name }}
+                            Edit
                         </li>
                     </ul>
                 </div>
@@ -35,14 +36,131 @@
                         <h3 class="card-label"> Offers</h3>
                     </div>
                     <div class="card-toolbar">
-                         
-                        
-                        <!--end::Button-->
                     </div>
                 </div>
                 <div class="card-body">
-                 
-                    <!--end: Datatable-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> Update Offer </h5>
+                            
+                        </div>
+                        <form class="form" method="post" action="{{ route('offers.create')}}"  enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <div class="card card-custom">
+                                        @csrf
+                                    <div class="card-body">
+                                        <div class="row mb-4" >
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Name <span class="text-danger"> *</span></label>
+                                                <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Slug  </label>
+                                                <input type="" class="form-control" placeholder="Slug" name="name" >
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Minimum Investment <span class="text-danger"> *</span> </label>
+                                                <input type="number" class="form-control" placeholder="Minimum Investment" name="min_investment"  required>
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Goal  <span class="text-danger"> *</span></label>
+                                                <input type="" class="form-control" placeholder="Goal" name="goal"  required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Pledged <span class="text-danger"> *</span></label>
+                                                <input type="text" class="form-control" placeholder="Pledged" name="pledged"  required>
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Max Raise  <span class="text-danger"> *</span></label>
+                                                <input type="number" class="form-control" placeholder="Max Raise*" name="max_raise" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Price Per Unit </label>
+                                                <input type="number" class="form-control" placeholder="Price Per Unit" name="price_per_unit">
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Industry  <span class="text-danger"> *</span> </label>
+                                                <input type="" class="form-control" placeholder="Industry" name="industry">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Disclosure <span class="text-danger"> *</span> </label>
+                                                <input type="text" class="form-control" placeholder="Disclosure" name="disclosure">
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Type  <span class="text-danger"> *</span></label>
+                                                <input type="" class="form-control" placeholder="Type" name="type">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Start Time <span class="text-danger"> *</span> </label>
+                                                <input type="date" class="form-control" placeholder="Start Date" name="start_time">
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> End Time <span class="text-danger"> *</span>  </label>
+                                                <input type="date" class="form-control" placeholder="End Date" name="end_time">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Organizations  <span class="text-danger"> *</span> </label>
+                                                <select name="issuer"  class="form-control" required>
+                                                        <option value="" selected disabled > Select Organization </option>
+                                                        @foreach($issuers as $issuer)
+                                                            <option value="{{ $issuer->id }}" > {{ ucfirst($issuer->name)}} </option>
+                                                        @endforeach
+                                                </select>
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Summary  </label>
+                                                <textarea type="" class="form-control" placeholder="Summary" name="summary"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">    
+                                                <label for=""> Short Description </label>
+                                                <textarea  class="form-control" placeholder="Short Description" name="short_description"></textarea>
+                                            </div>
+            
+                                            <div class="form-group col-lg-6">    
+                                                <label for=""> Description  </label>
+                                                <textarea class="form-control" placeholder="Industry" name="description"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="form-group col-lg-6">
+                                                <label for=""> Logo </label> <br>
+                                                <input type="file" name="logo"/>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">  Banner </label> <br>
+                                                <input type="file" name="banner"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn-sm btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn-sm btn btn-primary font-weight-bold btn-square">Create Offer</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -51,9 +169,7 @@
  
     </div>
  
-
-<!-- Modal-->
-@include('offers.partials.index')
+ 
 @endsection
 @section('page_js')
     <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>

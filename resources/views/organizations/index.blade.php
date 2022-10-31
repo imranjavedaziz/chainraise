@@ -58,14 +58,14 @@
                                 <td><span class="label label-inline @if($organization->status == 'active')label-light-primary @else label-light-danger @endif font-weight-bold"> {{ ucfirst($organization->status) }}  </span></td>
                                 <td>
                                     <a href='#' class='editOrganization btn btn-sm btn-icon btn-light-warning btn-square'
-                                    data-toggle="modal" data-target="#modal-editOrganization" data-id="{{$organization->id }}"
+                                    data-bs-toggle="modal" data-bs-target="#modal-editOrganization" data-id="{{$organization->id }}"
                                     data-name="{{$organization->name }}" data-category="{{$organization->category }}"
                                     data-status="{{$organization->status }}">
-                                        <i class='icon-1x text-dark-5 flaticon-edit'></i>
+                                        <i class='icon-1x text-dark-5 fa fa-pencil'></i>
                                     </a>
 
                                     <a href='#' class='btn btn-sm btn-icon btn-light-danger btn-square' onclick="deleteOrganization({{$organization->id}})">
-                                        <i class='icon-1x text-dark-5 flaticon-delete'></i>
+                                        <i class='icon-1x text-dark-5 fa fa-trash'></i>
                                     </a>
                                 </td>
                             </tr>

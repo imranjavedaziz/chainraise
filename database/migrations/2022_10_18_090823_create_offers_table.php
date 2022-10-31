@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('organization_id');
-            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->unsignedBigInteger('issuer_id');
+            $table->foreign('issuer_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->nullable();
             $table->string('min_investment')->nullable();

@@ -45,7 +45,7 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th>S#</th>
+                                <th>S #</th>
                                 <th>Name</th>
                                 <th>Goal</th>
                                 <th>Max Raise</th>
@@ -54,26 +54,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($offers as $offer)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td> {{ $offer->name }}</td>
-                                <td> {{ $offer->goal }} </td>
-                                <td> ${{ $offer->max_raise }} </td>
-                                <td><span class="label label-inline label-light-primary font-weight-bold"> {{ ucfirst($offer->status) }}</span></td>
-                                <td>
-                                    <a href='{{ route('offers.edit',$offer->id) }}' class='edit-user btn btn-sm btn-icon btn-light-warning btn-square'
-                                       
-                                        data-id="{{ $offer->id }}">
-                                        <i class='icon-1x text-dark-5 flaticon-edit'></i>
-                                    </a>
-                                    <a href='#' class='btn btn-sm btn-icon btn-light-danger btn-square'
-                                       onclick="deleteOffer({{ $offer->id }})" >
-                                        <i class='icon-1x text-dark-5 flaticon-delete'></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
+                            <tbody>
+                                @foreach($offers as $offer)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td> {{ $offer->name }}</td>
+                                    <td> {{ $offer->goal }} </td>
+                                    <td> ${{ $offer->max_raise }} </td>
+                                    <td><span class="label label-inline label-light-primary font-weight-bold"> {{ ucfirst($offer->status) }}</span></td>
+                                    <td>
+                                        <a href='{{ route('offers.edit',$offer->id) }}' class='edit-user btn btn-sm btn-icon btn-light-warning btn-square'
+                                            data-id="{{ $offer->id }}">
+                                            <i class='icon-1x text-dark-5 fa fa-pencil'></i>
+                                        </a>
+                                        <a href='#' class='btn btn-sm btn-icon btn-light-danger btn-square'
+                                           onclick="deleteOffer({{ $offer->id }})" >
+                                            <i class='icon-1x text-dark-5 fa fa-trash'></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+     
+                            </tbody>
  
                         </tbody>
                     </table>

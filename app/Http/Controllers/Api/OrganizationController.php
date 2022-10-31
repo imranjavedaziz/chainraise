@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OffersByIssuerResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\OrganizationWithOfferResource;
 use App\Models\Offer;
 use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
     public function index()
     {
-        $organizations  =  Organization::get();
+        $organizations  =  User::role('issuer')->get();
         return [
             'status' => true,
             'data' => OrganizationResource::collection($organizations)
@@ -30,10 +32,10 @@ class OrganizationController extends Controller
 
     public function OrganizationOffers($id)
     {
-            $organization_offers  =  Organization::find($id);
+            $offers  =  Offer::where('issuer_id',$id)->get();
             return [
                 'status' => true,
-                'data' => OrganizationWithOfferResource::make($organization_offers)
+                'data' => OffersByIssuerResource::make($offers)
             ];
     }
 

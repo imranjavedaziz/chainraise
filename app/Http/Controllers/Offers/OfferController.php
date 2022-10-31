@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Offers;
 use App\Http\Controllers\Controller;
 use App\Models\Offer;
 use App\Models\Organization;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -12,23 +13,25 @@ class OfferController extends Controller
 {
     public function index()
     {
+        $issuers = User::role('issuer')->get();
         $offers = Offer::get();
         $organizations = Organization::where('status','active')->get();
-        return view('offers.index',compact('offers','organizations'));
+        return view('offers.index',compact('issuers','offers','organizations'));
     }
 
     public function edit($id)
     {
         $offer = Offer::find($id);
          $organizations = Organization::get();
-        return view('offers.edit',compact('offer','organizations'));
+         $issuers = User::role('issuer')->get();
+        return view('offers.edit',compact('offer','organizations','issuers'));
     }
 
     public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'organization' => 'required',
+            'issuer' => 'required',
             'min_investment' => 'required',
             'goal' => 'required',
             'pledged' => 'required',
@@ -39,9 +42,10 @@ class OfferController extends Controller
             'start_time' => 'required',
             'end_time' => 'required',
         ]);
+        
         try{
             $Offer = new Offer;
-            $Offer->organization_id =  $request->organization;
+            $Offer->issuer_id =  $request->issuer;
             $Offer->name =              $request->name;
             $Offer->slug =              $request->slug;
             $Offer->min_investment =              $request->min_investment;
