@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\IdentityVerification;
+use App\Models\TrustSetting;
 use App\Models\User;
 use App\Models\UserDetail;
 use Exception;
@@ -16,8 +18,13 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-          $users = User::with('userDetail')->get();
+        $users = User::with('userDetail')->orderby('id','DESC')->get();
         return view('user.index',compact('users'));
+    }
+    public function details($id)
+    {
+        $user = User::with('userDetail','identityVerification','trustSetting')->find($id);
+        return view('user.details',compact('user'));
     }
 
     public function list()
@@ -239,5 +246,157 @@ class UserController extends Controller
             return redirect()->back()->with('error','Error while creating investor user');
         }       
     }
-    
+
+    public function accountUpdate(Request $request)
+    {
+
+       
+        $request->validate([
+            //Users Table
+            'id' => 'required',
+            'first_name' => 'required',
+            'phone' => 'required',
+            //'agree_consent_electronic' => 'required',
+
+            // User Detail
+           // 'middle_name' => 'required',
+           // 'last_name' => 'required',
+           // 'title' => 'required',
+            'dob' => 'required',
+            //'profile_avatar' => 'required',
+            'address' => 'required',
+            //'suit' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+
+            // Identity Verifiation
+           // 'social_security' => 'required',
+            'nationality' => 'required',
+            'country_residence' => 'required',
+
+            //Trust Settings
+            //'bypass_account_setup' => 'required',
+            //'bypass_kyc_checkup' => 'required',
+            //'bypass_accreditation_checks' => 'required',
+            //'bypass_document_restrictions' => 'required',
+           // 'view_all_invite_offers' => 'required',
+            //'allow_manual_ach_bank_input' => 'required',
+
+        ]);
+
+        $user = User::find($request->id);
+        $user->name = $request->first_name;
+        $user->phone = $request->phone;
+        if($request->agree_consent_electronic){
+            $user->agree_consent_electronic = true;
+        }else{
+            $user->agree_consent_electronic = false;
+        }
+        $user->save();
+        $userDetails = UserDetail::where('user_id',$request->id)->first();
+        $userDetails->middle_name = $request->middle_name;
+        $userDetails->last_name = $request->last_name;
+        $userDetails->title = $request->title;
+        $userDetails->dob = $request->dob;
+        if($request->has('profile_avatar')){
+            $user->clearMediaCollection('profile_photo');
+            $user->addMediaFromRequest('profile_avatar')->toMediaCollection('profile_photo');
+        }
+        $userDetails->address = $request->address;
+        $userDetails->suit = $request->suit;
+        $userDetails->state = $request->state;
+        $userDetails->zip = $request->zip;
+        $userDetails->save();
+
+        $trustSetting = TrustSetting::where('user_id',$request->id)->first();
+        if($trustSetting){
+                
+
+            if($request->bypass_account_setup){
+                $trustSetting->bypass_account_setup = true;
+            }else{
+                $trustSetting->bypass_account_setup = false;
+            }
+            if($request->bypass_kyc_checkup){
+                $trustSetting->bypass_kyc_checkup = true;
+            }else{
+                $trustSetting->bypass_kyc_checkup = false;
+            }
+            if($request->bypass_accreditation_checks){
+                $trustSetting->bypass_accreditation_checks = true;
+            }else{
+                $trustSetting->bypass_accreditation_checks = false;
+            }
+            if($request->bypass_document_restrictions){
+                $trustSetting->bypass_document_restrictions = true;
+            }else{
+                $trustSetting->bypass_document_restrictions = false;
+            }
+            if($request->view_all_invite_offers){
+                $trustSetting->view_all_invite_offers = true;
+            }else{
+                $trustSetting->view_all_invite_offers = false;
+            }
+
+            if($request->allow_manual_ach_bank_input){
+                $trustSetting->allow_manual_ach_bank_input = true;
+            }else{
+                $trustSetting->allow_manual_ach_bank_input = false;
+            }
+            $trustSetting->save();
+
+        }else{
+            $trustSetting = new TrustSetting;
+            $trustSetting->user_id = $request->id;
+            if($request->bypass_account_setup){
+                $trustSetting->bypass_account_setup = true;
+            }else{
+                $trustSetting->bypass_account_setup = false;
+            }
+            if($request->bypass_kyc_checkup){
+                $trustSetting->bypass_kyc_checkup = true;
+            }else{
+                $trustSetting->bypass_kyc_checkup = false;
+            }
+            if($request->bypass_accreditation_checks){
+                $trustSetting->bypass_accreditation_checks = true;
+            }else{
+                $trustSetting->bypass_accreditation_checks = false;
+            }
+            if($request->bypass_document_restrictions){
+                $trustSetting->bypass_document_restrictions = true;
+            }else{
+                $trustSetting->bypass_document_restrictions = false;
+            }
+            if($request->view_all_invite_offers){
+                $trustSetting->view_all_invite_offers = true;
+            }else{
+                $trustSetting->view_all_invite_offers = false;
+            }
+
+            if($request->allow_manual_ach_bank_input){
+                $trustSetting->allow_manual_ach_bank_input = true;
+            }else{
+                $trustSetting->allow_manual_ach_bank_input = false;
+            }
+
+        }
+        $trustSetting->save();
+        $identityVerifications = IdentityVerification::where('user_id',$request->id)->first();
+        if($identityVerifications){
+            $identityVerifications->social_security = $request->social_security;
+            $identityVerifications->nationality = $request->nationality;
+            $identityVerifications->country_residence = $request->country_residence;
+        }else{
+            $identityVerifications = new IdentityVerification;
+            $identityVerifications->user_id = $request->id;
+            $identityVerifications->social_security = $request->social_security;
+            $identityVerifications->nationality = $request->nationality;
+            $identityVerifications->country_residence = $request->country_residence;
+        }
+        $identityVerifications->save();
+        return redirect()->back()->with('success','Profile has been updated');
+
+    }
 }

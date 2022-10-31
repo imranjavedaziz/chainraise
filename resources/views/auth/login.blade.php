@@ -96,14 +96,11 @@
                             <div class="text-center mb-11">
                                 <!--begin::Title-->
                                 <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
-                                <!--end::Title-->
-                                <!--begin::Subtitle-->
-                                <div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
-                                <!--end::Subtitle=-->
+                               
                             </div>
                             <!--begin::Heading-->
                             <!--begin::Login options-->
-                            <div class="row g-3 mb-9">
+                            {{-- <div class="row g-3 mb-9">
                                 <!--begin::Col-->
                                 <div class="col-md-6">
                                     <!--begin::Google link=-->
@@ -129,11 +126,11 @@
                                     <!--end::Google link=-->
                                 </div>
                                 <!--end::Col-->
-                            </div>
+                            </div> --}}
                             <!--end::Login options-->
                             <!--begin::Separator-->
                             <div class="separator separator-content my-14">
-                                <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
+                                <span class="w-125px text-gray-500 fw-semibold fs-7">With Email</span>
                             </div>
                             @if ($errors->any())
                                 <div>

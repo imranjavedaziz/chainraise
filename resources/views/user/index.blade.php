@@ -53,7 +53,7 @@
                 <div class="card-header border-0 pt-5">
                     <h3 class="card-title align-items-start flex-column">
                         <span class="card-label fw-bold fs-3 mb-1">Users</span>
-                        <span class="text-muted mt-1 fw-semibold fs-7">Over 500 members</span>
+                        <span class="text-muted mt-1 fw-semibold fs-7">Over {{  $users->count() }} members</span>
                     </h3>
                     <div class="card-toolbar">
                         <!--begin::Menu-->
@@ -87,7 +87,6 @@
                                 <a href="{{ route('user.issuer.create') }}" class="menu-link px-3"> Issuer </a>
                             </div>
                         </div>
-                         
                     </div>
                 </div>
                 <!--end::Header-->
@@ -125,19 +124,16 @@
                                                     @else
                                                         @php $photo_path = "https://invest.chainraise.io/assets/images/account/male_user.png";  @endphp
                                                     @endif
-                                                  
                                                     <img src="{{ $photo_path }}" class="h-75 align-self-end" alt="">
                                                 </span>
                                             </div>
-                                            
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">  {{ $user->name}} </a>
+                                        <a href="{{ route('user.details',$user->id)}}" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ $user->name}} </a> 
                                     </td>
                                     <td>
                                         <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->userDetail->middle_name }}</a>
-                                         
                                     </td>
                                     <td>
                                         <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))}} </a>

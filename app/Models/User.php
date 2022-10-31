@@ -54,4 +54,13 @@ class User extends Authenticatable  implements HasMedia
     {
         return $this->hasOne(UserDetail::class);
     }
+
+    public function identityVerification()
+    {
+        return $this->hasOne(IdentityVerification::class);
+    }
+    public function trustSetting()
+    {
+        return $this->hasOne(TrustSetting::class);
+    }
 }

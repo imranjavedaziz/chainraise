@@ -1,0 +1,4529 @@
+@extends('layouts.app')
+@section('title', 'User Detail')
+@section('page_name', 'Listings')
+@section('page_head')
+@endsection
+@section('page_content')
+    <div class="d-flex flex-column flex-column-fluid">
+        <!--begin::Toolbar-->
+        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+            <!--begin::Toolbar container-->
+            <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+                <!--begin::Page title-->
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <!--begin::Title-->
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Details
+                    </h1>
+                    <!--end::Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                        <!--begin::Item-->
+                        <li class="breadcrumb-item text-muted">
+                            <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a>
+                        </li>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <li class="breadcrumb-item">
+                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                        </li>
+                        <!--end::Item-->
+                        <!--begin::Item-->
+                        <li class="breadcrumb-item text-muted">
+                            <a href="{{ route('user.index') }}" class="text-muted text-hover-primary">Listings</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                        </li>
+                        <li class="breadcrumb-item text-muted">
+                            Details
+                        </li>
+                        <!--end::Item-->
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page title-->
+                <!--begin::Actions-->
+                <div class="d-flex align-items-center gap-2 gap-lg-3">
+                    <!--begin::Filter menu-->
+
+                </div>
+                <!--end::Actions-->
+            </div>
+            <!--end::Toolbar container-->
+        </div>
+    </div>
+    <div id="kt_app_content_container" class="app-container container-xxl mt-lg-8 mb-10">
+        <!--begin::Navbar-->
+        <div class="card mb-5 mb-xxl-8">
+            <div class="card-body">
+                <!--begin::Details-->
+                <div class="d-flex flex-wrap align-items-center justify-content-between flex-sm-nowrap">
+                    <!--begin: Pic-->
+                    <div class="text-center image-input image-input-outline image-input-empty image-input-circle"
+                        data-kt-image-input="true"
+                        @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) 
+                            @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                        @else
+                            @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp 
+                        @endif
+
+                        style="background-image: url('{{ $photo_path }}')">
+                        <!--begin::Preview existing avatar-->
+                        <div class="image-input-wrapper" style="background-image: none;"></div>
+                        <!--end::Preview existing avatar-->
+                        <!--begin::Label-->
+                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar"
+                            data-kt-initialized="1">
+                            <i class="bi bi-pencil-fill fs-7"></i>
+                            <!--begin::Inputs-->
+                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
+                            <input type="hidden" name="avatar_remove" value="1">
+                            <!--end::Inputs-->
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Cancel-->
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar"
+                            data-kt-initialized="1">
+                            <i class="bi bi-x fs-2"></i>
+                        </span>
+                        <!--end::Cancel-->
+                        <!--begin::Remove-->
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar"
+                            data-kt-initialized="1">
+                            <i class="bi bi-x fs-2"></i>
+                        </span>
+                        <!--end::Remove-->
+                    </div>
+                    <!--end::Pic-->
+                    <!--begin::Info-->
+                    <div class="flex-grow-1">
+                        <!--begin::Title-->
+                        <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                            <!--begin::User-->
+                            <div class="d-flex flex-column m-lg-8">
+                                <!--begin::Name-->
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}
+                                        {{ $user->userDetail->last_name }} </span>
+                                </div>
+                                <!--end::Name-->
+                                <!--begin::Info-->
+                                <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                                    <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                                        <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
+                                        <!--end::Svg Icon--> {{ $user->phone }}
+                                    </span>
+                                </div>
+                                <!--end::Info-->
+                            </div>
+                            <!--end::User-->
+                            <div class="d-flex flex-row">
+                                <div class="bg-body shadow m-lg-3" style="border-radius: 50%">
+                                    <div class="p-3 ">
+                                        <span class="" data-toggle="tooltip" title=""
+                                            data-original-title="Send email">
+                                            <span class="svg-icon svg-icon-primary svg-icon-3x"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M21 18H3C2.4 18 2 17.6 2 17V7C2 6.4 2.4 6 3 6H21C21.6 6 22 6.4 22 7V17C22 17.6 21.6 18 21 18Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M11.4 13.5C11.8 13.8 12.3 13.8 12.6 13.5L21.6 6.30005C21.4 6.10005 21.2 6 20.9 6H2.99998C2.69998 6 2.49999 6.10005 2.29999 6.30005L11.4 13.5Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="bg-body shadow m-lg-3" style="border-radius: 50%">
+                                    <div class="p-3">
+                                        <span class="" data-toggle="tooltip" title=""
+                                            data-original-title="Send email">
+                                            <span class="svg-icon svg-icon-primary svg-icon-3x"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z"
+                                                        fill="currentColor" />
+                                                    <rect x="7" y="17" width="6" height="2"
+                                                        rx="1" fill="currentColor" />
+                                                    <rect x="7" y="12" width="10" height="2"
+                                                        rx="1" fill="currentColor" />
+                                                    <rect x="7" y="7" width="6" height="2"
+                                                        rx="1" fill="currentColor" />
+                                                    <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="bg-body shadow m-lg-3" style="border-radius: 50%">
+                                    <div class="p-3">
+                                        <span class="" data-toggle="tooltip" title=""
+                                            data-original-title="Send email">
+                                            <span class="svg-icon svg-icon-primary svg-icon-3x"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="bg-body shadow m-lg-3" style="border-radius: 50%">
+                                    <div class="p-3">
+                                        <span class="" data-toggle="tooltip" title=""
+                                            data-original-title="Send email">
+                                            <span class="svg-icon svg-icon-primary svg-icon-3x"><svg width="24"
+                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M19 15C20.7 15 22 13.7 22 12C22 10.3 20.7 9 19 9C18.9 9 18.9 9 18.8 9C18.9 8.7 19 8.3 19 8C19 6.3 17.7 5 16 5C15.4 5 14.8 5.2 14.3 5.5C13.4 4 11.8 3 10 3C7.2 3 5 5.2 5 8C5 8.3 5 8.7 5.1 9H5C3.3 9 2 10.3 2 12C2 13.7 3.3 15 5 15H19Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M13 17.4V12C13 11.4 12.6 11 12 11C11.4 11 11 11.4 11 12V17.4H13Z"
+                                                        fill="currentColor" />
+                                                    <path opacity="0.3"
+                                                        d="M8 17.4H16L12.7 20.7C12.3 21.1 11.7 21.1 11.3 20.7L8 17.4Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--begin::Actions-->
+                            <div class="d-flex my-4">
+                                <div class="my-lg-0 my-1 mx-auto">
+                                    <div class="d-flex align-items-center mr-10">
+                                        <div class="m-lg-2 text-center">
+                                            <div class="fw-bold mb-2 fs-2">0</div>
+                                            <span class="badge badge-primary p-4 text-uppercase fw-bold">Total
+                                                Investment</span>
+                                        </div>
+                                        <div class="m-lg-2 text-center mr-6">
+                                            <div class="fw-bold mb-2 fs-2">$0.00</div>
+                                            <span class="badge badge-danger p-4 text-uppercase fw-bold">Total Funds
+                                                Committed</span>
+                                        </div>
+                                        <div class="text-center m-lg-2">
+                                            <div class="fw-bold mb-2 fs-2">$0.00</div>
+                                            <span class="badge badge-warning p-4 text-uppercase fw-bold">Total Funds
+                                                Contributed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Menu-->
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Title-->
+
+                    </div>
+                    <!--end::Info-->
+
+                </div>
+
+
+                <!--end::Details-->
+            </div>
+        </div>
+        <!--end::Navbar-->
+
+
+        <div class="flex-lg-row-fluid">
+            <!--begin:::Tabs-->
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
+                        href="#kt_accounts_tab">Account</a>
+                </li>
+                <!--end:::Tab item-->
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab"
+                        href="#kt_profile_tab">Profile</a>
+                </li>
+                <!--end:::Tab item-->
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_users_tab">Users</a>
+                </li>
+                <!--end:::Tab item-->
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                        href="#kt_accreditation_tab">Accreditation</a>
+                </li>
+                <!--end:::Tab item-->
+
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                        href="#kt_transaction_tab">Transaction</a>
+                </li>
+                <!--end:::Tab item-->
+
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                        href="#kt_documents_tab">Documents</a>
+                </li>
+                <!--end:::Tab item-->
+
+                <!--begin:::Tab item-->
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_payment_tab">Payment
+                        Method</a>
+                </li>
+                <!--end:::Tab item-->
+
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                        href="#kt_engagement_tab">Engagement</a>
+                </li>
+            </ul>
+            <!--end:::Tabs-->
+            <!--begin:::Tab content-->
+            <div class="tab-content" id="myTabContent">
+                <!--begin:::Accounts Tab pane-->
+                <div class="tab-pane fade show active" id="kt_accounts_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card card-flush mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-body p-9 pt-4">
+                            <form class="form" method="post" action="{{ route('user.account.update') }}"  enctype="multipart/form-data"> @csrf
+                                <input type="hidden" name="id" id="" value="{{ $user->id }}">
+                                <div class="card-body">
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-12 mb-3">
+                                            <h3>
+                                                CONTACT INFORMATION
+                                            </h3>
+                                            @if ($errors->any())
+                                <div>
+
+
+                                    @foreach ($errors->all() as $error)
+                                        <div class="fv-plugins-message-container invalid-feedback mb-3 text-center">
+                                            <div data-field="email" data-validator="notEmpty"> {{ $error }}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <br>
+                            @endif
+                                        </div>
+
+                                        {{-- <div class="col-lg-3">
+                                        <label>Email Address: <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control " placeholder="Email Address*"
+                                            required name="email" value="{{ old('email') }}" />
+                                        <input type="hidden" required name="account_type" value="investor" />
+
+                                    </div> --}}
+                                        <input type="hidden" name="type" value="investor">
+                                        <div class="col-lg-3">
+                                            <label>First Name: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="First Name*" required
+                                                name="first_name" value="{{ $user->name }}" />
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <label>Middle Name: <span class="text-danger"></span></label>
+                                            <input type="text" class="form-control" placeholder="Middle Name"
+                                                name="middle_name" value="{{ $user->userDetail->middle_name }}" />
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <label>Last Name: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Last Name"
+                                                name="last_name" value="{{ $user->userDetail->last_name }}" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-3">
+                                            <label>Title:</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Title"
+                                                    name="title" value="{{ $user->userDetail->title }}" />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <label>Phone Number: <span class="text-danger">*</span> </label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="(201) 555-0123"
+                                                    name="phone" value="{{ $user->phone }}" />
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-lg-3">
+                                            <label>Date of Birth <span class="text-danger">*</span> </label>
+                                            <div class="input-group" id="">
+                                                <input type="date" class="form-control" placeholder="Date of Birth*"
+                                                    required name="dob" value="{{ $user->userDetail->dob }}">
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-3 pt-1 ">
+                                          
+                                            <div class="image-input image-input-outline image-input-empty"
+                                                data-kt-image-input="true"
+                                                @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                                            @else
+                                                @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
+                                                style="background-image: url('{{ $photo_path }}')">
+                                                <!--begin::Preview existing avatar-->
+                                                <div class="image-input-wrapper w-125px h-125px"
+                                                    style="background-image: none;"></div>
+                                                <!--end::Preview existing avatar-->
+                                                <!--begin::Label-->
+                                                <label
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                    aria-label="Change avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-pencil-fill fs-7"></i>
+                                                    <!--begin::Inputs-->
+                                                    <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+                                                    <input type="hidden" name="avatar_remove" value="1">
+                                                    <!--end::Inputs-->
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Cancel-->
+                                                <span
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                    aria-label="Cancel avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-x fs-2"></i>
+                                                </span>
+                                                <!--end::Cancel-->
+                                                <!--begin::Remove-->
+                                                <span
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                    aria-label="Remove avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-x fs-2"></i>
+                                                </span>
+                                                <!--end::Remove-->
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-12 mb-3">
+                                            <h3>
+                                                Address
+                                            </h3>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Address <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="address"
+                                                value="{{ $user->userDetail->address }}" placeholder="Street Address*"
+                                                required>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <label> Suit / Unit </label>
+                                            <input type="text" class="form-control" name="suit"
+                                                value="{{ $user->userDetail->suit }}" placeholder="Suit / Unit">
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-4">
+                                            <label>City <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="city"
+                                                value="{{ $user->userDetail->city }}" placeholder="City*" required>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label>State / Region <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="state"
+                                                value="{{ $user->userDetail->state }}" placeholder="State / Region*"
+                                                required>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label>Zip / Postal Code <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="zip" id="zip_code"
+                                                value="{{ $user->userDetail->zip }}" placeholder="Zip / Postal Code*"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
+                                        <b class="text-black"> Consent to Electronic Delivery </b>
+                                        <p class="mt-3">
+                                            I consent to the electronic delivery of all communications and materials.
+                                        </p>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-lg-6 text-left ">
+                                            <label class="form-check form-check-custom form-check-solid">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"  name="agree_consent_electronic"
+                                                    @if ($user->agree_consent_electronic == 1) checked @endif
+                                                    id="electronic_delivery_check_box">
+                                                <span class="form-check-label fw-semibold"> Wil I agree to the Consent to
+                                                    Electronic Delivery</span>
+                                            </label>
+                                        </div>
+
+                                        {{-- <div class="col-lg-6 text-right">
+                                        <div class="checkbox-inline">
+                                            <label class="checkbox">
+                                                <input type="checkbox" id="set_password">
+                                                <span></span>  Create a password for this account user  </label>
+                                        </div>
+                                    </div> --}}
+
+                                        {{-- <div class="col-lg-6" style="text-align:right">
+                                        <label class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                id="set_password">
+                                            <span class="form-check-label fw-semibold"> Create a password for this
+                                                account user </span>
+                                        </label>
+                                    </div> --}}
+
+                                        {{-- <div class="col-lg-3 mt-10 offset-md-4 d-none" id="user_password_field">
+                                        <input type="password" class="password_filed form-control" name="password"
+                                            placeholder="Enter User Password*" autocomplete="off">
+                                    </div> --}}
+                                    </div>
+
+                                    <div class="card-title mt-6">
+                                        <h2>Identity Verification</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-5">
+                                                <label>Social Security # <small>(US Investors Only)</small> <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Social Security*"
+                                                    required name="social_security"
+                                                    @if($user->identityVerification)
+                                                        value="{{ $user->identityVerification->social_security }}"
+                                                    @endif
+                                                    />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-3">
+                                                <label>Nationality <span class="text-danger">*</span></label>
+                                                <select class="form-select" required data-control="select2"
+                                                    name="nationality" data-placeholder="Select an option"
+                                                    data-live-search="true">
+                                                    <option value="">Select</option>
+                                                    <option value="AF">Afghanistan</option>
+                                                    <option value="AX">Åland Islands</option>
+                                                    <option value="AL">Albania</option>
+                                                    <option value="DZ">Algeria</option>
+                                                    <option value="AS">American Samoa</option>
+                                                    <option value="AD">Andorra</option>
+                                                    <option value="AO">Angola</option>
+                                                    <option value="AI">Anguilla</option>
+                                                    <option value="AQ">Antarctica</option>
+                                                    <option value="AG">Antigua and Barbuda</option>
+                                                    <option value="AR">Argentina</option>
+                                                    <option value="AM">Armenia</option>
+                                                    <option value="AW">Aruba</option>
+                                                    <option value="AU">Australia</option>
+                                                    <option value="AT">Austria</option>
+                                                    <option value="AZ">Azerbaijan</option>
+                                                    <option value="BS">Bahamas</option>
+                                                    <option value="BH">Bahrain</option>
+                                                    <option value="BD">Bangladesh</option>
+                                                    <option value="BB">Barbados</option>
+                                                    <option value="BY">Belarus</option>
+                                                    <option value="BE">Belgium</option>
+                                                    <option value="BZ">Belize</option>
+                                                    <option value="BJ">Benin</option>
+                                                    <option value="BM">Bermuda</option>
+                                                    <option value="BT">Bhutan</option>
+                                                    <option value="BO">Bolivia, Plurinational State of</option>
+                                                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                                    <option value="BA">Bosnia and Herzegovina</option>
+                                                    <option value="BW">Botswana</option>
+                                                    <option value="BV">Bouvet Island</option>
+                                                    <option value="BR">Brazil</option>
+                                                    <option value="IO">British Indian Ocean Territory</option>
+                                                    <option value="BN">Brunei Darussalam</option>
+                                                    <option value="BG">Bulgaria</option>
+                                                    <option value="BF">Burkina Faso</option>
+                                                    <option value="BI">Burundi</option>
+                                                    <option value="KH">Cambodia</option>
+                                                    <option value="CM">Cameroon</option>
+                                                    <option value="CA">Canada</option>
+                                                    <option value="CV">Cape Verde</option>
+                                                    <option value="KY">Cayman Islands</option>
+                                                    <option value="CF">Central African Republic</option>
+                                                    <option value="TD">Chad</option>
+                                                    <option value="CL">Chile</option>
+                                                    <option value="CN">China</option>
+                                                    <option value="CX">Christmas Island</option>
+                                                    <option value="CC">Cocos (Keeling) Islands</option>
+                                                    <option value="CO">Colombia</option>
+                                                    <option value="KM">Comoros</option>
+                                                    <option value="CG">Congo</option>
+                                                    <option value="CD">Congo, the Democratic Republic of the
+                                                    </option>
+                                                    <option value="CK">Cook Islands</option>
+                                                    <option value="CR">Costa Rica</option>
+                                                    <option value="CI">Côte d'Ivoire</option>
+                                                    <option value="HR">Croatia</option>
+                                                    <option value="CU">Cuba</option>
+                                                    <option value="CW">Curaçao</option>
+                                                    <option value="CY">Cyprus</option>
+                                                    <option value="CZ">Czech Republic</option>
+                                                    <option value="DK">Denmark</option>
+                                                    <option value="DJ">Djibouti</option>
+                                                    <option value="DM">Dominica</option>
+                                                    <option value="DO">Dominican Republic</option>
+                                                    <option value="EC">Ecuador</option>
+                                                    <option value="EG">Egypt</option>
+                                                    <option value="SV">El Salvador</option>
+                                                    <option value="GQ">Equatorial Guinea</option>
+                                                    <option value="ER">Eritrea</option>
+                                                    <option value="EE">Estonia</option>
+                                                    <option value="ET">Ethiopia</option>
+                                                    <option value="FK">Falkland Islands (Malvinas)</option>
+                                                    <option value="FO">Faroe Islands</option>
+                                                    <option value="FJ">Fiji</option>
+                                                    <option value="FI">Finland</option>
+                                                    <option value="FR">France</option>
+                                                    <option value="GF">French Guiana</option>
+                                                    <option value="PF">French Polynesia</option>
+                                                    <option value="TF">French Southern Territories</option>
+                                                    <option value="GA">Gabon</option>
+                                                    <option value="GM">Gambia</option>
+                                                    <option value="GE">Georgia</option>
+                                                    <option value="DE">Germany</option>
+                                                    <option value="GH">Ghana</option>
+                                                    <option value="GI">Gibraltar</option>
+                                                    <option value="GR">Greece</option>
+                                                    <option value="GL">Greenland</option>
+                                                    <option value="GD">Grenada</option>
+                                                    <option value="GP">Guadeloupe</option>
+                                                    <option value="GU">Guam</option>
+                                                    <option value="GT">Guatemala</option>
+                                                    <option value="GG">Guernsey</option>
+                                                    <option value="GN">Guinea</option>
+                                                    <option value="GW">Guinea-Bissau</option>
+                                                    <option value="GY">Guyana</option>
+                                                    <option value="HT">Haiti</option>
+                                                    <option value="HM">Heard Island and McDonald Islands
+                                                    </option>
+                                                    <option value="VA">Holy See (Vatican City State)</option>
+                                                    <option value="HN">Honduras</option>
+                                                    <option value="HK">Hong Kong</option>
+                                                    <option value="HU">Hungary</option>
+                                                    <option value="IS">Iceland</option>
+                                                    <option value="IN">India</option>
+                                                    <option value="ID">Indonesia</option>
+                                                    <option value="IR">Iran, Islamic Republic of</option>
+                                                    <option value="IQ">Iraq</option>
+                                                    <option value="IE">Ireland</option>
+                                                    <option value="IM">Isle of Man</option>
+                                                    <option value="IL">Israel</option>
+                                                    <option value="IT">Italy</option>
+                                                    <option value="JM">Jamaica</option>
+                                                    <option value="JP">Japan</option>
+                                                    <option value="JE">Jersey</option>
+                                                    <option value="JO">Jordan</option>
+                                                    <option value="KZ">Kazakhstan</option>
+                                                    <option value="KE">Kenya</option>
+                                                    <option value="KI">Kiribati</option>
+                                                    <option value="KP">Korea, Democratic People's Republic of
+                                                    </option>
+                                                    <option value="KR">Korea, Republic of</option>
+                                                    <option value="KW">Kuwait</option>
+                                                    <option value="KG">Kyrgyzstan</option>
+                                                    <option value="LA">Lao People's Democratic Republic</option>
+                                                    <option value="LV">Latvia</option>
+                                                    <option value="LB">Lebanon</option>
+                                                    <option value="LS">Lesotho</option>
+                                                    <option value="LR">Liberia</option>
+                                                    <option value="LY">Libya</option>
+                                                    <option value="LI">Liechtenstein</option>
+                                                    <option value="LT">Lithuania</option>
+                                                    <option value="LU">Luxembourg</option>
+                                                    <option value="MO">Macao</option>
+                                                    <option value="MK">Macedonia, the former Yugoslav Republic
+                                                        of
+                                                    </option>
+                                                    <option value="MG">Madagascar</option>
+                                                    <option value="MW">Malawi</option>
+                                                    <option value="MY">Malaysia</option>
+                                                    <option value="MV">Maldives</option>
+                                                    <option value="ML">Mali</option>
+                                                    <option value="MT">Malta</option>
+                                                    <option value="MH">Marshall Islands</option>
+                                                    <option value="MQ">Martinique</option>
+                                                    <option value="MR">Mauritania</option>
+                                                    <option value="MU">Mauritius</option>
+                                                    <option value="YT">Mayotte</option>
+                                                    <option value="MX">Mexico</option>
+                                                    <option value="FM">Micronesia, Federated States of</option>
+                                                    <option value="MD">Moldova, Republic of</option>
+                                                    <option value="MC">Monaco</option>
+                                                    <option value="MN">Mongolia</option>
+                                                    <option value="ME">Montenegro</option>
+                                                    <option value="MS">Montserrat</option>
+                                                    <option value="MA">Morocco</option>
+                                                    <option value="MZ">Mozambique</option>
+                                                    <option value="MM">Myanmar</option>
+                                                    <option value="NA">Namibia</option>
+                                                    <option value="NR">Nauru</option>
+                                                    <option value="NP">Nepal</option>
+                                                    <option value="NL">Netherlands</option>
+                                                    <option value="NC">New Caledonia</option>
+                                                    <option value="NZ">New Zealand</option>
+                                                    <option value="NI">Nicaragua</option>
+                                                    <option value="NE">Niger</option>
+                                                    <option value="NG">Nigeria</option>
+                                                    <option value="NU">Niue</option>
+                                                    <option value="NF">Norfolk Island</option>
+                                                    <option value="MP">Northern Mariana Islands</option>
+                                                    <option value="NO">Norway</option>
+                                                    <option value="OM">Oman</option>
+                                                    <option value="PK">Pakistan</option>
+                                                    <option value="PW">Palau</option>
+                                                    <option value="PS">Palestinian Territory, Occupied</option>
+                                                    <option value="PA">Panama</option>
+                                                    <option value="PG">Papua New Guinea</option>
+                                                    <option value="PY">Paraguay</option>
+                                                    <option value="PE">Peru</option>
+                                                    <option value="PH">Philippines</option>
+                                                    <option value="PN">Pitcairn</option>
+                                                    <option value="PL">Poland</option>
+                                                    <option value="PT">Portugal</option>
+                                                    <option value="PR">Puerto Rico</option>
+                                                    <option value="QA">Qatar</option>
+                                                    <option value="RE">Réunion</option>
+                                                    <option value="RO">Romania</option>
+                                                    <option value="RU">Russian Federation</option>
+                                                    <option value="RW">Rwanda</option>
+                                                    <option value="BL">Saint Barthélemy</option>
+                                                    <option value="SH">Saint Helena, Ascension and Tristan da
+                                                        Cunha
+                                                    </option>
+                                                    <option value="KN">Saint Kitts and Nevis</option>
+                                                    <option value="LC">Saint Lucia</option>
+                                                    <option value="MF">Saint Martin (French part)</option>
+                                                    <option value="PM">Saint Pierre and Miquelon</option>
+                                                    <option value="VC">Saint Vincent and the Grenadines</option>
+                                                    <option value="WS">Samoa</option>
+                                                    <option value="SM">San Marino</option>
+                                                    <option value="ST">Sao Tome and Principe</option>
+                                                    <option value="SA">Saudi Arabia</option>
+                                                    <option value="SN">Senegal</option>
+                                                    <option value="RS">Serbia</option>
+                                                    <option value="SC">Seychelles</option>
+                                                    <option value="SL">Sierra Leone</option>
+                                                    <option value="SG">Singapore</option>
+                                                    <option value="SX">Sint Maarten (Dutch part)</option>
+                                                    <option value="SK">Slovakia</option>
+                                                    <option value="SI">Slovenia</option>
+                                                    <option value="SB">Solomon Islands</option>
+                                                    <option value="SO">Somalia</option>
+                                                    <option value="ZA">South Africa</option>
+                                                    <option value="GS">South Georgia and the South Sandwich
+                                                        Islands
+                                                    </option>
+                                                    <option value="SS">South Sudan</option>
+                                                    <option value="ES">Spain</option>
+                                                    <option value="LK">Sri Lanka</option>
+                                                    <option value="SD">Sudan</option>
+                                                    <option value="SR">Suriname</option>
+                                                    <option value="SJ">Svalbard and Jan Mayen</option>
+                                                    <option value="SZ">Swaziland</option>
+                                                    <option value="SE">Sweden</option>
+                                                    <option value="CH">Switzerland</option>
+                                                    <option value="SY">Syrian Arab Republic</option>
+                                                    <option value="TW">Taiwan, Province of China</option>
+                                                    <option value="TJ">Tajikistan</option>
+                                                    <option value="TZ">Tanzania, United Republic of</option>
+                                                    <option value="TH">Thailand</option>
+                                                    <option value="TL">Timor-Leste</option>
+                                                    <option value="TG">Togo</option>
+                                                    <option value="TK">Tokelau</option>
+                                                    <option value="TO">Tonga</option>
+                                                    <option value="TT">Trinidad and Tobago</option>
+                                                    <option value="TN">Tunisia</option>
+                                                    <option value="TR">Turkey</option>
+                                                    <option value="TM">Turkmenistan</option>
+                                                    <option value="TC">Turks and Caicos Islands</option>
+                                                    <option value="TV">Tuvalu</option>
+                                                    <option value="UG">Uganda</option>
+                                                    <option value="UA">Ukraine</option>
+                                                    <option value="AE">United Arab Emirates</option>
+                                                    <option value="GB">United Kingdom</option>
+                                                    <option value="US" selected="selected">United States
+                                                    </option>
+                                                    <option value="UM">United States Minor Outlying Islands
+                                                    </option>
+                                                    <option value="UY">Uruguay</option>
+                                                    <option value="UZ">Uzbekistan</option>
+                                                    <option value="VU">Vanuatu</option>
+                                                    <option value="VE">Venezuela, Bolivarian Republic of
+                                                    </option>
+                                                    <option value="VN">Viet Nam</option>
+                                                    <option value="VG">Virgin Islands, British</option>
+                                                    <option value="VI">Virgin Islands, U.S.</option>
+                                                    <option value="WF">Wallis and Futuna</option>
+                                                    <option value="EH">Western Sahara</option>
+                                                    <option value="YE">Yemen</option>
+                                                    <option value="ZM">Zambia</option>
+                                                    <option value="ZW">Zimbabwe</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label>Country of Residence <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="country_residence"
+                                                    @if($user->identityVerification)
+                                                    value="{{ $user->identityVerification->country_residence }}"
+                                                    @endif>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-title mt-6">
+                                        <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
+                                                data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                                data-kt-initialized="1"></i></h2>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="form-group row">
+                                            <div class="d-flex align-items-center">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="bypass_account_setup"
+                                                        @if ($user->trustSetting and $user->trustSetting->bypass_account_setup == 1) checked="checked" @endif>
+
+                                                    <span class="form-check-label fw-semibold">Bypass Account Setup<i
+                                                            class="fas fa-exclamation-circle ms-2 fs-7"
+                                                            data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                                            data-kt-initialized="1"></i></span>
+                                                </label>
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px"
+                                                        type="checkbox" name="bypass_kyc_checkup"
+                                                        @if ($user->trustSetting and $user->trustSetting->bypass_kyc_checkup == 1) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold">Bypass KYC Checks</span>
+                                                </label>
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="bypass_accreditation_checks"
+                                                        @if ($user->trustSetting and $user->trustSetting->bypass_accreditation_checks == 1) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold">Bypass Accreditation
+                                                        Checks</span>
+                                                </label>
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="bypass_document_restrictions"
+                                                        @if ($user->trustSetting and $user->bypass_document_restrictions == 1) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold">Bypass Document
+                                                        Restrictions</span>
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mt-6">
+                                            <div class="d-flex align-items-center">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="view_all_invite_offers"
+                                                        @if ($user->trustSetting and $user->trustSetting->view_all_invite_offers == true) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold">View All Invite Only
+                                                        Offers</span>
+                                                </label>
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="allow_manual_ach_bank_input"
+                                                        @if ($user->trustSetting and $user->trustSetting->allow_manual_ach_bank_input == true) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold">Allow Manual ACH Bank
+                                                        Input<i class="fas fa-exclamation-circle ms-2 fs-7"
+                                                            data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                                            data-kt-initialized="1"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label class="fw-semibold">Bypass Restrictions on Specific
+                                                    Documents</label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Select an Offer">
+                                                    <option></option>
+                                                    <option value="1">Option 1</option>
+                                                    <option value="2">Option 2</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label class="hidden"></label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Select a Document">
+                                                    <option></option>
+                                                    <option value="1">Option 1</option>
+                                                    <option value="2">Option 2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-6">
+                                                <label class="fw-semibold">Bypass E-Sign Document Restrictions</label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Select an E-Sign Template">
+                                                    <option></option>
+                                                    <option value="1">Option 1</option>
+                                                    <option value="2">Option 2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <a href="{{ route('user.index') }}"
+                                                class="btn-sm btn btn-default mr-2">Cancel</a>
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2"> Update Account </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Accounts Tab pane-->
+
+                <!--begin:::Profile Tab pane-->
+                <div class="tab-pane fade" id="kt_profile_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card pt-4 mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2>Investment Profile</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 pb-5">
+                            <form class="form" method="post" action="#"
+                                enctype="multipart/form-data"> @csrf
+
+                                <div class="card-body">
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>Net Worth <span class="text-danger">*</span></label>
+                                            <select class="form-select" required data-control="select2"
+                                                data-placeholder="Net Worth*">
+                                                <option></option>
+                                                <option>less than $100,000</option>
+                                                <option>$100,001 - $250,000</option>
+                                                <option>$250,001 - $500,000</option>
+                                                <option>$500,001 - $1,000,000</option>
+                                                <option>$1,000,001 - $5,000,000</option>
+                                                <option>more than $5,000,000</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Annual Net Income</label>
+                                            <input type="text" class="form-control" name="address"
+                                                value="{{ old('annual_net_income') }}" placeholder="Annual Net Income">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>Highest Education <span class="text-danger">*</span></label>
+                                            <select class="form-select" required data-control="select2"
+                                                data-placeholder="Highest Education*">
+                                                <option></option>
+                                                <option>Less than High School</option>
+                                                <option>High School Graduate</option>
+                                                <option>Some College</option>
+                                                <option>Associate's Degree</option>
+                                                <option>Bachelor's Degree</option>
+                                                <option>Master's Degree</option>
+                                                <option>Doctorate</option>
+                                                <option>(not set)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Risk Tolerance <span class="text-danger">*</span></label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Risk Tolerance*">
+                                                <option></option>
+                                                <option>Conservative</option>
+                                                <option>Moderate</option>
+                                                <option>Aggresive</option>
+                                                <option>(not set)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>Investment Experience <span class="text-danger">*</span></label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Investment Experience*">
+                                                <option></option>
+                                                <option>None</option>
+                                                <option>Limited</option>
+                                                <option>Good</option>
+                                                <option>Extensive</option>
+                                                <option>(not set)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label>Age <span class="text-danger">*</span></label>
+                                            <select class="form-select" data-control="select2" data-placeholder="Age*">
+                                                <option></option>
+                                                <option>Under 30</option>
+                                                <option>30 - 39</option>
+                                                <option>40 - 49</option>
+                                                <option>50 - 59</option>
+                                                <option>60 - 69</option>
+                                                <option>70 - 79</option>
+                                                <option>Over 79</option>
+                                                <option>(not set)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>Gender <span class="text-danger">*</span></label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Gender*">
+                                                <option></option>
+                                                <option>Male</option>
+                                                <option>Femlae</option>
+                                                <option>Other</option>
+                                                <option>(not set)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <a href="{{ route('user.index') }}"
+                                                class="btn-sm btn btn-default mr-2">Cancel</a>
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2">Update Profile
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Profile Tab pane-->
+
+                <!--begin:::Users Tab pane-->
+                <div class="tab-pane fade" id="kt_users_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card pt-4 mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0 pb-5">
+                            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
+                                        id="kt_customers_table">
+                                        <!--begin::Table head-->
+                                        <thead>
+                                            <!--begin::Table row-->
+                                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Customer Name: activate to sort column ascending">Username
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">First Name
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Company: activate to sort column ascending">Last Name
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Payment Method: activate to sort column ascending">Phone #
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Created Date: activate to sort column ascending">Is Active
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Is Primary
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Email Verified
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Notifications
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Resend Invite
+                                                </th>
+                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Email: activate to sort column ascending">Secure Invite
+                                                </th>
+                                                <th class="" rowspan="1" colspan="1" aria-label="Actions">
+                                                    Details / Edit
+                                                </th>
+                                            </tr>
+                                            <!--end::Table row-->
+                                        </thead>
+                                        <!--end::Table head-->
+                                        <!--begin::Table body-->
+                                        <tbody class="fw-semibold text-gray-600">
+                                            <tr class="odd">
+                                                <td>
+                                                    smith@kpmg.com
+                                                </td>
+                                                <td>
+                                                    John
+                                                </td>
+                                                <td>Doe</td>
+                                                <td>
+                                                    **** 1486
+                                                </td>
+                                                <td>
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            name="communication[]" value="email" checked="checked">
+                                                    </label>
+                                                </td>
+                                                <td class="">
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            name="communication[]" value="email" checked="checked">
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
+                                                            name="communication[]" value="email">
+                                                        <span class="form-check-label fw-semibold">resend</span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0)">Manage</a>
+                                                </td>
+                                                <td>
+
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary btn-sm">Create
+                                                        Invite
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <a href="#"><i class="fas fa-pen fs-3"></i></a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <!--end::Table body-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Card body-->
+                        <div class="card-footer">
+                            <div class="d-flex flex-row justify-content-between">
+                                <div class="">
+                                    <button type="submit" class="btn-sm btn btn-primary mr-2">
+                                        Add Existing User
+                                    </button>
+                                </div>
+                                <div class="">
+                                    <button type="submit" class="btn-sm btn btn-primary mr-2">
+                                        Add New User
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--end::Card-->
+                </div>
+                <!--end:::Tab pane-->
+
+                <!--begin:::Accreditation Tab pane-->
+                <div class="tab-pane fade" id="kt_accreditation_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card pt-4 mb-6 mb-xl-9">
+
+                        <div class="card-header border-0">
+                            <div class="card-title">
+                                <h2>Accreditation Status</h2>
+                            </div>
+                        </div>
+
+                        <div class="card-body pt-0 pb-5">
+                            <form class="form">
+                                <div class="form-group row">
+                                    <div class="col-lg-4 ">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-stretch card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-user fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">My <b>Individual Income </b>is</span><br>
+                                                <span class="fs-4 text-success">Above $200,000</span><br>
+                                                <span>(for each of the last 2 years)</span>
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-user-friends fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">My <b>Joint Income</b> with spouse is</span><br>
+                                                <span class="fs-4 text-success">Above $300,000</span><br>
+                                                <span>(for each of the last 2 years)</span>
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-building fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">My individual <b>Net Worth</b> or joint with spouse
+                                                    is</span><br>
+                                                <span class="fs-4 text-success">Above $1M</span><br>
+                                                <span>(excluding primary residence)</span>
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-8">
+                                    <div class="col-lg-4 ">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-user fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">I own <b>Total Investments</b></span><br>
+                                                <span class="fs-4 text-success">Above $5M</span><br>
+                                                <span>(including jointly with spouse)</span>
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-user fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">I am a licensed individual that holds an active
+                                                    Series 7, Series 65,
+                                                    or Series 82 registration</span><br>
+
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <!--begin::Card-->
+                                        <div class="card card-flush card-bordered  py-4 h-250px">
+                                            <div class="card-header justify-content-center">
+                                                <div class="card-title">
+                                                    <div>
+                                                        <span class="">
+                                                            <i class="fas fa-user fs-4x"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body pt-2 text-center">
+                                                <span class="fs-4">I am not an <br> Accredited Investor</span><br>
+
+
+                                            </div>
+                                            <div
+                                                class="form-check form-check-custom form-check-solid justify-content-center">
+                                                <input class="form-check-input" type="radio" value=""
+                                                    checked="checked" id="flexRadioDefault" />
+                                                <label class="form-check-label " for="flexRadioDefault">
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Card-->
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Accreditation Tab pane-->
+
+                <!--begin:::Transaction Tab pane-->
+                <div class="tab-pane fade" id="kt_transaction_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <ul class="nav nav-pills me-6 mb-2 mb-sm-0" role="tablist">
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="btn btn-sm btn-light btn-color-muted btn-active-primary me-3 active"
+                                        data-bs-toggle="tab" href="#kt_transactions_table_pane" aria-selected="true"
+                                        role="tab">
+                                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                        Transactions
+                                        <!--end::Svg Icon-->
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="btn btn-sm btn-light btn-color-muted btn-active-primary"
+                                        data-bs-toggle="tab" href="#kt_portfolio_pane" aria-selected="false"
+                                        role="tab" tabindex="-1">
+                                        <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                                        Portfolio
+                                        <!--end::Svg Icon-->
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="card-toolbar">
+                                <a href="#kt_add_transaction_pane" data-bs-toggle="tab"
+                                    class="btn btn-sm btn-light-primary btn-active-primary" aria-selected="false"
+                                    role="tab">
+                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="11.364" y="20.364" width="16"
+                                                height="2" rx="1" transform="rotate(-90 11.364 20.364)"
+                                                fill="currentColor"></rect>
+                                            <rect x="4.36396" y="11.364" width="16" height="2"
+                                                rx="1" fill="currentColor"></rect>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->Add Transaction
+                                </a>
+                            </div>
+
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body py-3">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="kt_transactions_table_pane">
+                                    <!--begin::Table container-->
+                                    <div class="table-responsive">
+                                        <!--begin::Table-->
+                                        <table class="table align-middle gs-0 gy-4">
+                                            <!--begin::Table head-->
+                                            <thead>
+                                                <tr class="fw-bold text-muted bg-light">
+                                                    <th class="ps-4 rounded-start">From</th>
+                                                    <th class="">To</th>
+                                                    <th class="">Amount</th>
+                                                    <th class="">Date</th>
+                                                    <th class="">KYC</th>
+                                                    <th class="">Status</th>
+                                                    <th class="">Type</th>
+                                                    <th class="">Payment Method</th>
+                                                    <th class="">E-Sign</th>
+                                                    <th class=""></th>
+                                                    <th class="rounded-end"></th>
+                                                </tr>
+                                            </thead>
+                                            <!--end::Table head-->
+                                            <!--begin::Table body-->
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                            </tbody>
+                                            <!--end::Table body-->
+                                        </table>
+                                        <!--end::Table-->
+                                    </div>
+                                    <!--end::Table container-->
+                                </div>
+                                <!--add 'show' class to display the content-->
+                                <div class="tab-pane fade active" id="kt_portfolio_pane">
+                                    <div class="text-center mt-6">
+                                        <h3>Your portfolio is currently empty</h3>
+                                        <a class="btn btn-sm btn-primary mt-6">
+                                            Start Investing Now
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade active show" id="kt_add_transaction_pane">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--begin::Body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Transaction Tab pane-->
+
+                <!--begin:::Documents Tab pane-->
+                <div class="tab-pane fade" id="kt_documents_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card card-flush">
+                        <!--begin::Card header-->
+                        <div class="card-header pt-8">
+                            <div class="card-title">
+                                <!--begin::Search-->
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
+                                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546"
+                                                height="2" rx="1" transform="rotate(45 17.0365 15.1223)"
+                                                fill="currentColor"></rect>
+                                            <path
+                                                d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+                                                fill="currentColor"></path>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                    <input type="text" data-kt-filemanager-table-filter="search"
+                                        class="form-control form-control-solid w-250px ps-15"
+                                        placeholder="Search Files &amp; Folders">
+                                </div>
+                                <!--end::Search-->
+                            </div>
+                            <!--begin::Card toolbar-->
+                            <div class="card-toolbar">
+                                <!--begin::Toolbar-->
+                                <div class="d-flex justify-content-end" data-kt-filemanager-table-toolbar="base">
+                                    <!--begin::Export-->
+                                    <div class="me-3">
+                                        {{--                                        <label for="" class="form-label">Default input style</label> --}}
+                                        <input class="form-control" type="date" placeholder=""
+                                            id="kt_datepicker_1" />
+                                    </div>
+
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                        data-bs-target="#modal_folder">
+                                        <!--begin::Svg Icon | path: icons/duotune/files/fil013.svg-->
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z"
+                                                    fill="currentColor"></path>
+                                                <path
+                                                    d="M10.4 3.60001L12 6H21C21.6 6 22 6.4 22 7V19C22 19.6 21.6 20 21 20H3C2.4 20 2 19.6 2 19V4C2 3.4 2.4 3 3 3H9.2C9.7 3 10.2 3.20001 10.4 3.60001ZM16 12H13V9C13 8.4 12.6 8 12 8C11.4 8 11 8.4 11 9V12H8C7.4 12 7 12.4 7 13C7 13.6 7.4 14 8 14H11V17C11 17.6 11.4 18 12 18C12.6 18 13 17.6 13 17V14H16C16.6 14 17 13.6 17 13C17 12.4 16.6 12 16 12Z"
+                                                    fill="currentColor"></path>
+                                                <path opacity="0.3"
+                                                    d="M11 14H8C7.4 14 7 13.6 7 13C7 12.4 7.4 12 8 12H11V14ZM16 12H13V14H16C16.6 14 17 13.6 17 13C17 12.4 16.6 12 16 12Z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->New Folder
+                                    </button>
+                                    <!--end::Export-->
+
+                                    <button type="button" id="kt_modal_add_event_cancel" class="btn btn-light me-3">
+                                        <span class="svg-icon svg-icon-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z"
+                                                    fill="currentColor"></path>
+                                                <path opacity="0.3"
+                                                    d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        Sort Folders
+                                    </button>
+
+                                    <!--begin::Add customer-->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal_sign">
+                                        <i class="fas fa-pen"></i>
+                                        Request E-Sign
+                                    </button>
+                                    <!--end::Add customer-->
+                                </div>
+                                <!--end::Toolbar-->
+                                <!--begin::Group actions-->
+                                <div class="d-flex justify-content-end align-items-center d-none"
+                                    data-kt-filemanager-table-toolbar="selected">
+                                    <div class="fw-bold me-5">
+                                        <span class="me-2"
+                                            data-kt-filemanager-table-select="selected_count"></span>Selected
+                                    </div>
+                                    <button type="button" class="btn btn-danger"
+                                        data-kt-filemanager-table-select="delete_selected">Delete Selected
+                                    </button>
+                                </div>
+                                <!--end::Group actions-->
+                            </div>
+                            <!--end::Card toolbar-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Table header-->
+
+                            <!--end::Table header-->
+                            <!--begin::Table-->
+                            <div id="kt_file_manager_list_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="table-responsive">
+                                    <div class="dataTables_scroll">
+                                        <div class="dataTables_scrollHead"
+                                            style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                            <div class="dataTables_scrollHeadInner"
+                                                style="box-sizing: content-box; width: 1194.5px; padding-right: 5px;">
+                                                <table data-kt-filemanager-table="folders"
+                                                    class="table align-middle fs-6 gy-5"
+                                                    style="margin-left: 0px; width: 1194.5px;">
+                                                    <thead>
+                                                        <!--begin::Table row-->
+                                                        <tr
+                                                            class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                            <th class="w-10px pe-2 sorting_disabled" rowspan="1"
+                                                                colspan="1" style="width: 29.8906px;">
+                                                                <div
+                                                                    class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        data-kt-check="true"
+                                                                        data-kt-check-target="#kt_file_manager_list .form-check-input"
+                                                                        value="1">
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-250px sorting_disabled" rowspan="1"
+                                                                colspan="1" style="width: 527.734px;">Name
+                                                            </th>
+                                                            <th class="min-w-10px sorting_disabled" rowspan="1"
+                                                                colspan="1" style="width: 119.234px;">Size
+                                                            </th>
+                                                            <th class="min-w-125px sorting_disabled" rowspan="1"
+                                                                colspan="1" style="width: 317.969px;">Last Modified
+                                                            </th>
+                                                            <th class="w-125px sorting_disabled" rowspan="1"
+                                                                colspan="1" style="width: 124.922px;"></th>
+                                                        </tr>
+                                                        <!--end::Table row-->
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="dataTables_scrollBody table"
+                                            style="position: relative; overflow: auto; max-height: 700px; width: 100%;">
+                                            <table id="kt_file_manager_list" data-kt-filemanager-table="folders"
+                                                class="table align-middle fs-6 gy-5" style="width: 100%;">
+                                                <thead>
+                                                    <!--begin::Table row-->
+                                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0"
+                                                        style="height: 0px;">
+                                                        <th class="w-10px pe-2 sorting_disabled" rowspan="1"
+                                                            colspan="1"
+                                                            style="width: 29.8906px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                            <div class="dataTables_sizing"
+                                                                style="height: 0px; overflow: hidden;">
+                                                                <div
+                                                                    class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        data-kt-check="true"
+                                                                        data-kt-check-target="#kt_file_manager_list .form-check-input"
+                                                                        value="1">
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-250px sorting_disabled" rowspan="1"
+                                                            colspan="1"
+                                                            style="width: 527.734px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                            <div class="dataTables_sizing"
+                                                                style="height: 0px; overflow: hidden;">Name
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-10px sorting_disabled" rowspan="1"
+                                                            colspan="1"
+                                                            style="width: 119.234px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                            <div class="dataTables_sizing"
+                                                                style="height: 0px; overflow: hidden;">Size
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-125px sorting_disabled" rowspan="1"
+                                                            colspan="1"
+                                                            style="width: 317.969px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                            <div class="dataTables_sizing"
+                                                                style="height: 0px; overflow: hidden;">Last Modified
+                                                            </div>
+                                                        </th>
+                                                        <th class="w-125px sorting_disabled" rowspan="1"
+                                                            colspan="1"
+                                                            style="width: 124.922px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                            <div class="dataTables_sizing"
+                                                                style="height: 0px; overflow: hidden;"></div>
+                                                        </th>
+                                                    </tr>
+                                                    <!--end::Table row-->
+                                                </thead>
+                                                <!--begin::Table head-->
+
+                                                <!--end::Table head-->
+                                                <!--begin::Table body-->
+                                                <tbody class="fw-semibold text-gray-600">
+
+                                                    <tr class="odd">
+                                                        <!--begin::Checkbox-->
+                                                        <td>
+                                                            <div
+                                                                class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    value="1">
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Checkbox-->
+                                                        <!--begin::Name=-->
+                                                        <td data-order="account">
+                                                            <div class="d-flex align-items-center">
+                                                                <!--begin::Svg Icon | path: icons/duotune/files/fil012.svg-->
+                                                                <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                                                                    <svg width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path opacity="0.3"
+                                                                            d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z"
+                                                                            fill="currentColor"></path>
+                                                                        <path
+                                                                            d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z"
+                                                                            fill="currentColor"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->
+                                                                <a href="../../demo1/dist/apps/file-manager/files/.html"
+                                                                    class="text-gray-800 text-hover-primary">account</a>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Name=-->
+                                                        <!--begin::Size-->
+                                                        <td>-</td>
+                                                        <!--end::Size-->
+                                                        <!--begin::Last modified-->
+                                                        <td data-order="Invalid date">-</td>
+                                                        <!--end::Last modified-->
+                                                        <!--begin::Actions-->
+                                                        <td class="text-end"
+                                                            data-kt-filemanager-table="action_dropdown">
+                                                            <div class="d-flex justify-content-end">
+                                                                <!--begin::Share link-->
+                                                                <div class="ms-2"
+                                                                    data-kt-filemanger-table="copy_link">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/coding/cod007.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <path opacity="0.3"
+                                                                                    d="M18.4 5.59998C18.7766 5.9772 18.9881 6.48846 18.9881 7.02148C18.9881 7.55451 18.7766 8.06577 18.4 8.44299L14.843 12C14.466 12.377 13.9547 12.5887 13.4215 12.5887C12.8883 12.5887 12.377 12.377 12 12C11.623 11.623 11.4112 11.1117 11.4112 10.5785C11.4112 10.0453 11.623 9.53399 12 9.15698L15.553 5.604C15.9302 5.22741 16.4415 5.01587 16.9745 5.01587C17.5075 5.01587 18.0188 5.22741 18.396 5.604L18.4 5.59998ZM20.528 3.47205C20.0614 3.00535 19.5074 2.63503 18.8977 2.38245C18.288 2.12987 17.6344 1.99988 16.9745 1.99988C16.3145 1.99988 15.661 2.12987 15.0513 2.38245C14.4416 2.63503 13.8876 3.00535 13.421 3.47205L9.86801 7.02502C9.40136 7.49168 9.03118 8.04568 8.77863 8.6554C8.52608 9.26511 8.39609 9.91855 8.39609 10.5785C8.39609 11.2384 8.52608 11.8919 8.77863 12.5016C9.03118 13.1113 9.40136 13.6653 9.86801 14.132C10.3347 14.5986 10.8886 14.9688 11.4984 15.2213C12.1081 15.4739 12.7616 15.6039 13.4215 15.6039C14.0815 15.6039 14.7349 15.4739 15.3446 15.2213C15.9543 14.9688 16.5084 14.5986 16.975 14.132L20.528 10.579C20.9947 10.1124 21.3649 9.55844 21.6175 8.94873C21.8701 8.33902 22.0001 7.68547 22.0001 7.02551C22.0001 6.36555 21.8701 5.71201 21.6175 5.10229C21.3649 4.49258 20.9947 3.93867 20.528 3.47205Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M14.132 9.86804C13.6421 9.37931 13.0561 8.99749 12.411 8.74695L12 9.15698C11.6234 9.53421 11.4119 10.0455 11.4119 10.5785C11.4119 11.1115 11.6234 11.6228 12 12C12.3766 12.3772 12.5881 12.8885 12.5881 13.4215C12.5881 13.9545 12.3766 14.4658 12 14.843L8.44699 18.396C8.06999 18.773 7.55868 18.9849 7.02551 18.9849C6.49235 18.9849 5.98101 18.773 5.604 18.396C5.227 18.019 5.0152 17.5077 5.0152 16.9745C5.0152 16.4413 5.227 15.93 5.604 15.553L8.74701 12.411C8.28705 11.233 8.28705 9.92498 8.74701 8.74695C8.10159 8.99737 7.5152 9.37919 7.02499 9.86804L3.47198 13.421C2.52954 14.3635 2.00009 15.6417 2.00009 16.9745C2.00009 18.3073 2.52957 19.5855 3.47202 20.528C4.41446 21.4704 5.69269 21.9999 7.02551 21.9999C8.35833 21.9999 9.63656 21.4704 10.579 20.528L14.132 16.975C14.5987 16.5084 14.9689 15.9544 15.2215 15.3447C15.4741 14.735 15.6041 14.0815 15.6041 13.4215C15.6041 12.7615 15.4741 12.108 15.2215 11.4983C14.9689 10.8886 14.5987 10.3347 14.132 9.86804Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-300px"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Card-->
+                                                                        <div class="card card-flush">
+                                                                            <div class="card-body p-5">
+                                                                                <!--begin::Loader-->
+                                                                                <div class="d-flex"
+                                                                                    data-kt-filemanger-table="copy_link_generator">
+                                                                                    <!--begin::Spinner-->
+                                                                                    <div class="me-5"
+                                                                                        data-kt-indicator="on">
+                                                                                        <span class="indicator-progress">
+                                                                                            <span
+                                                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <!--end::Spinner-->
+                                                                                    <!--begin::Label-->
+                                                                                    <div class="fs-6 text-dark">Generating
+                                                                                        Share Link...
+                                                                                    </div>
+                                                                                    <!--end::Label-->
+                                                                                </div>
+                                                                                <!--end::Loader-->
+                                                                                <!--begin::Link-->
+                                                                                <div class="d-flex flex-column text-start d-none"
+                                                                                    data-kt-filemanger-table="copy_link_result">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr085.svg-->
+                                                                                        <span
+                                                                                            class="svg-icon svg-icon-2 svg-icon-success me-3">
+                                                                                            <svg width="24"
+                                                                                                height="24"
+                                                                                                viewBox="0 0 24 24"
+                                                                                                fill="none"
+                                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                                <path
+                                                                                                    d="M9.89557 13.4982L7.79487 11.2651C7.26967 10.7068 6.38251 10.7068 5.85731 11.2651C5.37559 11.7772 5.37559 12.5757 5.85731 13.0878L9.74989 17.2257C10.1448 17.6455 10.8118 17.6455 11.2066 17.2257L18.1427 9.85252C18.6244 9.34044 18.6244 8.54191 18.1427 8.02984C17.6175 7.47154 16.7303 7.47154 16.2051 8.02984L11.061 13.4982C10.7451 13.834 10.2115 13.834 9.89557 13.4982Z"
+                                                                                                    fill="currentColor">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <!--end::Svg Icon-->
+                                                                                        <div class="fs-6 text-dark">Share
+                                                                                            Link Generated
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input type="text"
+                                                                                        class="form-control form-control-sm"
+                                                                                        value="https://path/to/file/or/folder/">
+                                                                                    <div
+                                                                                        class="text-muted fw-normal mt-2 fs-8 px-3">
+                                                                                        Read only.
+                                                                                        <a href="../../demo1/dist/apps/file-manager/settings/.html"
+                                                                                            class="ms-2">Change
+                                                                                            permissions</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--end::Link-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--end::Card-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::Share link-->
+                                                                </div>
+                                                                <!--begin::More-->
+                                                                <div class="ms-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen052.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <rect x="10" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="17" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="3" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="../../demo1/dist/apps/file-manager/files.html"
+                                                                                class="menu-link px-3">View</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table="rename">Rename</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link px-3">Download
+                                                                                Folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table-filter="move_row"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#kt_modal_move_to_folder">Move
+                                                                                to folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link text-danger px-3"
+                                                                                data-kt-filemanager-table-filter="delete_row">Delete</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::More-->
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Actions-->
+                                                    </tr>
+                                                    <tr class="even">
+                                                        <!--begin::Checkbox-->
+                                                        <td>
+                                                            <div
+                                                                class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    value="1">
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Checkbox-->
+                                                        <!--begin::Name=-->
+                                                        <td data-order="apps">
+                                                            <div class="d-flex align-items-center">
+                                                                <!--begin::Svg Icon | path: icons/duotune/files/fil012.svg-->
+                                                                <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                                                                    <svg width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path opacity="0.3"
+                                                                            d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z"
+                                                                            fill="currentColor"></path>
+                                                                        <path
+                                                                            d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z"
+                                                                            fill="currentColor"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->
+                                                                <a href="../../demo1/dist/apps/file-manager/files/.html"
+                                                                    class="text-gray-800 text-hover-primary">apps</a>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Name=-->
+                                                        <!--begin::Size-->
+                                                        <td>-</td>
+                                                        <!--end::Size-->
+                                                        <!--begin::Last modified-->
+                                                        <td data-order="Invalid date">-</td>
+                                                        <!--end::Last modified-->
+                                                        <!--begin::Actions-->
+                                                        <td class="text-end"
+                                                            data-kt-filemanager-table="action_dropdown">
+                                                            <div class="d-flex justify-content-end">
+                                                                <!--begin::Share link-->
+                                                                <div class="ms-2"
+                                                                    data-kt-filemanger-table="copy_link">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/coding/cod007.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <path opacity="0.3"
+                                                                                    d="M18.4 5.59998C18.7766 5.9772 18.9881 6.48846 18.9881 7.02148C18.9881 7.55451 18.7766 8.06577 18.4 8.44299L14.843 12C14.466 12.377 13.9547 12.5887 13.4215 12.5887C12.8883 12.5887 12.377 12.377 12 12C11.623 11.623 11.4112 11.1117 11.4112 10.5785C11.4112 10.0453 11.623 9.53399 12 9.15698L15.553 5.604C15.9302 5.22741 16.4415 5.01587 16.9745 5.01587C17.5075 5.01587 18.0188 5.22741 18.396 5.604L18.4 5.59998ZM20.528 3.47205C20.0614 3.00535 19.5074 2.63503 18.8977 2.38245C18.288 2.12987 17.6344 1.99988 16.9745 1.99988C16.3145 1.99988 15.661 2.12987 15.0513 2.38245C14.4416 2.63503 13.8876 3.00535 13.421 3.47205L9.86801 7.02502C9.40136 7.49168 9.03118 8.04568 8.77863 8.6554C8.52608 9.26511 8.39609 9.91855 8.39609 10.5785C8.39609 11.2384 8.52608 11.8919 8.77863 12.5016C9.03118 13.1113 9.40136 13.6653 9.86801 14.132C10.3347 14.5986 10.8886 14.9688 11.4984 15.2213C12.1081 15.4739 12.7616 15.6039 13.4215 15.6039C14.0815 15.6039 14.7349 15.4739 15.3446 15.2213C15.9543 14.9688 16.5084 14.5986 16.975 14.132L20.528 10.579C20.9947 10.1124 21.3649 9.55844 21.6175 8.94873C21.8701 8.33902 22.0001 7.68547 22.0001 7.02551C22.0001 6.36555 21.8701 5.71201 21.6175 5.10229C21.3649 4.49258 20.9947 3.93867 20.528 3.47205Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M14.132 9.86804C13.6421 9.37931 13.0561 8.99749 12.411 8.74695L12 9.15698C11.6234 9.53421 11.4119 10.0455 11.4119 10.5785C11.4119 11.1115 11.6234 11.6228 12 12C12.3766 12.3772 12.5881 12.8885 12.5881 13.4215C12.5881 13.9545 12.3766 14.4658 12 14.843L8.44699 18.396C8.06999 18.773 7.55868 18.9849 7.02551 18.9849C6.49235 18.9849 5.98101 18.773 5.604 18.396C5.227 18.019 5.0152 17.5077 5.0152 16.9745C5.0152 16.4413 5.227 15.93 5.604 15.553L8.74701 12.411C8.28705 11.233 8.28705 9.92498 8.74701 8.74695C8.10159 8.99737 7.5152 9.37919 7.02499 9.86804L3.47198 13.421C2.52954 14.3635 2.00009 15.6417 2.00009 16.9745C2.00009 18.3073 2.52957 19.5855 3.47202 20.528C4.41446 21.4704 5.69269 21.9999 7.02551 21.9999C8.35833 21.9999 9.63656 21.4704 10.579 20.528L14.132 16.975C14.5987 16.5084 14.9689 15.9544 15.2215 15.3447C15.4741 14.735 15.6041 14.0815 15.6041 13.4215C15.6041 12.7615 15.4741 12.108 15.2215 11.4983C14.9689 10.8886 14.5987 10.3347 14.132 9.86804Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-300px"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Card-->
+                                                                        <div class="card card-flush">
+                                                                            <div class="card-body p-5">
+                                                                                <!--begin::Loader-->
+                                                                                <div class="d-flex"
+                                                                                    data-kt-filemanger-table="copy_link_generator">
+                                                                                    <!--begin::Spinner-->
+                                                                                    <div class="me-5"
+                                                                                        data-kt-indicator="on">
+                                                                                        <span class="indicator-progress">
+                                                                                            <span
+                                                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <!--end::Spinner-->
+                                                                                    <!--begin::Label-->
+                                                                                    <div class="fs-6 text-dark">Generating
+                                                                                        Share Link...
+                                                                                    </div>
+                                                                                    <!--end::Label-->
+                                                                                </div>
+                                                                                <!--end::Loader-->
+                                                                                <!--begin::Link-->
+                                                                                <div class="d-flex flex-column text-start d-none"
+                                                                                    data-kt-filemanger-table="copy_link_result">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr085.svg-->
+                                                                                        <span
+                                                                                            class="svg-icon svg-icon-2 svg-icon-success me-3">
+                                                                                            <svg width="24"
+                                                                                                height="24"
+                                                                                                viewBox="0 0 24 24"
+                                                                                                fill="none"
+                                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                                <path
+                                                                                                    d="M9.89557 13.4982L7.79487 11.2651C7.26967 10.7068 6.38251 10.7068 5.85731 11.2651C5.37559 11.7772 5.37559 12.5757 5.85731 13.0878L9.74989 17.2257C10.1448 17.6455 10.8118 17.6455 11.2066 17.2257L18.1427 9.85252C18.6244 9.34044 18.6244 8.54191 18.1427 8.02984C17.6175 7.47154 16.7303 7.47154 16.2051 8.02984L11.061 13.4982C10.7451 13.834 10.2115 13.834 9.89557 13.4982Z"
+                                                                                                    fill="currentColor">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <!--end::Svg Icon-->
+                                                                                        <div class="fs-6 text-dark">Share
+                                                                                            Link Generated
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input type="text"
+                                                                                        class="form-control form-control-sm"
+                                                                                        value="https://path/to/file/or/folder/">
+                                                                                    <div
+                                                                                        class="text-muted fw-normal mt-2 fs-8 px-3">
+                                                                                        Read only.
+                                                                                        <a href="../../demo1/dist/apps/file-manager/settings/.html"
+                                                                                            class="ms-2">Change
+                                                                                            permissions</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--end::Link-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--end::Card-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::Share link-->
+                                                                </div>
+                                                                <!--begin::More-->
+                                                                <div class="ms-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen052.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <rect x="10" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="17" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="3" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="../../demo1/dist/apps/file-manager/files.html"
+                                                                                class="menu-link px-3">View</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table="rename">Rename</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link px-3">Download
+                                                                                Folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table-filter="move_row"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#kt_modal_move_to_folder">Move
+                                                                                to folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link text-danger px-3"
+                                                                                data-kt-filemanager-table-filter="delete_row">Delete</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::More-->
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Actions-->
+                                                    </tr>
+                                                    <tr class="odd">
+                                                        <!--begin::Checkbox-->
+                                                        <td>
+                                                            <div
+                                                                class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    value="1">
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Checkbox-->
+                                                        <!--begin::Name=-->
+                                                        <td data-order="widgets">
+                                                            <div class="d-flex align-items-center">
+                                                                <!--begin::Svg Icon | path: icons/duotune/files/fil012.svg-->
+                                                                <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                                                                    <svg width="24" height="24"
+                                                                        viewBox="0 0 24 24" fill="none"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path opacity="0.3"
+                                                                            d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z"
+                                                                            fill="currentColor"></path>
+                                                                        <path
+                                                                            d="M9.2 3H3C2.4 3 2 3.4 2 4V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V7C22 6.4 21.6 6 21 6H12L10.4 3.60001C10.2 3.20001 9.7 3 9.2 3Z"
+                                                                            fill="currentColor"></path>
+                                                                    </svg>
+                                                                </span>
+                                                                <!--end::Svg Icon-->
+                                                                <a href="../../demo1/dist/apps/file-manager/files/.html"
+                                                                    class="text-gray-800 text-hover-primary">widgets</a>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Name=-->
+                                                        <!--begin::Size-->
+                                                        <td>-</td>
+                                                        <!--end::Size-->
+                                                        <!--begin::Last modified-->
+                                                        <td data-order="Invalid date">-</td>
+                                                        <!--end::Last modified-->
+                                                        <!--begin::Actions-->
+                                                        <td class="text-end"
+                                                            data-kt-filemanager-table="action_dropdown">
+                                                            <div class="d-flex justify-content-end">
+                                                                <!--begin::Share link-->
+                                                                <div class="ms-2"
+                                                                    data-kt-filemanger-table="copy_link">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/coding/cod007.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <path opacity="0.3"
+                                                                                    d="M18.4 5.59998C18.7766 5.9772 18.9881 6.48846 18.9881 7.02148C18.9881 7.55451 18.7766 8.06577 18.4 8.44299L14.843 12C14.466 12.377 13.9547 12.5887 13.4215 12.5887C12.8883 12.5887 12.377 12.377 12 12C11.623 11.623 11.4112 11.1117 11.4112 10.5785C11.4112 10.0453 11.623 9.53399 12 9.15698L15.553 5.604C15.9302 5.22741 16.4415 5.01587 16.9745 5.01587C17.5075 5.01587 18.0188 5.22741 18.396 5.604L18.4 5.59998ZM20.528 3.47205C20.0614 3.00535 19.5074 2.63503 18.8977 2.38245C18.288 2.12987 17.6344 1.99988 16.9745 1.99988C16.3145 1.99988 15.661 2.12987 15.0513 2.38245C14.4416 2.63503 13.8876 3.00535 13.421 3.47205L9.86801 7.02502C9.40136 7.49168 9.03118 8.04568 8.77863 8.6554C8.52608 9.26511 8.39609 9.91855 8.39609 10.5785C8.39609 11.2384 8.52608 11.8919 8.77863 12.5016C9.03118 13.1113 9.40136 13.6653 9.86801 14.132C10.3347 14.5986 10.8886 14.9688 11.4984 15.2213C12.1081 15.4739 12.7616 15.6039 13.4215 15.6039C14.0815 15.6039 14.7349 15.4739 15.3446 15.2213C15.9543 14.9688 16.5084 14.5986 16.975 14.132L20.528 10.579C20.9947 10.1124 21.3649 9.55844 21.6175 8.94873C21.8701 8.33902 22.0001 7.68547 22.0001 7.02551C22.0001 6.36555 21.8701 5.71201 21.6175 5.10229C21.3649 4.49258 20.9947 3.93867 20.528 3.47205Z"
+                                                                                    fill="currentColor"></path>
+                                                                                <path
+                                                                                    d="M14.132 9.86804C13.6421 9.37931 13.0561 8.99749 12.411 8.74695L12 9.15698C11.6234 9.53421 11.4119 10.0455 11.4119 10.5785C11.4119 11.1115 11.6234 11.6228 12 12C12.3766 12.3772 12.5881 12.8885 12.5881 13.4215C12.5881 13.9545 12.3766 14.4658 12 14.843L8.44699 18.396C8.06999 18.773 7.55868 18.9849 7.02551 18.9849C6.49235 18.9849 5.98101 18.773 5.604 18.396C5.227 18.019 5.0152 17.5077 5.0152 16.9745C5.0152 16.4413 5.227 15.93 5.604 15.553L8.74701 12.411C8.28705 11.233 8.28705 9.92498 8.74701 8.74695C8.10159 8.99737 7.5152 9.37919 7.02499 9.86804L3.47198 13.421C2.52954 14.3635 2.00009 15.6417 2.00009 16.9745C2.00009 18.3073 2.52957 19.5855 3.47202 20.528C4.41446 21.4704 5.69269 21.9999 7.02551 21.9999C8.35833 21.9999 9.63656 21.4704 10.579 20.528L14.132 16.975C14.5987 16.5084 14.9689 15.9544 15.2215 15.3447C15.4741 14.735 15.6041 14.0815 15.6041 13.4215C15.6041 12.7615 15.4741 12.108 15.2215 11.4983C14.9689 10.8886 14.5987 10.3347 14.132 9.86804Z"
+                                                                                    fill="currentColor"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-300px"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Card-->
+                                                                        <div class="card card-flush">
+                                                                            <div class="card-body p-5">
+                                                                                <!--begin::Loader-->
+                                                                                <div class="d-flex"
+                                                                                    data-kt-filemanger-table="copy_link_generator">
+                                                                                    <!--begin::Spinner-->
+                                                                                    <div class="me-5"
+                                                                                        data-kt-indicator="on">
+                                                                                        <span class="indicator-progress">
+                                                                                            <span
+                                                                                                class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <!--end::Spinner-->
+                                                                                    <!--begin::Label-->
+                                                                                    <div class="fs-6 text-dark">Generating
+                                                                                        Share Link...
+                                                                                    </div>
+                                                                                    <!--end::Label-->
+                                                                                </div>
+                                                                                <!--end::Loader-->
+                                                                                <!--begin::Link-->
+                                                                                <div class="d-flex flex-column text-start d-none"
+                                                                                    data-kt-filemanger-table="copy_link_result">
+                                                                                    <div class="d-flex mb-3">
+                                                                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr085.svg-->
+                                                                                        <span
+                                                                                            class="svg-icon svg-icon-2 svg-icon-success me-3">
+                                                                                            <svg width="24"
+                                                                                                height="24"
+                                                                                                viewBox="0 0 24 24"
+                                                                                                fill="none"
+                                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                                <path
+                                                                                                    d="M9.89557 13.4982L7.79487 11.2651C7.26967 10.7068 6.38251 10.7068 5.85731 11.2651C5.37559 11.7772 5.37559 12.5757 5.85731 13.0878L9.74989 17.2257C10.1448 17.6455 10.8118 17.6455 11.2066 17.2257L18.1427 9.85252C18.6244 9.34044 18.6244 8.54191 18.1427 8.02984C17.6175 7.47154 16.7303 7.47154 16.2051 8.02984L11.061 13.4982C10.7451 13.834 10.2115 13.834 9.89557 13.4982Z"
+                                                                                                    fill="currentColor">
+                                                                                                </path>
+                                                                                            </svg>
+                                                                                        </span>
+                                                                                        <!--end::Svg Icon-->
+                                                                                        <div class="fs-6 text-dark">Share
+                                                                                            Link Generated
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <input type="text"
+                                                                                        class="form-control form-control-sm"
+                                                                                        value="https://path/to/file/or/folder/">
+                                                                                    <div
+                                                                                        class="text-muted fw-normal mt-2 fs-8 px-3">
+                                                                                        Read only.
+                                                                                        <a href="../../demo1/dist/apps/file-manager/settings/.html"
+                                                                                            class="ms-2">Change
+                                                                                            permissions</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--end::Link-->
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--end::Card-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::Share link-->
+                                                                </div>
+                                                                <!--begin::More-->
+                                                                <div class="ms-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                                                                        data-kt-menu-trigger="click"
+                                                                        data-kt-menu-placement="bottom-end">
+                                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen052.svg-->
+                                                                        <span class="svg-icon svg-icon-5 m-0">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <rect x="10" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="17" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                                <rect x="3" y="10"
+                                                                                    width="4" height="4"
+                                                                                    rx="2" fill="currentColor">
+                                                                                </rect>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <!--end::Svg Icon-->
+                                                                    </button>
+                                                                    <!--begin::Menu-->
+                                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4"
+                                                                        data-kt-menu="true">
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="../../demo1/dist/apps/file-manager/files.html"
+                                                                                class="menu-link px-3">View</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table="rename">Rename</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link px-3">Download
+                                                                                Folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#" class="menu-link px-3"
+                                                                                data-kt-filemanager-table-filter="move_row"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#kt_modal_move_to_folder">Move
+                                                                                to folder</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                        <!--begin::Menu item-->
+                                                                        <div class="menu-item px-3">
+                                                                            <a href="#"
+                                                                                class="menu-link text-danger px-3"
+                                                                                data-kt-filemanager-table-filter="delete_row">Delete</a>
+                                                                        </div>
+                                                                        <!--end::Menu item-->
+                                                                    </div>
+                                                                    <!--end::Menu-->
+                                                                    <!--end::More-->
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <!--end::Actions-->
+                                                    </tr>
+
+                                                </tbody>
+                                                <!--end::Table body-->
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div
+                                        class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
+                                    </div>
+                                    <div
+                                        class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Documents Tab pane-->
+
+                <!--begin:::Documents Tab pane-->
+                <div class="tab-pane fade" id="kt_payment_tab" role="tabpanel">
+                    <!--begin::Card-->
+                    <div class="card card-flush">
+                        <!--begin::Card header-->
+                        <div class="card-header pt-8">
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h4>There are no payment methods</h4>
+                            </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end:::Documents Tab pane-->
+
+                <!--begin:::Engagement Tab pane-->
+                <div class="tab-pane fade" id="kt_engagement_tab" role="tabpanel">
+
+                    <div class="col-lg-4">
+                        <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-50 mb-5 mb-xl-10"
+                            style="background-color: #F1416C;background-image:url({{ asset('assets/media/patterns/vector-1.png') }})">
+                            <!--begin::Header-->
+                            <div class="card-header pt-5">
+                                <!--begin::Title-->
+                                <div class="card-title d-flex flex-column">
+                                    <!--begin::Amount-->
+                                    <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">69</span>
+                                    <!--end::Amount-->
+                                    <!--begin::Subtitle-->
+                                    <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Active Projects</span>
+                                    <!--end::Subtitle-->
+                                </div>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Card body-->
+                            <div class="card-body d-flex align-items-end pt-0">
+                                <!--begin::Progress-->
+                                <div class="d-flex align-items-center flex-column mt-3 w-100">
+                                    <div
+                                        class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+                                        <span>43 Pending</span>
+                                        <span>72%</span>
+                                    </div>
+                                    <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+                                        <div class="bg-white rounded h-8px" role="progressbar" style="width: 72%;"
+                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <!--end::Progress-->
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <!--begin::Card head-->
+                        <div class="card-header card-header-stretch">
+                            <!--begin::Title-->
+                            <div class="card-title d-flex align-items-center">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen014.svg-->
+                                <span class="svg-icon svg-icon-1 svg-icon-primary me-3 lh-0">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.3"
+                                            d="M21 22H3C2.4 22 2 21.6 2 21V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5V21C22 21.6 21.6 22 21 22Z"
+                                            fill="currentColor"></path>
+                                        <path
+                                            d="M6 6C5.4 6 5 5.6 5 5V3C5 2.4 5.4 2 6 2C6.6 2 7 2.4 7 3V5C7 5.6 6.6 6 6 6ZM11 5V3C11 2.4 10.6 2 10 2C9.4 2 9 2.4 9 3V5C9 5.6 9.4 6 10 6C10.6 6 11 5.6 11 5ZM15 5V3C15 2.4 14.6 2 14 2C13.4 2 13 2.4 13 3V5C13 5.6 13.4 6 14 6C14.6 6 15 5.6 15 5ZM19 5V3C19 2.4 18.6 2 18 2C17.4 2 17 2.4 17 3V5C17 5.6 17.4 6 18 6C18.6 6 19 5.6 19 5Z"
+                                            fill="currentColor"></path>
+                                        <path
+                                            d="M8.8 13.1C9.2 13.1 9.5 13 9.7 12.8C9.9 12.6 10.1 12.3 10.1 11.9C10.1 11.6 10 11.3 9.8 11.1C9.6 10.9 9.3 10.8 9 10.8C8.8 10.8 8.59999 10.8 8.39999 10.9C8.19999 11 8.1 11.1 8 11.2C7.9 11.3 7.8 11.4 7.7 11.6C7.6 11.8 7.5 11.9 7.5 12.1C7.5 12.2 7.4 12.2 7.3 12.3C7.2 12.4 7.09999 12.4 6.89999 12.4C6.69999 12.4 6.6 12.3 6.5 12.2C6.4 12.1 6.3 11.9 6.3 11.7C6.3 11.5 6.4 11.3 6.5 11.1C6.6 10.9 6.8 10.7 7 10.5C7.2 10.3 7.49999 10.1 7.89999 10C8.29999 9.90003 8.60001 9.80003 9.10001 9.80003C9.50001 9.80003 9.80001 9.90003 10.1 10C10.4 10.1 10.7 10.3 10.9 10.4C11.1 10.5 11.3 10.8 11.4 11.1C11.5 11.4 11.6 11.6 11.6 11.9C11.6 12.3 11.5 12.6 11.3 12.9C11.1 13.2 10.9 13.5 10.6 13.7C10.9 13.9 11.2 14.1 11.4 14.3C11.6 14.5 11.8 14.7 11.9 15C12 15.3 12.1 15.5 12.1 15.8C12.1 16.2 12 16.5 11.9 16.8C11.8 17.1 11.5 17.4 11.3 17.7C11.1 18 10.7 18.2 10.3 18.3C9.9 18.4 9.5 18.5 9 18.5C8.5 18.5 8.1 18.4 7.7 18.2C7.3 18 7 17.8 6.8 17.6C6.6 17.4 6.4 17.1 6.3 16.8C6.2 16.5 6.10001 16.3 6.10001 16.1C6.10001 15.9 6.2 15.7 6.3 15.6C6.4 15.5 6.6 15.4 6.8 15.4C6.9 15.4 7.00001 15.4 7.10001 15.5C7.20001 15.6 7.3 15.6 7.3 15.7C7.5 16.2 7.7 16.6 8 16.9C8.3 17.2 8.6 17.3 9 17.3C9.2 17.3 9.5 17.2 9.7 17.1C9.9 17 10.1 16.8 10.3 16.6C10.5 16.4 10.5 16.1 10.5 15.8C10.5 15.3 10.4 15 10.1 14.7C9.80001 14.4 9.50001 14.3 9.10001 14.3C9.00001 14.3 8.9 14.3 8.7 14.3C8.5 14.3 8.39999 14.3 8.39999 14.3C8.19999 14.3 7.99999 14.2 7.89999 14.1C7.79999 14 7.7 13.8 7.7 13.7C7.7 13.5 7.79999 13.4 7.89999 13.2C7.99999 13 8.2 13 8.5 13H8.8V13.1ZM15.3 17.5V12.2C14.3 13 13.6 13.3 13.3 13.3C13.1 13.3 13 13.2 12.9 13.1C12.8 13 12.7 12.8 12.7 12.6C12.7 12.4 12.8 12.3 12.9 12.2C13 12.1 13.2 12 13.6 11.8C14.1 11.6 14.5 11.3 14.7 11.1C14.9 10.9 15.2 10.6 15.5 10.3C15.8 10 15.9 9.80003 15.9 9.70003C15.9 9.60003 16.1 9.60004 16.3 9.60004C16.5 9.60004 16.7 9.70003 16.8 9.80003C16.9 9.90003 17 10.2 17 10.5V17.2C17 18 16.7 18.4 16.2 18.4C16 18.4 15.8 18.3 15.6 18.2C15.4 18.1 15.3 17.8 15.3 17.5Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                                <h3 class="fw-bold m-0 text-gray-800">Oct 28, 2022</h3>
+                            </div>
+                            <!--end::Title-->
+                            <!--begin::Toolbar-->
+                            <div class="card-toolbar m-0">
+                                <!--begin::Tab nav-->
+                                <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a id="kt_activity_today_tab"
+                                            class="nav-link justify-content-center text-active-gray-800 active"
+                                            data-bs-toggle="tab" role="tab" href="#kt_activity_today"
+                                            aria-selected="true">Today</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a id="kt_activity_week_tab"
+                                            class="nav-link justify-content-center text-active-gray-800"
+                                            data-bs-toggle="tab" role="tab" href="#kt_activity_week"
+                                            aria-selected="false" tabindex="-1">Week</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a id="kt_activity_month_tab"
+                                            class="nav-link justify-content-center text-active-gray-800"
+                                            data-bs-toggle="tab" role="tab" href="#kt_activity_month"
+                                            aria-selected="false" tabindex="-1">Month</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a id="kt_activity_year_tab"
+                                            class="nav-link justify-content-center text-active-gray-800 text-hover-gray-800"
+                                            data-bs-toggle="tab" role="tab" href="#kt_activity_year"
+                                            aria-selected="false" tabindex="-1">2022</a>
+                                    </li>
+                                </ul>
+                                <!--end::Tab nav-->
+                            </div>
+                            <!--end::Toolbar-->
+                        </div>
+                        <!--end::Card head-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Tab Content-->
+                            <div class="tab-content">
+                                <!--begin::Tab panel-->
+                                <div id="kt_activity_today" class="card-body p-0 tab-pane fade show active"
+                                    role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                    <!--begin::Timeline-->
+                                    <div class="timeline">
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px me-4">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M2 4V16C2 16.6 2.4 17 3 17H13L16.6 20.6C17.1 21.1 18 20.8 18 20V17H21C21.6 17 22 16.6 22 16V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M18 9H6C5.4 9 5 8.6 5 8C5 7.4 5.4 7 6 7H18C18.6 7 19 7.4 19 8C19 8.6 18.6 9 18 9ZM16 12C16 11.4 15.6 11 15 11H6C5.4 11 5 11.4 5 12C5 12.6 5.4 13 6 13H15C15.6 13 16 12.6 16 12Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">There are 2 new tasks for you in
+                                                        “AirPlus Mobile App” project:</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Nina Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="{{ asset('assets/media/avatars/300-14.jpg') }}"
+                                                                alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <!--begin::Record-->
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-5">
+                                                        <!--begin::Title-->
+                                                        <a href="../../demo1/dist/apps/projects/project.html"
+                                                            class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Meeting
+                                                            with customer</a>
+                                                        <!--end::Title-->
+                                                        <!--begin::Label-->
+                                                        <div class="min-w-175px pe-2">
+                                                            <span class="badge badge-light text-muted">Application
+                                                                Design</span>
+                                                        </div>
+                                                        <!--end::Label-->
+                                                        <!--begin::Users-->
+                                                        <div
+                                                            class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px pe-2">
+                                                            <!--begin::User-->
+                                                            <div class="symbol symbol-circle symbol-25px">
+                                                                <img src="{{ asset('assets/media/avatars/300-2.jpg') }}"
+                                                                    alt="img">
+                                                            </div>
+                                                            <!--end::User-->
+                                                            <!--begin::User-->
+                                                            <div class="symbol symbol-circle symbol-25px">
+                                                                <img src="{{ asset('assets/media/avatars/300-14.jpg') }}"
+                                                                    alt="img">
+                                                            </div>
+                                                            <!--end::User-->
+                                                            <!--begin::User-->
+                                                            <div class="symbol symbol-circle symbol-25px">
+                                                                <div
+                                                                    class="symbol-label fs-8 fw-semibold bg-primary text-inverse-primary">
+                                                                    A</div>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Users-->
+                                                        <!--begin::Progress-->
+                                                        <div class="min-w-125px pe-2">
+                                                            <span class="badge badge-light-primary">In Progress</span>
+                                                        </div>
+                                                        <!--end::Progress-->
+                                                        <!--begin::Action-->
+                                                        <a href="../../demo1/dist/apps/projects/project.html"
+                                                            class="btn btn-sm btn-light btn-active-light-primary">View</a>
+                                                        <!--end::Action-->
+                                                    </div>
+                                                    <!--end::Record-->
+                                                    <!--begin::Record-->
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                                        <!--begin::Title-->
+                                                        <a href="../../demo1/dist/apps/projects/project.html"
+                                                            class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Project
+                                                            Delivery Preparation</a>
+                                                        <!--end::Title-->
+                                                        <!--begin::Label-->
+                                                        <div class="min-w-175px">
+                                                            <span class="badge badge-light text-muted">CRM System
+                                                                Development</span>
+                                                        </div>
+                                                        <!--end::Label-->
+                                                        <!--begin::Users-->
+                                                        <div
+                                                            class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px">
+                                                            <!--begin::User-->
+                                                            <div class="symbol symbol-circle symbol-25px">
+                                                                <img src="{{ asset('assets/media/avatars/300-20.jpg') }}"
+                                                                    alt="img">
+                                                            </div>
+                                                            <!--end::User-->
+                                                            <!--begin::User-->
+                                                            <div class="symbol symbol-circle symbol-25px">
+                                                                <div
+                                                                    class="symbol-label fs-8 fw-semibold bg-success text-inverse-primary">
+                                                                    B</div>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Users-->
+                                                        <!--begin::Progress-->
+                                                        <div class="min-w-125px">
+                                                            <span class="badge badge-light-success">Completed</span>
+                                                        </div>
+                                                        <!--end::Progress-->
+                                                        <!--begin::Action-->
+                                                        <a href="../../demo1/dist/apps/projects/project.html"
+                                                            class="btn btn-sm btn-light btn-active-light-primary">View</a>
+                                                        <!--end::Action-->
+                                                    </div>
+                                                    <!--end::Record-->
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com009.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n2">
+                                                <!--begin::Timeline heading-->
+                                                <div class="overflow-auto pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging
+                                                        designs that speak human workshop</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Alan Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="{{ asset('assets/media/avatars/300-1.jpg') }}"
+                                                                alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/coding/cod008.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.2166 8.50002L10.5166 7.80007C10.1166 7.40007 10.1166 6.80005 10.5166 6.40005L13.4166 3.50002C15.5166 1.40002 18.9166 1.50005 20.8166 3.90005C22.5166 5.90005 22.2166 8.90007 20.3166 10.8001L17.5166 13.6C17.1166 14 16.5166 14 16.1166 13.6L15.4166 12.9C15.0166 12.5 15.0166 11.9 15.4166 11.5L18.3166 8.6C19.2166 7.7 19.1166 6.30002 18.0166 5.50002C17.2166 4.90002 16.0166 5.10007 15.3166 5.80007L12.4166 8.69997C12.2166 8.89997 11.6166 8.90002 11.2166 8.50002ZM11.2166 15.6L8.51659 18.3001C7.81659 19.0001 6.71658 19.2 5.81658 18.6C4.81658 17.9 4.71659 16.4 5.51659 15.5L8.31658 12.7C8.71658 12.3 8.71658 11.7001 8.31658 11.3001L7.6166 10.6C7.2166 10.2 6.6166 10.2 6.2166 10.6L3.6166 13.2C1.7166 15.1 1.4166 18.1 3.1166 20.1C5.0166 22.4 8.51659 22.5 10.5166 20.5L13.3166 17.7C13.7166 17.3 13.7166 16.7001 13.3166 16.3001L12.6166 15.6C12.3166 15.2 11.6166 15.2 11.2166 15.6Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M5.0166 9L2.81659 8.40002C2.31659 8.30002 2.0166 7.79995 2.1166 7.19995L2.31659 5.90002C2.41659 5.20002 3.21659 4.89995 3.81659 5.19995L6.0166 6.40002C6.4166 6.60002 6.6166 7.09998 6.5166 7.59998L6.31659 8.30005C6.11659 8.80005 5.5166 9.1 5.0166 9ZM8.41659 5.69995H8.6166C9.1166 5.69995 9.5166 5.30005 9.5166 4.80005L9.6166 3.09998C9.6166 2.49998 9.2166 2 8.5166 2H7.81659C7.21659 2 6.71659 2.59995 6.91659 3.19995L7.31659 4.90002C7.41659 5.40002 7.91659 5.69995 8.41659 5.69995ZM14.6166 18.2L15.1166 21.3C15.2166 21.8 15.7166 22.2 16.2166 22L17.6166 21.6C18.1166 21.4 18.4166 20.8 18.1166 20.3L16.7166 17.5C16.5166 17.1 16.1166 16.9 15.7166 17L15.2166 17.1C14.8166 17.3 14.5166 17.7 14.6166 18.2ZM18.4166 16.3L19.8166 17.2C20.2166 17.5 20.8166 17.3 21.0166 16.8L21.3166 15.9C21.5166 15.4 21.1166 14.8 20.5166 14.8H18.8166C18.0166 14.8 17.7166 15.9 18.4166 16.3Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="mb-5 pe-3">
+                                                    <!--begin::Title-->
+                                                    <a href="#"
+                                                        class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3
+                                                        New Incoming Project Files:</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 10:30 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Jan Hummer"
+                                                            data-kt-initialized="1">
+                                                            <img src="{{ asset('assets/media/avatars/300-23.jpg') }}"
+                                                                alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="" class="w-30px me-3"
+                                                                src="{{ asset('assets/media/svg/files/pdf.svg') }}">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="../../demo1/dist/apps/projects/project.html"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance KPI
+                                                                    App Guidelines</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">1.9mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--begin::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="{{ asset('assets/media/svg/files/doc.svg') }}">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Client UAT
+                                                                    Testing Results</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">18kb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="{{ asset('assets/media/svg/files/css.svg') }}">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance
+                                                                    Reports</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">20mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Icon-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Task
+                                                        <a href="#"
+                                                            class="text-primary fw-bold me-1">#45890</a>merged with
+                                                        <a href="#" class="text-primary fw-bold me-1">#45890</a>in
+                                                        “Ads Pro Admin Dashboard project:
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Initiated at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Nina Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="{{ asset('assets/media/avatars/300-14.jpg') }}"
+                                                                alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">3 new application design concepts
+                                                        added:</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Created at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Marcus Dotson"
+                                                            data-kt-initialized="1">
+                                                            <img src="{{ asset('assets/media/avatars/300-2.jpg') }}"
+                                                                alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="{{ asset('assets/media/stock/600x400/img-29.jpg') }}">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="{{ asset('assets/media/stock/600x400/img-31.jpg') }}">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-40.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6 8.725C6 8.125 6.4 7.725 7 7.725H14L18 11.725V12.925L22 9.725L12.6 2.225C12.2 1.925 11.7 1.925 11.4 2.225L2 9.725L6 12.925V8.725Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M22 9.72498V20.725C22 21.325 21.6 21.725 21 21.725H3C2.4 21.725 2 21.325 2 20.725V9.72498L11.4 17.225C11.8 17.525 12.3 17.525 12.6 17.225L22 9.72498ZM15 11.725H18L14 7.72498V10.725C14 11.325 14.4 11.725 15 11.725Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New case
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        assigned to you in Multi-platform Database Design project
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="overflow-auto pb-5">
+                                                        <!--begin::Wrapper-->
+                                                        <div class="d-flex align-items-center mt-1 fs-6">
+                                                            <!--begin::Info-->
+                                                            <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
+                                                            <!--end::Info-->
+                                                            <!--begin::User-->
+                                                            <a href="#" class="text-primary fw-bold me-1">Alice
+                                                                Tan</a>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">You have received a new order:
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Placed at 5:05 AM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Robert Rich"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-4.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <!--begin::Notice-->
+                                                    <div
+                                                        class="notice d-flex bg-light-primary rounded border-primary border border-dashed min-w-lg-600px flex-shrink-0 p-6">
+                                                        <!--begin::Icon-->
+                                                        <!--begin::Svg Icon | path: icons/duotune/coding/cod004.svg-->
+                                                        <span class="svg-icon svg-icon-2tx svg-icon-primary me-4">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.3"
+                                                                    d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z"
+                                                                    fill="currentColor"></path>
+                                                                <path
+                                                                    d="M4.06875 17.9688C3.86875 17.9688 3.66874 17.8688 3.46874 17.7688C2.96874 17.4688 2.86875 16.8688 3.16875 16.3688L6.76874 10.9688L3.16875 5.56876C2.86875 5.06876 2.96874 4.46873 3.46874 4.16873C3.96874 3.86873 4.56875 3.96878 4.86875 4.46878L8.86875 10.4688C9.06875 10.7688 9.06875 11.2688 8.86875 11.5688L4.86875 17.5688C4.66875 17.7688 4.36875 17.9688 4.06875 17.9688Z"
+                                                                    fill="currentColor"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                        <!--end::Icon-->
+                                                        <!--begin::Wrapper-->
+                                                        <div
+                                                            class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                                            <!--begin::Content-->
+                                                            <div class="mb-3 mb-md-0 fw-semibold">
+                                                                <h4 class="text-gray-900 fw-bold">Database Backup Process
+                                                                    Completed!</h4>
+                                                                <div class="fs-6 text-gray-700 pe-7">Login into Admin
+                                                                    Dashboard to make sure the data integrity is OK</div>
+                                                            </div>
+                                                            <!--end::Content-->
+                                                            <!--begin::Action-->
+                                                            <a href="#"
+                                                                class="btn btn-primary px-6 align-self-center text-nowrap">Proceed</a>
+                                                            <!--end::Action-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </div>
+                                                    <!--end::Notice-->
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm002.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M21 10H13V11C13 11.6 12.6 12 12 12C11.4 12 11 11.6 11 11V10H3C2.4 10 2 10.4 2 11V13H22V11C22 10.4 21.6 10 21 10Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M12 12C11.4 12 11 11.6 11 11V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V11C13 11.6 12.6 12 12 12Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M18.1 21H5.9C5.4 21 4.9 20.6 4.8 20.1L3 13H21L19.2 20.1C19.1 20.6 18.6 21 18.1 21ZM13 18V15C13 14.4 12.6 14 12 14C11.4 14 11 14.4 11 15V18C11 18.6 11.4 19 12 19C12.6 19 13 18.6 13 18ZM17 18V15C17 14.4 16.6 14 16 14C15.4 14 15 14.4 15 15V18C15 18.6 15.4 19 16 19C16.6 19 17 18.6 17 18ZM9 18V15C9 14.4 8.6 14 8 14C7.4 14 7 14.4 7 15V18C7 18.6 7.4 19 8 19C8.6 19 9 18.6 9 18Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New order
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        placed for Workshow Planning &amp; Budget Estimation
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Placed at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <a href="#" class="text-primary fw-bold me-1">Jimmy
+                                                            Bold</a>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                    </div>
+                                    <!--end::Timeline-->
+                                </div>
+                                <!--end::Tab panel-->
+                                <!--begin::Tab panel-->
+                                <div id="kt_activity_week" class="card-body p-0 tab-pane fade show" role="tabpanel"
+                                    aria-labelledby="kt_activity_week_tab">
+                                    <!--begin::Timeline-->
+                                    <div class="timeline">
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com009.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n2">
+                                                <!--begin::Timeline heading-->
+                                                <div class="overflow-auto pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging
+                                                        designs that speak human workshop</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Alan Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-1.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/coding/cod008.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.2166 8.50002L10.5166 7.80007C10.1166 7.40007 10.1166 6.80005 10.5166 6.40005L13.4166 3.50002C15.5166 1.40002 18.9166 1.50005 20.8166 3.90005C22.5166 5.90005 22.2166 8.90007 20.3166 10.8001L17.5166 13.6C17.1166 14 16.5166 14 16.1166 13.6L15.4166 12.9C15.0166 12.5 15.0166 11.9 15.4166 11.5L18.3166 8.6C19.2166 7.7 19.1166 6.30002 18.0166 5.50002C17.2166 4.90002 16.0166 5.10007 15.3166 5.80007L12.4166 8.69997C12.2166 8.89997 11.6166 8.90002 11.2166 8.50002ZM11.2166 15.6L8.51659 18.3001C7.81659 19.0001 6.71658 19.2 5.81658 18.6C4.81658 17.9 4.71659 16.4 5.51659 15.5L8.31658 12.7C8.71658 12.3 8.71658 11.7001 8.31658 11.3001L7.6166 10.6C7.2166 10.2 6.6166 10.2 6.2166 10.6L3.6166 13.2C1.7166 15.1 1.4166 18.1 3.1166 20.1C5.0166 22.4 8.51659 22.5 10.5166 20.5L13.3166 17.7C13.7166 17.3 13.7166 16.7001 13.3166 16.3001L12.6166 15.6C12.3166 15.2 11.6166 15.2 11.2166 15.6Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M5.0166 9L2.81659 8.40002C2.31659 8.30002 2.0166 7.79995 2.1166 7.19995L2.31659 5.90002C2.41659 5.20002 3.21659 4.89995 3.81659 5.19995L6.0166 6.40002C6.4166 6.60002 6.6166 7.09998 6.5166 7.59998L6.31659 8.30005C6.11659 8.80005 5.5166 9.1 5.0166 9ZM8.41659 5.69995H8.6166C9.1166 5.69995 9.5166 5.30005 9.5166 4.80005L9.6166 3.09998C9.6166 2.49998 9.2166 2 8.5166 2H7.81659C7.21659 2 6.71659 2.59995 6.91659 3.19995L7.31659 4.90002C7.41659 5.40002 7.91659 5.69995 8.41659 5.69995ZM14.6166 18.2L15.1166 21.3C15.2166 21.8 15.7166 22.2 16.2166 22L17.6166 21.6C18.1166 21.4 18.4166 20.8 18.1166 20.3L16.7166 17.5C16.5166 17.1 16.1166 16.9 15.7166 17L15.2166 17.1C14.8166 17.3 14.5166 17.7 14.6166 18.2ZM18.4166 16.3L19.8166 17.2C20.2166 17.5 20.8166 17.3 21.0166 16.8L21.3166 15.9C21.5166 15.4 21.1166 14.8 20.5166 14.8H18.8166C18.0166 14.8 17.7166 15.9 18.4166 16.3Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="mb-5 pe-3">
+                                                    <!--begin::Title-->
+                                                    <a href="#"
+                                                        class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3
+                                                        New Incoming Project Files:</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 10:30 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Jan Hummer"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-23.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="" class="w-30px me-3"
+                                                                src="assets/media/svg/files/pdf.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="../../demo1/dist/apps/projects/project.html"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance KPI
+                                                                    App Guidelines</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">1.9mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--begin::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/doc.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Client UAT
+                                                                    Testing Results</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">18kb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/css.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance
+                                                                    Reports</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">20mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Icon-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Task
+                                                        <a href="#"
+                                                            class="text-primary fw-bold me-1">#45890</a>merged with
+                                                        <a href="#" class="text-primary fw-bold me-1">#45890</a>in
+                                                        “Ads Pro Admin Dashboard project:
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Initiated at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Nina Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-14.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">3 new application design concepts
+                                                        added:</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Created at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Marcus Dotson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-2.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-29.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-31.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-40.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6 8.725C6 8.125 6.4 7.725 7 7.725H14L18 11.725V12.925L22 9.725L12.6 2.225C12.2 1.925 11.7 1.925 11.4 2.225L2 9.725L6 12.925V8.725Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M22 9.72498V20.725C22 21.325 21.6 21.725 21 21.725H3C2.4 21.725 2 21.325 2 20.725V9.72498L11.4 17.225C11.8 17.525 12.3 17.525 12.6 17.225L22 9.72498ZM15 11.725H18L14 7.72498V10.725C14 11.325 14.4 11.725 15 11.725Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New case
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        assigned to you in Multi-platform Database Design project
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="overflow-auto pb-5">
+                                                        <!--begin::Wrapper-->
+                                                        <div class="d-flex align-items-center mt-1 fs-6">
+                                                            <!--begin::Info-->
+                                                            <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
+                                                            <!--end::Info-->
+                                                            <!--begin::User-->
+                                                            <a href="#" class="text-primary fw-bold me-1">Alice
+                                                                Tan</a>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                    </div>
+                                    <!--end::Timeline-->
+                                </div>
+                                <!--end::Tab panel-->
+                                <!--begin::Tab panel-->
+                                <div id="kt_activity_month" class="card-body p-0 tab-pane fade show" role="tabpanel"
+                                    aria-labelledby="kt_activity_month_tab">
+                                    <!--begin::Timeline-->
+                                    <div class="timeline">
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">3 new application design concepts
+                                                        added:</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Created at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Marcus Dotson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-2.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-29.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-31.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-40.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6 8.725C6 8.125 6.4 7.725 7 7.725H14L18 11.725V12.925L22 9.725L12.6 2.225C12.2 1.925 11.7 1.925 11.4 2.225L2 9.725L6 12.925V8.725Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M22 9.72498V20.725C22 21.325 21.6 21.725 21 21.725H3C2.4 21.725 2 21.325 2 20.725V9.72498L11.4 17.225C11.8 17.525 12.3 17.525 12.6 17.225L22 9.72498ZM15 11.725H18L14 7.72498V10.725C14 11.325 14.4 11.725 15 11.725Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New case
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        assigned to you in Multi-platform Database Design project
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="overflow-auto pb-5">
+                                                        <!--begin::Wrapper-->
+                                                        <div class="d-flex align-items-center mt-1 fs-6">
+                                                            <!--begin::Info-->
+                                                            <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
+                                                            <!--end::Info-->
+                                                            <!--begin::User-->
+                                                            <a href="#" class="text-primary fw-bold me-1">Alice
+                                                                Tan</a>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm002.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M21 10H13V11C13 11.6 12.6 12 12 12C11.4 12 11 11.6 11 11V10H3C2.4 10 2 10.4 2 11V13H22V11C22 10.4 21.6 10 21 10Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M12 12C11.4 12 11 11.6 11 11V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V11C13 11.6 12.6 12 12 12Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M18.1 21H5.9C5.4 21 4.9 20.6 4.8 20.1L3 13H21L19.2 20.1C19.1 20.6 18.6 21 18.1 21ZM13 18V15C13 14.4 12.6 14 12 14C11.4 14 11 14.4 11 15V18C11 18.6 11.4 19 12 19C12.6 19 13 18.6 13 18ZM17 18V15C17 14.4 16.6 14 16 14C15.4 14 15 14.4 15 15V18C15 18.6 15.4 19 16 19C16.6 19 17 18.6 17 18ZM9 18V15C9 14.4 8.6 14 8 14C7.4 14 7 14.4 7 15V18C7 18.6 7.4 19 8 19C8.6 19 9 18.6 9 18Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New order
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        placed for Workshow Planning &amp; Budget Estimation
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Placed at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <a href="#" class="text-primary fw-bold me-1">Jimmy
+                                                            Bold</a>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com009.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n2">
+                                                <!--begin::Timeline heading-->
+                                                <div class="overflow-auto pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging
+                                                        designs that speak human workshop</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Alan Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-1.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/coding/cod008.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.2166 8.50002L10.5166 7.80007C10.1166 7.40007 10.1166 6.80005 10.5166 6.40005L13.4166 3.50002C15.5166 1.40002 18.9166 1.50005 20.8166 3.90005C22.5166 5.90005 22.2166 8.90007 20.3166 10.8001L17.5166 13.6C17.1166 14 16.5166 14 16.1166 13.6L15.4166 12.9C15.0166 12.5 15.0166 11.9 15.4166 11.5L18.3166 8.6C19.2166 7.7 19.1166 6.30002 18.0166 5.50002C17.2166 4.90002 16.0166 5.10007 15.3166 5.80007L12.4166 8.69997C12.2166 8.89997 11.6166 8.90002 11.2166 8.50002ZM11.2166 15.6L8.51659 18.3001C7.81659 19.0001 6.71658 19.2 5.81658 18.6C4.81658 17.9 4.71659 16.4 5.51659 15.5L8.31658 12.7C8.71658 12.3 8.71658 11.7001 8.31658 11.3001L7.6166 10.6C7.2166 10.2 6.6166 10.2 6.2166 10.6L3.6166 13.2C1.7166 15.1 1.4166 18.1 3.1166 20.1C5.0166 22.4 8.51659 22.5 10.5166 20.5L13.3166 17.7C13.7166 17.3 13.7166 16.7001 13.3166 16.3001L12.6166 15.6C12.3166 15.2 11.6166 15.2 11.2166 15.6Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M5.0166 9L2.81659 8.40002C2.31659 8.30002 2.0166 7.79995 2.1166 7.19995L2.31659 5.90002C2.41659 5.20002 3.21659 4.89995 3.81659 5.19995L6.0166 6.40002C6.4166 6.60002 6.6166 7.09998 6.5166 7.59998L6.31659 8.30005C6.11659 8.80005 5.5166 9.1 5.0166 9ZM8.41659 5.69995H8.6166C9.1166 5.69995 9.5166 5.30005 9.5166 4.80005L9.6166 3.09998C9.6166 2.49998 9.2166 2 8.5166 2H7.81659C7.21659 2 6.71659 2.59995 6.91659 3.19995L7.31659 4.90002C7.41659 5.40002 7.91659 5.69995 8.41659 5.69995ZM14.6166 18.2L15.1166 21.3C15.2166 21.8 15.7166 22.2 16.2166 22L17.6166 21.6C18.1166 21.4 18.4166 20.8 18.1166 20.3L16.7166 17.5C16.5166 17.1 16.1166 16.9 15.7166 17L15.2166 17.1C14.8166 17.3 14.5166 17.7 14.6166 18.2ZM18.4166 16.3L19.8166 17.2C20.2166 17.5 20.8166 17.3 21.0166 16.8L21.3166 15.9C21.5166 15.4 21.1166 14.8 20.5166 14.8H18.8166C18.0166 14.8 17.7166 15.9 18.4166 16.3Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="mb-5 pe-3">
+                                                    <!--begin::Title-->
+                                                    <a href="#"
+                                                        class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3
+                                                        New Incoming Project Files:</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 10:30 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Jan Hummer"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-23.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="" class="w-30px me-3"
+                                                                src="assets/media/svg/files/pdf.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="../../demo1/dist/apps/projects/project.html"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance KPI
+                                                                    App Guidelines</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">1.9mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--begin::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/doc.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Client UAT
+                                                                    Testing Results</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">18kb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/css.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance
+                                                                    Reports</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">20mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Icon-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Task
+                                                        <a href="#"
+                                                            class="text-primary fw-bold me-1">#45890</a>merged with
+                                                        <a href="#" class="text-primary fw-bold me-1">#45890</a>in
+                                                        “Ads Pro Admin Dashboard project:
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Initiated at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Nina Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-14.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                    </div>
+                                    <!--end::Timeline-->
+                                </div>
+                                <!--end::Tab panel-->
+                                <!--begin::Tab panel-->
+                                <div id="kt_activity_year" class="card-body p-0 tab-pane fade show" role="tabpanel"
+                                    aria-labelledby="kt_activity_year_tab">
+                                    <!--begin::Timeline-->
+                                    <div class="timeline">
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/coding/cod008.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M11.2166 8.50002L10.5166 7.80007C10.1166 7.40007 10.1166 6.80005 10.5166 6.40005L13.4166 3.50002C15.5166 1.40002 18.9166 1.50005 20.8166 3.90005C22.5166 5.90005 22.2166 8.90007 20.3166 10.8001L17.5166 13.6C17.1166 14 16.5166 14 16.1166 13.6L15.4166 12.9C15.0166 12.5 15.0166 11.9 15.4166 11.5L18.3166 8.6C19.2166 7.7 19.1166 6.30002 18.0166 5.50002C17.2166 4.90002 16.0166 5.10007 15.3166 5.80007L12.4166 8.69997C12.2166 8.89997 11.6166 8.90002 11.2166 8.50002ZM11.2166 15.6L8.51659 18.3001C7.81659 19.0001 6.71658 19.2 5.81658 18.6C4.81658 17.9 4.71659 16.4 5.51659 15.5L8.31658 12.7C8.71658 12.3 8.71658 11.7001 8.31658 11.3001L7.6166 10.6C7.2166 10.2 6.6166 10.2 6.2166 10.6L3.6166 13.2C1.7166 15.1 1.4166 18.1 3.1166 20.1C5.0166 22.4 8.51659 22.5 10.5166 20.5L13.3166 17.7C13.7166 17.3 13.7166 16.7001 13.3166 16.3001L12.6166 15.6C12.3166 15.2 11.6166 15.2 11.2166 15.6Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M5.0166 9L2.81659 8.40002C2.31659 8.30002 2.0166 7.79995 2.1166 7.19995L2.31659 5.90002C2.41659 5.20002 3.21659 4.89995 3.81659 5.19995L6.0166 6.40002C6.4166 6.60002 6.6166 7.09998 6.5166 7.59998L6.31659 8.30005C6.11659 8.80005 5.5166 9.1 5.0166 9ZM8.41659 5.69995H8.6166C9.1166 5.69995 9.5166 5.30005 9.5166 4.80005L9.6166 3.09998C9.6166 2.49998 9.2166 2 8.5166 2H7.81659C7.21659 2 6.71659 2.59995 6.91659 3.19995L7.31659 4.90002C7.41659 5.40002 7.91659 5.69995 8.41659 5.69995ZM14.6166 18.2L15.1166 21.3C15.2166 21.8 15.7166 22.2 16.2166 22L17.6166 21.6C18.1166 21.4 18.4166 20.8 18.1166 20.3L16.7166 17.5C16.5166 17.1 16.1166 16.9 15.7166 17L15.2166 17.1C14.8166 17.3 14.5166 17.7 14.6166 18.2ZM18.4166 16.3L19.8166 17.2C20.2166 17.5 20.8166 17.3 21.0166 16.8L21.3166 15.9C21.5166 15.4 21.1166 14.8 20.5166 14.8H18.8166C18.0166 14.8 17.7166 15.9 18.4166 16.3Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="mb-5 pe-3">
+                                                    <!--begin::Title-->
+                                                    <a href="#"
+                                                        class="fs-5 fw-semibold text-gray-800 text-hover-primary mb-2">3
+                                                        New Incoming Project Files:</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Sent at 10:30 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Jan Hummer"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-23.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-5">
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="" class="w-30px me-3"
+                                                                src="assets/media/svg/files/pdf.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="../../demo1/dist/apps/projects/project.html"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance KPI
+                                                                    App Guidelines</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">1.9mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--begin::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center pe-10 pe-lg-20">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/doc.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Client UAT
+                                                                    Testing Results</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">18kb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Info-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex flex-aligns-center">
+                                                            <!--begin::Icon-->
+                                                            <img alt="../../demo1/dist/apps/projects/project.html"
+                                                                class="w-30px me-3"
+                                                                src="assets/media/svg/files/css.svg">
+                                                            <!--end::Icon-->
+                                                            <!--begin::Info-->
+                                                            <div class="ms-1 fw-semibold">
+                                                                <!--begin::Desc-->
+                                                                <a href="#"
+                                                                    class="fs-6 text-hover-primary fw-bold">Finance
+                                                                    Reports</a>
+                                                                <!--end::Desc-->
+                                                                <!--begin::Number-->
+                                                                <div class="text-gray-400">20mb</div>
+                                                                <!--end::Number-->
+                                                            </div>
+                                                            <!--end::Icon-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">Task
+                                                        <a href="#"
+                                                            class="text-primary fw-bold me-1">#45890</a>merged with
+                                                        <a href="#" class="text-primary fw-bold me-1">#45890</a>in
+                                                        “Ads Pro Admin Dashboard project:
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Initiated at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Nina Nilson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-14.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path opacity="0.3"
+                                                                d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                                                fill="currentColor"></path>
+                                                            <path
+                                                                d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">3 new application design concepts
+                                                        added:</div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Created at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <div class="symbol symbol-circle symbol-25px"
+                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
+                                                            data-bs-placement="top" aria-label="Marcus Dotson"
+                                                            data-kt-initialized="1">
+                                                            <img src="assets/media/avatars/300-2.jpg" alt="img">
+                                                        </div>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                                <!--begin::Timeline details-->
+                                                <div class="overflow-auto pb-5">
+                                                    <div
+                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-700px p-7">
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-29.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay me-10">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-31.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                        <!--begin::Item-->
+                                                        <div class="overlay">
+                                                            <!--begin::Image-->
+                                                            <div class="overlay-wrapper">
+                                                                <img alt="img" class="rounded w-150px"
+                                                                    src="assets/media/stock/600x400/img-40.jpg">
+                                                            </div>
+                                                            <!--end::Image-->
+                                                            <!--begin::Link-->
+                                                            <div class="overlay-layer bg-dark bg-opacity-10 rounded">
+                                                                <a href="#"
+                                                                    class="btn btn-sm btn-primary btn-shadow">Explore</a>
+                                                            </div>
+                                                            <!--end::Link-->
+                                                        </div>
+                                                        <!--end::Item-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Timeline details-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6 8.725C6 8.125 6.4 7.725 7 7.725H14L18 11.725V12.925L22 9.725L12.6 2.225C12.2 1.925 11.7 1.925 11.4 2.225L2 9.725L6 12.925V8.725Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M22 9.72498V20.725C22 21.325 21.6 21.725 21 21.725H3C2.4 21.725 2 21.325 2 20.725V9.72498L11.4 17.225C11.8 17.525 12.3 17.525 12.6 17.225L22 9.72498ZM15 11.725H18L14 7.72498V10.725C14 11.325 14.4 11.725 15 11.725Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New case
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        assigned to you in Multi-platform Database Design project
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="overflow-auto pb-5">
+                                                        <!--begin::Wrapper-->
+                                                        <div class="d-flex align-items-center mt-1 fs-6">
+                                                            <!--begin::Info-->
+                                                            <div class="text-muted me-2 fs-7">Added at 4:23 PM by</div>
+                                                            <!--end::Info-->
+                                                            <!--begin::User-->
+                                                            <a href="#" class="text-primary fw-bold me-1">Alice
+                                                                Tan</a>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Wrapper-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm002.svg-->
+                                                    <span class="svg-icon svg-icon-2 svg-icon-gray-500">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24"
+                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M21 10H13V11C13 11.6 12.6 12 12 12C11.4 12 11 11.6 11 11V10H3C2.4 10 2 10.4 2 11V13H22V11C22 10.4 21.6 10 21 10Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M12 12C11.4 12 11 11.6 11 11V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V11C13 11.6 12.6 12 12 12Z"
+                                                                fill="currentColor"></path>
+                                                            <path opacity="0.3"
+                                                                d="M18.1 21H5.9C5.4 21 4.9 20.6 4.8 20.1L3 13H21L19.2 20.1C19.1 20.6 18.6 21 18.1 21ZM13 18V15C13 14.4 12.6 14 12 14C11.4 14 11 14.4 11 15V18C11 18.6 11.4 19 12 19C12.6 19 13 18.6 13 18ZM17 18V15C17 14.4 16.6 14 16 14C15.4 14 15 14.4 15 15V18C15 18.6 15.4 19 16 19C16.6 19 17 18.6 17 18ZM9 18V15C9 14.4 8.6 14 8 14C7.4 14 7 14.4 7 15V18C7 18.6 7.4 19 8 19C8.6 19 9 18.6 9 18Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="pe-3 mb-5">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2">New order
+                                                        <a href="#" class="text-primary fw-bold me-1">#67890</a>is
+                                                        placed for Workshow Planning &amp; Budget Estimation
+                                                    </div>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="d-flex align-items-center mt-1 fs-6">
+                                                        <!--begin::Info-->
+                                                        <div class="text-muted me-2 fs-7">Placed at 4:23 PM by</div>
+                                                        <!--end::Info-->
+                                                        <!--begin::User-->
+                                                        <a href="#" class="text-primary fw-bold me-1">Jimmy
+                                                            Bold</a>
+                                                        <!--end::User-->
+                                                    </div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                    </div>
+                                    <!--end::Timeline-->
+                                </div>
+                                <!--end::Tab panel-->
+                            </div>
+                            <!--end::Tab Content-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                </div>
+                <!--end:::Engagement Tab pane-->
+            </div>
+            <!--end:::Tab content-->
+        </div>
+
+    </div>
+
+@endsection
+@section('page_js')
+
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script></script>
+
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $("#users-table").on("click", ".edit-user", function(e) {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var email = $(this).data('email');
+            var status = $(this).data('status');
+            $('#user-id').val(id);
+            $('#user-name').val(name);
+            $('#user-email').val(email);
+            $('#user-status').val(status);
+        });
+
+        function deleteUser(id) {
+            Swal.fire({
+                title: "Are you sure to delete ?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                customClass: {
+                    confirmButton: "btn-danger"
+                }
+            }).then(function(result) {
+                if (result.value) {
+                    var url = '{{ route('user.delete') }}';
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            if (response.status == true) {
+                                toastr.success(response.message, "success");
+                                location.reload();
+                            } else {
+                                toastr.error(response.message, "error");
+                            }
+
+
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+
+@endsection
