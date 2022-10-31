@@ -43,8 +43,9 @@ Route::group(['as' => 'user.', 'prefix' => 'users', 'namespace' => 'App\Http\Con
 });
 
 Route::group(['as' => 'organizations.', 'prefix' => 'organizations', 'namespace' => 'App\Http\Controllers\Api'], function () {
-    Route::get('listing', ['as' => 'offers', 'uses' => 'OrganizationController@index']);
+    Route::get('listing', ['as' => 'index', 'uses' => 'OrganizationController@index']);
     Route::get('listing/{id}', ['as' => 'offers.edit', 'uses' => 'OrganizationController@singleOrganization']);
+    Route::get('{id}/offers', ['as' => 'offers', 'uses' => 'OrganizationController@OrganizationOffers']);
 });
 
 Route::group(['as' => 'offers.', 'prefix' => 'offers', 'namespace' => 'App\Http\Controllers\Api'], function () {
