@@ -49,12 +49,12 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
 
 
 Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Offers'], function () {
-  //  Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
-   // Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
-  //  Route::post('create', ['as' => 'create','uses' => 'OfferController@create']);
-   // Route::post('delete', ['as' => 'delete','uses' => 'OfferController@delete']);
-    ///Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
-    //Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
+    Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
+    Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
+    Route::post('create', ['as' => 'create','uses' => 'OfferController@create']);
+    Route::post('delete', ['as' => 'delete','uses' => 'OfferController@delete']);
+    Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
+    Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
 });
 
 
