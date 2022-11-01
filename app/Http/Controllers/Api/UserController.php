@@ -28,7 +28,7 @@ class UserController extends Controller
             //     'status' => true,
             //     'data' => UserResource::make($user)
             // ];
-            // Route to dashboard
+            // Route to dashboardd
             return response()->json([
                 'redirect' => route('dashboard')
             ]);
