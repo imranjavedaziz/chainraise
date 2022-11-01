@@ -31,8 +31,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Install libraries
         run: | 
-          sudo service nginx stop
-          composer install
+          
+         # composer install
     
       # Runs a set of commands using the runners shell
       - name: Deploy the app
@@ -43,4 +43,4 @@ jobs:
           sudo cp -rf * /var/www/html/manage/
           sudo php /var/www/html/manage/artisan storage:link
           sudo chown -R www-data. /var/www/html/manage
-          sudo service nginx start
+         sudo service nginx start
