@@ -43,4 +43,4 @@ jobs:
           sudo cp -rf * /var/www/html/manage/
           sudo php /var/www/html/manage/artisan storage:link
           sudo chown -R www-data. /var/www/html/manage
-          sudo service nginx stop
+          sudo service nginx start
