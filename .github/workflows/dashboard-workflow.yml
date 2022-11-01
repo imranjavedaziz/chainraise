@@ -30,8 +30,7 @@ jobs:
          ref: 'master'
       # Runs a single command using the runners shell
       - name: Install libraries
-        run: |
-          sudo systemctl stop apache2.service
+        run:
           composer install
     
       # Runs a set of commands using the runners shell
@@ -40,7 +39,6 @@ jobs:
           cp /home/ubuntu/actions-runner/_work/env-backup/.env $GITHUB_WORKSPACE
           php artisan migrate:fresh --seed
           php artisan cache:clear
-          php artisan storage:link
           sudo cp -rf * /var/www/html/manage/
+          sudo php /var/www/html/manage/artisan storage:link
           sudo chown -R www-data. /var/www/html/manage
-          sudo systemctl start apache2.service

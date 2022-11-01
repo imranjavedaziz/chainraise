@@ -20,9 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['as' => 'auth.', 'prefix' => 'auth', 'namespace' => 'App\Http\Controllers\Api'], function () {
     Route::post('login',            ['as' => 'user.login', 'uses' => 'UserController@login']);
     Route::post('register',         ['as' => 'user.register', 'uses' => 'UserController@register']);
-    Route::post('password-forgot',  ['as' => 'user.password.forgot', 'uses' => 'NewPasswordController@forgotPassword']);
-    Route::post('validate-token',   ['as' => 'user.password.token.validation', 'uses' => 'NewPasswordController@validateToken']);
-    Route::post('new-password',   ['as' => 'user.password.reset', 'uses' => 'NewPasswordController@setNewPassword']);
+  //  Route::post('password-forgot',  ['as' => 'user.password.forgot', 'uses' => 'NewPasswordController@forgotPassword']);
+   // Route::post('validate-token',   ['as' => 'user.password.token.validation', 'uses' => 'NewPasswordController@validateToken']);
+   // Route::post('new-password',   ['as' => 'user.password.reset', 'uses' => 'NewPasswordController@setNewPassword']);
 });
 
 
