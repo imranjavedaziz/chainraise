@@ -41,6 +41,6 @@ jobs:
           php artisan migrate:fresh --seed
           php artisan cache:clear
           php artisan storage:link
-          sudo cp -rf * /var/www/html/laravel/
-          sudo chown -R www-data. /var/www/html/laravel
+          sudo cp -rf * /var/www/html/manage/
+          sudo chown -R www-data. /var/www/html/manage
           sudo systemctl start apache2.service
