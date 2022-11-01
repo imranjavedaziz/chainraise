@@ -24,10 +24,15 @@ class UserController extends Controller
         ]);
         if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
             $user = Auth::user();
-            return [
-                'status' => true,
-                'data' => UserResource::make($user)
-            ];
+            // return [
+            //     'status' => true,
+            //     'data' => UserResource::make($user)
+            // ];
+            // Route to dashboard
+            return response()->json([
+                'redirect' => route('dashboard')
+            ]);
+
        }else{
             return response()->json([
                 'status' => true,

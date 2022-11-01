@@ -2375,7 +2375,203 @@
                 <!--end:::Documents Tab pane-->
 
                 <!--begin:::Engagement Tab pane-->
-                 
+                <div class="tab-pane fade" id="kt_engagement_tab" role="tabpanel">
+
+                    <div class="col-lg-3 ">
+                        <div
+                            class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-200px mb-5 mb-xl-10"
+                            style="background-color: #F1416C;background-image:url({{asset('assets/media/patterns/vector-1.png')}})">
+                            <!--begin::Header-->
+                            <div class="card-header pt-5">
+                                <!--begin::Title-->
+                                <div class="card-title d-flex flex-column">
+                                    <!--begin::Amount-->
+                                    <span class="fs-6 fw-bold text-white me-2 lh-1 ls-n2">Techware Labs</span>
+                                    <!--end::Amount-->
+                                    <!--begin::Subtitle-->
+                                    <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Techware Labs</span>
+                                    <!--end::Subtitle-->
+                                </div>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Card body-->
+                            <div class="card-body d-flex flex-row align-items-end pt-0">
+                                <!--begin::Progress-->
+                                <div class="d-flex flex-column align-items-center flex-column mt-3 w-100">
+
+                                    <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">191</span>
+                                    <!--end::Amount-->
+                                    <!--begin::Subtitle-->
+                                    <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Engagements</span>
+                                </div>
+                                <div class="d-flex flex-column align-items-center flex-column mt-3 w-100">
+
+                                    <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">0</span>
+                                    <!--end::Amount-->
+                                    <!--begin::Subtitle-->
+                                    <span class="text-white opacity-75 pt-1 fw-semibold fs-6">Notes</span>
+                                </div>
+                                <!--end::Progress-->
+                            </div>
+                            <!--end::Card body-->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <!--begin::Card head-->
+                        <div class="card-header card-header-stretch">                            <!--begin::Title-->
+                            <div class="card-title d-flex align-items-center">
+                                Filter by
+                                <div class="m-lg-4 me-6 my-1">
+                                    <select id="kt_filter_year" name="year" data-control="select2"
+                                            data-hide-search="true" class="form-select form-select-solid">
+                                        <option value="All" selected="selected">All Engagement</option>
+                                        <option value="documents">Documents</option>
+                                        <option value="email">Email</option>
+                                        <option value="notes">Notes</option>
+                                        <option value="viewed">Viewed</option>
+                                        <option value="clicked">Clicked</option>
+                                        <option value="watched">Watched</option>
+                                        <option value="invested">Invested</option>
+                                    </select>
+                                </div>
+                                <div class="me-4 my-1">
+                                    <select id="kt_filter_orders" name="orders" data-control="select2"
+                                            data-hide-search="true" data-dropdown-css-class="w-250px"
+                                            class="form-select form-select-solid">
+                                        <option value="All" selected="selected">All Offers</option>
+                                        <option value="">Techware Labs (Techware Labs)</option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <a class="btn btn-primary">
+                                        Export
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Card head-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+                            <!--begin::Tab Content-->
+                            <div class="tab-content">
+                                <!--begin::Tab panel-->
+                                <div id="kt_activity_today" class="card-body p-0 tab-pane fade show active"
+                                     role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                    <!--begin::Timeline-->
+                                    <div class="timeline">
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px me-4">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
+                                                        <i class="fas fa-folder"></i>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="d-flex flex-row mt-4 pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2 me-5">
+                                                        Viewed Form C/A and Token Grant, Page 2
+                                                        <span class="text-muted"> for 4 minutes</span>
+
+                                                    </div>
+                                                    <div><span class="badge badge-light-primary">5 Days Ago</span></div>
+                                                    <!--end::Title-->
+
+                                                </div>
+                                                <!--end::Timeline heading-->
+
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <i class="fas fa-eye"></i>
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n2">
+                                                <!--begin::Timeline heading-->
+                                                <div class="d-flex flex-row mt-4 pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="fs-5 fw-semibold mb-2 me-5">
+                                                        Viewed Techware Labs Techware Labs
+                                                        <span class="text-muted"> for 8 seconds</span>
+
+                                                    </div>
+                                                    <div><span class="badge badge-light-primary">5 Days Ago</span></div>
+                                                    <!--end::Title-->
+                                                </div>
+                                                    <!--end::Title-->
+                                                <!--end::Timeline heading-->
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+                                        <!--begin::Timeline item-->
+                                        <div class="timeline-item">
+                                            <!--begin::Timeline line-->
+                                            <div class="timeline-line w-40px"></div>
+                                            <!--end::Timeline line-->
+                                            <!--begin::Timeline icon-->
+                                            <div class="timeline-icon symbol symbol-circle symbol-40px">
+                                                <div class="symbol-label bg-light">
+                                                    <!--begin::Svg Icon | path: icons/duotune/coding/cod008.svg-->
+                                                    <i class="fas fa-hand-pointer"></i>
+                                                    <!--end::Svg Icon-->
+                                                </div>
+                                            </div>
+                                            <!--end::Timeline icon-->
+                                            <!--begin::Timeline content-->
+                                            <div class="timeline-content mb-10 mt-n1">
+                                                <!--begin::Timeline heading-->
+                                                <div class="mb-5 pe-3">
+                                                    <!--begin::Title-->
+                                                    <div class="d-flex flex-row mt-4 pe-3">
+                                                        <!--begin::Title-->
+                                                        <div class="fs-5 fw-semibold mb-2 me-5">
+                                                            Clicked Learn More on Offerings
+                                                        </div>
+                                                        <div><span class="badge badge-light-primary">5 Days Ago</span></div>
+                                                        <!--end::Title-->
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <!--end::Timeline content-->
+                                        </div>
+                                        <!--end::Timeline item-->
+
+                                    </div>
+                                    <!--end::Timeline-->
+                                </div>
+                                <!--end::Tab panel-->
+                            </div>
+                            <!--end::Tab Content-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                </div>
                 <!--end:::Engagement Tab pane-->
             </div>
             <!--end:::Tab content-->
