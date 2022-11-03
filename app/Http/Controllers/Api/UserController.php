@@ -18,16 +18,11 @@ class UserController extends Controller
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
-
         if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
-            
             $user = Auth::user();
-          //return  $response = $this->withSession(['banned' => false])->get('/');
-          return $this->actingAs($user, 'web');
-                        // return redirect()->to(url('dashboard'));
-            // if(Auth::check()){
-                
-            // }
+            if(Auth::check(){
+                return redirect()->to(url('dashboard'));
+            }
             // return [
             //     'status' => true,
             //     'data' => UserResource::make($user)
