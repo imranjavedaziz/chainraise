@@ -38,7 +38,7 @@ jobs:
       - name: Deploying CMS
         run: |
           cp /home/ubuntu/actions-runner/_work/env-backup/.env $GITHUB_WORKSPACE
-      #    php artisan migrate:fresh --seed
+      
           php artisan cache:clear
           sudo cp -rf * /var/www/html/manage/
           sudo php /var/www/html/manage/artisan storage:link
