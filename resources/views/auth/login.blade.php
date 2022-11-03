@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
-
 <head>
 
     <title>Chainraise | Login 3.3</title>
