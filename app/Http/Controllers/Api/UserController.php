@@ -20,13 +20,11 @@ class UserController extends Controller
         ]);
 
         if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
+            
             $user = Auth::user();
-
-            $response = $this->actingAs($user)
-                         ->withSession(['banned' => false])
-                         ->get('/');
-
-                         return redirect()->to(url('dashboard'));
+          //return  $response = $this->withSession(['banned' => false])->get('/');
+          return $this->actingAs($user, 'web');
+                        // return redirect()->to(url('dashboard'));
             // if(Auth::check()){
                 
             // }
