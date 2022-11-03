@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client;
 class UserController extends Controller
 {
     public function login(Request $request)
@@ -18,11 +19,16 @@ class UserController extends Controller
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
+
+        $http = new \GuzzleHttp\Client;
+
         if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
             $user = Auth::user();
-            if(Auth::check()){
-                return redirect()->to(url('dashboard'));
-            }
+            Auth::login($user);
+            return redirect()->to(url('dashboard'));
+            // if(Auth::check()){
+            //     return redirect()->to(url('dashboard'));
+            // }
             // return [
             //     'status' => true,
             //     'data' => UserResource::make($user)
