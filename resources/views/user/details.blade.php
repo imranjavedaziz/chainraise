@@ -107,7 +107,9 @@
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}
-                                        {{ $user->userDetail->last_name }} </span>
+                                        {{ $user->userDetail->last_name }}
+                                        - <small class="text-info" > {{ucfirst($user->roles()->pluck('name')->implode(' '))}}</small>
+                                    </span>
                                 </div>
                                 <!--end::Name-->
                                 <!--begin::Info-->
@@ -937,50 +939,45 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body pt-0 pb-5">
-                            <form class="form" method="post" action="#"
-                                enctype="multipart/form-data"> @csrf
-
+                            <form class="form" method="post" action="#"  enctype="multipart/form-data"> @csrf
                                 <div class="card-body">
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Net Worth <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"
-                                                data-placeholder="Net Worth*">
+                                            <select class="form-select" required data-control="select2"  data-placeholder="Net Worth*" name="net_worth">
                                                 <option></option>
-                                                <option>less than $100,000</option>
-                                                <option>$100,001 - $250,000</option>
-                                                <option>$250,001 - $500,000</option>
-                                                <option>$500,001 - $1,000,000</option>
-                                                <option>$1,000,001 - $5,000,000</option>
-                                                <option>more than $5,000,000</option>
+
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '0-100000' )         selected  @endif value="0-100000">Less than $100,000</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '100001-50000' )     selected  @endif value="100001-50000" > $100,001 - $250,000</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '250001-500000' )    selected  @endif value="250001-500000"> $250,001 - $500,000</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '500001-1000000' )   selected  @endif value="500001-1000000"> $500,001 - $1,000,000</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '1000001-5000000' )  selected  @endif value="1000001-5000000"> $1,000,001 - $5,000,000</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '5000000' )          selected  @endif value="5000000">more than $5,000,000</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Annual Net Income</label>
-                                            <input type="text" class="form-control" name="address"
-                                                value="{{ old('annual_net_income') }}" placeholder="Annual Net Income">
+                                            <input type="text" class="form-control" name="annual_net_income" @if($user->identity_verification) value="{{ $user->identity_verification->annual_net_income}}" @endif  placeholder="Annual Net Income">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Highest Education <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"
-                                                data-placeholder="Highest Education*">
+                                            <select class="form-select" required data-control="select2"  data-placeholder="Highest Education*" name="highest_education" >
                                                 <option></option>
-                                                <option>Less than High School</option>
-                                                <option>High School Graduate</option>
-                                                <option>Some College</option>
-                                                <option>Associate's Degree</option>
-                                                <option>Bachelor's Degree</option>
-                                                <option>Master's Degree</option>
-                                                <option>Doctorate</option>
-                                                <option>(not set)</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'Less than High School')  selected  @endif  value="Less than High School"  >Less than High School</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'High School Graduate')   selected  @endif  value="High School Graduate" >High School Graduate</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'Some College')           selected  @endif  value="Some College" >Some College</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Associate's Degree")     selected  @endif  value="Associate's Degree">Associate's Degree</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Bachelor's Degree")      selected  @endif  value="Bachelor's Degree">Bachelor's Degree</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Master's Degree")        selected  @endif  value="Master's Degree" >Master's Degree</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'doctorate')              selected  @endif  value="doctorate">Doctorate</option>
+                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'not set')                selected  @endif  value="not set">(not set)</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Risk Tolerance <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"
-                                                data-placeholder="Risk Tolerance*">
+                                            <select class="form-select" data-control="select2"  data-placeholder="Risk Tolerance*" name="risk_tolerance">
                                                 <option></option>
                                                 <option>Conservative</option>
                                                 <option>Moderate</option>
@@ -992,8 +989,7 @@
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Investment Experience <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"
-                                                data-placeholder="Investment Experience*">
+                                            <select class="form-select" data-control="select2"   data-placeholder="Investment Experience*" name="investment_experience" >
                                                 <option></option>
                                                 <option>None</option>
                                                 <option>Limited</option>
@@ -1004,24 +1000,23 @@
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Age <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2" data-placeholder="Age*">
+                                            <select class="form-select" data-control="select2" data-placeholder="Age*" name="age">
                                                 <option></option>
-                                                <option>Under 30</option>
-                                                <option>30 - 39</option>
-                                                <option>40 - 49</option>
-                                                <option>50 - 59</option>
-                                                <option>60 - 69</option>
-                                                <option>70 - 79</option>
-                                                <option>Over 79</option>
-                                                <option>(not set)</option>
+                                                <option value="29"> Under 30</option>
+                                                <option value="30-39">30 - 39</option>
+                                                <option value="40-49">40 - 49</option>
+                                                <option value="50-59">50 - 59</option>
+                                                <option value="60-69">60 - 69</option>
+                                                <option value="70-79">70 - 79</option>
+                                                <option value="80">Over 79</option>
+                                                <option value="">(not set)</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Gender <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"
-                                                data-placeholder="Gender*">
+                                            <select class="form-select" data-control="select2"  data-placeholder="Gender*" name="gender">
                                                 <option></option>
                                                 <option>Male</option>
                                                 <option>Femlae</option>

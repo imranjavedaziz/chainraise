@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\IdentityVerification;
+use App\Models\InvesmentProfile;
 use App\Models\TrustSetting;
 use App\Models\User;
 use App\Models\UserDetail;
@@ -24,7 +25,8 @@ class UserController extends Controller
     }
     public function details($id)
     {
-        $user = User::with('userDetail','identityVerification','trustSetting')->find($id);
+        
+         $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
         return view('user.details',compact('user'));
     }
 

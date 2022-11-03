@@ -1,7 +1,5 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,24 +10,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('auth.login');
 });
 Route::get('login-test', function () {
     return view('auth.login_test');
 });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Role'], function () {
     Route::get('index', ['as' => 'index','uses' => 'RoleController@index']);
     Route::post('create', ['as' => 'save','uses' => 'RoleController@save']);
 });
-
-
 Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
     Route::get('index', ['as' => 'index','uses' => 'UserController@index']);
     Route::get('details/{id}', ['as' => 'details','uses' => 'UserController@details']);
@@ -45,10 +38,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::post('update', ['as' => 'update','uses' => 'UserController@update']);
     Route::post('delete', ['as' => 'delete','uses' => 'UserController@delete']);
 });
-
-
-
-Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Offers'], function () {
+Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin'],'namespace'=>'App\Http\Controllers\Offers'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
     Route::post('create', ['as' => 'create','uses' => 'OfferController@create']);
@@ -56,9 +46,6 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
 });
-
-
-
 Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Organizations'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OrganizationsController@index']);
     Route::post('create', ['as' => 'create','uses' => 'OrganizationsController@create']);
@@ -66,8 +53,4 @@ Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' =
     Route::post('update', ['as' => 'update','uses' => 'OrganizationsController@update']);
     Route::post('delete', ['as' => 'delete','uses' => 'OrganizationsController@delete']);
 });
-
-
-
-
 require __DIR__.'/auth.php';

@@ -63,4 +63,8 @@ class User extends Authenticatable  implements HasMedia
     {
         return $this->hasOne(TrustSetting::class);
     }
+    public function invesmentProfie()
+    {
+        return $this->hasOne(InvesmentProfile::class);
+    }
 }

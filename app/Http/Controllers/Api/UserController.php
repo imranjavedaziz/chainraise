@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InvestorResource;
 use App\Http\Resources\UserResource;
@@ -12,10 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
 class UserController extends Controller
 {
-
     public function login(Request $request)
     {
         $login =  $request->validate([
@@ -24,15 +20,18 @@ class UserController extends Controller
         ]);
         if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
             $user = Auth::user();
+            if(Auth::check(){
+                return redirect()->to(url('dashboard'));
+            }
             // return [
             //     'status' => true,
             //     'data' => UserResource::make($user)
             // ];
             // Route to dashboardd
-            return response()->json([
-                'redirect' => route('dashboard')
-            ]);
-
+            // ddeer
+            // return response()->json([
+            //     'redirect' => route('dashboard')
+            // ]);
        }else{
             return response()->json([
                 'status' => true,
@@ -40,7 +39,6 @@ class UserController extends Controller
             ], 404);
         }
     }
-
     public function investors()
     {
             $users = User::role('investor')->with('userDetail')->get();
@@ -48,12 +46,9 @@ class UserController extends Controller
                 'status' => true,
                 'data' => InvestorResource::collection($users)
             ]);
-            
     }
-
     public function investor_create(Request $request)
     {
-         
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',
@@ -72,13 +67,11 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-        
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
             $agree_consent_electronic =false;
         }
-      
         DB::beginTransaction();
         try{
             $user = new User;
@@ -116,7 +109,6 @@ class UserController extends Controller
             }elseif($request->account_type == 'issuer') {
                 $user->assignRole('issuer');
             }
-            
             DB::commit();
             return response([
                 'status' => true,
@@ -129,5 +121,4 @@ class UserController extends Controller
             ]);
         }       
     }
-
 }

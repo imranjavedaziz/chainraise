@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
+@section('page_name', 'Dashboard')
 @section('page_content')
 <div class="d-flex flex-column flex-column-fluid">
     <!--begin::Toolbar-->
@@ -31,7 +32,6 @@
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
-        
         </div>
         <!--end::Toolbar container-->
     </div>
@@ -2761,5 +2761,4 @@
 <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
-
 @endsection
