@@ -25,11 +25,13 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+          //  $request->session()->regenerate();
+            return 123;
+            //return redirect()->intended('dashboard');
         }else{
             return response()->json([
                 'status' => true,
+                'status_code' => 200,
                 'message' => "No user found with given username or email",
             ], 404);
         }
@@ -39,6 +41,7 @@ class UserController extends Controller
             $users = User::role('investor')->with('userDetail')->get();
             return response([
                 'status' => true,
+                'status_code' => 200,
                 'data' => InvestorResource::collection($users)
             ]);
     }
@@ -107,6 +110,7 @@ class UserController extends Controller
             DB::commit();
             return response([
                 'status' => true,
+                'status_code' => 200,
                 'data' => InvestorResource::make($user)
             ]);
         }catch(Exception $error){
