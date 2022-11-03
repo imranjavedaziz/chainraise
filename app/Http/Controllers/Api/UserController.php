@@ -14,25 +14,20 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $login =  $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string'
+        // $login =  $request->validate([
+        //     'email' => 'required|string',
+        //     'password' => 'required|string'
+        // ]);
+
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
-        if(Auth::attempt(['email' => $request->email,'password' => $request->password])){
-            $user = Auth::user();
-            if(Auth::check(){
-                return redirect()->to(url('dashboard'));
-            }
-            // return [
-            //     'status' => true,
-            //     'data' => UserResource::make($user)
-            // ];
-            // Route to dashboardd
-            // ddeer
-            // return response()->json([
-            //     'redirect' => route('dashboard')
-            // ]);
-       }else{
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }else{
             return response()->json([
                 'status' => true,
                 'message' => "No user found with given username or email",
