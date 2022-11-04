@@ -17,13 +17,18 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('net_worth');
-            $table->string('annual_net_income');
-            $table->string('highest_education');
-            $table->string('risk_tolerance');
-            $table->string('investment_experience');
-            $table->string('age');
-            $table->string('gender');
+            $table->string('net_worth')->nullable();
+            $table->string('annual_net_income')->nullable();
+            $table->string('highest_education')->nullable();
+            $table->string('risk_tolerance')->nullable();
+            $table->string('investment_experience')->nullable();
+            $table->string('age')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('assets_under_management')->nullable();
+            $table->string('investment_style')->nullable();;
+            $table->string('finra_crd')->nullable();;
+            $table->string('website')->nullable();;
+            $table->string('linkedIn')->nullable();;
             $table->timestamps();
         });
     }
