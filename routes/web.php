@@ -42,6 +42,9 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::get('list', ['as' => 'list','uses' => 'UserController@list']);
     Route::post('update', ['as' => 'update','uses' => 'UserController@update']);
     Route::post('delete', ['as' => 'delete','uses' => 'UserController@delete']);
+    Route::post('invesment/update', ['as' => 'invesment.update','uses' => 'UserController@invesmentUpdate']);
+    
+
 });
 Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin'],'namespace'=>'App\Http\Controllers\Offers'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);

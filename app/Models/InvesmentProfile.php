@@ -8,6 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class InvesmentProfile extends Model
 {
     use HasFactory;
+    protected $user_id = ['user_id'];
+    protected $net_worth = ['net_worth'];
+    protected $highest_education = ['highest_education'];
+    protected $risk_tolerance = ['risk_tolerance'];
+    protected $investment_experience = ['investment_experience'];
+    protected $age = ['age'];
+    protected $gender = ['gender'];
+
+
+    protected $fillable = [
+        'user_id',
+        'net_worth',
+        'highest_education',
+        'risk_tolerance',
+        'investment_experience',
+        'annual_net_income',
+        'age',
+        'gender'
+    ];
+
+
 
     public function user()
     {

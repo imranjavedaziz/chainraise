@@ -4,6 +4,15 @@
 @section('page_head')
 @endsection
 @section('page_content')
+
+    <div class="alert alert-error">
+        @foreach ($errors->all('<p>:message</p>') as $input_error)
+            {{ $input_error }}
+        @endforeach
+    </div>
+
+
+
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -61,12 +70,9 @@
                     <!--begin: Pic-->
                     <div class="text-center image-input image-input-outline image-input-empty image-input-circle"
                         data-kt-image-input="true"
-                        @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) 
-                            @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                        @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
                         @else
-                            @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp 
-                        @endif
-
+                            @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
                         style="background-image: url('{{ $photo_path }}')">
                         <!--begin::Preview existing avatar-->
                         <div class="image-input-wrapper" style="background-image: none;"></div>
@@ -108,7 +114,8 @@
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}
                                         {{ $user->userDetail->last_name }}
-                                        - <small class="text-info" > {{ucfirst($user->roles()->pluck('name')->implode(' '))}}</small>
+                                        - <small class="text-info">
+                                            {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
                                     </span>
                                 </div>
                                 <!--end::Name-->
@@ -301,7 +308,8 @@
                     <div class="card card-flush mb-6 mb-xl-9">
                         <!--begin::Card header-->
                         <div class="card-body p-9 pt-4">
-                            <form class="form" method="post" action="{{ route('user.account.update') }}"  enctype="multipart/form-data"> @csrf
+                            <form class="form" method="post" action="{{ route('user.account.update') }}"
+                                enctype="multipart/form-data"> @csrf
                                 <input type="hidden" name="id" id="" value="{{ $user->id }}">
                                 <div class="card-body">
                                     <div class="form-group row mb-10">
@@ -310,18 +318,20 @@
                                                 CONTACT INFORMATION
                                             </h3>
                                             @if ($errors->any())
-                                <div>
+                                                <div>
 
 
-                                    @foreach ($errors->all() as $error)
-                                        <div class="fv-plugins-message-container invalid-feedback mb-3 text-center">
-                                            <div data-field="email" data-validator="notEmpty"> {{ $error }}
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <br>
-                            @endif
+                                                    @foreach ($errors->all() as $error)
+                                                        <div
+                                                            class="fv-plugins-message-container invalid-feedback mb-3 text-center">
+                                                            <div data-field="email" data-validator="notEmpty">
+                                                                {{ $error }}
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                                <br>
+                                            @endif
                                         </div>
 
                                         {{-- <div class="col-lg-3">
@@ -379,7 +389,7 @@
 
                                         </div>
                                         <div class="col-lg-3 pt-1 ">
-                                          
+
                                             <div class="image-input image-input-outline image-input-empty"
                                                 data-kt-image-input="true"
                                                 @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
@@ -397,7 +407,8 @@
                                                     aria-label="Change avatar" data-kt-initialized="1">
                                                     <i class="bi bi-pencil-fill fs-7"></i>
                                                     <!--begin::Inputs-->
-                                                    <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg">
+                                                    <input type="file" name="profile_avatar"
+                                                        accept=".png, .jpg, .jpeg">
                                                     <input type="hidden" name="avatar_remove" value="1">
                                                     <!--end::Inputs-->
                                                 </label>
@@ -424,11 +435,36 @@
                                     </div>
 
                                     <div class="form-group row mb-10">
+
                                         <div class="col-lg-12 mb-3">
                                             <h3>
-                                                Address
+                                                COMPANY INFORMATION
                                             </h3>
                                         </div>
+
+
+
+
+                                        {{-- Issuer Details --}}
+
+
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Entity Name <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="address"
+                                                placeholder="Entity Name*" required>
+                                        </div>
+                                        <div class="clear-fix"></div>
+
+                                        <div class="col-lg-12 mb-3">
+                                            <h6>
+                                                Address
+                                            </h6>
+                                        </div>
+
+
+                                        {{-- End Issuer Details --}}
+
+
                                         <div class="col-lg-6">
                                             <label>Address <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="address"
@@ -468,16 +504,34 @@
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
+
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>State/Region of Legal Formation <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" name="city"
+                                                placeholder="State/Region of Legal Formation*" required>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <label>Date of Incorporation <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="state"
+                                                placeholder="Date of Incorporation*" required>
+                                        </div>
+
+
+                                    </div>
+
+                                    {{-- <div class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
                                         <b class="text-black"> Consent to Electronic Delivery </b>
                                         <p class="mt-3">
                                             I consent to the electronic delivery of all communications and materials.
                                         </p>
-                                    </div>
+                                    </div> --}}
 
 
                                     <div class="row">
+                                        {{-- 
                                         <div class="col-lg-6 text-left ">
                                             <label class="form-check form-check-custom form-check-solid">
                                                 <input class="form-check-input h-15px w-15px" type="checkbox"  name="agree_consent_electronic"
@@ -488,24 +542,23 @@
                                             </label>
                                         </div>
 
-                                        {{-- <div class="col-lg-6 text-right">
+                                    <div class="col-lg-6 text-right">
                                         <div class="checkbox-inline">
                                             <label class="checkbox">
                                                 <input type="checkbox" id="set_password">
                                                 <span></span>  Create a password for this account user  </label>
                                         </div>
-                                    </div> --}}
+                                    </div>
 
-                                        {{-- <div class="col-lg-6" style="text-align:right">
+                                    <div class="col-lg-6" style="text-align:right">
                                         <label class="form-check form-check-custom form-check-solid">
                                             <input class="form-check-input h-15px w-15px" type="checkbox"
                                                 id="set_password">
                                             <span class="form-check-label fw-semibold"> Create a password for this
                                                 account user </span>
                                         </label>
-                                    </div> --}}
-
-                                        {{-- <div class="col-lg-3 mt-10 offset-md-4 d-none" id="user_password_field">
+                                    </div>
+                                         <div class="col-lg-3 mt-10 offset-md-4 d-none" id="user_password_field">
                                         <input type="password" class="password_filed form-control" name="password"
                                             placeholder="Enter User Password*" autocomplete="off">
                                     </div> --}}
@@ -514,18 +567,13 @@
                                     <div class="card-title mt-6">
                                         <h2>Identity Verification</h2>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="form-group row mb-10">
-                                            <div class="col-lg-5">
-                                                <label>Social Security # <small>(US Investors Only)</small> <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Social Security*"
-                                                    required name="social_security"
-                                                    @if($user->identityVerification)
-                                                        value="{{ $user->identityVerification->social_security }}"
-                                                    @endif
-                                                    />
-                                            </div>
+                                    
+                                        <div class="form-group mb-10">
+                                            <label>Social Security # <small>(US Investors Only)</small> <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Social Security*"
+                                                required name="social_security"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->social_security }}" @endif />
                                         </div>
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-3">
@@ -800,12 +848,10 @@
                                             <div class="col-lg-3">
                                                 <label>Country of Residence <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="country_residence"
-                                                    @if($user->identityVerification)
-                                                    value="{{ $user->identityVerification->country_residence }}"
-                                                    @endif>
+                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->country_residence }}" @endif>
                                             </div>
                                         </div>
-                                    </div>
+                                   
 
                                     <div class="card-title mt-6">
                                         <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
@@ -827,8 +873,8 @@
                                                             data-kt-initialized="1"></i></span>
                                                 </label>
                                                 <label class="form-check form-check-custom form-check-solid me-10">
-                                                    <input class="form-check-input h-15px w-15px"
-                                                        type="checkbox" name="bypass_kyc_checkup"
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="bypass_kyc_checkup"
                                                         @if ($user->trustSetting and $user->trustSetting->bypass_kyc_checkup == 1) checked="checked" @endif>
                                                     <span class="form-check-label fw-semibold">Bypass KYC Checks</span>
                                                 </label>
@@ -912,7 +958,8 @@
                                         <div class="col-lg-12">
                                             <a href="{{ route('user.index') }}"
                                                 class="btn-sm btn btn-default mr-2">Cancel</a>
-                                            <button type="submit" class="btn-sm btn btn-primary mr-2"> Update Account </button>
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2"> Update Account
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -939,89 +986,129 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body pt-0 pb-5">
-                            <form class="form" method="post" action="#"  enctype="multipart/form-data"> @csrf
+                            <form class="form" method="post" action="{{ route('user.invesment.update') }}"
+                                enctype="multipart/form-data"> @csrf
+                                <input type="hidden" name="id" value="{{ $user->id }}">
                                 <div class="card-body">
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Net Worth <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"  data-placeholder="Net Worth*" name="net_worth">
-                                                <option></option>
-
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '0-100000' )         selected  @endif value="0-100000">Less than $100,000</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '100001-50000' )     selected  @endif value="100001-50000" > $100,001 - $250,000</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '250001-500000' )    selected  @endif value="250001-500000"> $250,001 - $500,000</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '500001-1000000' )   selected  @endif value="500001-1000000"> $500,001 - $1,000,000</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '1000001-5000000' )  selected  @endif value="1000001-5000000"> $1,000,001 - $5,000,000</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->net_worth == '5000000' )          selected  @endif value="5000000">more than $5,000,000</option>
+                                            <select class="form-select" required data-control="select2"
+                                                data-placeholder="Net Worth*" name="net_worth">
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '0-100000') selected @endif
+                                                    value="0-100000">Less than $100,000</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '100001-50000') selected @endif
+                                                    value="100001-50000"> $100,001 - $250,000</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '250001-500000') selected @endif
+                                                    value="250001-500000"> $250,001 - $500,000</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '500001-1000000') selected @endif
+                                                    value="500001-1000000"> $500,001 - $1,000,000</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '1000001-5000000') selected @endif
+                                                    value="1000001-5000000"> $1,000,001 - $5,000,000</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '5000000') selected @endif
+                                                    value="5000000">more than $5,000,000</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Annual Net Income</label>
-                                            <input type="text" class="form-control" name="annual_net_income" @if($user->identity_verification) value="{{ $user->identity_verification->annual_net_income}}" @endif  placeholder="Annual Net Income">
+                                            <input type="text" class="form-control" name="annual_net_income"
+                                                @if ($user->invesmentProfie && $user->invesmentProfie->annual_net_income) value="{{ $user->invesmentProfie->annual_net_income }}" @endif
+                                                placeholder="Annual Net Income">
                                         </div>
                                     </div>
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Highest Education <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"  data-placeholder="Highest Education*" name="highest_education" >
-                                                <option></option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'Less than High School')  selected  @endif  value="Less than High School"  >Less than High School</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'High School Graduate')   selected  @endif  value="High School Graduate" >High School Graduate</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'Some College')           selected  @endif  value="Some College" >Some College</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Associate's Degree")     selected  @endif  value="Associate's Degree">Associate's Degree</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Bachelor's Degree")      selected  @endif  value="Bachelor's Degree">Bachelor's Degree</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == "Master's Degree")        selected  @endif  value="Master's Degree" >Master's Degree</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'doctorate')              selected  @endif  value="doctorate">Doctorate</option>
-                                                <option @if($user->identity_verification && $user->identity_verification->highest_education == 'not set')                selected  @endif  value="not set">(not set)</option>
+                                            <select class="form-select" required data-control="select2"
+                                                data-placeholder="Highest Education*" name="highest_education">
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Less than High School') selected @endif
+                                                    value="Less than High School">Less than High School</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'High School Graduate') selected @endif
+                                                    value="High School Graduate">High School Graduate</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Some College') selected @endif
+                                                    value="Some College">Some College</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Associate's Degree") selected @endif
+                                                    value="Associate's Degree">Associate's Degree</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Bachelor's Degree") selected @endif
+                                                    value="Bachelor's Degree">Bachelor's Degree</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Master's Degree") selected @endif
+                                                    value="Master's Degree">Master's Degree</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'doctorate') selected @endif
+                                                    value="doctorate">Doctorate</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'not set') selected @endif
+                                                    value="not set">(not set)</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Risk Tolerance <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"  data-placeholder="Risk Tolerance*" name="risk_tolerance">
-                                                <option></option>
-                                                <option>Conservative</option>
-                                                <option>Moderate</option>
-                                                <option>Aggresive</option>
-                                                <option>(not set)</option>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Risk Tolerance*" name="risk_tolerance">
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'conservative') selected @endif
+                                                    value="conservative">Conservative</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'moderate') selected @endif
+                                                    value="moderate">Moderate</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'agresive') selected @endif
+                                                    value="agresive">Aggresive</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == '(not set)') selected @endif
+                                                    value="(not set)">(not set)</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Investment Experience <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"   data-placeholder="Investment Experience*" name="investment_experience" >
-                                                <option></option>
-                                                <option>None</option>
-                                                <option>Limited</option>
-                                                <option>Good</option>
-                                                <option>Extensive</option>
-                                                <option>(not set)</option>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Investment Experience*" name="investment_experience">
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'none') selected @endif value="none">
+                                                    None</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'limited') selected @endif
+                                                    value="limited">Limited</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'good') selected @endif value="good">
+                                                    Good</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'extensive') selected @endif
+                                                    value="extensive">Extensive</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'not set') selected @endif
+                                                    value="not set">(not set)</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
                                             <label>Age <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2" data-placeholder="Age*" name="age">
+                                            <select class="form-select" data-control="select2" data-placeholder="Age*"
+                                                name="age">
                                                 <option></option>
-                                                <option value="29"> Under 30</option>
-                                                <option value="30-39">30 - 39</option>
-                                                <option value="40-49">40 - 49</option>
-                                                <option value="50-59">50 - 59</option>
-                                                <option value="60-69">60 - 69</option>
-                                                <option value="70-79">70 - 79</option>
-                                                <option value="80">Over 79</option>
-                                                <option value="">(not set)</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '29') selected @endif value="29">
+                                                    Under 30</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '30-39') selected @endif value="30-39">
+                                                    30 - 39</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '40-49') selected @endif value="40-49">
+                                                    40 - 49</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '50-59') selected @endif value="50-59">
+                                                    50 - 59</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '60-69') selected @endif value="60-69">
+                                                    60 - 69</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '70-79') selected @endif value="70-79">
+                                                    70 - 79</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '80') selected @endif value="80">
+                                                    Over 79</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == 'not set') selected @endif value="">
+                                                    (not set)</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>Gender <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"  data-placeholder="Gender*" name="gender">
+                                            <select class="form-select" data-control="select2" data-placeholder="Gender*"
+                                                name="gender">
                                                 <option></option>
-                                                <option>Male</option>
-                                                <option>Femlae</option>
-                                                <option>Other</option>
-                                                <option>(not set)</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'male') selected @endif value="male">
+                                                    Male</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'female') selected @endif value="female">
+                                                    Femlae</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'other') selected @endif value="other">
+                                                    Other</option>
+                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'not set') selected @endif
+                                                    value="not set">(not set)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -2373,9 +2460,8 @@
                 <div class="tab-pane fade" id="kt_engagement_tab" role="tabpanel">
 
                     <div class="col-lg-3 ">
-                        <div
-                            class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-200px mb-5 mb-xl-10"
-                            style="background-color: #F1416C;background-image:url({{asset('assets/media/patterns/vector-1.png')}})">
+                        <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-md-200px mb-5 mb-xl-10"
+                            style="background-color: #F1416C;background-image:url({{ asset('assets/media/patterns/vector-1.png') }})">
                             <!--begin::Header-->
                             <div class="card-header pt-5">
                                 <!--begin::Title-->
@@ -2414,12 +2500,13 @@
                     </div>
                     <div class="card">
                         <!--begin::Card head-->
-                        <div class="card-header card-header-stretch">                            <!--begin::Title-->
+                        <div class="card-header card-header-stretch">
+                            <!--begin::Title-->
                             <div class="card-title d-flex align-items-center">
                                 Filter by
                                 <div class="m-lg-4 me-6 my-1">
                                     <select id="kt_filter_year" name="year" data-control="select2"
-                                            data-hide-search="true" class="form-select form-select-solid">
+                                        data-hide-search="true" class="form-select form-select-solid">
                                         <option value="All" selected="selected">All Engagement</option>
                                         <option value="documents">Documents</option>
                                         <option value="email">Email</option>
@@ -2432,8 +2519,8 @@
                                 </div>
                                 <div class="me-4 my-1">
                                     <select id="kt_filter_orders" name="orders" data-control="select2"
-                                            data-hide-search="true" data-dropdown-css-class="w-250px"
-                                            class="form-select form-select-solid">
+                                        data-hide-search="true" data-dropdown-css-class="w-250px"
+                                        class="form-select form-select-solid">
                                         <option value="All" selected="selected">All Offers</option>
                                         <option value="">Techware Labs (Techware Labs)</option>
                                     </select>
@@ -2454,7 +2541,7 @@
                             <div class="tab-content">
                                 <!--begin::Tab panel-->
                                 <div id="kt_activity_today" class="card-body p-0 tab-pane fade show active"
-                                     role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                    role="tabpanel" aria-labelledby="kt_activity_today_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline">
                                         <!--begin::Timeline item-->
@@ -2466,7 +2553,7 @@
                                             <div class="timeline-icon symbol symbol-circle symbol-40px me-4">
                                                 <div class="symbol-label bg-light">
                                                     <!--begin::Svg Icon | path: icons/duotune/communication/com003.svg-->
-                                                        <i class="fas fa-folder"></i>
+                                                    <i class="fas fa-folder"></i>
                                                     <!--end::Svg Icon-->
                                                 </div>
                                             </div>
@@ -2516,7 +2603,7 @@
                                                     <div><span class="badge badge-light-primary">5 Days Ago</span></div>
                                                     <!--end::Title-->
                                                 </div>
-                                                    <!--end::Title-->
+                                                <!--end::Title-->
                                                 <!--end::Timeline heading-->
                                             </div>
                                             <!--end::Timeline content-->
@@ -2546,7 +2633,8 @@
                                                         <div class="fs-5 fw-semibold mb-2 me-5">
                                                             Clicked Learn More on Offerings
                                                         </div>
-                                                        <div><span class="badge badge-light-primary">5 Days Ago</span></div>
+                                                        <div><span class="badge badge-light-primary">5 Days Ago</span>
+                                                        </div>
                                                         <!--end::Title-->
                                                     </div>
 

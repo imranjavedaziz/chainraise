@@ -49,7 +49,7 @@ class UserController extends Controller
     public function details($id)
     {
         
-         $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
+       $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
         return view('user.details',compact('user'));
     }
 
@@ -110,8 +110,6 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Error while updating user');
         }
     }
-
-
     public function delete(Request $request)
     {
         $request->validate([
@@ -132,8 +130,6 @@ class UserController extends Controller
             ]);
         }
     }
-
-
 
     public function investor()
     {
@@ -423,6 +419,27 @@ class UserController extends Controller
         }
         $identityVerifications->save();
         return redirect()->back()->with('success','Profile has been updated');
+
+    }
+    public function invesmentUpdate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'net_worth' => 'required',
+            'highest_education' => 'required',
+            'risk_tolerance' => 'required',
+            'investment_experience' => 'required',
+            'age' => 'required',
+            'gender' => 'required',
+            'annual_net_income' => 'required'
+        ]);
+        $invesment = InvesmentProfile::updateOrCreate(
+            ['user_id' => $request->id],
+            ['net_worth' => $request->net_worth, 'highest_education' => $request->highest_education,'risk_tolerance' => $request->risk_tolerance, 'investment_experience' => $request->investment_experience,'age' => $request->age, 'gender' => $request->gender,'annual_net_income'=> $request->annual_net_income]
+        );
+       
+         return redirect()->back()->with('success','invesment Profile has been updated');
+
 
     }
 }
