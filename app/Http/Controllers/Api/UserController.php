@@ -24,15 +24,9 @@ class UserController extends Controller
             'password' => ['required'],
         ]);
 
-        
         if (Auth::attempt($credentials)) {
-            $user = User::find(1);
-             Auth::login($user);
              $request->session()->regenerate();
-             return redirect()->intended('dashboard');
-
-
-            //return redirect()->intended('dashboard');
+            return redirect()->intended('dashboard');
         }else{
             return response()->json([
                 'status' => true,

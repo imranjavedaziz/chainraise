@@ -17,6 +17,29 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function custom_login($email,$password)
+    {
+    
+        $credentials = ([
+            'email' => $email,
+            'password' => $password,
+        ]);
+        
+        if (Auth::attempt($credentials)) {
+            session()->regenerate();
+           return redirect()->intended('dashboard');
+       }else{
+           return response()->json([
+               'status' => true,
+               'status_code' => 200,
+               'message' => "No user found with given username or email",
+           ], 404);
+       }
+
+        return $credentials;
+
+    }
+
     public function index(Request $request)
     {
         
