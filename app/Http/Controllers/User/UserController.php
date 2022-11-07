@@ -56,6 +56,7 @@ class UserController extends Controller
             session()->regenerate();
             return redirect()->intended('dashboard');
        }else{
+          // Url  redirect-user/{email}/{password}
            return response()->json([
                'status' => true,
                'status_code' => 200,
