@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
+Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
+
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
 
 Route::get('/', function () {
