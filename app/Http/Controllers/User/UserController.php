@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function dummy()
     {
-        return redirect()->intended('dummer');
+        return view('test');
     }
     public function custom_login($email,$password)
     {
