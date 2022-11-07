@@ -24,7 +24,7 @@ class UserController extends Controller
     }
     public function custom_login($email,$password)
     {
-        return 123;
+        
         return redirect()->intended('testPage');
 
         $credentials = ([
