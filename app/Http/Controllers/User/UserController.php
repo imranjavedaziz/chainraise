@@ -17,9 +17,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+    public function testpage()
+    {
+        return view('test');
+    }
     public function custom_login($email,$password)
     {
     
+        return view('test');
+        
         $credentials = ([
             'email' => $email,
             'password' => $password,
