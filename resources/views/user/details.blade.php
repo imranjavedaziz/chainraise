@@ -1023,137 +1023,193 @@
                             <form class="form" method="post" action="{{ route('user.invesment.update') }}"
                                 enctype="multipart/form-data"> @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-                                <div class="card-body">
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-6">
-                                            <label>Net Worth <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"
-                                                data-placeholder="Net Worth*" name="net_worth">
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '0-100000') selected @endif
-                                                    value="0-100000">Less than $100,000</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '100001-50000') selected @endif
-                                                    value="100001-50000"> $100,001 - $250,000</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '250001-500000') selected @endif
-                                                    value="250001-500000"> $250,001 - $500,000</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '500001-1000000') selected @endif
-                                                    value="500001-1000000"> $500,001 - $1,000,000</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '1000001-5000000') selected @endif
-                                                    value="1000001-5000000"> $1,000,001 - $5,000,000</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '5000000') selected @endif
-                                                    value="5000000">more than $5,000,000</option>
-                                            </select>
+                                @if($user->hasRole('investor'))
+                                    <div class="card-body">
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>Net Worth <span class="text-danger">*</span></label>
+                                                <select class="form-select" required data-control="select2"
+                                                    data-placeholder="Net Worth*" name="net_worth">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '0-100000') selected @endif
+                                                        value="0-100000">Less than $100,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '100001-50000') selected @endif
+                                                        value="100001-50000"> $100,001 - $250,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '250001-500000') selected @endif
+                                                        value="250001-500000"> $250,001 - $500,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '500001-1000000') selected @endif
+                                                        value="500001-1000000"> $500,001 - $1,000,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '1000001-5000000') selected @endif
+                                                        value="1000001-5000000"> $1,000,001 - $5,000,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '5000000') selected @endif
+                                                        value="5000000">more than $5,000,000</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Annual Net Income</label>
+                                                <input type="text" class="form-control" name="annual_net_income"
+                                                    @if ($user->invesmentProfie && $user->invesmentProfie->annual_net_income) value="{{ $user->invesmentProfie->annual_net_income }}" @endif
+                                                    placeholder="Annual Net Income">
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <label>Annual Net Income</label>
-                                            <input type="text" class="form-control" name="annual_net_income"
-                                                @if ($user->invesmentProfie && $user->invesmentProfie->annual_net_income) value="{{ $user->invesmentProfie->annual_net_income }}" @endif
-                                                placeholder="Annual Net Income">
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>Highest Education <span class="text-danger">*</span></label>
+                                                <select class="form-select" required data-control="select2"
+                                                    data-placeholder="Highest Education*" name="highest_education">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Less than High School') selected @endif
+                                                        value="Less than High School">Less than High School</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'High School Graduate') selected @endif
+                                                        value="High School Graduate">High School Graduate</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Some College') selected @endif
+                                                        value="Some College">Some College</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Associate's Degree") selected @endif
+                                                        value="Associate's Degree">Associate's Degree</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Bachelor's Degree") selected @endif
+                                                        value="Bachelor's Degree">Bachelor's Degree</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Master's Degree") selected @endif
+                                                        value="Master's Degree">Master's Degree</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'doctorate') selected @endif
+                                                        value="doctorate">Doctorate</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'not set') selected @endif
+                                                        value="not set">(not set)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Risk Tolerance <span class="text-danger">*</span></label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Risk Tolerance*" name="risk_tolerance">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'conservative') selected @endif
+                                                        value="conservative">Conservative</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'moderate') selected @endif
+                                                        value="moderate">Moderate</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'agresive') selected @endif
+                                                        value="agresive">Aggresive</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == '(not set)') selected @endif
+                                                        value="(not set)">(not set)</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-6">
-                                            <label>Highest Education <span class="text-danger">*</span></label>
-                                            <select class="form-select" required data-control="select2"
-                                                data-placeholder="Highest Education*" name="highest_education">
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Less than High School') selected @endif
-                                                    value="Less than High School">Less than High School</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'High School Graduate') selected @endif
-                                                    value="High School Graduate">High School Graduate</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'Some College') selected @endif
-                                                    value="Some College">Some College</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Associate's Degree") selected @endif
-                                                    value="Associate's Degree">Associate's Degree</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Bachelor's Degree") selected @endif
-                                                    value="Bachelor's Degree">Bachelor's Degree</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == "Master's Degree") selected @endif
-                                                    value="Master's Degree">Master's Degree</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'doctorate') selected @endif
-                                                    value="doctorate">Doctorate</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->highest_education == 'not set') selected @endif
-                                                    value="not set">(not set)</option>
-                                            </select>
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>Investment Experience <span class="text-danger">*</span></label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Investment Experience*" name="investment_experience">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'none') selected @endif value="none">
+                                                        None</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'limited') selected @endif
+                                                        value="limited">Limited</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'good') selected @endif value="good">
+                                                        Good</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'extensive') selected @endif
+                                                        value="extensive">Extensive</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'not set') selected @endif
+                                                        value="not set">(not set)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Age <span class="text-danger">*</span></label>
+                                                <select class="form-select" data-control="select2" data-placeholder="Age*"
+                                                    name="age">
+                                                    <option></option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '29') selected @endif value="29">
+                                                        Under 30</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '30-39') selected @endif value="30-39">
+                                                        30 - 39</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '40-49') selected @endif value="40-49">
+                                                        40 - 49</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '50-59') selected @endif value="50-59">
+                                                        50 - 59</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '60-69') selected @endif value="60-69">
+                                                        60 - 69</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '70-79') selected @endif value="70-79">
+                                                        70 - 79</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '80') selected @endif value="80">
+                                                        Over 79</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == 'not set') selected @endif value="">
+                                                        (not set)</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <label>Risk Tolerance <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"
-                                                data-placeholder="Risk Tolerance*" name="risk_tolerance">
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'conservative') selected @endif
-                                                    value="conservative">Conservative</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'moderate') selected @endif
-                                                    value="moderate">Moderate</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'agresive') selected @endif
-                                                    value="agresive">Aggresive</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == '(not set)') selected @endif
-                                                    value="(not set)">(not set)</option>
-                                            </select>
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>Gender <span class="text-danger">*</span></label>
+                                                <select class="form-select" data-control="select2" data-placeholder="Gender*"
+                                                    name="gender">
+                                                    <option></option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'male') selected @endif value="male">
+                                                        Male</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'female') selected @endif value="female">
+                                                        Femlae</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'other') selected @endif value="other">
+                                                        Other</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'not set') selected @endif
+                                                        value="not set">(not set)</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-6">
-                                            <label>Investment Experience <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2"
-                                                data-placeholder="Investment Experience*" name="investment_experience">
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'none') selected @endif value="none">
-                                                    None</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'limited') selected @endif
-                                                    value="limited">Limited</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'good') selected @endif value="good">
-                                                    Good</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'extensive') selected @endif
-                                                    value="extensive">Extensive</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'not set') selected @endif
-                                                    value="not set">(not set)</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <label>Age <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2" data-placeholder="Age*"
-                                                name="age">
-                                                <option></option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '29') selected @endif value="29">
-                                                    Under 30</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '30-39') selected @endif value="30-39">
-                                                    30 - 39</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '40-49') selected @endif value="40-49">
-                                                    40 - 49</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '50-59') selected @endif value="50-59">
-                                                    50 - 59</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '60-69') selected @endif value="60-69">
-                                                    60 - 69</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '70-79') selected @endif value="70-79">
-                                                    70 - 79</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '80') selected @endif value="80">
-                                                    Over 79</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->age == 'not set') selected @endif value="">
-                                                    (not set)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-6">
-                                            <label>Gender <span class="text-danger">*</span></label>
-                                            <select class="form-select" data-control="select2" data-placeholder="Gender*"
-                                                name="gender">
-                                                <option></option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'male') selected @endif value="male">
-                                                    Male</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'female') selected @endif value="female">
-                                                    Femlae</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'other') selected @endif value="other">
-                                                    Other</option>
-                                                <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'not set') selected @endif
-                                                    value="not set">(not set)</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
-                                </div>
+                                    </div>
+                                @endif
+                                 {{-- Issuer Details  --}}
+                                 @if($user->hasRole('issuer'))
+                                    <div class="card-body">
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>Assets Under Managment<span class="text-danger">*</span></label>
+                                                <select class="form-select" required data-control="select2"
+                                                    data-placeholder="Assets Under Managment" name="assets_under_managment">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '0-100000') selected @endif
+                                                        value="0-100000">Less than $100,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '100001-50000') selected @endif
+                                                        value="100001-50000"> $100,001 - $250,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '250001-500000') selected @endif
+                                                        value="250001-500000"> $250,001 - $500,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '500001-1000000') selected @endif
+                                                        value="500001-1000000"> $500,001 - $1,000,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '1000001-5000000') selected @endif
+                                                        value="1000001-5000000"> $1,000,001 - $5,000,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '5000000') selected @endif
+                                                        value="5000000">more than $5,000,000</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label> Investment Style <span class="text-danger">*</span></label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Risk Tolerance*" name="risk_tolerance">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'conservative') selected @endif
+                                                        value="conservative">Conservative</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'moderate') selected @endif
+                                                        value="moderate">Moderate</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'agresive') selected @endif
+                                                        value="agresive">Aggresive</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == '(not set)') selected @endif
+                                                        value="(not set)">(not set)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row ">
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Finra CRD #<span class="text-danger">*</span></label>
+                                                <input type="text" name="" id="" class="form-control" placeholder="Finra CRD">
+                                            </div>
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Website URL<span class="text-danger">*</span></label>
+                                                <input type="text" name="" id="" class="form-control" placeholder="Website URL">
+                                            </div>
+
+                                            <div class="col-lg-6 mb-10">
+                                                <label>LinkedIn URL<span class="text-danger">*</span></label>
+                                                <input type="text" name="" id="" class="form-control" placeholder="LinkedIn URL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                
                                 <div class="card-footer">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <a href="{{ route('user.index') }}"
-                                                class="btn-sm btn btn-default mr-2">Cancel</a>
-                                            <button type="submit" class="btn-sm btn btn-primary mr-2">Update Profile
+                                        <div class="col-lg-12 text-center">
+                                            <button type="submit" class="btn-sm btn btn-primary btn-square">
+                                                Update Profile
                                             </button>
 
                                         </div>
