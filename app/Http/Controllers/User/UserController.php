@@ -25,7 +25,7 @@ class UserController extends Controller
     public function custom_login($email,$password)
     {
         
-        return redirect()->route('testPage');
+        return redirect()->route('dashboard');
 
         $credentials = ([
             'email' => $email,
