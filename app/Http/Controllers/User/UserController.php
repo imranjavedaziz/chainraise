@@ -17,9 +17,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+
+    public function dummy()
+    {
+        return redirect()->intended('dummer');
+    }
     public function custom_login($email,$password)
     {
-    
+        return redirect()->intended('dashboard');
         $credentials = ([
             'email' => $email,
             'password' => $password,
