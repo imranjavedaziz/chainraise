@@ -25,8 +25,7 @@ class UserController extends Controller
     public function custom_login($email,$password)
     {
         
-        return redirect()->route('dashboard');
-
+       
         $credentials = ([
             'email' => $email,
             'password' => $password,
@@ -34,7 +33,8 @@ class UserController extends Controller
         
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-           return redirect()->intended('dashboard');
+            return redirect()->route('dashboard');
+
        }else{
            return response()->json([
                'status' => true,
