@@ -27,9 +27,13 @@ class UserController extends Controller
         
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-            return Auth::user()->name;
+           
+            return [
+                'status' => true,
+                'message' => 'User Verified'
+            ];
+             // Url  redirect-user/{email}/{password}
 
-           //return redirect()->intended('dashboard');
        }else{
            return response()->json([
                'status' => true,
@@ -39,6 +43,27 @@ class UserController extends Controller
        }
 
         return $credentials;
+
+    }
+    public function redirection($email,$password){
+        
+        $credentials = ([
+            'email' => $email,
+            'password' => $password,
+        ]);
+        
+        if (Auth::attempt($credentials)) {
+            session()->regenerate();
+            return redirect()->intended('dashboard');
+       }else{
+           return response()->json([
+               'status' => true,
+               'status_code' => 200,
+               'message' => "No user found with given username or email",
+           ], 404);
+       }
+
+
 
     }
 

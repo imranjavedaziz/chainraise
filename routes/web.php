@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
-
+Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
 Route::get('/', function () {
     return view('auth.login');
 });
