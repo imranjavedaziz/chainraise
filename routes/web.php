@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test', [UserController::class, 'testpage'])->name(('testPage'));
+Route::get('test', [UserController::class, 'testpage'])->name('testPage');
 
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
 
