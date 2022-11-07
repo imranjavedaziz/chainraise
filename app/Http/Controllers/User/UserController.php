@@ -269,10 +269,10 @@ class UserController extends Controller
         }       
     }
 
-    public function accountUpdate(Request $request)
+    public function issuerAccountUpdate(Request $request)
     {
 
-       
+      
         $request->validate([
             //Users Table
             'id' => 'required',
@@ -281,22 +281,26 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
 
             // User Detail
-           // 'middle_name' => 'required',
-           // 'last_name' => 'required',
-           // 'title' => 'required',
-            'dob' => 'required',
+           //'middle_name' => 'required',
+           'last_name' => 'required',
+           //'title' => 'required',
+           'dob' => 'required',
             //'profile_avatar' => 'required',
+            'entity_name'=>'required',
             'address' => 'required',
             //'suit' => 'required',
             'city' => 'required',
             'state' => 'required',
             'zip' => 'required',
-
+            'legal_formation'=>'required',
+            'date_incorporation'=>'required',
             // Identity Verifiation
-           // 'social_security' => 'required',
+            'primary_contact_social_security' => 'required',
+            'tax_entity_type'=>'required',
+            'tax_identification'=>'required',
             'nationality' => 'required',
             'country_residence' => 'required',
-
+            
             //Trust Settings
             //'bypass_account_setup' => 'required',
             //'bypass_kyc_checkup' => 'required',
@@ -305,36 +309,62 @@ class UserController extends Controller
            // 'view_all_invite_offers' => 'required',
             //'allow_manual_ach_bank_input' => 'required',
 
-        ]);
-
+        ]); 
         $user = User::find($request->id);
         $user->name = $request->first_name;
-        $user->phone = $request->phone;
-        if($request->agree_consent_electronic){
-            $user->agree_consent_electronic = true;
-        }else{
-            $user->agree_consent_electronic = false;
-        }
+        $user->phone = $request->phone; 
         $user->save();
-        $userDetails = UserDetail::where('user_id',$request->id)->first();
-        $userDetails->middle_name = $request->middle_name;
-        $userDetails->last_name = $request->last_name;
-        $userDetails->title = $request->title;
-        $userDetails->dob = $request->dob;
         if($request->has('profile_avatar')){
             $user->clearMediaCollection('profile_photo');
             $user->addMediaFromRequest('profile_avatar')->toMediaCollection('profile_photo');
         }
-        $userDetails->address = $request->address;
-        $userDetails->suit = $request->suit;
-        $userDetails->state = $request->state;
-        $userDetails->zip = $request->zip;
-        $userDetails->save();
+
+        $userDetails = UserDetail::updateOrCreate(
+            ['user_id' => $request->id],
+            [
+             'middle_name' => $request->middle_name,
+             'last_name' => $request->last_name,
+             'title' => $request->title, 
+             'dob' => $request->dob,
+             'city' => $request->city,
+             'address' => $request->address, 'suit' => $request->suit,'legal_formation'=>$request->legal_formation,
+             'date_incorporation'=>$request->date_incorporation,
+             'state'=> $request->state,'zip'=> $request->zip,'entity_name'=>$request->entity_name
+            ]
+        );
+        $identityVerification = IdentityVerification::updateOrCreate(
+            ['user_id' => $request->id],
+            [
+             'primary_contact_social_security' => $request->primary_contact_social_security,
+             'tax_entity_type' => $request->tax_entity_type,
+             'tax_identification' => $request->tax_identification,
+             'nationality' => $request->nationality,
+             'country_residence' => $request->country_residence
+            ]
+        );
+        dd(1);
+
+       
+
+
+
+        // $userDetails = UserDetail::where('user_id',$request->id)->first();
+        // $userDetails->middle_name = $request->middle_name;
+        // $userDetails->last_name = $request->last_name;
+        // $userDetails->title = $request->title;
+        // $userDetails->dob = $request->dob;
+        // if($request->has('profile_avatar')){
+        //     $user->clearMediaCollection('profile_photo');
+        //     $user->addMediaFromRequest('profile_avatar')->toMediaCollection('profile_photo');
+        // }
+        // $userDetails->address = $request->address;
+        // $userDetails->suit = $request->suit;
+        // $userDetails->state = $request->state;
+        // $userDetails->zip = $request->zip;
+        // $userDetails->save();
 
         $trustSetting = TrustSetting::where('user_id',$request->id)->first();
         if($trustSetting){
-                
-
             if($request->bypass_account_setup){
                 $trustSetting->bypass_account_setup = true;
             }else{
@@ -405,19 +435,7 @@ class UserController extends Controller
 
         }
         $trustSetting->save();
-        $identityVerifications = IdentityVerification::where('user_id',$request->id)->first();
-        if($identityVerifications){
-            $identityVerifications->social_security = $request->social_security;
-            $identityVerifications->nationality = $request->nationality;
-            $identityVerifications->country_residence = $request->country_residence;
-        }else{
-            $identityVerifications = new IdentityVerification;
-            $identityVerifications->user_id = $request->id;
-            $identityVerifications->social_security = $request->social_security;
-            $identityVerifications->nationality = $request->nationality;
-            $identityVerifications->country_residence = $request->country_residence;
-        }
-        $identityVerifications->save();
+         
         return redirect()->back()->with('success','Profile has been updated');
 
     }

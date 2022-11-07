@@ -18,6 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('social_security')->nullable();
+            $table->string('primary_contact_social_security')->nullable();
+            $table->string('tax_entity_type')->nullable();
+            $table->string('tax_identification')->nullable();
             $table->string('nationality');
             $table->string('country_residence');
             $table->timestamps();

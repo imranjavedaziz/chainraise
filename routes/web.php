@@ -31,7 +31,7 @@ Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified
 Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
     Route::get('index', ['as' => 'index','uses' => 'UserController@index']);
     Route::get('details/{id}', ['as' => 'details','uses' => 'UserController@details']);
-    Route::post('accountUpdate', ['as' => 'account.update','uses' => 'UserController@accountUpdate']);
+    Route::post('accountUpdate', ['as' => 'issuer.account.update','uses' => 'UserController@issuerAccountUpdate']);
 ///
     Route::get('investor/create', ['as' => 'investor.create','uses' => 'UserController@investor']);
     Route::get('issuer/create', ['as' => 'issuer.create','uses' => 'UserController@issuer']);

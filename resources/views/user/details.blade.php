@@ -308,7 +308,7 @@
                     <div class="card card-flush mb-6 mb-xl-9">
                         <!--begin::Card header-->
                         <div class="card-body p-9 pt-4">
-                            <form class="form" method="post" action="{{ route('user.account.update') }}"
+                            <form class="form" method="post" action="{{ route('user.issuer.account.update') }}"
                                 enctype="multipart/form-data"> @csrf
                                 <input type="hidden" name="id" id="" value="{{ $user->id }}">
                                 <div class="card-body">
@@ -435,26 +435,20 @@
                                     </div>
 
                                     <div class="form-group row mb-10">
-
-                                        <div class="col-lg-12 mb-3">
-                                            <h3>
-                                                COMPANY INFORMATION
-                                            </h3>
-                                        </div>
-
-
-
-
-                                        {{-- Issuer Details --}}
-
-
-                                        <div class="col-lg-6 mb-10">
-                                            <label>Entity Name <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="address"
-                                                placeholder="Entity Name*" required>
-                                        </div>
-                                        <div class="clear-fix"></div>
-
+                                        @if($user->hasRole('issuer'))
+                                            <div class="col-lg-12 mb-3">
+                                                <h3>
+                                                    COMPANY INFORMATION
+                                                </h3>
+                                            </div>
+                                            {{-- Issuer Details --}}
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Entity Name <span class="text-danger">*</span> </label>
+                                                <input type="text" class="form-control" name="entity_name"
+                                                placeholder="Entity Name" value="{{ $user->userDetail->entity_name }}" required>
+                                            </div>
+                                            <div class="clear-fix"></div>
+                                        @endif
                                         <div class="col-lg-12 mb-3">
                                             <h6>
                                                 Address
@@ -504,23 +498,22 @@
                                         </div>
                                     </div>
 
-
+                                    @if($user->hasRole('issuer'))
                                     <div class="form-group row mb-10">
                                         <div class="col-lg-6">
                                             <label>State/Region of Legal Formation <span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" class="form-control" name="city"
-                                                placeholder="State/Region of Legal Formation*" required>
+                                            <input type="text" class="form-control" name="legal_formation"
+                                                placeholder="State/Region of Legal Formation*"   value="{{ $user->userDetail->legal_formation }}" required>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <label>Date of Incorporation <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="state"
-                                                placeholder="Date of Incorporation*" required>
+                                            <input type="date" class="form-control" name="date_incorporation"
+                                                placeholder="Date of Incorporation*"  value="{{ $user->userDetail->date_incorporation}}" required>
                                         </div>
-
-
                                     </div>
+                                    @endif
 
                                     {{-- <div class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
                                         <b class="text-black"> Consent to Electronic Delivery </b>
@@ -531,6 +524,18 @@
 
 
                                     <div class="row">
+                                        @if($user->hasRole('investor'))
+                                            <div class="col-lg-12 text-center ">
+                                                <label class="form-check form-check-custom form-check-solid">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"  name="agree_consent_electronic"
+                                                        @if ($user->agree_consent_electronic == 1) checked @endif
+                                                        id="electronic_delivery_check_box">
+                                                    <span class="form-check-label fw-semibold"> Wil I agree to the Consent to
+                                                        Electronic Delivery</span>
+                                                </label>
+                                            </div>
+                                        @endif
+
                                         {{-- 
                                         <div class="col-lg-6 text-left ">
                                             <label class="form-check form-check-custom form-check-solid">
@@ -564,17 +569,46 @@
                                     </div> --}}
                                     </div>
 
-                                    <div class="card-title mt-6">
+                                    <div class="card-title mt-6 mb-3">
                                         <h2>Identity Verification</h2>
                                     </div>
-                                    
-                                        <div class="form-group mb-10">
-                                            <label>Social Security # <small>(US Investors Only)</small> <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="Social Security*"
-                                                required name="social_security"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->social_security }}" @endif />
+                                    <div class="row">
+                                        @if($user->hasRole('issuer'))
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label> 
+                                                Primary Contact Social Security # <small>(US Investors Only)</small> 
+                                                <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control"
+                                                placeholder="Primary Contact Social Security"
+                                                required name="primary_contact_social_security"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                         </div>
+
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label> Tax Entity Type <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" placeholder="Tax Entity Type"
+                                                required name="tax_entity_type"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->tax_entity_type }}" @endif />
+                                        </div>
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label> Tax Identification # <span class="text-danger">*</span> </label>
+                                            <input type="number" class="form-control" placeholder="Tax Identification"
+                                                required name="tax_identification"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
+                                        </div>
+                                        @else
+                                            <div class="form-group mb-10 col-lg-4">
+                                                <label> Social Security # <small>(US Investors Only)</small> 
+                                                    <span class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control"
+                                                    placeholder="Primary Contact Social Security"
+                                                    required name="primary_contact_social_security"
+                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                            </div>
+                                        @endif
+                                    </div>
+                                  
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-3">
                                                 <label>Nationality <span class="text-danger">*</span></label>
