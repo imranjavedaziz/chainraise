@@ -17,15 +17,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-
-    public function testpage()
-    {
-        return view('test');
-    }
     public function custom_login($email,$password)
     {
-        
-       
+    
         $credentials = ([
             'email' => $email,
             'password' => $password,
@@ -33,8 +27,7 @@ class UserController extends Controller
         
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-            return redirect()->route('dashboard');
-
+           return redirect()->intended('dashboard');
        }else{
            return response()->json([
                'status' => true,
