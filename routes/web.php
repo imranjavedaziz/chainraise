@@ -43,6 +43,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::get('list', ['as' => 'list','uses' => 'UserController@list']);
     Route::post('update', ['as' => 'update','uses' => 'UserController@update']);
     Route::post('delete', ['as' => 'delete','uses' => 'UserController@delete']);
+    Route::post('save', ['as' => 'child.save','uses' => 'UserController@childSave']);
     Route::post('invesment/update', ['as' => 'invesment.update','uses' => 'UserController@invesmentUpdate']);
     
 

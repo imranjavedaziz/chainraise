@@ -25,6 +25,8 @@ class UserSeeder extends Seeder
         $user->phone = "000000000";
         $user->agree_consent_electronic = true;
         $user->status = 'active';
+        $user->parent_id = 1;
+        $user->is_primary = true;
         $user->save();
         $user->assignRole('admin');
 
@@ -53,6 +55,8 @@ class UserSeeder extends Seeder
         $user->phone = "000000000";
         $user->agree_consent_electronic = true;
         $user->status = 'active';
+        $user->parent_id = 2;
+        $user->is_primary = true;
         $user->save();
         $user->assignRole('investor');
 
@@ -81,6 +85,8 @@ class UserSeeder extends Seeder
         $user->phone = "000000000";
         $user->agree_consent_electronic = true;
         $user->status = 'active';
+        $user->parent_id = 3;
+        $user->is_primary = true;
         $user->save();
         $user->assignRole('issuer');
 

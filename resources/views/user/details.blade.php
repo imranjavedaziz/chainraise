@@ -5,11 +5,7 @@
 @endsection
 @section('page_content')
 
-    <div class="alert alert-error">
-        @foreach ($errors->all('<p>:message</p>') as $input_error)
-            {{ $input_error }}
-        @endforeach
-    </div>
+
 
 
 
@@ -48,6 +44,16 @@
                         </li>
                         <!--end::Item-->
                     </ul>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <!--end::Breadcrumb-->
                 </div>
                 <!--end::Page title-->
@@ -313,14 +319,13 @@
                                 <input type="hidden" name="id" id="" value="{{ $user->id }}">
                                 <div class="card-body">
                                     <div class="form-group row mb-10">
+                                        <input type="hidden" name="type" value="investor">
                                         <div class="col-lg-12 mb-3">
                                             <h3>
                                                 CONTACT INFORMATION
                                             </h3>
                                             @if ($errors->any())
                                                 <div>
-
-
                                                     @foreach ($errors->all() as $error)
                                                         <div
                                                             class="fv-plugins-message-container invalid-feedback mb-3 text-center">
@@ -333,71 +338,65 @@
                                                 <br>
                                             @endif
                                         </div>
-
-                                        {{-- <div class="col-lg-3">
-                                        <label>Email Address: <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control " placeholder="Email Address*"
-                                            required name="email" value="{{ old('email') }}" />
-                                        <input type="hidden" required name="account_type" value="investor" />
-
-                                    </div> --}}
-                                        <input type="hidden" name="type" value="investor">
-                                        <div class="col-lg-3">
-                                            <label>First Name: <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="First Name*" required
-                                                name="first_name" value="{{ $user->name }}" />
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <label>Middle Name: <span class="text-danger"></span></label>
-                                            <input type="text" class="form-control" placeholder="Middle Name"
-                                                name="middle_name" value="{{ $user->userDetail->middle_name }}" />
-                                        </div>
-
-                                        <div class="col-lg-3">
-                                            <label>Last Name: <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="Last Name"
-                                                name="last_name" value="{{ $user->userDetail->last_name }}" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-3">
-                                            <label>Title:</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Title"
-                                                    name="title" value="{{ $user->userDetail->title }}" />
-
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="row mb-10">
+                                                    <div class="col-lg-4">
+                                                        <label>First Name: <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="First Name*" required name="first_name"
+                                                            value="{{ $user->name }}" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>Middle Name: <span class="text-danger"></span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Middle Name" name="middle_name"
+                                                            value="{{ $user->userDetail->middle_name }}" />
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>Last Name: <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Last Name" name="last_name"
+                                                            value="{{ $user->userDetail->last_name }}" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <label>Title:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Title"
+                                                                name="title" value="{{ $user->userDetail->title }}" />
+            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>Phone Number: <span class="text-danger">*</span> </label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="(201) 555-0123"
+                                                                name="phone" value="{{ $user->phone }}" />
+            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label>Date of Birth <span class="text-danger">*</span> </label>
+                                                        <div class="input-group" id="">
+                                                            <input type="date" class="form-control" placeholder="Date of Birth*"
+                                                                required name="dob" value="{{ $user->userDetail->dob }}">
+            
+                                                        </div>
+            
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label>Phone Number: <span class="text-danger">*</span> </label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="(201) 555-0123"
-                                                    name="phone" value="{{ $user->phone }}" />
-
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-lg-3">
-                                            <label>Date of Birth <span class="text-danger">*</span> </label>
-                                            <div class="input-group" id="">
-                                                <input type="date" class="form-control" placeholder="Date of Birth*"
-                                                    required name="dob" value="{{ $user->userDetail->dob }}">
-
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-3 pt-1 ">
-
-                                            <div class="image-input image-input-outline image-input-empty"
+                                            <div class="col-lg-2 pt-6">
+                                                <div class="image-input image-input-outline image-input-empty"
                                                 data-kt-image-input="true"
                                                 @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
-                                            @else
+                                                @else
                                                 @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
                                                 style="background-image: url('{{ $photo_path }}')">
                                                 <!--begin::Preview existing avatar-->
-                                                <div class="image-input-wrapper w-125px h-125px"
+                                                <div class="image-input-wrapper w-150px h-150px"
                                                     style="background-image: none;"></div>
                                                 <!--end::Preview existing avatar-->
                                                 <!--begin::Label-->
@@ -430,12 +429,26 @@
                                                 </span>
                                                 <!--end::Remove-->
                                             </div>
-
+                                            </div>
                                         </div>
+
+                                        {{-- <div class="col-lg-3">
+                                        <label>Email Address: <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control " placeholder="Email Address*"
+                                            required name="email" value="{{ old('email') }}" />
+                                        <input type="hidden" required name="account_type" value="investor" />
+
+                                    </div> --}}
+
+
+                                    </div>
+                                    <div class="form-group row mb-10">
+                                        
+
                                     </div>
 
                                     <div class="form-group row mb-10">
-                                        @if($user->hasRole('issuer'))
+                                        @if ($user->hasRole('issuer'))
                                             <div class="col-lg-12 mb-3">
                                                 <h3>
                                                     COMPANY INFORMATION
@@ -445,7 +458,8 @@
                                             <div class="col-lg-6 mb-10">
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
-                                                placeholder="Entity Name" value="{{ $user->userDetail->entity_name }}" required>
+                                                    placeholder="Entity Name"
+                                                    value="{{ $user->userDetail->entity_name }}" required>
                                             </div>
                                             <div class="clear-fix"></div>
                                         @endif
@@ -498,21 +512,23 @@
                                         </div>
                                     </div>
 
-                                    @if($user->hasRole('issuer'))
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-6">
-                                            <label>State/Region of Legal Formation <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text" class="form-control" name="legal_formation"
-                                                placeholder="State/Region of Legal Formation*"   value="{{ $user->userDetail->legal_formation }}" required>
-                                        </div>
+                                    @if ($user->hasRole('issuer'))
+                                        <div class="form-group row mb-10">
+                                            <div class="col-lg-6">
+                                                <label>State/Region of Legal Formation <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" name="legal_formation"
+                                                    placeholder="State/Region of Legal Formation*"
+                                                    value="{{ $user->userDetail->legal_formation }}" required>
+                                            </div>
 
-                                        <div class="col-lg-6">
-                                            <label>Date of Incorporation <span class="text-danger">*</span> </label>
-                                            <input type="date" class="form-control" name="date_incorporation"
-                                                placeholder="Date of Incorporation*"  value="{{ $user->userDetail->date_incorporation}}" required>
+                                            <div class="col-lg-6">
+                                                <label>Date of Incorporation <span class="text-danger">*</span> </label>
+                                                <input type="date" class="form-control" name="date_incorporation"
+                                                    placeholder="Date of Incorporation*"
+                                                    value="{{ $user->userDetail->date_incorporation }}" required>
+                                            </div>
                                         </div>
-                                    </div>
                                     @endif
 
                                     {{-- <div class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
@@ -524,13 +540,15 @@
 
 
                                     <div class="row">
-                                        @if($user->hasRole('investor'))
+                                        @if ($user->hasRole('investor'))
                                             <div class="col-lg-12 text-center ">
                                                 <label class="form-check form-check-custom form-check-solid">
-                                                    <input class="form-check-input h-15px w-15px" type="checkbox"  name="agree_consent_electronic"
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        name="agree_consent_electronic"
                                                         @if ($user->agree_consent_electronic == 1) checked @endif
                                                         id="electronic_delivery_check_box">
-                                                    <span class="form-check-label fw-semibold"> Wil I agree to the Consent to
+                                                    <span class="form-check-label fw-semibold"> Wil I agree to the Consent
+                                                        to
                                                         Electronic Delivery</span>
                                                 </label>
                                             </div>
@@ -573,319 +591,318 @@
                                         <h2>Identity Verification</h2>
                                     </div>
                                     <div class="row">
-                                        @if($user->hasRole('issuer'))
-                                        <div class="form-group mb-10 col-lg-4">
-                                            <label> 
-                                                Primary Contact Social Security # <small>(US Investors Only)</small> 
-                                                <span class="text-danger">*</span></label>
+                                        @if ($user->hasRole('issuer'))
+                                            <div class="form-group mb-10 col-lg-4">
+                                                <label>
+                                                    Primary Contact Social Security # <small>(US Investors Only)</small>
+                                                    <span class="text-danger">*</span></label>
                                                 <input type="number" class="form-control"
-                                                placeholder="Primary Contact Social Security"
-                                                required name="primary_contact_social_security"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
-                                        </div>
+                                                    placeholder="Primary Contact Social Security" required
+                                                    name="primary_contact_social_security"
+                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                            </div>
 
-                                        <div class="form-group mb-10 col-lg-4">
-                                            <label> Tax Entity Type <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" placeholder="Tax Entity Type"
-                                                required name="tax_entity_type"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->tax_entity_type }}" @endif />
-                                        </div>
-                                        <div class="form-group mb-10 col-lg-4">
-                                            <label> Tax Identification # <span class="text-danger">*</span> </label>
-                                            <input type="number" class="form-control" placeholder="Tax Identification"
-                                                required name="tax_identification"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
-                                        </div>
+                                            <div class="form-group mb-10 col-lg-4">
+                                                <label> Tax Entity Type <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" placeholder="Tax Entity Type"
+                                                    required name="tax_entity_type"
+                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->tax_entity_type }}" @endif />
+                                            </div>
+                                            <div class="form-group mb-10 col-lg-4">
+                                                <label> Tax Identification # <span class="text-danger">*</span> </label>
+                                                <input type="number" class="form-control"
+                                                    placeholder="Tax Identification" required name="tax_identification"
+                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
+                                            </div>
                                         @else
                                             <div class="form-group mb-10 col-lg-4">
-                                                <label> Social Security # <small>(US Investors Only)</small> 
+                                                <label> Social Security # <small>(US Investors Only)</small>
                                                     <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control"
-                                                    placeholder="Primary Contact Social Security"
-                                                    required name="primary_contact_social_security"
+                                                <input type="number" class="form-control"
+                                                    placeholder="Primary Contact Social Security" required
+                                                    name="primary_contact_social_security"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                             </div>
                                         @endif
                                     </div>
-                                  
-                                        <div class="form-group row mb-10">
-                                            <div class="col-lg-3">
-                                                <label>Nationality <span class="text-danger">*</span></label>
-                                                <select class="form-select" required data-control="select2"
-                                                    name="nationality" data-placeholder="Select an option"
-                                                    data-live-search="true">
-                                                    <option value="">Select</option>
-                                                    <option value="AF">Afghanistan</option>
-                                                    <option value="AX">Åland Islands</option>
-                                                    <option value="AL">Albania</option>
-                                                    <option value="DZ">Algeria</option>
-                                                    <option value="AS">American Samoa</option>
-                                                    <option value="AD">Andorra</option>
-                                                    <option value="AO">Angola</option>
-                                                    <option value="AI">Anguilla</option>
-                                                    <option value="AQ">Antarctica</option>
-                                                    <option value="AG">Antigua and Barbuda</option>
-                                                    <option value="AR">Argentina</option>
-                                                    <option value="AM">Armenia</option>
-                                                    <option value="AW">Aruba</option>
-                                                    <option value="AU">Australia</option>
-                                                    <option value="AT">Austria</option>
-                                                    <option value="AZ">Azerbaijan</option>
-                                                    <option value="BS">Bahamas</option>
-                                                    <option value="BH">Bahrain</option>
-                                                    <option value="BD">Bangladesh</option>
-                                                    <option value="BB">Barbados</option>
-                                                    <option value="BY">Belarus</option>
-                                                    <option value="BE">Belgium</option>
-                                                    <option value="BZ">Belize</option>
-                                                    <option value="BJ">Benin</option>
-                                                    <option value="BM">Bermuda</option>
-                                                    <option value="BT">Bhutan</option>
-                                                    <option value="BO">Bolivia, Plurinational State of</option>
-                                                    <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
-                                                    <option value="BA">Bosnia and Herzegovina</option>
-                                                    <option value="BW">Botswana</option>
-                                                    <option value="BV">Bouvet Island</option>
-                                                    <option value="BR">Brazil</option>
-                                                    <option value="IO">British Indian Ocean Territory</option>
-                                                    <option value="BN">Brunei Darussalam</option>
-                                                    <option value="BG">Bulgaria</option>
-                                                    <option value="BF">Burkina Faso</option>
-                                                    <option value="BI">Burundi</option>
-                                                    <option value="KH">Cambodia</option>
-                                                    <option value="CM">Cameroon</option>
-                                                    <option value="CA">Canada</option>
-                                                    <option value="CV">Cape Verde</option>
-                                                    <option value="KY">Cayman Islands</option>
-                                                    <option value="CF">Central African Republic</option>
-                                                    <option value="TD">Chad</option>
-                                                    <option value="CL">Chile</option>
-                                                    <option value="CN">China</option>
-                                                    <option value="CX">Christmas Island</option>
-                                                    <option value="CC">Cocos (Keeling) Islands</option>
-                                                    <option value="CO">Colombia</option>
-                                                    <option value="KM">Comoros</option>
-                                                    <option value="CG">Congo</option>
-                                                    <option value="CD">Congo, the Democratic Republic of the
-                                                    </option>
-                                                    <option value="CK">Cook Islands</option>
-                                                    <option value="CR">Costa Rica</option>
-                                                    <option value="CI">Côte d'Ivoire</option>
-                                                    <option value="HR">Croatia</option>
-                                                    <option value="CU">Cuba</option>
-                                                    <option value="CW">Curaçao</option>
-                                                    <option value="CY">Cyprus</option>
-                                                    <option value="CZ">Czech Republic</option>
-                                                    <option value="DK">Denmark</option>
-                                                    <option value="DJ">Djibouti</option>
-                                                    <option value="DM">Dominica</option>
-                                                    <option value="DO">Dominican Republic</option>
-                                                    <option value="EC">Ecuador</option>
-                                                    <option value="EG">Egypt</option>
-                                                    <option value="SV">El Salvador</option>
-                                                    <option value="GQ">Equatorial Guinea</option>
-                                                    <option value="ER">Eritrea</option>
-                                                    <option value="EE">Estonia</option>
-                                                    <option value="ET">Ethiopia</option>
-                                                    <option value="FK">Falkland Islands (Malvinas)</option>
-                                                    <option value="FO">Faroe Islands</option>
-                                                    <option value="FJ">Fiji</option>
-                                                    <option value="FI">Finland</option>
-                                                    <option value="FR">France</option>
-                                                    <option value="GF">French Guiana</option>
-                                                    <option value="PF">French Polynesia</option>
-                                                    <option value="TF">French Southern Territories</option>
-                                                    <option value="GA">Gabon</option>
-                                                    <option value="GM">Gambia</option>
-                                                    <option value="GE">Georgia</option>
-                                                    <option value="DE">Germany</option>
-                                                    <option value="GH">Ghana</option>
-                                                    <option value="GI">Gibraltar</option>
-                                                    <option value="GR">Greece</option>
-                                                    <option value="GL">Greenland</option>
-                                                    <option value="GD">Grenada</option>
-                                                    <option value="GP">Guadeloupe</option>
-                                                    <option value="GU">Guam</option>
-                                                    <option value="GT">Guatemala</option>
-                                                    <option value="GG">Guernsey</option>
-                                                    <option value="GN">Guinea</option>
-                                                    <option value="GW">Guinea-Bissau</option>
-                                                    <option value="GY">Guyana</option>
-                                                    <option value="HT">Haiti</option>
-                                                    <option value="HM">Heard Island and McDonald Islands
-                                                    </option>
-                                                    <option value="VA">Holy See (Vatican City State)</option>
-                                                    <option value="HN">Honduras</option>
-                                                    <option value="HK">Hong Kong</option>
-                                                    <option value="HU">Hungary</option>
-                                                    <option value="IS">Iceland</option>
-                                                    <option value="IN">India</option>
-                                                    <option value="ID">Indonesia</option>
-                                                    <option value="IR">Iran, Islamic Republic of</option>
-                                                    <option value="IQ">Iraq</option>
-                                                    <option value="IE">Ireland</option>
-                                                    <option value="IM">Isle of Man</option>
-                                                    <option value="IL">Israel</option>
-                                                    <option value="IT">Italy</option>
-                                                    <option value="JM">Jamaica</option>
-                                                    <option value="JP">Japan</option>
-                                                    <option value="JE">Jersey</option>
-                                                    <option value="JO">Jordan</option>
-                                                    <option value="KZ">Kazakhstan</option>
-                                                    <option value="KE">Kenya</option>
-                                                    <option value="KI">Kiribati</option>
-                                                    <option value="KP">Korea, Democratic People's Republic of
-                                                    </option>
-                                                    <option value="KR">Korea, Republic of</option>
-                                                    <option value="KW">Kuwait</option>
-                                                    <option value="KG">Kyrgyzstan</option>
-                                                    <option value="LA">Lao People's Democratic Republic</option>
-                                                    <option value="LV">Latvia</option>
-                                                    <option value="LB">Lebanon</option>
-                                                    <option value="LS">Lesotho</option>
-                                                    <option value="LR">Liberia</option>
-                                                    <option value="LY">Libya</option>
-                                                    <option value="LI">Liechtenstein</option>
-                                                    <option value="LT">Lithuania</option>
-                                                    <option value="LU">Luxembourg</option>
-                                                    <option value="MO">Macao</option>
-                                                    <option value="MK">Macedonia, the former Yugoslav Republic
-                                                        of
-                                                    </option>
-                                                    <option value="MG">Madagascar</option>
-                                                    <option value="MW">Malawi</option>
-                                                    <option value="MY">Malaysia</option>
-                                                    <option value="MV">Maldives</option>
-                                                    <option value="ML">Mali</option>
-                                                    <option value="MT">Malta</option>
-                                                    <option value="MH">Marshall Islands</option>
-                                                    <option value="MQ">Martinique</option>
-                                                    <option value="MR">Mauritania</option>
-                                                    <option value="MU">Mauritius</option>
-                                                    <option value="YT">Mayotte</option>
-                                                    <option value="MX">Mexico</option>
-                                                    <option value="FM">Micronesia, Federated States of</option>
-                                                    <option value="MD">Moldova, Republic of</option>
-                                                    <option value="MC">Monaco</option>
-                                                    <option value="MN">Mongolia</option>
-                                                    <option value="ME">Montenegro</option>
-                                                    <option value="MS">Montserrat</option>
-                                                    <option value="MA">Morocco</option>
-                                                    <option value="MZ">Mozambique</option>
-                                                    <option value="MM">Myanmar</option>
-                                                    <option value="NA">Namibia</option>
-                                                    <option value="NR">Nauru</option>
-                                                    <option value="NP">Nepal</option>
-                                                    <option value="NL">Netherlands</option>
-                                                    <option value="NC">New Caledonia</option>
-                                                    <option value="NZ">New Zealand</option>
-                                                    <option value="NI">Nicaragua</option>
-                                                    <option value="NE">Niger</option>
-                                                    <option value="NG">Nigeria</option>
-                                                    <option value="NU">Niue</option>
-                                                    <option value="NF">Norfolk Island</option>
-                                                    <option value="MP">Northern Mariana Islands</option>
-                                                    <option value="NO">Norway</option>
-                                                    <option value="OM">Oman</option>
-                                                    <option value="PK">Pakistan</option>
-                                                    <option value="PW">Palau</option>
-                                                    <option value="PS">Palestinian Territory, Occupied</option>
-                                                    <option value="PA">Panama</option>
-                                                    <option value="PG">Papua New Guinea</option>
-                                                    <option value="PY">Paraguay</option>
-                                                    <option value="PE">Peru</option>
-                                                    <option value="PH">Philippines</option>
-                                                    <option value="PN">Pitcairn</option>
-                                                    <option value="PL">Poland</option>
-                                                    <option value="PT">Portugal</option>
-                                                    <option value="PR">Puerto Rico</option>
-                                                    <option value="QA">Qatar</option>
-                                                    <option value="RE">Réunion</option>
-                                                    <option value="RO">Romania</option>
-                                                    <option value="RU">Russian Federation</option>
-                                                    <option value="RW">Rwanda</option>
-                                                    <option value="BL">Saint Barthélemy</option>
-                                                    <option value="SH">Saint Helena, Ascension and Tristan da
-                                                        Cunha
-                                                    </option>
-                                                    <option value="KN">Saint Kitts and Nevis</option>
-                                                    <option value="LC">Saint Lucia</option>
-                                                    <option value="MF">Saint Martin (French part)</option>
-                                                    <option value="PM">Saint Pierre and Miquelon</option>
-                                                    <option value="VC">Saint Vincent and the Grenadines</option>
-                                                    <option value="WS">Samoa</option>
-                                                    <option value="SM">San Marino</option>
-                                                    <option value="ST">Sao Tome and Principe</option>
-                                                    <option value="SA">Saudi Arabia</option>
-                                                    <option value="SN">Senegal</option>
-                                                    <option value="RS">Serbia</option>
-                                                    <option value="SC">Seychelles</option>
-                                                    <option value="SL">Sierra Leone</option>
-                                                    <option value="SG">Singapore</option>
-                                                    <option value="SX">Sint Maarten (Dutch part)</option>
-                                                    <option value="SK">Slovakia</option>
-                                                    <option value="SI">Slovenia</option>
-                                                    <option value="SB">Solomon Islands</option>
-                                                    <option value="SO">Somalia</option>
-                                                    <option value="ZA">South Africa</option>
-                                                    <option value="GS">South Georgia and the South Sandwich
-                                                        Islands
-                                                    </option>
-                                                    <option value="SS">South Sudan</option>
-                                                    <option value="ES">Spain</option>
-                                                    <option value="LK">Sri Lanka</option>
-                                                    <option value="SD">Sudan</option>
-                                                    <option value="SR">Suriname</option>
-                                                    <option value="SJ">Svalbard and Jan Mayen</option>
-                                                    <option value="SZ">Swaziland</option>
-                                                    <option value="SE">Sweden</option>
-                                                    <option value="CH">Switzerland</option>
-                                                    <option value="SY">Syrian Arab Republic</option>
-                                                    <option value="TW">Taiwan, Province of China</option>
-                                                    <option value="TJ">Tajikistan</option>
-                                                    <option value="TZ">Tanzania, United Republic of</option>
-                                                    <option value="TH">Thailand</option>
-                                                    <option value="TL">Timor-Leste</option>
-                                                    <option value="TG">Togo</option>
-                                                    <option value="TK">Tokelau</option>
-                                                    <option value="TO">Tonga</option>
-                                                    <option value="TT">Trinidad and Tobago</option>
-                                                    <option value="TN">Tunisia</option>
-                                                    <option value="TR">Turkey</option>
-                                                    <option value="TM">Turkmenistan</option>
-                                                    <option value="TC">Turks and Caicos Islands</option>
-                                                    <option value="TV">Tuvalu</option>
-                                                    <option value="UG">Uganda</option>
-                                                    <option value="UA">Ukraine</option>
-                                                    <option value="AE">United Arab Emirates</option>
-                                                    <option value="GB">United Kingdom</option>
-                                                    <option value="US" selected="selected">United States
-                                                    </option>
-                                                    <option value="UM">United States Minor Outlying Islands
-                                                    </option>
-                                                    <option value="UY">Uruguay</option>
-                                                    <option value="UZ">Uzbekistan</option>
-                                                    <option value="VU">Vanuatu</option>
-                                                    <option value="VE">Venezuela, Bolivarian Republic of
-                                                    </option>
-                                                    <option value="VN">Viet Nam</option>
-                                                    <option value="VG">Virgin Islands, British</option>
-                                                    <option value="VI">Virgin Islands, U.S.</option>
-                                                    <option value="WF">Wallis and Futuna</option>
-                                                    <option value="EH">Western Sahara</option>
-                                                    <option value="YE">Yemen</option>
-                                                    <option value="ZM">Zambia</option>
-                                                    <option value="ZW">Zimbabwe</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <label>Country of Residence <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="country_residence"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->country_residence }}" @endif>
-                                            </div>
+
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-3">
+                                            <label>Nationality <span class="text-danger">*</span></label>
+                                            <select class="form-select" required data-control="select2"
+                                                name="nationality" data-placeholder="Select an option"
+                                                data-live-search="true">
+                                                <option value="">Select</option>
+                                                <option value="AF">Afghanistan</option>
+                                                <option value="AX">Åland Islands</option>
+                                                <option value="AL">Albania</option>
+                                                <option value="DZ">Algeria</option>
+                                                <option value="AS">American Samoa</option>
+                                                <option value="AD">Andorra</option>
+                                                <option value="AO">Angola</option>
+                                                <option value="AI">Anguilla</option>
+                                                <option value="AQ">Antarctica</option>
+                                                <option value="AG">Antigua and Barbuda</option>
+                                                <option value="AR">Argentina</option>
+                                                <option value="AM">Armenia</option>
+                                                <option value="AW">Aruba</option>
+                                                <option value="AU">Australia</option>
+                                                <option value="AT">Austria</option>
+                                                <option value="AZ">Azerbaijan</option>
+                                                <option value="BS">Bahamas</option>
+                                                <option value="BH">Bahrain</option>
+                                                <option value="BD">Bangladesh</option>
+                                                <option value="BB">Barbados</option>
+                                                <option value="BY">Belarus</option>
+                                                <option value="BE">Belgium</option>
+                                                <option value="BZ">Belize</option>
+                                                <option value="BJ">Benin</option>
+                                                <option value="BM">Bermuda</option>
+                                                <option value="BT">Bhutan</option>
+                                                <option value="BO">Bolivia, Plurinational State of</option>
+                                                <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                                <option value="BA">Bosnia and Herzegovina</option>
+                                                <option value="BW">Botswana</option>
+                                                <option value="BV">Bouvet Island</option>
+                                                <option value="BR">Brazil</option>
+                                                <option value="IO">British Indian Ocean Territory</option>
+                                                <option value="BN">Brunei Darussalam</option>
+                                                <option value="BG">Bulgaria</option>
+                                                <option value="BF">Burkina Faso</option>
+                                                <option value="BI">Burundi</option>
+                                                <option value="KH">Cambodia</option>
+                                                <option value="CM">Cameroon</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="CV">Cape Verde</option>
+                                                <option value="KY">Cayman Islands</option>
+                                                <option value="CF">Central African Republic</option>
+                                                <option value="TD">Chad</option>
+                                                <option value="CL">Chile</option>
+                                                <option value="CN">China</option>
+                                                <option value="CX">Christmas Island</option>
+                                                <option value="CC">Cocos (Keeling) Islands</option>
+                                                <option value="CO">Colombia</option>
+                                                <option value="KM">Comoros</option>
+                                                <option value="CG">Congo</option>
+                                                <option value="CD">Congo, the Democratic Republic of the
+                                                </option>
+                                                <option value="CK">Cook Islands</option>
+                                                <option value="CR">Costa Rica</option>
+                                                <option value="CI">Côte d'Ivoire</option>
+                                                <option value="HR">Croatia</option>
+                                                <option value="CU">Cuba</option>
+                                                <option value="CW">Curaçao</option>
+                                                <option value="CY">Cyprus</option>
+                                                <option value="CZ">Czech Republic</option>
+                                                <option value="DK">Denmark</option>
+                                                <option value="DJ">Djibouti</option>
+                                                <option value="DM">Dominica</option>
+                                                <option value="DO">Dominican Republic</option>
+                                                <option value="EC">Ecuador</option>
+                                                <option value="EG">Egypt</option>
+                                                <option value="SV">El Salvador</option>
+                                                <option value="GQ">Equatorial Guinea</option>
+                                                <option value="ER">Eritrea</option>
+                                                <option value="EE">Estonia</option>
+                                                <option value="ET">Ethiopia</option>
+                                                <option value="FK">Falkland Islands (Malvinas)</option>
+                                                <option value="FO">Faroe Islands</option>
+                                                <option value="FJ">Fiji</option>
+                                                <option value="FI">Finland</option>
+                                                <option value="FR">France</option>
+                                                <option value="GF">French Guiana</option>
+                                                <option value="PF">French Polynesia</option>
+                                                <option value="TF">French Southern Territories</option>
+                                                <option value="GA">Gabon</option>
+                                                <option value="GM">Gambia</option>
+                                                <option value="GE">Georgia</option>
+                                                <option value="DE">Germany</option>
+                                                <option value="GH">Ghana</option>
+                                                <option value="GI">Gibraltar</option>
+                                                <option value="GR">Greece</option>
+                                                <option value="GL">Greenland</option>
+                                                <option value="GD">Grenada</option>
+                                                <option value="GP">Guadeloupe</option>
+                                                <option value="GU">Guam</option>
+                                                <option value="GT">Guatemala</option>
+                                                <option value="GG">Guernsey</option>
+                                                <option value="GN">Guinea</option>
+                                                <option value="GW">Guinea-Bissau</option>
+                                                <option value="GY">Guyana</option>
+                                                <option value="HT">Haiti</option>
+                                                <option value="HM">Heard Island and McDonald Islands
+                                                </option>
+                                                <option value="VA">Holy See (Vatican City State)</option>
+                                                <option value="HN">Honduras</option>
+                                                <option value="HK">Hong Kong</option>
+                                                <option value="HU">Hungary</option>
+                                                <option value="IS">Iceland</option>
+                                                <option value="IN">India</option>
+                                                <option value="ID">Indonesia</option>
+                                                <option value="IR">Iran, Islamic Republic of</option>
+                                                <option value="IQ">Iraq</option>
+                                                <option value="IE">Ireland</option>
+                                                <option value="IM">Isle of Man</option>
+                                                <option value="IL">Israel</option>
+                                                <option value="IT">Italy</option>
+                                                <option value="JM">Jamaica</option>
+                                                <option value="JP">Japan</option>
+                                                <option value="JE">Jersey</option>
+                                                <option value="JO">Jordan</option>
+                                                <option value="KZ">Kazakhstan</option>
+                                                <option value="KE">Kenya</option>
+                                                <option value="KI">Kiribati</option>
+                                                <option value="KP">Korea, Democratic People's Republic of
+                                                </option>
+                                                <option value="KR">Korea, Republic of</option>
+                                                <option value="KW">Kuwait</option>
+                                                <option value="KG">Kyrgyzstan</option>
+                                                <option value="LA">Lao People's Democratic Republic</option>
+                                                <option value="LV">Latvia</option>
+                                                <option value="LB">Lebanon</option>
+                                                <option value="LS">Lesotho</option>
+                                                <option value="LR">Liberia</option>
+                                                <option value="LY">Libya</option>
+                                                <option value="LI">Liechtenstein</option>
+                                                <option value="LT">Lithuania</option>
+                                                <option value="LU">Luxembourg</option>
+                                                <option value="MO">Macao</option>
+                                                <option value="MK">Macedonia, the former Yugoslav Republic
+                                                    of
+                                                </option>
+                                                <option value="MG">Madagascar</option>
+                                                <option value="MW">Malawi</option>
+                                                <option value="MY">Malaysia</option>
+                                                <option value="MV">Maldives</option>
+                                                <option value="ML">Mali</option>
+                                                <option value="MT">Malta</option>
+                                                <option value="MH">Marshall Islands</option>
+                                                <option value="MQ">Martinique</option>
+                                                <option value="MR">Mauritania</option>
+                                                <option value="MU">Mauritius</option>
+                                                <option value="YT">Mayotte</option>
+                                                <option value="MX">Mexico</option>
+                                                <option value="FM">Micronesia, Federated States of</option>
+                                                <option value="MD">Moldova, Republic of</option>
+                                                <option value="MC">Monaco</option>
+                                                <option value="MN">Mongolia</option>
+                                                <option value="ME">Montenegro</option>
+                                                <option value="MS">Montserrat</option>
+                                                <option value="MA">Morocco</option>
+                                                <option value="MZ">Mozambique</option>
+                                                <option value="MM">Myanmar</option>
+                                                <option value="NA">Namibia</option>
+                                                <option value="NR">Nauru</option>
+                                                <option value="NP">Nepal</option>
+                                                <option value="NL">Netherlands</option>
+                                                <option value="NC">New Caledonia</option>
+                                                <option value="NZ">New Zealand</option>
+                                                <option value="NI">Nicaragua</option>
+                                                <option value="NE">Niger</option>
+                                                <option value="NG">Nigeria</option>
+                                                <option value="NU">Niue</option>
+                                                <option value="NF">Norfolk Island</option>
+                                                <option value="MP">Northern Mariana Islands</option>
+                                                <option value="NO">Norway</option>
+                                                <option value="OM">Oman</option>
+                                                <option value="PK">Pakistan</option>
+                                                <option value="PW">Palau</option>
+                                                <option value="PS">Palestinian Territory, Occupied</option>
+                                                <option value="PA">Panama</option>
+                                                <option value="PG">Papua New Guinea</option>
+                                                <option value="PY">Paraguay</option>
+                                                <option value="PE">Peru</option>
+                                                <option value="PH">Philippines</option>
+                                                <option value="PN">Pitcairn</option>
+                                                <option value="PL">Poland</option>
+                                                <option value="PT">Portugal</option>
+                                                <option value="PR">Puerto Rico</option>
+                                                <option value="QA">Qatar</option>
+                                                <option value="RE">Réunion</option>
+                                                <option value="RO">Romania</option>
+                                                <option value="RU">Russian Federation</option>
+                                                <option value="RW">Rwanda</option>
+                                                <option value="BL">Saint Barthélemy</option>
+                                                <option value="SH">Saint Helena, Ascension and Tristan da
+                                                    Cunha
+                                                </option>
+                                                <option value="KN">Saint Kitts and Nevis</option>
+                                                <option value="LC">Saint Lucia</option>
+                                                <option value="MF">Saint Martin (French part)</option>
+                                                <option value="PM">Saint Pierre and Miquelon</option>
+                                                <option value="VC">Saint Vincent and the Grenadines</option>
+                                                <option value="WS">Samoa</option>
+                                                <option value="SM">San Marino</option>
+                                                <option value="ST">Sao Tome and Principe</option>
+                                                <option value="SA">Saudi Arabia</option>
+                                                <option value="SN">Senegal</option>
+                                                <option value="RS">Serbia</option>
+                                                <option value="SC">Seychelles</option>
+                                                <option value="SL">Sierra Leone</option>
+                                                <option value="SG">Singapore</option>
+                                                <option value="SX">Sint Maarten (Dutch part)</option>
+                                                <option value="SK">Slovakia</option>
+                                                <option value="SI">Slovenia</option>
+                                                <option value="SB">Solomon Islands</option>
+                                                <option value="SO">Somalia</option>
+                                                <option value="ZA">South Africa</option>
+                                                <option value="GS">South Georgia and the South Sandwich
+                                                    Islands
+                                                </option>
+                                                <option value="SS">South Sudan</option>
+                                                <option value="ES">Spain</option>
+                                                <option value="LK">Sri Lanka</option>
+                                                <option value="SD">Sudan</option>
+                                                <option value="SR">Suriname</option>
+                                                <option value="SJ">Svalbard and Jan Mayen</option>
+                                                <option value="SZ">Swaziland</option>
+                                                <option value="SE">Sweden</option>
+                                                <option value="CH">Switzerland</option>
+                                                <option value="SY">Syrian Arab Republic</option>
+                                                <option value="TW">Taiwan, Province of China</option>
+                                                <option value="TJ">Tajikistan</option>
+                                                <option value="TZ">Tanzania, United Republic of</option>
+                                                <option value="TH">Thailand</option>
+                                                <option value="TL">Timor-Leste</option>
+                                                <option value="TG">Togo</option>
+                                                <option value="TK">Tokelau</option>
+                                                <option value="TO">Tonga</option>
+                                                <option value="TT">Trinidad and Tobago</option>
+                                                <option value="TN">Tunisia</option>
+                                                <option value="TR">Turkey</option>
+                                                <option value="TM">Turkmenistan</option>
+                                                <option value="TC">Turks and Caicos Islands</option>
+                                                <option value="TV">Tuvalu</option>
+                                                <option value="UG">Uganda</option>
+                                                <option value="UA">Ukraine</option>
+                                                <option value="AE">United Arab Emirates</option>
+                                                <option value="GB">United Kingdom</option>
+                                                <option value="US" selected="selected">United States
+                                                </option>
+                                                <option value="UM">United States Minor Outlying Islands
+                                                </option>
+                                                <option value="UY">Uruguay</option>
+                                                <option value="UZ">Uzbekistan</option>
+                                                <option value="VU">Vanuatu</option>
+                                                <option value="VE">Venezuela, Bolivarian Republic of
+                                                </option>
+                                                <option value="VN">Viet Nam</option>
+                                                <option value="VG">Virgin Islands, British</option>
+                                                <option value="VI">Virgin Islands, U.S.</option>
+                                                <option value="WF">Wallis and Futuna</option>
+                                                <option value="EH">Western Sahara</option>
+                                                <option value="YE">Yemen</option>
+                                                <option value="ZM">Zambia</option>
+                                                <option value="ZW">Zimbabwe</option>
+                                            </select>
                                         </div>
-                                   
+                                        <div class="col-lg-3">
+                                            <label>Country of Residence <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="country_residence"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->country_residence }}" @endif>
+                                        </div>
+                                    </div>
+
 
                                     <div class="card-title mt-6">
                                         <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
@@ -1023,7 +1040,9 @@
                             <form class="form" method="post" action="{{ route('user.invesment.update') }}"
                                 enctype="multipart/form-data"> @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-                                @if($user->hasRole('investor'))
+                                <input type="hidden" name="type"
+                                    value="{{ $user->roles()->pluck('name')->implode(' ') }}">
+                                @if ($user->hasRole('investor'))
                                     <div class="card-body">
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-6">
@@ -1093,12 +1112,15 @@
                                             <div class="col-lg-6">
                                                 <label>Investment Experience <span class="text-danger">*</span></label>
                                                 <select class="form-select" data-control="select2"
-                                                    data-placeholder="Investment Experience*" name="investment_experience">
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'none') selected @endif value="none">
+                                                    data-placeholder="Investment Experience*"
+                                                    name="investment_experience">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'none') selected @endif
+                                                        value="none">
                                                         None</option>
                                                     <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'limited') selected @endif
                                                         value="limited">Limited</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'good') selected @endif value="good">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'good') selected @endif
+                                                        value="good">
                                                         Good</option>
                                                     <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_experience == 'extensive') selected @endif
                                                         value="extensive">Extensive</option>
@@ -1108,24 +1130,32 @@
                                             </div>
                                             <div class="col-lg-6">
                                                 <label>Age <span class="text-danger">*</span></label>
-                                                <select class="form-select" data-control="select2" data-placeholder="Age*"
-                                                    name="age">
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Age*" name="age">
                                                     <option></option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '29') selected @endif value="29">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '29') selected @endif
+                                                        value="29">
                                                         Under 30</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '30-39') selected @endif value="30-39">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '30-39') selected @endif
+                                                        value="30-39">
                                                         30 - 39</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '40-49') selected @endif value="40-49">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '40-49') selected @endif
+                                                        value="40-49">
                                                         40 - 49</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '50-59') selected @endif value="50-59">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '50-59') selected @endif
+                                                        value="50-59">
                                                         50 - 59</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '60-69') selected @endif value="60-69">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '60-69') selected @endif
+                                                        value="60-69">
                                                         60 - 69</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '70-79') selected @endif value="70-79">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '70-79') selected @endif
+                                                        value="70-79">
                                                         70 - 79</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '80') selected @endif value="80">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == '80') selected @endif
+                                                        value="80">
                                                         Over 79</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == 'not set') selected @endif value="">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->age == 'not set') selected @endif
+                                                        value="">
                                                         (not set)</option>
                                                 </select>
                                             </div>
@@ -1133,14 +1163,17 @@
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-6">
                                                 <label>Gender <span class="text-danger">*</span></label>
-                                                <select class="form-select" data-control="select2" data-placeholder="Gender*"
-                                                    name="gender">
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Gender*" name="gender">
                                                     <option></option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'male') selected @endif value="male">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'male') selected @endif
+                                                        value="male">
                                                         Male</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'female') selected @endif value="female">
-                                                        Femlae</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'other') selected @endif value="other">
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'female') selected @endif
+                                                        value="female">
+                                                        Female</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'other') selected @endif
+                                                        value="other">
                                                         Other</option>
                                                     <option @if ($user->invesmentProfie && $user->invesmentProfie->gender == 'not set') selected @endif
                                                         value="not set">(not set)</option>
@@ -1150,65 +1183,76 @@
 
                                     </div>
                                 @endif
-                                 {{-- Issuer Details  --}}
-                                 @if($user->hasRole('issuer'))
+                                {{-- Issuer Details  --}}
+                                @if ($user->hasRole('issuer'))
                                     <div class="card-body">
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-6">
-                                                <label>Assets Under Managment<span class="text-danger">*</span></label>
-                                                <select class="form-select" required data-control="select2"
-                                                    data-placeholder="Assets Under Managment" name="assets_under_managment">
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '0-100000') selected @endif
-                                                        value="0-100000">Less than $100,000</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '100001-50000') selected @endif
-                                                        value="100001-50000"> $100,001 - $250,000</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '250001-500000') selected @endif
-                                                        value="250001-500000"> $250,001 - $500,000</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '500001-1000000') selected @endif
-                                                        value="500001-1000000"> $500,001 - $1,000,000</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '1000001-5000000') selected @endif
-                                                        value="1000001-5000000"> $1,000,001 - $5,000,000</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->net_worth == '5000000') selected @endif
+                                                <label>Assets Under Managment </label>
+                                                <select class="form-select" data-control="select2"
+                                                    data-placeholder="Assets Under Managment"
+                                                    name="assets_under_management">
+                                                    <option value="" disabled selected> Assets Under Managment
+                                                    </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '0-50000000') selected @endif
+                                                        value="0-50000000"> Less than $50,000,000 </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '50000001-100000000') selected @endif
+                                                        value="50000001-100000000"> $50,000,001 - $100,000,000 </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '250000001-500000000') selected @endif
+                                                        value="250000001-500000000"> $250,000,001 - $500,000,000 </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '500000001-1000000000') selected @endif
+                                                        value="500000001-1000000000"> $500,000,001 - $1,000,000,000
+                                                    </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '1000000000') selected @endif
+                                                        value="1000000000"> more than $1,000,000,000</option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->assets_under_management == '5000000') selected @endif
                                                         value="5000000">more than $5,000,000</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
                                                 <label> Investment Style <span class="text-danger">*</span></label>
                                                 <select class="form-select" data-control="select2"
-                                                    data-placeholder="Risk Tolerance*" name="risk_tolerance">
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'conservative') selected @endif
+                                                    data-placeholder="Investment Style" name="investment_style">
+                                                    <option value="" disabled selected> Investment Style </option>
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_style == 'conservative') selected @endif
                                                         value="conservative">Conservative</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'moderate') selected @endif
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_style == 'moderate') selected @endif
                                                         value="moderate">Moderate</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == 'agresive') selected @endif
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_style == 'agresive') selected @endif
                                                         value="agresive">Aggresive</option>
-                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->risk_tolerance == '(not set)') selected @endif
+                                                    <option @if ($user->invesmentProfie && $user->invesmentProfie->investment_style == '(not set)') selected @endif
                                                         value="(not set)">(not set)</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group row ">
                                             <div class="col-lg-6 mb-10">
-                                                <label>Finra CRD #<span class="text-danger">*</span></label>
-                                                <input type="text" name="" id="" class="form-control" placeholder="Finra CRD">
+                                                <label>Finra CRD # </label>
+                                                <input type="text" name="finra_crd"
+                                                    @if ($user->invesmentProfie) value="{{ $user->invesmentProfie->finra_crd }}" @endif
+                                                    class="form-control" placeholder="Finra CRD">
                                             </div>
                                             <div class="col-lg-6 mb-10">
-                                                <label>Website URL<span class="text-danger">*</span></label>
-                                                <input type="text" name="" id="" class="form-control" placeholder="Website URL">
+                                                <label>Website URL </label>
+                                                <input type="text" name="website_url"
+                                                    @if ($user->invesmentProfie) value="{{ $user->invesmentProfie->website }}" @endif
+                                                    class="form-control" placeholder="Website URL">
                                             </div>
 
                                             <div class="col-lg-6 mb-10">
                                                 <label>LinkedIn URL<span class="text-danger">*</span></label>
-                                                <input type="text" name="" id="" class="form-control" placeholder="LinkedIn URL">
+                                                <input type="text" name="linkedin_url"
+                                                    @if ($user->invesmentProfie) value="{{ $user->invesmentProfie->linkedIn }}" @endif
+                                                    class="form-control" placeholder="LinkedIn URL">
                                             </div>
                                         </div>
                                     </div>
                                 @endif
-                                
+
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-12 text-center">
-                                            <button type="submit" class="btn-sm btn btn-primary btn-square">
+                                            <button type="submit" class="btn-sm btn btn-primary">
                                                 Update Profile
                                             </button>
 
@@ -1242,7 +1286,7 @@
 
                                                 <th class="" tabindex="0" aria-controls="kt_customers_table"
                                                     rowspan="1" colspan="1"
-                                                    aria-label="Customer Name: activate to sort column ascending">Username
+                                                    aria-label="Customer Name: activate to sort column ascending"> Username
                                                 </th>
                                                 <th class="" tabindex="0" aria-controls="kt_customers_table"
                                                     rowspan="1" colspan="1"
@@ -1269,12 +1313,8 @@
                                                     aria-label="Email: activate to sort column ascending">Email Verified
                                                 </th>
                                                 <th class="" tabindex="0" aria-controls="kt_customers_table"
-                                                    rowspan="1" colspan="1"
+                                                    span="1" colspan="1"
                                                     aria-label="Email: activate to sort column ascending">Notifications
-                                                </th>
-                                                <th class="" tabindex="0" aria-controls="kt_customers_table"
-                                                    rowspan="1" colspan="1"
-                                                    aria-label="Email: activate to sort column ascending">Resend Invite
                                                 </th>
                                                 <th class="" tabindex="0" aria-controls="kt_customers_table"
                                                     rowspan="1" colspan="1"
@@ -1289,51 +1329,86 @@
                                         <!--end::Table head-->
                                         <!--begin::Table body-->
                                         <tbody class="fw-semibold text-gray-600">
-                                            <tr class="odd">
-                                                <td>
-                                                    smith@kpmg.com
-                                                </td>
-                                                <td>
-                                                    John
-                                                </td>
-                                                <td>Doe</td>
-                                                <td>
-                                                    **** 1486
-                                                </td>
-                                                <td>
-                                                    <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
-                                                            name="communication[]" value="email" checked="checked">
-                                                    </label>
-                                                </td>
-                                                <td class="">
-                                                    <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
-                                                            name="communication[]" value="email" checked="checked">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-20px w-20px" type="checkbox"
-                                                            name="communication[]" value="email">
-                                                        <span class="form-check-label fw-semibold">resend</span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <a href="javascript:void(0)">Manage</a>
-                                                </td>
-                                                <td>
+                                            @foreach ($childs as $child)
+                                                <tr class="odd">
+                                                    <td>
+                                                        {{ $child->email }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $child->name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $child->userDetail->last_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ Str::substr($child->phone, 0, 4) }}***
+                                                    </td>
+                                                    <td>
+                                                        @if ($child->status == 'active')
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="status" value="true"
+                                                                    checked="checked">
+                                                            </label>
+                                                        @else
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="status" value="false">
+                                                            </label>
+                                                        @endif
 
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-secondary btn-sm">Create
-                                                        Invite
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <a href="#"><i class="fas fa-pen fs-3"></i></a>
-                                                </td>
-                                            </tr>
+                                                    </td>
+
+                                                    <td>
+                                                        @if ($child->is_primary == true)
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="status" value="true"
+                                                                    checked="checked">
+                                                            </label>
+                                                        @else
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="status" value="false">
+                                                            </label>
+                                                        @endif
+
+                                                    </td>
+
+
+                                                    <td class="">
+                                                        @if ($child->email_verified_at == null)
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="email_verified" value="true">
+                                                                <span class="form-check-label fw-semibold">Resend</span>
+                                                            </label>
+                                                        @else
+                                                            <label
+                                                                class="form-check form-check-custom form-check-solid me-10">
+                                                                <input class="form-check-input h-15px w-15px"
+                                                                    type="checkbox" name="email_verified" value="false">
+                                                            </label>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:void(0)">Manage</a>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-secondary btn-sm">Create
+                                                            Invite
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#"><i class="fas fa-pen fs-3"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
 
                                         </tbody>
                                         <!--end::Table body-->
@@ -1342,6 +1417,7 @@
                             </div>
                         </div>
                         <!--end::Card body-->
+                        @if($user->hasRole('issuer'))
                         <div class="card-footer">
                             <div class="d-flex flex-row justify-content-between">
                                 <div class="">
@@ -1350,12 +1426,14 @@
                                     </button>
                                 </div>
                                 <div class="">
-                                    <button type="submit" class="btn-sm btn btn-primary mr-2">
+                                    <button type="submit" class="btn-sm btn btn-primary mr-2" data-bs-toggle="modal"
+                                        data-bs-target="#add_new_user">
                                         Add New User
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
 
                     <!--end::Card-->
@@ -1366,7 +1444,6 @@
                 <div class="tab-pane fade" id="kt_accreditation_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card pt-4 mb-6 mb-xl-9">
-
                         <div class="card-header border-0">
                             <div class="card-title">
                                 <h2>Accreditation Status</h2>
@@ -2751,6 +2828,7 @@
         </div>
 
     </div>
+    @include('user.partials.index')
 
 @endsection
 @section('page_js')

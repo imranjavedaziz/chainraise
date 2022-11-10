@@ -25,7 +25,12 @@ class InvesmentProfile extends Model
         'investment_experience',
         'annual_net_income',
         'age',
-        'gender'
+        'gender',
+        'assets_under_management',
+        'investment_style',
+        'finra_crd',
+        'website', 
+        'linkedIn'
     ];
 
 

@@ -8,6 +8,7 @@ use App\Models\InvesmentProfile;
 use App\Models\TrustSetting;
 use App\Models\User;
 use App\Models\UserDetail;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,20 +68,19 @@ class UserController extends Controller
 
 
     }
-
     public function index(Request $request)
     {
         
-        $users = User::with('userDetail')->orderby('id','DESC')->get();
+        $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->get();
         return view('user.index',compact('users'));
     }
     public function details($id)
     {
         
-       $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
-        return view('user.details',compact('user'));
+        $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
+        $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id)->get();
+        return view('user.details',compact('user','childs'));
     }
-
     public function list()
     {
         $users = User::get();
@@ -88,13 +88,11 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
-
     public function profile()
     {
         $user = Auth::user();
         return view('user.profile', compact('user'));
     }
-
     public function create(Request $request)
     {
         $request->validate([
@@ -158,15 +156,13 @@ class UserController extends Controller
             ]);
         }
     }
-
     public function investor()
     {
         return view('user.investor.create');
     }
-
     public function save(Request $request)
     {
-         
+        dd($request);
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',
@@ -185,7 +181,7 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-        
+       
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
@@ -239,7 +235,6 @@ class UserController extends Controller
             return redirect()->back()->with('error','Error while creating investor user');
         }       
     }
-
     public function issuer()
     {
         return view('user.issuer.create');
@@ -296,7 +291,6 @@ class UserController extends Controller
             return redirect()->back()->with('error','Error while creating investor user');
         }       
     }
-
     public function issuerAccountUpdate(Request $request)
     {
 
@@ -471,21 +465,117 @@ class UserController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'net_worth' => 'required',
-            'highest_education' => 'required',
-            'risk_tolerance' => 'required',
-            'investment_experience' => 'required',
-            'age' => 'required',
-            'gender' => 'required',
-            'annual_net_income' => 'required'
+            'type'=>'required',
         ]);
-        $invesment = InvesmentProfile::updateOrCreate(
-            ['user_id' => $request->id],
-            ['net_worth' => $request->net_worth, 'highest_education' => $request->highest_education,'risk_tolerance' => $request->risk_tolerance, 'investment_experience' => $request->investment_experience,'age' => $request->age, 'gender' => $request->gender,'annual_net_income'=> $request->annual_net_income]
-        );
+        
+        if($request->type == 'investor'){
+            $request->validate([
+                'net_worth' => 'required',
+                'highest_education'=>'required',
+                'risk_tolerance'=>'required',
+                'investment_experience'=>'required',
+                'age'=>'required',
+                'gender'=>'required',
+                'annual_net_income' => 'required'
+            ]);
+            $invesment = InvesmentProfile::updateOrCreate(
+                ['user_id' => $request->id],
+                ['net_worth' => $request->net_worth, 'highest_education' => $request->highest_education,
+                 'risk_tolerance' => $request->risk_tolerance, 'investment_experience' => $request->investment_experience,
+                 'age' => $request->age, 'gender' => $request->gender,'annual_net_income'=> $request->annual_net_income,]
+            );
+        }else{
+            
+            
+            $data = InvesmentProfile::updateOrCreate(
+                ['user_id' => $request->id],
+                ['finra_crd' => $request->finra_crd, 'linkedIn' => $request->linkedin_url ,
+                 'website' => $request->website_url , 'investment_style' => $request->investment_style,
+                 'assets_under_management'=>$request->assets_under_management]
+            );
+           
+        }
+       
        
          return redirect()->back()->with('success','invesment Profile has been updated');
 
 
+    }
+    public function childSave(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|unique:users',
+            'phone_number' => 'required',
+            //'title' => 'required',
+            'birth_date' => 'required',
+            //'linkedIn_url' => 'required',
+            //'password' => 'required',
+            'address' => 'required',
+            'suite_unit' => 'required',
+            'city' => 'required',
+            'state_region' => 'required',
+            'zip_code' => 'required',
+            'social_security' => 'required',
+            'nationality'=>'required',
+            'country_residence'=>'required',
+            'parent_id'=>'required|integer'
+            //'reset_password_invite'=>'required',
+            //'email_verified'=>'required',
+            //'account_type' => 'required|in:investor,issuer'
+        ]);
+        // if($request->agree_consent_electronic  == 'true'){
+        //     $agree_consent_electronic = true;
+        // }else{
+        //     $agree_consent_electronic =false;
+        // }
+        DB::beginTransaction();
+        try{
+            $user = new User;
+            $user->name  = $request->first_name;
+            $user->email  = $request->email;
+            $user->phone  = $request->phone_number;
+            if($request->has('password') && $request->password != null){
+                $user->password  =  Hash::make($request->password);
+            }
+            if($request->has('email_verified')){
+                $user->email_verified_at = Carbon::now();
+            }
+            $user->status  = 'active';
+            $user->parent_id = $request->parent_id;
+            $user->is_primary = 'no';
+            $user->save();
+            if($request->hasFile('photo')) {
+                $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
+            }
+            $user_detail = new UserDetail;
+            $user_detail->user_id = $user->id;
+            $user_detail->last_name = $request->last_name;
+            $user_detail->title = $request->title;
+            $user_detail->dob = Carbon::now()->format('Y-m-d');
+            $user_detail->address = $request->address;
+            $user_detail->suit = $request->suite_unit;
+            $user_detail->city = $request->city;
+            $user_detail->state = $request->state_region;
+            $user_detail->zip = $request->zip_code;
+            $user_detail->save();
+            $identity_verification = new IdentityVerification;
+            $identity_verification->user_id = $user->id;
+            $identity_verification->social_security = $request->social_security;
+            $identity_verification->nationality = $request->nationality;
+            $identity_verification->country_residence = $request->country_residence;
+            $identity_verification->save();
+            $invesment_profile = new InvesmentProfile;
+            $invesment_profile->user_id = $user->id;
+            $invesment_profile->linkedIn = $request->linkedIn_url;
+            $invesment_profile->save();
+            DB::commit();
+            return redirect()->route('user.index')->with('success','New user has been created');
+        }catch(Exception $error){
+            return $error;
+            DB::rollBack();
+            return redirect()->back()->with('error','Error while creating user');
+        }
     }
 }

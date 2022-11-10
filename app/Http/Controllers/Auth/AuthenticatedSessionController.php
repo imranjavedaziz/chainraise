@@ -49,6 +49,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('https://chainraise.netlify.app');
+        return redirect('https://beta.chainraise.info');
     }
 }

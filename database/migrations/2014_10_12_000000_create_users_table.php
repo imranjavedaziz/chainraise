@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('phone');
             $table->boolean('agree_consent_electronic')->default(false);
             $table->enum('status',['active','inactive']);
+            $table->enum('is_primary',['yes','no'])->default('yes');
             $table->rememberToken();
             $table->timestamps();
         });
