@@ -20,12 +20,12 @@ return new class extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('title')->nullable();
-            $table->date('dob');
-            $table->text('address');
+            $table->date('dob')->nullable();
+            $table->text('address')->nullable();
             $table->string('suit')->nullable();
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
             $table->string('entity_name')->nullable();
             $table->string('legal_formation')->nullable();
             $table->string('date_incorporation')->nullable();

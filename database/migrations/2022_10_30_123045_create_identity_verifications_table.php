@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('primary_contact_social_security')->nullable();
             $table->string('tax_entity_type')->nullable();
             $table->string('tax_identification')->nullable();
-            $table->string('nationality');
-            $table->string('country_residence');
+            $table->string('nationality')->nullable();
+            $table->string('country_residence')->nullable();;
             $table->timestamps();
         });
     }

@@ -5,10 +5,6 @@
 @endsection
 @section('page_content')
 
-
-
-
-
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -364,71 +360,74 @@
                                                     <div class="col-lg-4">
                                                         <label>Title:</label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Title"
-                                                                name="title" value="{{ $user->userDetail->title }}" />
-            
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Title" name="title"
+                                                                value="{{ $user->userDetail->title }}" />
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <label>Phone Number: <span class="text-danger">*</span> </label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="(201) 555-0123"
-                                                                name="phone" value="{{ $user->phone }}" />
-            
+                                                            <input type="text" class="form-control"
+                                                                placeholder="(201) 555-0123" name="phone"
+                                                                value="{{ $user->phone }}" />
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <label>Date of Birth <span class="text-danger">*</span> </label>
                                                         <div class="input-group" id="">
-                                                            <input type="date" class="form-control" placeholder="Date of Birth*"
-                                                                required name="dob" value="{{ $user->userDetail->dob }}">
-            
+                                                            <input type="date" class="form-control"
+                                                                placeholder="Date of Birth*" required name="dob"
+                                                                value="{{ $user->userDetail->dob }}">
+
                                                         </div>
-            
+
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 pt-6">
                                                 <div class="image-input image-input-outline image-input-empty"
-                                                data-kt-image-input="true"
-                                                @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                                                    data-kt-image-input="true"
+                                                    @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
                                                 @else
                                                 @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
-                                                style="background-image: url('{{ $photo_path }}')">
-                                                <!--begin::Preview existing avatar-->
-                                                <div class="image-input-wrapper w-150px h-150px"
-                                                    style="background-image: none;"></div>
-                                                <!--end::Preview existing avatar-->
-                                                <!--begin::Label-->
-                                                <label
-                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                                    aria-label="Change avatar" data-kt-initialized="1">
-                                                    <i class="bi bi-pencil-fill fs-7"></i>
-                                                    <!--begin::Inputs-->
-                                                    <input type="file" name="profile_avatar"
-                                                        accept=".png, .jpg, .jpeg">
-                                                    <input type="hidden" name="avatar_remove" value="1">
-                                                    <!--end::Inputs-->
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Cancel-->
-                                                <span
-                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                                    aria-label="Cancel avatar" data-kt-initialized="1">
-                                                    <i class="bi bi-x fs-2"></i>
-                                                </span>
-                                                <!--end::Cancel-->
-                                                <!--begin::Remove-->
-                                                <span
-                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                                    aria-label="Remove avatar" data-kt-initialized="1">
-                                                    <i class="bi bi-x fs-2"></i>
-                                                </span>
-                                                <!--end::Remove-->
-                                            </div>
+                                                    style="background-image: url('{{ $photo_path }}')">
+                                                    <!--begin::Preview existing avatar-->
+                                                    <div class="image-input-wrapper w-150px h-150px"
+                                                        style="background-image: none;"></div>
+                                                    <!--end::Preview existing avatar-->
+                                                    <!--begin::Label-->
+                                                    <label
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                        aria-label="Change avatar" data-kt-initialized="1">
+                                                        <i class="bi bi-pencil-fill fs-7"></i>
+                                                        <!--begin::Inputs-->
+                                                        <input type="file" name="profile_avatar"
+                                                            accept=".png, .jpg, .jpeg">
+                                                        <input type="hidden" name="avatar_remove" value="1">
+                                                        <!--end::Inputs-->
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Cancel-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                        aria-label="Cancel avatar" data-kt-initialized="1">
+                                                        <i class="bi bi-x fs-2"></i>
+                                                    </span>
+                                                    <!--end::Cancel-->
+                                                    <!--begin::Remove-->
+                                                    <span
+                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                        aria-label="Remove avatar" data-kt-initialized="1">
+                                                        <i class="bi bi-x fs-2"></i>
+                                                    </span>
+                                                    <!--end::Remove-->
+                                                </div>
                                             </div>
                                         </div>
 
@@ -443,7 +442,7 @@
 
                                     </div>
                                     <div class="form-group row mb-10">
-                                        
+
 
                                     </div>
 
@@ -1360,7 +1359,6 @@
                                                         @endif
 
                                                     </td>
-
                                                     <td>
                                                         @if ($child->is_primary == true)
                                                             <label
@@ -1378,8 +1376,6 @@
                                                         @endif
 
                                                     </td>
-
-
                                                     <td class="">
                                                         @if ($child->email_verified_at == null)
                                                             <label
@@ -1405,7 +1401,11 @@
                                                         </button>
                                                     </td>
                                                     <td>
-                                                        <a href="#"><i class="fas fa-pen fs-3"></i></a>
+                                                        <button class="btn btn-sm btn-default getUserDetail"
+                                                            data-bs-toggle="modal" data-bs-target="#edit_new_user"
+                                                            data-id="{{ $child->id }}">
+                                                            <i class="fas fa-pen fs-3"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -1417,22 +1417,22 @@
                             </div>
                         </div>
                         <!--end::Card body-->
-                        @if($user->hasRole('issuer'))
-                        <div class="card-footer">
-                            <div class="d-flex flex-row justify-content-between">
-                                <div class="">
-                                    <button type="submit" class="btn-sm btn btn-primary mr-2">
-                                        Add Existing User
-                                    </button>
-                                </div>
-                                <div class="">
-                                    <button type="submit" class="btn-sm btn btn-primary mr-2" data-bs-toggle="modal"
-                                        data-bs-target="#add_new_user">
-                                        Add New User
-                                    </button>
+                        @if ($user->hasRole('issuer'))
+                            <div class="card-footer">
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div class="">
+                                        <button type="submit" class="btn-sm btn btn-primary mr-2">
+                                            Add Existing User
+                                        </button>
+                                    </div>
+                                    <div class="">
+                                        <button type="submit" class="btn-sm btn btn-primary mr-2"
+                                            data-bs-toggle="modal" data-bs-target="#add_new_user">
+                                            Add New User
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @endif
                     </div>
 
@@ -1449,192 +1449,53 @@
                                 <h2>Accreditation Status</h2>
                             </div>
                         </div>
-
                         <div class="card-body pt-0 pb-5">
-                            <form class="form">
+                            <form class="form" method="post" action="{{ route('accreditation.update') }}">
+                                @csrf
                                 <div class="form-group row">
-                                    <div class="col-lg-4 ">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-stretch card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-user fs-4x"></i>
-                                                        </span>
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                    @foreach ($accreditations as $accreditation)
+                                        <div class="col-lg-4 mb-10">
+                                            <!--begin::Card-->
+                                            <div class="card card-flush card-stretch card-bordered  py-4 h-250px">
+                                                <div class="card-header justify-content-center">
+                                                    <div class="card-title">
+                                                        <div>
+                                                            <span class="">
+                                                                <i class="{{ $accreditation->icon }} fs-3x"></i>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">My <b>Individual Income </b>is</span><br>
-                                                <span class="fs-4 text-success">Above $200,000</span><br>
-                                                <span>(for each of the last 2 years)</span>
-
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <!--end::Card-->
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-user-friends fs-4x"></i>
-                                                        </span>
-                                                    </div>
+                                                <div class="card-body pt-2 text-center">
+                                                    <span class="fs-4"> {{ $accreditation->title }} </span><br>
+                                                    <span class="fs-4 text-success">
+                                                        @if ($accreditation->amount != null)
+                                                            Above ${{ number_format($accreditation->amount) }}
+                                                        @endif
+                                                    </span><br>
+                                                    <span> {{ $accreditation->years }} </span>
+                                                </div>
+                                                <div
+                                                    class="form-check form-check-custom form-check-solid justify-content-center">
+                                                    <input class="form-check-input" type="radio"
+                                                        value="{{ $accreditation->id }}" name="accreditation" required
+                                                        @if ($user->accreditation and $user->accreditation->id == $accreditation->id) checked @endif />
+                                                    <label class="form-check-label"></label>
                                                 </div>
                                             </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">My <b>Joint Income</b> with spouse is</span><br>
-                                                <span class="fs-4 text-success">Above $300,000</span><br>
-                                                <span>(for each of the last 2 years)</span>
 
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
+                                            <!--end::Card-->
                                         </div>
-
-                                        <!--end::Card-->
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-building fs-4x"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">My individual <b>Net Worth</b> or joint with spouse
-                                                    is</span><br>
-                                                <span class="fs-4 text-success">Above $1M</span><br>
-                                                <span>(excluding primary residence)</span>
-
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <!--end::Card-->
-                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="form-group row mt-8">
-                                    <div class="col-lg-4 ">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-user fs-4x"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">I own <b>Total Investments</b></span><br>
-                                                <span class="fs-4 text-success">Above $5M</span><br>
-                                                <span>(including jointly with spouse)</span>
-
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
+                                <div class="card-footer text-center">
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <div class="">
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2">
+                                                UPDATE ACCREDATION STATUS
+                                            </button>
                                         </div>
-
-                                        <!--end::Card-->
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-user fs-4x"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">I am a licensed individual that holds an active
-                                                    Series 7, Series 65,
-                                                    or Series 82 registration</span><br>
-
-
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <!--end::Card-->
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <!--begin::Card-->
-                                        <div class="card card-flush card-bordered  py-4 h-250px">
-                                            <div class="card-header justify-content-center">
-                                                <div class="card-title">
-                                                    <div>
-                                                        <span class="">
-                                                            <i class="fas fa-user fs-4x"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body pt-2 text-center">
-                                                <span class="fs-4">I am not an <br> Accredited Investor</span><br>
-
-
-                                            </div>
-                                            <div
-                                                class="form-check form-check-custom form-check-solid justify-content-center">
-                                                <input class="form-check-input" type="radio" value=""
-                                                    checked="checked" id="flexRadioDefault" />
-                                                <label class="form-check-label " for="flexRadioDefault">
-
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <!--end::Card-->
                                     </div>
                                 </div>
                             </form>
@@ -1644,9 +1505,6 @@
                     </div>
                     <!--end::Card-->
                 </div>
-                <!--end:::Accreditation Tab pane-->
-
-                <!--begin:::Transaction Tab pane-->
                 <div class="tab-pane fade" id="kt_transaction_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card mb-5 mb-xl-8">
@@ -1761,9 +1619,6 @@
                     </div>
                     <!--end::Card-->
                 </div>
-                <!--end:::Transaction Tab pane-->
-
-                <!--begin:::Documents Tab pane-->
                 <div class="tab-pane fade" id="kt_documents_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card card-flush">
@@ -1803,7 +1658,7 @@
                                     </div>
 
                                     <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
-                                        data-bs-target="#modal_folder">
+                                        data-bs-target="#modal-addFolder">
                                         <!--begin::Svg Icon | path: icons/duotune/files/fil013.svg-->
                                         <span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -2601,9 +2456,6 @@
                     </div>
                     <!--end::Card-->
                 </div>
-                <!--end:::Documents Tab pane-->
-
-                <!--begin:::Documents Tab pane-->
                 <div class="tab-pane fade" id="kt_payment_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card card-flush">
@@ -2621,9 +2473,6 @@
                     </div>
                     <!--end::Card-->
                 </div>
-                <!--end:::Documents Tab pane-->
-
-                <!--begin:::Engagement Tab pane-->
                 <div class="tab-pane fade" id="kt_engagement_tab" role="tabpanel">
 
                     <div class="col-lg-3 ">
@@ -2838,12 +2687,12 @@
 
 
     <script>
+        $('.information_fields').hide();
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
         $("#users-table").on("click", ".edit-user", function(e) {
             var id = $(this).data('id');
             var name = $(this).data('name');
@@ -2888,6 +2737,102 @@
                 }
             });
         }
+
+
+        $('.checkbox').click(function() {
+            if ($('.identification_information').is(':checked')) {
+                $('.information_fields').show('slow');
+            } else {
+                $('.information_fields').hide('slow');
+            }
+        });
+        $('.getUserDetail').click(function() {
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('user.child.details') }}",
+                method: 'POST',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.status == true) {
+                        var data = response.data;
+                    } else {
+                        toastr.error('Some system error', "Error");
+                    }
+                    $('#user_id').val(data.id);
+                    $('#first_name').val(data.name);
+                    $('#last_name').val(data.user_detail.last_name);
+                    $('#email').val(data.email);
+                    $('#phone_number').val(data.phone);
+                    $('#user_title').val(data.user_detail.title);
+                    $('#birth_date').val(data.user_detail.dob);
+                    if (data.invesment_profie) {
+                        $('#linkedIn_url').val(data.invesment_profie.linkedIn);
+                    }
+                    $('#address').val(data.user_detail.address);
+                    $('#suite_unit').val(data.user_detail.suit);
+                    $('#city').val(data.user_detail.city);
+                    $('#state_region').val(data.user_detail.state);
+                    $('#zipcode').val(data.user_detail.zip);
+                    if (data.identity_verification) {
+                        $('#social_security').val(data.identity_verification.social_security);
+                        $('#nationality').val(data.identity_verification.nationality);
+                        $('#country_residence').val(data.identity_verification.country_residence);
+                    }
+                    if (response.photo != '') {
+                        $('.profilePhoto').css('background-image', 'url(' + response.photo + ')');
+                    } else {
+                        $('.profilePhoto').css('background-image',
+                            'url(http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg)');
+                    }
+
+
+                    // $('#zip_code').val(data.user_detail.zip);
+                    // $('#zip_code').val(data.user_detail.zip);
+                    // $('#zip_code').val(data.user_detail.zip);
+                    console.log(response);
+                },
+            });
+
+
+        });
+    </script>
+
+    <script>
+        $('.deleteUser').click(function() {
+            var id = $('#user_id').val();
+            Swal.fire({
+                title: "Are you sure to delete ?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                customClass: {
+                    confirmButton: "btn-danger"
+                }
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{ route('user.child.delete') }}",
+                        method: 'POST',
+                        data: {
+                            id: id
+                        },
+                        success: function(response){
+                            if (response.status == true) {
+
+                                toastr.success("User has been deleted", "Success");
+                                location.reload();
+                                //$( "#kt_customers_table" ).load( "your-current-page.html #mytable" );
+                            }else{
+                                toastr.success("Error while deting user", "Error");
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
 

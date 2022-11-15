@@ -675,11 +675,7 @@
         </div>
         <!--end::Page-->
     </div>
-
-
-
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-
         <span class="svg-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
@@ -690,14 +686,11 @@
                     fill="currentColor" />
             </svg>
         </span>
-
     </div>
-
-
     <script>
         var hostUrl = "assets/";
     </script>
-    <script src="https://beta.chainraise.info/manage/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
@@ -707,7 +700,8 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
+    
     @if (Session::has('success') or Session::has('error'))
     <script>
         @if (Session::has('success'))

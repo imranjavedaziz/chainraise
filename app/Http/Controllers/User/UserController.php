@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accreditation;
 use App\Models\IdentityVerification;
 use App\Models\InvesmentProfile;
+use App\Models\Offer;
 use App\Models\TrustSetting;
 use App\Models\User;
 use App\Models\UserDetail;
@@ -77,9 +79,11 @@ class UserController extends Controller
     public function details($id)
     {
         
-        $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->find($id);
+        $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie','accreditation')->find($id);
         $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id)->get();
-        return view('user.details',compact('user','childs'));
+        $accreditations = Accreditation::get();
+        $offers = Offer::get();
+        return view('user.details',compact('user','childs','accreditations','offers'));
     }
     public function list()
     {
@@ -115,7 +119,6 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Error while creating user');
         }
     }
-
     public function update(Request $request)
     {
         $request->validate([
@@ -162,7 +165,7 @@ class UserController extends Controller
     }
     public function save(Request $request)
     {
-        dd($request);
+       // dd($request);
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',
@@ -364,7 +367,7 @@ class UserController extends Controller
              'country_residence' => $request->country_residence
             ]
         );
-        dd(1);
+       
 
        
 
@@ -503,33 +506,37 @@ class UserController extends Controller
     }
     public function childSave(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users',
-            'phone_number' => 'required',
-            //'title' => 'required',
-            'birth_date' => 'required',
-            //'linkedIn_url' => 'required',
-            //'password' => 'required',
-            'address' => 'required',
-            'suite_unit' => 'required',
-            'city' => 'required',
-            'state_region' => 'required',
-            'zip_code' => 'required',
-            'social_security' => 'required',
-            'nationality'=>'required',
-            'country_residence'=>'required',
-            'parent_id'=>'required|integer'
-            //'reset_password_invite'=>'required',
-            //'email_verified'=>'required',
-            //'account_type' => 'required|in:investor,issuer'
-        ]);
-        // if($request->agree_consent_electronic  == 'true'){
-        //     $agree_consent_electronic = true;
-        // }else{
-        //     $agree_consent_electronic =false;
-        // }
+
+        if($request->has('identification_information')){
+           $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'phone_number' => 'required',
+                //'title' => 'required',
+                'birth_date' => 'required',
+                //'linkedIn_url' => 'required',
+                //'password' => 'required',
+                'address' => 'required',
+                'suite_unit' => 'required',
+                'city' => 'required',
+                'state_region' => 'required',
+                'zip_code' => 'required',
+                'social_security' => 'required',
+                'nationality'=>'required',
+                'country_residence'=>'required',
+                'parent_id'=>'required|integer'
+            ]);
+        }else{
+           $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'phone_number' => 'required',
+                'parent_id'=>'required|integer',
+                'birth_date' => 'required',
+            ]);
+        }
         DB::beginTransaction();
         try{
             $user = new User;
@@ -571,11 +578,134 @@ class UserController extends Controller
             $invesment_profile->linkedIn = $request->linkedIn_url;
             $invesment_profile->save();
             DB::commit();
-            return redirect()->route('user.index')->with('success','New user has been created');
+            return redirect()->route('user.details',$request->parent_id)->with('success','New user has been created');
         }catch(Exception $error){
             return $error;
             DB::rollBack();
             return redirect()->back()->with('error','Error while creating user');
+        }
+    }
+
+    public function childDetails(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        $user = User::with('userDetail','identityVerification','invesmentProfie','accreditation')->find($request->id);
+        return response([
+            'status' => true,
+            'data' => $user,
+            'photo' => $user->getFirstMediaUrl('profile_photo', 'thumb'),
+        ]);
+    }
+    public function childUpdate(Request $request)
+    {
+       
+        if($request->has('identification_information')){
+           
+            $request->validate([
+                 'id'=>'required|integer',
+                 'first_name' => 'required',
+                 'last_name' => 'required',
+                 'email' => 'required',
+                 'phone_number' => 'required',
+                 //'title' => 'required',
+                 'birth_date' => 'required',
+                 //'linkedIn_url' => 'required',
+                 //'password' => 'required',
+                 'address' => 'required',
+                 'suite_unit' => 'required',
+                 'city' => 'required',
+                 'state_region' => 'required',
+                 'zip_code' => 'required',
+                 'social_security' => 'required',
+                 'nationality'=>'required',
+                 'country_residence'=>'required'
+             ]);
+         }else{
+            
+            $request->validate([
+                 'first_name' => 'required',
+                 'last_name' => 'required',
+                 'email' => 'required',
+                 'phone_number' => 'required',
+                 'id'=>'required|integer',
+                 'birth_date' => 'required',
+             ]);
+
+         }
+         DB::beginTransaction();
+        
+         try{
+             $user = User::find($request->id);
+             $user->name  = $request->first_name;
+             $user->email  = $request->email;
+             $user->phone  = $request->phone_number;
+             if($request->has('password') && $request->password != null){
+                 $user->password  =  Hash::make($request->password);
+             }
+             $user->save();
+             if($request->hasFile('photo')) {
+                 $user->clearMediaCollection('profile_photo');
+                 $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
+             }
+
+                UserDetail::updateOrCreate(
+                ['user_id' => $request->id],
+                [
+                 'last_name' => $request->last_name,
+                 'title' => $request->title,
+                 'dob' => $request->birth_date,
+                 'address' => $request->address,
+                 'suit' => $request->suite_unit,
+                 'city' => $request->city,
+                 'state'=> $request->state_region,
+                 'zip'=> $request->zip_code
+                ]);
+
+                IdentityVerification::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                     'social_security' => $request->social_security,
+                     'nationality' => $request->nationality,
+                     'country_residence' => $request->country_residence
+                ]);
+
+                InvesmentProfile::updateOrCreate(
+                    ['user_id' => $user->id],
+                    ['linkedIn' => $request->linkedIn_url ]);
+             DB::commit();
+             return redirect()->route('user.details',$user->id)->with('success','New user has been created');
+         }catch(Exception $error){
+             return $error;
+             DB::rollBack();
+             return redirect()->back()->with('error','Error while creating user');
+         }
+    }
+
+    public function childUDelete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        try{
+            $user = User::find($request->id);
+            if($user->is_primary == 'yes'){
+                return response([
+                    'status' => false,
+                    'message' =>"Unable to delete parent user",
+                ]);
+            }
+            $user->delete();
+            return response([
+                'status' => true,
+                'message' =>"User has been deleted",
+            ]);
+        }catch(Exception $err){
+            return response([
+                'status' => false,
+                'message' =>"Error while deleting user",
+            ]);
         }
     }
 }
