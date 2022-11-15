@@ -2826,7 +2826,7 @@
                                 location.reload();
                                 //$( "#kt_customers_table" ).load( "your-current-page.html #mytable" );
                             }else{
-                                toastr.success("Error while deting user", "Error");
+                                toastr.error("Error while deleting user", "Error");
                             }
                         }
                     });
