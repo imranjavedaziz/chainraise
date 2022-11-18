@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Accreditation;
+use App\Models\Folder;
 use App\Models\IdentityVerification;
 use App\Models\InvesmentProfile;
 use App\Models\Offer;
@@ -77,13 +78,22 @@ class UserController extends Controller
         return view('user.index',compact('users'));
     }
     public function details($id)
-    {
-        
+    {   $id = $id;
         $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie','accreditation')->find($id);
-        $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id)->get();
         $accreditations = Accreditation::get();
         $offers = Offer::get();
-        return view('user.details',compact('user','childs','accreditations','offers'));
+        $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id)->get();
+        $folders = Folder::where('user_id',$id)->get();
+        return view('user.details',compact('user','accreditations','offers','childs','id','folders'));
+    }
+    public function getChilds(Request $request){
+        
+        if($request->ajax()){
+            return $request->id;
+            $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id);
+            return Datatables::of($childs)
+            ->make(true);
+        }
     }
     public function list()
     {

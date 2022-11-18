@@ -31,6 +31,7 @@ Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified
 });
 Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
     Route::get('index', ['as' => 'index','uses' => 'UserController@index']);
+    Route::get('get-childs', ['as' => 'childs','uses' => 'UserController@getChilds']);
     Route::get('details/{id}', ['as' => 'details','uses' => 'UserController@details']);
     Route::post('accountUpdate', ['as' => 'issuer.account.update','uses' => 'UserController@issuerAccountUpdate']);
 ///
@@ -72,6 +73,8 @@ Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' =
 });
 
 Route::group(['as'=> 'folder.','prefix'=>'folder','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Folder'], function () {
-    Route::get('create', ['as' => 'create','uses' => 'OrganizationsController@index']);
+    Route::post('create', ['as' => 'create','uses' => 'FolderController@create']);
+    Route::post('upload-file', ['as' => 'upload.file','uses' => 'FolderController@uploadFile']);
+    Route::get('get-files', ['as' => 'get.files','uses' => 'FolderController@getFiles']);
 });
 require __DIR__.'/auth.php';
