@@ -2295,7 +2295,50 @@
                if(response.status == true){
                     
                     $(response.data).each(function(index, value) {
-                        listItem += `<li>`+value.name+`</li>`;
+                        listItem += 
+                        
+                        `  <div class="col-lg-6 mb-10">
+                            <div class="d-flex flex-center flex-column py-5" style="border:1px solid #000" >
+                                <!--begin::Avatar-->
+                                <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3"> `+ value.name +` </a>
+                                <!--end::Name-->
+                                <!--begin::Position-->
+                                <div class="mb-9">
+                                    <!--begin::Badge-->
+                                    <div class="badge badge-lg badge-light-danger d-inline">REQUIRES SIGNATURE</div>
+                                    <!--begin::Badge-->
+                                </div>
+                                <div class="d-flex flex-wrap flex-center">
+                                    <!--begin::Stats-->
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                        <div class="fs-4 fw-bold text-gray-700">
+                                            <i class="text-danger la la-trash"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                        <div class="fs-4 fw-bold text-gray-700">
+                                            <i class="text-warning la la-history"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="border border-gray-300 border-dashed rounded py-3 px-3 mb-3">
+                                        <div class="fs-4 fw-bold text-gray-700">
+                                            <i class="text-info la la-download"></i>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <p class='text-center'> 
+                                    Signed by McKall Cameron (mckall24@gmail.com). Awaiting a signature from you.
+
+                                </p>
+                                <!--end::Info-->
+                            </div>
+                        </div> 
+                        
+                        
+                        `; 
                     });
                }
                

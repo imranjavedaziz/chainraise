@@ -57,8 +57,9 @@ Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => [
 
 Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin'],'namespace'=>'App\Http\Controllers\Offers'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
+    Route::get('create', ['as' => 'create','uses' => 'OfferController@create']);
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
-    Route::post('create', ['as' => 'create','uses' => 'OfferController@create']);
+    Route::post('create', ['as' => 'create','uses' => 'OfferController@save']);
     Route::post('delete', ['as' => 'delete','uses' => 'OfferController@delete']);
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);

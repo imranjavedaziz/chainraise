@@ -847,17 +847,15 @@
 
     <div class="modal fade" id="modal-viewDocument" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"> View Document </h5>
                     
                 </div>
                 <div class="modal-body">
-                    <div class="card card-custom">
-                        <ul id="all_documents">
-                        </ul>
-                    </div>
+                    <div class="row" id="all_documents"> 
+                    </div> 
                 </div>
                
             </div>

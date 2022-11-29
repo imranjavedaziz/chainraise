@@ -28,7 +28,12 @@ class OfferController extends Controller
         return view('offers.edit',compact('offer','issuers'));
     }
 
-    public function create(Request $request)
+    public function create()
+    {
+        return view('offers.create');
+    }
+
+    public function save(Request $request)
     {
         $request->validate([
             'name' => 'required',
