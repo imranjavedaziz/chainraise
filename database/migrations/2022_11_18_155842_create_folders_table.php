@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('sort')->nullable();
             $table->timestamps();
         });

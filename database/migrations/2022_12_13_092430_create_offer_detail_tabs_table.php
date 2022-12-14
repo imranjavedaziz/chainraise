@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
-            $table->string('input');
-            $table->string('heading');
-            $table->string('sub_heading');
-            $table->string('description');
+            $table->string('input')->nullable();
+            $table->string('heading')->nullable();
+            $table->string('sub_heading')->nullable();
+            $table->string('description')->nullable();
             $table->string('priority')->default(0);
             $table->timestamps();
         });
