@@ -618,6 +618,17 @@
             </svg>
         </span>
     </div>
+    
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <script>
         var hostUrl = "assets/";
     </script>
@@ -633,6 +644,8 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
     
+
+
     @if (Session::has('success') or Session::has('error'))
     <script>
         @if (Session::has('success'))

@@ -1,7 +1,7 @@
 <div class="col-lg-3 pt-4">
     <div class="row">
         <div class="col-lg-12 text-center">
-            <button type="submit" class="btn btn-sm btn-dark"> SAVE CHANGES</button>
+            <button type="submit" class="btn btn-sm btn-dark" id="submit_offer"> SAVE CHANGES</button>
         </div>
     </div>
     <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">
@@ -20,8 +20,7 @@
             <div id="basic_info" class="collapse mb-3">
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                     <div class="col-lg-12 ">
-                        <select name="issuer" aria-label="Select Issuer Account "
-                            data-control="select2" data-placeholder="Select Issuer Account*" id="issuer_account"
+                        <select name="issuer"  id="issuer_account"
                             class="form-select form-select-lg" required >
                             <option value="" selected disabled > Select Issuer Account </option>
                                 @foreach($issuers as $issuer)    
@@ -66,7 +65,7 @@
                             </select>
                     </div>
                     <div class="col-lg-12">
-                        <input type="text" class="form-control" name="symbol"  id="symbol" placeholder="Offer Symbol *">
+                        <input type="text" class="form-control" name="symbol"  id="symbol" placeholder="Offer Symbol *" required>
                     </div>
                 </div>
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
@@ -83,7 +82,7 @@
                         </select>
                     </div>
                     <div class="col-lg-12">
-                        <input type="number" class="form-control" name="size"  id="offer_size" value="10000000">
+                        <input type="number" class="form-control" name="size"  id="offer_size" value="10000000" required>
                     </div>
                 </div>
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
@@ -94,10 +93,7 @@
 
                     <div class="col-lg-12">
                         <select name="base_currency"
-                        aria-label="Base Currency"
-                        data-control="select2"
-                        data-placeholder="Base Currency"
-                        class="form-select  form-select-lg"> 
+                        class="form-select  form-select-md" required> 
                         <option value="USD">USD</option>
                         <option value="GBP">GBP</option>
                         <option value="EUR">EUR</option>
@@ -117,13 +113,15 @@
                 </div>
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                     <div class="col-lg-12">
+                        <label for=""> Commencement Date </label>
                         <div class="position-relative d-flex">
-                            <input type="date" class="form-control  ps-12" placeholder="Commencement Date?" name="commencement_date" />
+                            <input type="date" class="form-control " placeholder="Commencement Date?" name="commencement_date" />
                         </div>
                     </div>
                     <div class="col-lg-12">
+                        <label for=""> Funding end date</label>
                         <div class="position-relative d-flex">
-                            <input type="date" class="form-control  ps-12"  placeholder="Funding end date?" name="funding_end_date" />
+                            <input type="date" class="form-control "  placeholder="Funding end date?" name="funding_end_date" />
                         </div>
                     </div>
                 </div>
@@ -206,10 +204,10 @@
                         </div>
                         <div class="row collapse" id="investment_restrictions">
                             <div class="col-lg-12 mt-3 text-center">
-                                <input type="number" class="form-control" name="min_invesment" style="font-size:12px!important"  required placeholder="Minimum investment (USD)">
+                                <input type="number" class="form-control" id="min_invesment" name="min_invesment" style="font-size:12px!important"  required placeholder="Minimum investment (USD) *">
                             </div>
                             <div class="col-lg-12 mt-3 mb-3 text-center">
-                                <input type="number" class="form-control" name="max_invesment" style="font-size:12px!important"  required placeholder="Maximum investment (USD)">
+                                <input type="number" class="form-control"  id="max_invesment" name="max_invesment" style="font-size:12px!important"  required placeholder="Maximum investment (USD) *">
                             </div>
                             <div class="col-lg-12 mb-3">
                                 <div class="d-flex flex-stack"> 

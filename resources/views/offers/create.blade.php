@@ -27,7 +27,7 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endsection
 @section('page_content')
-
+ 
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -75,6 +75,7 @@
                 <div class="row"> 
                    @include('offers.particles.left-bar') 
                     <div class="col-lg-9">
+                        
                         <div class="card-body mb-3"> 
                             <div class="position-relative"> 
                                 <div class="overlay overlay-show"> 
@@ -292,12 +293,7 @@
                                                                         </label>
                                                                         <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us"></textarea>
                                                                     </div>
-                                                                    <div class="col-lg-12 mt-4 mb-4" style="text-align: right">
-                                                                       <button class="btn btn-sm btn-dark" type="button">Submit</button>
-                                                                    </div>
-                                                                    <div class="col-lg-12" style="text-align: right">
-                                                                      <input type="text" name=""class="form-control " placeholder="Addtl. Contact Emails (comma delimited list)">
-                                                                    </div>
+                                                                    
                                                                 </div>
                                                                 
                                                             </div>
@@ -399,16 +395,19 @@
                 <div class="row section_`+no+`">
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
+                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
+                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
+                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
@@ -447,6 +446,7 @@
             $('#section_row').append(`
                 <div class="row section_`+no+`">
                     <div class="col-lg-11 mt-3 mb-4">
+                        <label class="required"> Image </label>
                         <input type="file" class="form-control" name="image[]" value="Title"  required> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
@@ -530,6 +530,27 @@
         $('#section_row').on('click','.delete_section',function(){
               var id = $(this).data('id');
               $("#section_1").remove(); 
+        });
+        $('#submit_offer').click(function(){
+            var offer_name = $('#offer_name').val();
+            var symbol = $('#symbol').val();
+            var min_invesment = $('#min_invesment').val();
+            var max_invesment = $('#max_invesment').val();
+            if(offer_name == ''){
+                toastr.error("Offer Name is Required", "Success");
+            }
+            if(symbol == ''){
+                toastr.error("Symbol is Required", "Success");
+            }
+            if(min_invesment == ''){
+                toastr.error("Min Invesment filed is Required", "Success");
+            }
+            if(max_invesment == ''){
+                toastr.error("Max Invesment filed is Required", "Success");
+            }
+
+
+
         });
       </script>
 

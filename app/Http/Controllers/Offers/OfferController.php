@@ -21,7 +21,7 @@ class OfferController extends Controller
     public function index()
     {
         $issuers = User::role('issuer')->get();
-        $offers = Offer::get();
+        $offers = Offer::orderBy('id','desc')->get();
        
         return view('offers.index',compact('issuers','offers'));
     }
@@ -29,10 +29,11 @@ class OfferController extends Controller
     public function edit($id)
     {
             
-          $offer = Offer::with('user','investmentRestrictions','callToAction','offerDetail','offerDetail.offerTiles','offerVideos')->find($id);
+         $offer = Offer::with('user','investmentRestrictions','callToAction','offerDetail','offerDetail.offerTiles','offerVideos','contactInfo')->find($id);
          //$organizations = Organization::get();
          $issuers = User::role('issuer')->get();
-         return view('offers.edit',compact('offer','issuers'));
+           $photos = $offer->getMedia('offer_detail_images');
+         return view('offers.edit',compact('offer','issuers','photos'));
     }
 
     public function create()
@@ -47,17 +48,25 @@ class OfferController extends Controller
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',
-            'short_description' => 'required',
-            'security_type' => 'required',
+            //'short_description' => 'required',
+            //'security_type' => 'required',
             'symbol' => 'required',
             'size' => 'required',
-            'size_label' => 'required',
-            'base_currency' => 'required',
-            'price_per_unit' => 'required',
-            'share_unit_label' => 'required',
-            'total_valuation' => 'required',
-            'commencement_date' => 'required',
-            'funding_end_date' => 'required',
+            'min_invesment'=>'required',
+            'max_invesment'=>'required'
+        ],[
+            'issuer.required' => 'Issuer name is required',
+            'offer_name.required' => 'Issuer name is requiredd',
+            'symbol.required' => 'Issuer name is required',
+            'size.required' => 'Issuer name is required',
+            'min_invesment.required' => 'Issuer name is required',
+            'max_invesment.required' => 'Issuer name is required',
+            //'base_currency' => 'required',
+            //'price_per_unit' => 'required',
+            //'share_unit_label' => 'required',
+            //'total_valuation' => 'required',
+            //'commencement_date' => 'required',
+            //'funding_end_date' => 'required',
         ]);
         
         try{
@@ -174,7 +183,7 @@ class OfferController extends Controller
                           
                                $offerContact = new OfferContact;
                                $offerContact->offer_id = $Offer->id;
-                               $offerContact->address = $request->address;
+                               $offerContact->address = $request->offer_address;
                                $offerContact->phone = $request->phone; 
                                $offerContact->contact_us = $request->contact_us; 
                                if($offerContact->save()){
@@ -224,12 +233,13 @@ class OfferController extends Controller
                                 $image = $request->file('tiles_source')[$index];
                                 $filenameWithExt = $image->getClientOriginalName ();
                                 $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                                $extension =$image->getClientOriginalExtension();
-                                $tilePhoto = 'tiles_'.time().'.'.$extension;
+                                $extension[$index] =$image->getClientOriginalExtension();
+                                $tilePhoto = 'tiles_'.time().'.'.$extension[$index];
                                 $path = $image->storeAs("tiles", $tilePhoto);
-                                $offer_tiles->path = $path;
+                                $offer_tiles->path = $tilePhoto;
                                 $offer_tiles->priority = 2; 
                                 $offer_tiles->save();
+                               
                             }
                     }
 
@@ -244,11 +254,20 @@ class OfferController extends Controller
                             $offer_detail_tab->save();
                        }
                     }
-                    // if($request->has('image')){
-                    //     for($m=0;$m<count($request->text_title);$m++){
-                    //         dd(1);
-                    //     }
-                    // }
+
+                   
+
+
+                    if($request->hasFile('image')) {
+                       
+            
+                        $Offer->addMultipleMediaFromRequest(['image'])
+                        ->each(function ($fileAdder) {
+                            $fileAdder->toMediaCollection('offer_detail_images');
+                        });
+                        
+
+                    }
 
                     
                 }

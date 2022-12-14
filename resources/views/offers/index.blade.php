@@ -65,8 +65,9 @@
                                         @if ($offer->getFirstMediaUrl('offer_image', 'thumb') != null) 
                                             style="background-image: url('{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}');background-size:100%"
                                         @else
-                                        style="background-image: url('')" > 
+                                            style="background-image: url('')" 
                                         @endif
+                                        >
                                         <div class="d-flex text-center flex-column text-white pt-8">
                                         <span class="fs-2x pt-1">
                                             <small class="badge-light-dark fs-1x"

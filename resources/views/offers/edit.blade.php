@@ -80,9 +80,17 @@
                     <div class="col-lg-9">
                         <div class="card-body mb-3"> 
                             <div class="position-relative"> 
-                                <div class="overlay overlay-show"> 
-                                    <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-250px" style="background-image:url('https://i.stack.imgur.com/FueqW.jpg')"></div> 
+                                <div class="overlay overlay-show">
                                     
+                                    <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-250px" 
+                                        @if($offer->getFirstMediaUrl('banner_image', 'thumb') != null )
+                                            style="background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
+                                        @else
+                                            style="background-image:url('https://i.stack.imgur.com/FueqW.jpg')"
+                                        @endif
+                                        >
+                                    </div> 
+
                                 </div> 
                                 <div class="position-absolute text-white mb-4 ms-10 bottom-0"> 
                                     <div class="row">
@@ -148,19 +156,19 @@
                                     </div>
                                     <div class="row text-dark" >
                                         <div class="col-lg-12">
-                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label"> Account Name </h3>
+                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label">{{ $offer->user->name}} </h3>
                                         </div>
                                         <div class="col-lg-12">
-                                            <small id="offer_name_label" class="fs-1qx fw-bold"> Offer Name   </small>
+                                            <small id="offer_name_label" class="fs-1qx fw-bold">{{ $offer->name}}  </small>
                                        </div>
                                         <div class="col-lg-12">
-                                             <small id="short_description_label" class="fs-1qx fw-bold"> &nbsp;    </small>
+                                             <small id="short_description_label" class="fs-1qx fw-bold">{{ $offer->short_description}}  </small>
                                         </div>
                                          
                                        <div class="col-lg-6  mt-3 ">
                                             <div class="fs-5 fw-semibold text-success">
                                                 $<span id="offer_size_label">
-                                                        10000000
+                                                    {{ $offer->size}}
                                                   </span> 
                                                   <i class="text-dark">  Offer Size </i>
                                             </div> 
@@ -273,6 +281,17 @@
                                                                     @endif
                                                             @endforeach
                                                     </div>
+                                                    <div class="row mt-8">
+                                                        
+                                                        @foreach($photos as $photos)
+                                                                <div class="col-lg-4 p-10"> 
+                                                                 <img src="{{ $photos->original_url }} " class="img img-thumbnail w-100 h-100" alt="">
+                                                                    
+                                                                </div>
+                                                        @endforeach
+
+                                                       
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="kt_stats_widget_16_tab_2" role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_2">
@@ -315,10 +334,11 @@
                                                                </span>
                                                                &nbsp;
                                                                <label class="required fs-6 fw-semibold mb-2">   Address  </label> 
-                                                                <p id="address_label"> &nbsp; </p>
+                                                                <p id="address_label"> &nbsp;  {{ $offer->contactInfo->address}} </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" id="offer_address" >
+                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" 
+                                                                id="offer_address"  value="{{ $offer->contactInfo->address}}">
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -331,10 +351,12 @@
                                                                     Phone
                                                                 </label>
                                                                  
-                                                                <p id="phone_label"> &nbsp; </p>
+                                                                <p id="phone_label"> &nbsp; {{ $offer->contactInfo->phone}} </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
+                                                                <input type="text" class="form-control " 
+                                                                value="{{ $offer->contactInfo->phone}}"
+                                                                placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
                                                             </div>
                                                             <div class="col-lg-1 mb-4">
                                                                 <button class="btn btn-sm btn-dark" type="button"> UPDATE </button>
@@ -358,7 +380,7 @@
                                                                         <label class="required fs-6 fw-semibold mb-2"> 
                                                                             Contact Us
                                                                         </label>
-                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us"></textarea>
+                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us">{{ $offer->contactInfo->contact_us}}</textarea>
                                                                     </div>
                                                                      
                                                                 </div>

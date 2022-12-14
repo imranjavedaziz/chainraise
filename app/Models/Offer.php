@@ -30,6 +30,10 @@ class Offer extends Model  implements HasMedia
     {
         return $this->hasMany(OfferVideos::class);
     }
+    public function contactInfo()
+    {
+        return $this->hasOne(OfferContact::class);
+    }
 
   
 
