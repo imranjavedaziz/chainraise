@@ -9,4 +9,28 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Offer extends Model  implements HasMedia
 {
     use HasFactory,InteractsWithMedia;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'issuer_id');
+    }
+    public function investmentRestrictions()
+    {
+        return $this->hasOne(InvestmentRestrication::class,'offer_id');
+    }
+    public function callToAction()
+    {
+        return $this->hasOne(CallToAction::class);
+    }
+    public function offerDetail()
+    {
+        return $this->hasMany(OfferDetailTab::class);
+    }
+    public function offerVideos()
+    {
+        return $this->hasMany(OfferVideos::class);
+    }
+
+  
+
 }

@@ -105,5 +105,35 @@ class UserSeeder extends Seeder
         $user_detail->legal_formation = "Legal Formation";
         $user_detail->date_incorporation ="date_incorporation";
         $user_detail->save();
+
+
+
+        $user = new User;
+        $user->name = "issuer2";
+        $user->email = "issuer2@gmail.com";
+        $user->password = bcrypt("Google@123");
+        $user->phone = "000000044";
+        $user->agree_consent_electronic = true;
+        $user->status = 'active';
+        $user->parent_id = 3;
+        $user->is_primary = true;
+        $user->save();
+        $user->assignRole('issuer');
+
+
+        $user_detail = new UserDetail;
+        $user_detail->user_id = $user->id;
+        $user_detail->middle_name = "Middle Name";
+        $user_detail->last_name = "Last Nmae";
+        $user_detail->title = "Title";
+        $user_detail->dob = '1992-02-15';
+        $user_detail->address = "Address";
+        $user_detail->suit = "Suit";
+        $user_detail->city = "City";
+        $user_detail->state = "State";
+        $user_detail->zip = "00000";
+        $user_detail->legal_formation = "Legal Formation";
+        $user_detail->date_incorporation ="date_incorporation";
+        $user_detail->save();
     }
 }

@@ -186,31 +186,21 @@
                             <!--begin::Step 1-->
                             <div class="current" data-kt-stepper-element="content">
                                 <!--begin::Wrapper-->
-
-
                                 <div class="w-100">
-
-                                    <div class="pb-10 pb-lg-15">
-                                        <!--begin::Title-->
-                                        <h2 class="fw-bold text-dark">Basic Information</h2>
-
-                                        <!--end::Notice-->
+                                    <div class="pb-10 pb-lg-15"> 
+                                        <h2 class="fw-bold text-dark">Basic Information</h2> 
                                     </div>
 
                                     <div class="mb-10">
-
                                         <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                                             <div class="col-lg-6 ">
-                                                <select name="issuer" aria-label="Select Issuer Account "
-                                                    data-control="select2" data-placeholder="Select Issuer Account *"
-                                                    class="form-select form-select-solid form-select-lg">
+                                                <select name="issuer" aria-label="Select Issuer Account" data-control="select2" 
+                                                    data-placeholder="Select Issuer Account *"
+                                                    class="form-select form-select-solid form-select-lg" id="issuer_account">
                                                     <option value=""> Select Issuer Account </option>
-                                                    <option data-kt-flag="flags/indonesia.svg" value="id">Bahasa
-                                                        Indonesia - Indonesian</option>
-                                                    <option data-kt-flag="flags/malaysia.svg" value="msa">Bahasa Melayu -
-                                                        Malay</option>
-                                                    <option data-kt-flag="flags/canada.svg" value="ca">Català - Catalan
-                                                    </option>
+                                                    <option data-kt-flag="flags/indonesia.svg" value="id">Bahasa   Indonesia - Indonesian</option>
+                                                    <option data-kt-flag="flags/malaysia.svg" value="msa">Bahasa Melayu -   Malay</option>
+                                                    <option data-kt-flag="flags/canada.svg" value="ca">Català - Catalan </option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
@@ -228,7 +218,6 @@
                                                     placeholder="Filling Type (Optional)">
                                             </div>
                                         </div>
-
                                         <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" name="security_type"
@@ -239,7 +228,6 @@
                                                     placeholder="Offer Symbol *">
                                             </div>
                                         </div>
-
                                         <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                                             <div class="col-lg-6">
                                                 <select name="offer_tags "
@@ -261,7 +249,6 @@
                                                     placeholder="Total offering size?">
                                             </div>
                                         </div>
-
                                         <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                                             <div class="col-lg-6">
                                                 <select name="base_currency" data-control="select2"
@@ -280,8 +267,6 @@
                                                     placeholder="Price per share/unit (if applicable)?">
                                             </div>
                                         </div>
-
-
                                         <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                                             <div class="col-lg-6">
                                                 <input type="number" class="form-control" name="share_unit"
@@ -345,7 +330,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--end::Row-->
                                     </div>
                                 </div>
 
@@ -1136,7 +1120,14 @@
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="{{ asset('assets/js/custom/apps/subscriptions/add/advanced.js') }}"></script>
 
+    <script>
+       
 
+        $('#issuer_account').on('change', function() {
+          alert( this.value );
+        });
+
+    </script>
 
 
 @endsection

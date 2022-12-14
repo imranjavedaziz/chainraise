@@ -22,6 +22,10 @@ Route::get('/', function () {
 Route::get('login-test', function () {
     return view('auth.login_test');
 });
+
+Route::get('db2', function () {
+    return view('layouts.dashboard-issuer');
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -34,7 +38,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::get('get-childs', ['as' => 'childs','uses' => 'UserController@getChilds']);
     Route::get('details/{id}', ['as' => 'details','uses' => 'UserController@details']);
     Route::post('accountUpdate', ['as' => 'issuer.account.update','uses' => 'UserController@issuerAccountUpdate']);
-///
+
     Route::get('investor/create', ['as' => 'investor.create','uses' => 'UserController@investor']);
     Route::get('issuer/create', ['as' => 'issuer.create','uses' => 'UserController@issuer']);
     Route::post('investor/save', ['as' => 'save','uses' => 'UserController@save']);
@@ -55,13 +59,14 @@ Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => [
     Route::post('update', ['as' => 'update','uses' => 'accreditationController@update']);
 });
 
-Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin'],'namespace'=>'App\Http\Controllers\Offers'], function () {
+Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin|investor'],'namespace'=>'App\Http\Controllers\Offers'], function () {
     Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
     Route::get('create', ['as' => 'create','uses' => 'OfferController@create']);
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
-    Route::post('create', ['as' => 'create','uses' => 'OfferController@save']);
+    Route::post('save', ['as' => 'save','uses' => 'OfferController@save']);
     Route::post('delete', ['as' => 'delete','uses' => 'OfferController@delete']);
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
+    Route::get('view/{id}', ['as' => 'view','uses' => 'OfferController@view']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
 });
 

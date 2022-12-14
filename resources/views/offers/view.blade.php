@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Offer')
+@section('title', 'View Offer')
 @section('page_name', 'Listings')
 @section('page_head') 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script> 
@@ -36,8 +36,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Offer
-                        Create</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Offer View</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -45,24 +44,19 @@
                         <li class="breadcrumb-item text-muted">
                             <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Home</a>
                         </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
-                        <!--end::Item-->
-                        <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Offers</li>
+                        <li class="breadcrumb-item text-muted">
+                                <a href="{{ route('offers.index') }}" class="text-muted text-hover-primary">  Offers </a>  
+                        </li>
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
-                        <li class="breadcrumb-item text-muted">Create</li>
-                        <!--end::Item-->
+                        <li class="breadcrumb-item text-muted">View</li> 
                     </ul>
                     <!--end::Breadcrumb-->
-                </div>
-                <!--end::Page title-->
-                <!--begin::Actions-->
+                </div> 
                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                 </div>
                 <!--end::Actions-->
@@ -70,32 +64,56 @@
             <!--end::Toolbar container-->
         </div>
         <div id="kt_app_content" class="app-content flex-column-fluid">
+            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
             <div id="kt_app_content_container" class="app-container">
-                <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post"> @csrf
+                <form action="{{ route('offers.update') }}" enctype="multipart/form-data" method="post"> @csrf
+                    <input type="hidden" name="id" value="{{ $offer->id }}">
                 <div class="row"> 
-                   @include('offers.particles.left-bar') 
+                   @include('offers.particles.left-bar-view')
                     <div class="col-lg-9">
-                        <div class="card-body mb-3"> 
-                            <div class="position-relative"> 
-                                <div class="overlay overlay-show"> 
-                                    <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-250px" style="background-image:url('https://i.stack.imgur.com/FueqW.jpg')"></div> 
-                                    
+                        <div class="card-body mb-3">
+                            <div class="position-relative">
+                                <div class="overlay overlay-show">
+                                    <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-250px"
+                                    @if ($offer->getFirstMediaUrl('banner_image', 'thumb') != null)
+                                        style="background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
+                                    @else
+                                        style="background-image:url('https://i.stack.imgur.com/FueqW.jpg')"
+                                    @endif
+                                    ></div>
                                 </div> 
                                 <div class="position-absolute text-white mb-4 ms-10 bottom-0"> 
                                     <div class="row">
-                                        <div class="col-lg-3" >
-                                            
+                                        <div class="col-lg-3" > 
                                             <div class="image-input image-input-outline mt-3"data-kt-image-input="true"
-                                             style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')">
-                                                <!--begin::Preview existing avatar-->
-                                                <div class="image-input-wrapper w-75px h-75px" style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg');background-position:center" ></div>
+                                                @if ($offer->getFirstMediaUrl('offer_image', 'thumb') != null) 
+                                                        style="background-image:url('{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}')"
+                                                @else
+                                                        style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')"
+                                                @endif
+                                                > 
+                                                <div class="image-input-wrapper w-75px h-75px" 
+                                                @if ($offer->getFirstMediaUrl('offer_image', 'thumb') != null) 
+                                                style="background-image:url('{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}')"
+                                                @else
+                                                        style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')"
+                                                @endif
+                                                ></div>
                                                 <!--end::Preview existing avatar-->
                                                 <!--begin::Label-->
-                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-15px h-15px bg-body shadow" 
-                                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Upload Logo" data-kt-initialized="1" title="Offer Logo">
+                                                
+                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-15px h-15px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Upload Logo" data-kt-initialized="1">
                                                     <i class="bi bi-pencil-fill fs-7"></i>
                                                     <!--begin::Inputs-->
-                                                    <input type="file" name="offer_image" accept=".png, .jpg, .jpeg" >
+                                                    <input type="file" name="offer_image" accept=".png, .jpg, .jpeg">
                                                     <input type="hidden" name="avatar_remove">
                                                     <!--end::Inputs-->
                                                 </label>
@@ -111,17 +129,24 @@
                                                 </span>
                                                 <!--end::Remove-->
                                             </div>
-                                            
                                         </div>
                                         <div class="col-lg-3" >
                                             <div class="image-input image-input-outline  mt-3"data-kt-image-input="true"
-                                             style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')">
+                                                @if ($offer->getFirstMediaUrl('banner_image', 'thumb') != null)
+                                                    style="background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
+                                                @else
+                                                    style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg');background-position:center"
+                                                @endif>
                                                 <!--begin::Preview existing avatar-->
-                                                <div class="image-input-wrapper w-75px h-75px" style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg');background-position:center" ></div>
+                                                <div class="image-input-wrapper w-75px h-75px" 
+                                                @if ($offer->getFirstMediaUrl('banner_image', 'thumb') != null) 
+                                                    style="background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
+                                                @else
+                                                    style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg');background-position:center"
+                                                @endif></div>
                                                 <!--end::Preview existing avatar-->
                                                 <!--begin::Label-->
-                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-15px h-15px bg-body shadow" 
-                                                    data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Upload Hero Image (1200 x 260)" data-kt-initialized="1" title="Background Image">
+                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-15px h-15px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Upload Hero Image (1200 x 260)" data-kt-initialized="1">
                                                     <i class="bi bi-pencil-fill fs-7"></i>
                                                     <!--begin::Inputs-->
                                                     <input type="file" name="banner_image" accept=".png, .jpg, .jpeg">
@@ -145,19 +170,18 @@
                                     </div>
                                     <div class="row text-dark" >
                                         <div class="col-lg-12">
-                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label"> Account Name </h3>
+                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label"> {{ ucfirst($offer->user->name) }} </h3>
                                         </div>
                                         <div class="col-lg-12">
-                                            <small id="offer_name_label" class="fs-1qx fw-bold"> Offer Name   </small>
+                                            <small id="offer_name_label" class="fs-1qx fw-bold"> {{ $offer->name }}   </small>
                                        </div>
                                         <div class="col-lg-12">
-                                             <small id="short_description_label" class="fs-1qx fw-bold"> &nbsp;    </small>
+                                             <small id="short_description_label" class="fs-1qx fw-bold">  {{ $offer->short_description }}   </small>
                                         </div>
-                                         
                                        <div class="col-lg-6  mt-3 ">
                                             <div class="fs-5 fw-semibold text-success">
-                                                $<span id="offer_size_label">
-                                                        10000000
+                                                ({{ $offer->base_currency }}) <span id="offer_size_label">
+                                                {{ $offer->size }} 
                                                   </span> 
                                                   <i class="text-dark">  Offer Size </i>
                                             </div> 
@@ -172,7 +196,8 @@
                             </div>
                             <div class="col-xl-12 mb-5 mb-xl-10">
                                 <!--begin::Tables widget 16-->
-                                <div class="card card-flush h-xl-100"> 
+                                <div class="card card-flush h-xl-100">
+                                     
                                     <div class="card-body pt-6">
                                         <!--begin::Nav-->
                                         <ul class="nav nav-pills nav-pills-custom mb-3" role="tablist">
@@ -190,7 +215,8 @@
                                             <li class="nav-item mb-3 me-3 me-lg-6" role="presentation">
                                                 <!--begin::Link-->
                                                 <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden  h-50px pt-5 pb-2" id="kt_stats_widget_16_tab_link_2" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_2" aria-selected="false" tabindex="-1" role="tab"  style="width:140px;">
-                                                    <!--begin::Icon--> 
+                                                    <!--begin::Icon-->
+                                                   
                                                     <span class="nav-text text-gray-800 fw-bold fs-6 lh-1"> 
                                                         VIDEO
                                                     </span>
@@ -248,7 +274,7 @@
                                                                 <p id="address_label"> &nbsp; </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" id="offer_address" >
+                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="" id="offer_address" >
                                                             </div>
                                                         </div>
 
@@ -266,7 +292,7 @@
                                                                 <p id="phone_label"> &nbsp; </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
+                                                                <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone" >
                                                             </div>
                                                             <div class="col-lg-1 mb-4">
                                                                 <button class="btn btn-sm btn-dark" type="button"> UPDATE </button>
@@ -290,7 +316,7 @@
                                                                         <label class="required fs-6 fw-semibold mb-2"> 
                                                                             Contact Us
                                                                         </label>
-                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us"></textarea>
+                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." ></textarea>
                                                                     </div>
                                                                     <div class="col-lg-12 mt-4 mb-4" style="text-align: right">
                                                                        <button class="btn btn-sm btn-dark" type="button">Submit</button>
@@ -377,16 +403,16 @@
             $('#section_row').append(`
                 <div class="row section_`+no+`">
                 <div class="col-lg-6 mt-3 mb-4">
-                    <input type="text" class="form-control" name="summary_title[]" value="Summary" required > 
+                    <input type="text" class="form-control" name="title[]" value="Summary" > 
                 </div>
                 <div class="col-lg-6 mt-3 mb-4">
-                    <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required > 
+                    <input type="text" class="form-control" name="title[]" placeholder="Sub-title" > 
                 </div>
                 <div class="col-lg-11 mt-3 mb-4">
-                    <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_`+no+`" required ></textarea> 
+                    <textarea  class="form-control" cols="30" rows="10" name="offer_description[]" id="textarea_`+no+`" ></textarea> 
                 </div>
                 <div class="col-lg-1 mt-3 mb-4">
-                    <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                    <button class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                 </div>
                 </div>
             `);
@@ -399,21 +425,21 @@
                 <div class="row section_`+no+`">
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="title[]"> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="title[]"> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="title[]"> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6">
-                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                        <button class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
@@ -426,16 +452,16 @@
             $('#section_row').append(`
                 <div class="no++;row section_`+no+`">
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_title[]" value="Title" required > 
+                        <input type="text" class="form-control" name="title[]" value="Title" > 
                     </div>
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_sub_title[]" placeholder="Sub-title" required > 
+                        <input type="text" class="form-control" name="title[]" placeholder="Sub-title" > 
                     </div>
                     <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="text_description[]" required id="textarea_`+no+`" ></textarea> 
+                        <textarea  class="form-control" cols="30" rows="10" name="offer_description[]" id="textarea_`+no+`" ></textarea> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
-                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                        <button class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
@@ -447,51 +473,19 @@
             $('#section_row').append(`
                 <div class="row section_`+no+`">
                     <div class="col-lg-11 mt-3 mb-4">
-                        <input type="file" class="form-control" name="image[]" value="Title"  required> 
+                        <input type="file" class="form-control" name="title[]" value="Title" > 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
-                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                        <button class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
             $('#textarea_'+no).summernote();
         });
-        $('#modal_new_sections').on('click','.videos_section',function(){
-        
-                $('#section_row').append(`
-                    <div class="row section_`+no+`">
-                        <div class="col-lg-4 mt-4 mb-4 form-group">
-                            <label for="" class="required mb-2"> Video Source </label>
-                            <select name="offer_video_source[]" class="form-control" required>
-                                <option value="youtube">  Youtube </option>
-                                <option value="facebook">  Facebook </option>
-                                <option value="vimo">  Vimo </option>
-                                <option value="zoom">  Zoom Recording </option>
-                                <option value="other"> Other (mp4, mpeg, etc.)</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-4 mt-4 mb-4">
-                            <label for="" class="required mb-2"> Embed URL </label>
-                            <input type="text" name="offer_video_url[]" class="form-control" placeholder="Embed URL" required>
-                        </div>
-                        <div class="col-lg-3 mt-4 mb-4">
-                            <label for="" class="required mb-2"> Description </label>
-                            <input type="text" name="offer_video_description[]" class="form-control" placeholder="Description" required>
-                        </div>
-                        <div class="col-lg-1 mt-4 mb-4 pt-9">
-                             <button class='btn btn-sm btn-square btn-light-danger'  type="button">
-                                <i class='la la-trash'></i>
-                             </button>
-                        </div>
-                    </div>
-                `);
-            });
         $('#modal_new_video').on('click','#video_save',function(e){
             e.preventDefault();
-            var video_source =  $('#video_source').val();
-            var embed_url =  $('#embed_url').val();
+            var video_source =  $('#embed_url').val();
             var description =  $('#description').val();
-            var access = $('#video_access').val(); 
             if(video_source == ''){
                 $('#embed_url').addClass('error');
             }else{
@@ -504,13 +498,9 @@
                             </div>
                             <div class="col-lg-12 text-center">
                                 <p>`+description+`</p>
-                                <input type="hidden"  value="`+video_source+`" name="src[]" required/>
-                                <input type="hidden"  value="`+embed_url+`"    name="url[]" required/>
-                                <input type="hidden"  value="`+description+`"  name="description[]" required/>
-                                <input type="hidden"  value="`+access+`"       name="access[]" required />
                             </div>
                             <div class="col-lg-12 text-center">
-                                <button class='btn btn-sm ' type="button"> <i class='text-danger fa fa-trash'></i> </button>
+                                <button class='btn btn-sm '> <i class='text-danger fa fa-trash'></i> </button>
                             </div>
                         </div> 
                     </div>
@@ -522,16 +512,16 @@
         
         
     </script>
-     <script>
-        $(document).ready(function() {
-            $('.summernote').summernote();
-        });
-        
-        $('#section_row').on('click','.delete_section',function(){
-              var id = $(this).data('id');
-              $("#section_1").remove(); 
-        });
-      </script>
+    <script>
+    $(document).ready(function() {
+        $('.summernote').summernote();
+    });
+    
+    $('#section_row').on('click','.delete_section',function(){
+        var id = $(this).data('id');
+        $("#section_1").remove(); 
+    });
+    </script>
 
 
 @endsection
