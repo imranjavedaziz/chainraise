@@ -265,9 +265,10 @@
                                                                     @elseif($offerDetail->input == 'tiles')
                                                                             @if($offerDetail->offerTiles)
                                                                                 @foreach($offerDetail->offerTiles as $tiles)
-                                                                                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
+                                                                                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper" style="">
                                                                                         <div class="tiles_box text-center">
-                                                                                            <img src="{{ asset('storage/data/tiles/'.$tiles->path) }}" alt="" class="img img-thumbnail">
+                                                                                            <img src="{{ asset('files/'.$tiles->path) }}" alt="" class="mb-5 img img-thumbnail" style="height: 100px;">
+                                                                                            <br>
                                                                                             <input type="file" class="form-control" name="tiles_source[]"> 
                                                                                             <hr>
                                                                                             <button class="btn badge py-3 px-4 fs-7 badge-light-danger deleteOffer" type="button" data-id="{{ $offer->id }}">

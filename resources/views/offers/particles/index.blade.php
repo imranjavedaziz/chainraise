@@ -78,7 +78,7 @@
                         <!--begin::Wrapper-->
                         <div class="col-lg-12 section_wrapper summary_section" >
                             <div class="align-items-center border border-dashed border-primary  rounded  px-7 py-3 mb-5"> 
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Summary</a>
+                                <span disabled class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Summary</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7"> Large Text, Investment Goal, and Graphic </div>
                             </div>
@@ -86,7 +86,7 @@
                         <div class="col-lg-12 section_wrapper tiles_section">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Tiles</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Tiles</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7">Visual Highlights and Stats</div>
 
@@ -96,7 +96,7 @@
                         <div class="col-lg-12 section_wrapper text_section">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Text</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Text</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7">Title, Sub-title, or Paragraph Text</div>
                             </div>
@@ -105,7 +105,7 @@
                         <div class="col-lg-12 section_wrapper images_section">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Images</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Images</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7"> Images with Optional Links / Text </div>
                             </div>
@@ -115,17 +115,17 @@
                         <div class="col-lg-12 section_wrapper videos_section">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Videos</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Videos</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7">Enter YouTube or Vimeo Videos IDs</div>
                             </div>
                         </div>
 
 
-                        <div class="col-lg-12 section_wrapper">
+                        {{-- <div class="col-lg-12 section_wrapper">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Data Tables / Charts</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">Data Tables / Charts</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7"> Manual data entry for generating tables and charts </div>
                             </div>
@@ -134,7 +134,7 @@
                         <div class="col-lg-12 section_wrapper">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">PDF / Deck</a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">PDF / Deck</span>
                                  <br>
                                  <div class="text-muted me-2 fs-7">Upload Your Existing Deck</div>
                             </div>
@@ -142,11 +142,11 @@
                         <div class="col-lg-12 section_wrapper">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
-                                <a href="" class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">HTML </a>
+                                <span  class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px">HTML </span>
                                  <br>
                                  <div class="text-muted me-2 fs-7"> Enter in any custom HTML </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!--end::Wrapper-->
                     </div>

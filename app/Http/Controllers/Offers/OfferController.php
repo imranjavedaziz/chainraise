@@ -44,31 +44,17 @@ class OfferController extends Controller
 
     public function save(Request $request)
     {
-       
+      
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',
             //'short_description' => 'required',
             //'security_type' => 'required',
-            'symbol' => 'required',
+           // 'symbol' => 'required',
             'size' => 'required',
-            'min_invesment'=>'required',
-            'max_invesment'=>'required'
-        ],[
-            'issuer.required' => 'Issuer name is required',
-            'offer_name.required' => 'Issuer name is requiredd',
-            'symbol.required' => 'Issuer name is required',
-            'size.required' => 'Issuer name is required',
-            'min_invesment.required' => 'Issuer name is required',
-            'max_invesment.required' => 'Issuer name is required',
-            //'base_currency' => 'required',
-            //'price_per_unit' => 'required',
-            //'share_unit_label' => 'required',
-            //'total_valuation' => 'required',
-            //'commencement_date' => 'required',
-            //'funding_end_date' => 'required',
+            //'min_invesment'=>'required',
+            //'max_invesment'=>'required'
         ]);
-        
         try{
             $Offer = new Offer;
             $Offer->issuer_id =  $request->issuer;
@@ -95,8 +81,17 @@ class OfferController extends Controller
                 }
 
                 $invesment_restriction = new InvestmentRestrication;
-                $invesment_restriction->min_invesment = $request->min_invesment;
-                $invesment_restriction->max_invesment = $request->max_invesment;
+                if($request->min_invesment){
+                    $invesment_restriction->min_invesment = $request->min_invesment;
+                }else{
+                    $invesment_restriction->max_invesment = 0;
+                }
+                if($request->min_invesment){
+                    $invesment_restriction->max_invesment = $request->max_invesment;
+                }else{
+                    $invesment_restriction->max_invesment = 0;
+                }
+
                 if($request->allow_fractional_shares == 'on'){  
                     $allow_fractional_shares = true;
                 } else{ 
@@ -226,21 +221,25 @@ class OfferController extends Controller
                             $offer_detail_tab->input = 'tiles';
                             $offer_detail_tab->save();
 
-                            foreach ($request->tiles_source as $index => $ItemName) {
-                                $offer_tiles = new OfferTiles();
-                                $offer_tiles->offer_detail_tabs_id = $offer_detail_tab->id;
-                                $offer_tiles->status = 'active';
-                                $image = $request->file('tiles_source')[$index];
-                                $filenameWithExt = $image->getClientOriginalName ();
-                                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                                $extension[$index] =$image->getClientOriginalExtension();
-                                $tilePhoto = 'tiles_'.time().'.'.$extension[$index];
-                                $path = $image->storeAs("tiles", $tilePhoto);
-                                $offer_tiles->path = $tilePhoto;
-                                $offer_tiles->priority = 2; 
-                                $offer_tiles->save();
-                               
+
+
+
+                            if($request->hasfile('tiles_source')){
+                               foreach($request->file('tiles_source') as $file)
+                               {
+                                   $name=$file->getClientOriginalName();
+                                   $file->move(public_path().'/files/', $name);  
+                                   $offer_tiles = new OfferTiles();
+                                   $offer_tiles->offer_detail_tabs_id = $offer_detail_tab->id;
+                                   $offer_tiles->status = 'active';
+                                   $offer_tiles->path = $name;
+                                   $offer_tiles->priority = 2;  
+                                   $offer_tiles->save();
+                               }
+                   
                             }
+
+                           
                     }
 
                     if($request->has('text_title')){

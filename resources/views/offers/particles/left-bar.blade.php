@@ -20,8 +20,7 @@
             <div id="basic_info" class="collapse mb-3">
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                     <div class="col-lg-12 ">
-                        <select name="issuer"  id="issuer_account"
-                            class="form-select form-select-lg" required >
+                        <select name="issuer"  id="issuer_account" class="form-select form-select-lg" required >
                             <option value="" selected disabled > Select Issuer Account </option>
                                 @foreach($issuers as $issuer)    
                                      <option value="{{ $issuer->id }}"> {{ $issuer->name }} </option>
@@ -64,8 +63,8 @@
                                 <option value="cash"> Cash </option>
                             </select>
                     </div>
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" name="symbol"  id="symbol" placeholder="Offer Symbol *" required>
+                    <div class="col-lg-12 d-none">
+                        <input type="text" class="form-control"  name="symbol"  id="symbol" placeholder="Offer Symbol *" value="o">
                     </div>
                 </div>
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
@@ -88,11 +87,11 @@
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                     
                     <div class="col-lg-12">
-                        <input type="text" class="form-control" name="size_label"  placeholder="Offer Size Label (default: offering size)">
+                        <input type="text" class="form-control" name="size_label" id="size_label"   placeholder="Offer Size Label (default: offering size)">
                     </div>
 
                     <div class="col-lg-12">
-                        <select name="base_currency"
+                        <select name="base_currency" id="base_currency"
                         class="form-select  form-select-md" required> 
                         <option value="USD">USD</option>
                         <option value="GBP">GBP</option>
@@ -105,7 +104,7 @@
                 </div>
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">
                     <div class="col-lg-12">
-                        <input type="number" class="form-control" name="share_unit_label"  placeholder="Share/Unit Label (default: shares)">
+                        <input type="text" class="form-control" name="share_unit_label"  placeholder="Share/Unit Label (default: shares)">
                     </div>
                     <div class="col-lg-12">
                         <input type="number" class="form-control" name="total_valuation"  placeholder="Total Valuation / NAV (if applicable)?">
@@ -137,7 +136,6 @@
                         <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"></path>
                     </svg>
                 </span>
-                <!--end::Svg Icon-->
             </div>
             <div id="investor_flow" class="collapse mb-3">
                 <div class="row">
@@ -147,53 +145,64 @@
                                 Investment Steps
                             </div>
                         </div>
-                        <div class="row collapse" id="investment_steps">
+                        <div class="row collapse p-5" id="investment_steps">
                             <div class="col-lg-12 pt-3 mb-3 text-center">
-                                <button type="button" class="btn-sm btn btn-lg btn-dark me-3" id="kt_create_new_custom_fields_add" style="width: 100%;border-radius:0">
+                                <button type="button" class="btn-sm btn btn-lg btn-dark me-3"
+                                id="add_new_investment_step" style="width: 100%;border-radius:0"
+                                data-bs-toggle="modal" data-bs-target="#modal_investment_setup">
                                     Add An Investment Setup
                                 </button>
                             </div>
-
-                            <div class="col-lg-12  text-center">
-                                <div class="overflow-auto pb-1">
-                                    <div  class="d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                       <span > 1  -  </span>
-                                        Select Account Type
+                            <div class="col-lg-12">
+                                <div class="row investment_step_button_row">
+                                    <div class="col-lg-12  text-center button_row_wrapper">
+                                        <div class="overflow-auto pb-1">
+                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                               <span class="col-lg-10 text-left"> Select Account Type  </span>
+                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                                            </div>
+                                        </div> 
+                                        <input type="hidden" name="investment_setup[]" value="Select Account Type">
                                     </div>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12  text-center">
-                                <div class="overflow-auto pb-1">
-                                    <div  class="d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                       <span > 2  -  </span>
-                                       Complete Account Form
+                                    <div class="col-lg-12  text-center button_row_wrapper">
+                                        <div class="overflow-auto pb-1">
+                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                               <span class="col-lg-10 text-left"> Complete Account Form   </span>
+                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="investment_setup[]" value="Complete Account Form">
                                     </div>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12  text-center">
-                                <div class="overflow-auto pb-1">
-                                    <div  class="d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                       <span > 3 -  </span>
-                                        Accreditation
+                                    <div class="col-lg-12  text-center button_row_wrapper">
+                                        <div class="overflow-auto pb-1">
+                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                               <span class="col-lg-10 text-left"> Accreditation  </span>
+                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                                            </div>
+                                        </div> 
+                                        <input type="hidden" name="investment_setup[]" value="Accreditation">
                                     </div>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12  text-center">
-                                <div class="overflow-auto pb-1">
-                                    <div  class="d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                       <span > 4  -  </span>
-                                       E-Sign Document
+                                    <div class="col-lg-12  text-center button_row_wrapper">
+                                        <div class="overflow-auto pb-1">
+                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                               <span class="col-lg-10 text-left">  E-Sign Document  </span>
+                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="investment_setup[]" value="E-Sign Document">
                                     </div>
-                                </div> 
-                            </div>
-                            <div class="col-lg-12  text-center">
-                                <div class="overflow-auto pb-1">
-                                    <div  class="d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                       <span > 5  -  </span>
-                                        Payment Method
+                                    <div class="col-lg-12  text-center button_row_wrapper">
+                                        <div class="overflow-auto pb-1">
+                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                               <span class="col-lg-10 text-left">  Payment Method  </span>
+                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="investment_setup[]" value="Payment Method">
                                     </div>
-                                </div> 
+                                </div>
                             </div>
+                       
                         </div>
                     </div>
                     <div class="col-lg-12  text-center mb-3">
@@ -204,10 +213,10 @@
                         </div>
                         <div class="row collapse" id="investment_restrictions">
                             <div class="col-lg-12 mt-3 text-center">
-                                <input type="number" class="form-control" id="min_invesment" name="min_invesment" style="font-size:12px!important"  required placeholder="Minimum investment (USD) *">
+                                <input type="number" class="form-control" id="min_invesment" name="min_invesment" style="font-size:12px!important" placeholder="Minimum investment (USD) *">
                             </div>
                             <div class="col-lg-12 mt-3 mb-3 text-center">
-                                <input type="number" class="form-control"  id="max_invesment" name="max_invesment" style="font-size:12px!important"  required placeholder="Maximum investment (USD) *">
+                                <input type="number" class="form-control"  id="max_invesment" name="max_invesment" style="font-size:12px!important" placeholder="Maximum investment (USD) *">
                             </div>
                             <div class="col-lg-12 mb-3">
                                 <div class="d-flex flex-stack"> 
@@ -248,10 +257,10 @@
                                 <input type="text" class="form-control" name="review_documents" style="font-size:12px!important"   placeholder="Review Documents Button Text">
                             </div>
                             <div class="col-lg-12 mt-3 text-center">
-                                <input type="number" class="form-control" name="invest_button_text" style="font-size:12px!important"  placeholder="Invest Button Text">
+                                <input type="text" class="form-control" name="invest_button_text" style="font-size:12px!important"  placeholder="Invest Button Text">
                             </div>
                             <div class="col-lg-12 mt-3 text-center">
-                                <input type="number" class="form-control" name="contact_us_button_text" style="font-size:12px!important"  placeholder="Contact Us Button Text">
+                                <input type="text" class="form-control" name="contact_us_button_text" style="font-size:12px!important"  placeholder="Contact Us Button Text">
                             </div>
                             <div class="col-lg-12 mt-3">
                                 <div class="d-flex flex-stack p-2"> 
