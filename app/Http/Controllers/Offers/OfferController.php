@@ -15,6 +15,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
 {
@@ -55,7 +56,11 @@ class OfferController extends Controller
             //'min_invesment'=>'required',
             //'max_invesment'=>'required'
         ]);
+       
+      
+        
         try{
+            
             $Offer = new Offer;
             $Offer->issuer_id =  $request->issuer;
             $Offer->name =              $request->offer_name;
@@ -66,7 +71,6 @@ class OfferController extends Controller
             $Offer->size_label =              $request->size_label;
             $Offer->base_currency =              $request->base_currency;
             $Offer->price_per_unit =              $request->price_per_unit;
-            //$Offer->share_unit_label =              $request->share_unit_label;
             $Offer->total_valuation =              $request->total_valuation;
             $Offer->commencement_date =              $request->commencement_date;
             $Offer->funding_end_date =              $request->funding_end_date;
@@ -271,12 +275,14 @@ class OfferController extends Controller
                     
                 }
                  
-
+                DB::commit();
                 return redirect()->route('offers.index')->with('success','Offer has been created successfully');
             }
-
+            
         }catch(Exception $error){
+            //DB::rollBack();
             return $error;
+           
             return redirect()->back()->with('error','Error while creating offer');
         }
     }
