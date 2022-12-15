@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->enum('visiblity',['active','no-active','public','preview','invite','coming_soon']);
-            $table->enum('offer_status',['close','closed']);
+            $table->enum('offer_status',['open','closed']);
             $table->unsignedBigInteger('allow_list')->nullable();
             $table->foreign('allow_list')->references('id')->on('offers')->onDelete('cascade');
             $table->unsignedBigInteger('deny_list')->nullable();
