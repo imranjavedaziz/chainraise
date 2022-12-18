@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Create Offer')
+@section('title', 'Edit Offer')
 @section('page_name', 'Listings')
 @section('page_head') 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script> 
@@ -23,14 +23,11 @@
     .custom_input{
         font-size:12px!important;
     }
-    .investment_step_button_row{
-        cursor: pointer;
-    }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endsection
 @section('page_content')
- 
+
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -55,13 +52,13 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item ">
-                           <a class="text-muted" href="{{ route('offers.index') }}"> Offers </a> 
+                        <li class="breadcrumb-item text-muted">
+                            <a href="{{ route('offers.index') }}" class="text-muted text-hover-primary"> Offers </a>
                         </li>
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
                         </li>
-                        <li class="breadcrumb-item text-muted">Create</li>
+                        <li class="breadcrumb-item text-muted">Edit</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -76,18 +73,28 @@
         </div>
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container">
-                <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post"> @csrf
+                <form action="{{ route('offers.update') }}" enctype="multipart/form-data" method="post"> @csrf
+                    <input type="hidden" name="id" value="{{ $offer->id }}">
                 <div class="row"> 
-                   @include('offers.particles.left-bar') 
+                   @include('offers.particles.left-bar-edit') 
                     <div class="col-lg-9">
-                        
                         <div class="card-body mb-3"> 
                             <div class="position-relative"> 
-                                 
-                                <div class=" text-white mb-4 " 
-                                style="background-image:url('https://i.stack.imgur.com/FueqW.jpg');padding:5px 20px"> 
-                                    <div class="row" >
-                                        <div class="col-lg-6" >
+                                <div class="overlay overlay-show">
+                                    
+                                    <div class="bgi-no-repeat bgi-position-center bgi-size-cover card-rounded min-h-250px" 
+                                        @if($offer->getFirstMediaUrl('banner_image', 'thumb') != null )
+                                            style="background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
+                                        @else
+                                            style="background-image:url('https://i.stack.imgur.com/FueqW.jpg')"
+                                        @endif
+                                        >
+                                    </div> 
+
+                                </div> 
+                                <div class="position-absolute text-white mb-4 ms-10 bottom-0"> 
+                                    <div class="row">
+                                        <div class="col-lg-3" >
                                             
                                             <div class="image-input image-input-outline mt-3"data-kt-image-input="true"
                                              style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')">
@@ -117,7 +124,7 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="col-lg-6" >
+                                        <div class="col-lg-3" >
                                             <div class="image-input image-input-outline  mt-3"data-kt-image-input="true"
                                              style="background-image: url('https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg')">
                                                 <!--begin::Preview existing avatar-->
@@ -144,28 +151,26 @@
                                                 </span>
                                                 <!--end::Remove-->
                                             </div>
-                                        </div>  
+                                        </div>
+                                         
                                     </div>
                                     <div class="row text-dark" >
                                         <div class="col-lg-12">
-                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label"> Account Name </h3>
+                                            <h3 class="text-white fs-2qx fw-bold mt-3 text-dark" id="issuer_account_label"> {{ $offer->user->name}} </h3>
                                         </div>
                                         <div class="col-lg-12">
-                                            <small id="offer_name_label" class="fs-1qx fw-bold"> Offer Name   </small>
+                                            <small id="offer_name_label" class="fs-1qx fw-bold"> {{ $offer->name}}  </small>
                                        </div>
                                         <div class="col-lg-12">
-                                             <small id="short_description_label" class="fs-1qx fw-bold"> &nbsp;    </small>
+                                             <small id="short_description_label" class="fs-1qx fw-bold"> {{ $offer->short_description}}  </small>
                                         </div>
                                          
                                        <div class="col-lg-6  mt-3 ">
                                             <div class="fs-5 fw-semibold text-success">
-                                                <span id="currency_wrapper">
-                                                    $
-                                                </span> 
-                                                 <span id="offer_size_label">
-                                                        10000000
+                                                $<span id="offer_size_label">
+                                                    {{ $offer->size}}
                                                   </span> 
-                                                  <i class="text-dark" id="offer_size_html">  Offer Size </i>
+                                                  <i class="text-dark">  Offer Size </i>
                                             </div> 
                                        </div> 
                                        <div class="col-lg-6">
@@ -186,7 +191,7 @@
                                             <li class="nav-item mb-3 me-3 me-lg-6" role="presentation">
                                                 <!--begin::Link-->
                                                 <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden  h-50px pt-5 pb-2 active" id="kt_stats_widget_16_tab_link_1" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_1" aria-selected="true" role="tab" style="width:140px;">
-                                                    <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">OFFER DETAILS</span> 
+                                                    <span class="nav-text text-gray-800 fw-bold fs-6 lh-1"> OFFER DETAILS </span> 
                                                     <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                                 </a>
                                                 <!--end::Link-->
@@ -223,24 +228,101 @@
                                         <!--begin::Tab Content-->
                                         <div class="tab-content"> 
                                             <div class="tab-pane fade show active" id="kt_stats_widget_16_tab_1" role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_1">
-                                               <div class="row" id="section_row">
+                                                <div class="row" id="section_row">
                                                     <div class="col-lg-12 text-center">
                                                         <button class="btn btn-default btn-sm btn-dark w-40" type="button" data-bs-toggle="modal" data-bs-target="#modal_new_sections">
-                                                            <i class="fa fa-plus"></i>
+                                                            <i class="fa fa-plus"></i> Offer Details
                                                         </button>
-                                                    </div> 
-                                               </div>
-                                            </div> 
-                                            <div class="tab-pane fade" id="kt_stats_widget_16_tab_2" role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_2">
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-right" style="text-align: right">
-                                                       <button class="btn btn-default btn-sm btn-dark w-40" data-bs-toggle="modal" type="button" data-bs-target="#modal_new_video"> <i class="fa fa-plus"></i> ADD VIDEO </button>
                                                     </div>
-                                               </div>
-                                               <div class="row video_wrapper mt-5">
-                                               </div>
+                                                    <div class="row mt-8">
+                                                            @foreach ($offer->offerDetail as $offerDetail)
+                                                                    @if($offerDetail->input == 'summary')
+                                                                        <div class="col-lg-12 mt-4">
+                                                                            <label for=""> Summary Fileds </label>
+                                                                        </div>
+                                                                        <div class="col-lg-6 mt-4">
+                                                                            <input type="text" name="heading[]" class="form-control" value="{{ $offerDetail->heading }}">
+                                                                        </div>
+                                                                        <div class="col-lg-6 mt-4">
+                                                                            <input type="text" name="sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
+                                                                        </div>
+                                                                        <div class="col-lg-12 mt-4">
+                                                                            <textarea type="text" name="description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
+                                                                        </div>
+                                                                    @elseif($offerDetail->input == 'text')
+                                                                            <div class="col-lg-12 mt-4">
+                                                                              <label for=""> Text Fileds </label>
+                                                                            </div>
+                                                                            <div class="col-lg-6 mt-4">
+                                                                                <input type="text" name="heading[]" class="form-control" value="{{ $offerDetail->heading }}">
+                                                                            </div>
+                                                                            <div class="col-lg-6 mt-4">
+                                                                                <input type="text" name="sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
+                                                                            </div>
+                                                                            <div class="col-lg-12 mt-4">
+                                                                                <textarea type="text" name="description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
+                                                                            </div>
+                                                                    @elseif($offerDetail->input == 'tiles')
+                                                                            @if($offerDetail->offerTiles)
+                                                                                @foreach($offerDetail->offerTiles as $tiles)
+                                                                                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper" style="">
+                                                                                        <div class="tiles_box text-center">
+                                                                                            <img src="{{ asset('files/'.$tiles->path) }}" alt="" class="mb-5 img img-thumbnail" style="height: 100px;">
+                                                                                            <br>
+                                                                                            <input type="file" class="form-control" name="tiles_source[]"> 
+                                                                                            <hr>
+                                                                                            <button class="btn badge py-3 px-4 fs-7 badge-light-danger deleteOffer" type="button" data-id="{{ $offer->id }}">
+                                                                                                <i class="la la-trash"></i>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            @endif
+                                                                    @endif
+                                                            @endforeach
+                                                    </div>
+                                                    <div class="row mt-8">
+                                                        @foreach($photos as $photos)
+                                                                <div class="col-lg-4 p-10"> 
+                                                                 <img src="{{ $photos->original_url }} " class="img img-thumbnail w-100 h-100" alt="">
+                                                                    
+                                                                </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="tab-pane fade" id="kt_stats_widget_16_tab_3" role="tabpanel"  aria-labelledby="#kt_stats_widget_16_tab_link_3">
+                                            <div class="tab-pane" id="kt_stats_widget_16_tab_2" role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_2">
+                                                <div class="row" id="section_row">
+                                                    <div class="col-lg-12 text-center">
+                                                        <button class="btn btn-default btn-sm btn-dark w-40" type="button" data-bs-toggle="modal" data-bs-target="#modal_new_video">
+                                                            <i class="fa fa-plus"></i> Add New Video
+                                                        </button>
+                                                    </div>
+                                                    @foreach($offer->offerVideos as $videos)
+                                                        <div class="col-lg-4 mt-4 mb-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 text-center">
+                                                                    <iframe width="250" height="250" src="{{ $videos->url }}"></iframe>
+                                                                </div>
+                                                                <div class="col-lg-12 text-center">
+                                                                    <p>Description</p>
+                                                                    <input type="hidden" value="{{ $videos->source }}"    name="src[]" required="">
+                                                                    <input type="hidden" value="{{ $videos->url }}"         name="url[]" required="">
+                                                                    <input type="hidden" value="{{ $videos->description }}"name="description[]" required="">
+                                                                    <input type="hidden" value="{{ $videos->visible }}"  name="access[]" required="">
+                                                                </div>
+                                                                <div class="col-lg-12 text-center">
+                                                                    <button class="btn btn-sm " type="button"> <i class="text-danger fa fa-trash"></i> </button>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                    @endforeach
+                                                    <div class="row video_wrapper mt-5">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="kt_stats_widget_16_tab_3" role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_3">
                                                 <div class="row">
                                                     <div class="col-lg-12 text-left mt-4" style="text-align: left">
                                                         <div class="row">
@@ -250,14 +332,13 @@
                                                                </span>
                                                                &nbsp;
                                                                <label class="required fs-6 fw-semibold mb-2">   Address  </label> 
-                                                                <p id="address_label"> &nbsp; </p>
+                                                                <p id="address_label"> &nbsp;  {{ $offer->contactInfo->address}} </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" id="offer_address" >
+                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" 
+                                                                id="offer_address"  value="{{ $offer->contactInfo->address}}">
                                                             </div>
                                                         </div>
-
-
                                                         <div class="row">
                                                             <div class="col-lg-6 mb-4">
                                                                 <span class="bt-label btn-light-info">
@@ -268,10 +349,12 @@
                                                                     Phone
                                                                 </label>
                                                                  
-                                                                <p id="phone_label"> &nbsp; </p>
+                                                                <p id="phone_label"> &nbsp; {{ $offer->contactInfo->phone}} </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
+                                                                <input type="text" class="form-control " 
+                                                                value="{{ $offer->contactInfo->phone}}"
+                                                                placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
                                                             </div>
                                                             <div class="col-lg-1 mb-4">
                                                                 <button class="btn btn-sm btn-dark" type="button"> UPDATE </button>
@@ -289,15 +372,15 @@
                                                                         <input type="text" class="form-control mt-4 " placeholder="Calendly Event Link" name="email" id="offer_schedule_meeting" >
                                                                     </div>
                                                                 </div>
-
+                                            
                                                                 <div class="row mb-3 mt-3" >
                                                                     <div class="col-lg-12">
                                                                         <label class="required fs-6 fw-semibold mb-2"> 
                                                                             Contact Us
                                                                         </label>
-                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us"></textarea>
+                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us">{{ $offer->contactInfo->contact_us}}</textarea>
                                                                     </div>
-                                                                    
+                                                                     
                                                                 </div>
                                                                 
                                                             </div>
@@ -305,10 +388,14 @@
                                                                 
                                                             </div>
                                                         </div>
-  
+                                            
                                                     </div>
-                                               </div>
+                                                </div>
                                             </div>
+ 
+                                        </div> 
+
+                                            
                                             
                                         </div>
                                         <!--end::Tab Content-->
@@ -328,7 +415,6 @@
     </div>
 
     @include('offers.particles.index')
-    @include('offers.particles.investment_setup_button')
 @endsection
 @section('page_js')
 
@@ -371,41 +457,24 @@
         $('#offer_schedule_meeting').on('keyup', function() {
           $('.meeting_button').removeClass('d-none');
         });
-        $('#size_label').on('keyup', function() {
-            $('#offer_size_html').html(this.value);
-        });
-
-        $('#base_currency').on('change', function() {
-            var currency = $(this).val();
-            if(currency == 'USD'){
-                $('#currency_wrapper').html('$')
-            }else{
-                $('#currency_wrapper').html(currency)
-            }
-            
-        });
-
-        
-
-        
         var no = 0;
         $('#modal_new_sections').on('click','.summary_section',function(){
             no++;
         
             $('#section_row').append(`
-                <div class="appended_summary_box row section_`+no+`">
-                    <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_title[]" value="Summary" required > 
-                    </div>
-                    <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required > 
-                    </div>
-                    <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_`+no+`" required ></textarea> 
-                    </div>
-                    <div class="col-lg-1 mt-3 mb-4">
-                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
-                    </div>
+                <div class="row section_`+no+`">
+                <div class="col-lg-6 mt-3 mb-4">
+                    <input type="text" class="form-control" name="summary_title[]" value="Summary" required > 
+                </div>
+                <div class="col-lg-6 mt-3 mb-4">
+                    <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required > 
+                </div>
+                <div class="col-lg-11 mt-3 mb-4">
+                    <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_`+no+`" required ></textarea> 
+                </div>
+                <div class="col-lg-1 mt-3 mb-4">
+                    <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                </div>
                 </div>
             `);
             $('#textarea_'+no).summernote();
@@ -414,27 +483,24 @@
         
         $('#modal_new_sections').on('click','.tiles_section',function(){
             $('#section_row').append(`
-                <div class="appended_tiles_box  row section_`+no+`">
+                <div class="row section_`+no+`">
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
-                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
-                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
-                            <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6">
-                        <button type="button" class="btn btn-sm btn-danger delete_section_tiles" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
@@ -445,7 +511,7 @@
         $('#modal_new_sections').on('click','.text_section',function(){
             no++;
             $('#section_row').append(`
-                <div class="appended_text_box no++;row section_`+no+`">
+                <div class="no++;row section_`+no+`">
                     <div class="col-lg-6 mt-3 mb-4">
                         <input type="text" class="form-control" name="text_title[]" value="Title" required > 
                     </div>
@@ -456,7 +522,7 @@
                         <textarea  class="form-control" cols="30" rows="10" name="text_description[]" required id="textarea_`+no+`" ></textarea> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
-                        <button type="button" class="btn btn-sm btn-danger delete_section_text" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
@@ -466,21 +532,21 @@
         $('#modal_new_sections').on('click','.images_section',function(){
             no++;
             $('#section_row').append(`
-                <div class="row  appended_images_box section_`+no+`">
+                <div class="row section_`+no+`">
                     <div class="col-lg-11 mt-3 mb-4">
-                        <label class="required"> Image </label>
                         <input type="file" class="form-control" name="image[]" value="Title"  required> 
                     </div>
-                    <div class="col-lg-1 mt-3 mb-4 pt-5">
-                        <button type="button" class="btn btn-sm btn-danger delete_section_images" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
+                    <div class="col-lg-1 mt-3 mb-4">
+                        <button type="button" class="btn btn-sm btn-danger delete_section" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
             `);
             $('#textarea_'+no).summernote();
         });
         $('#modal_new_sections').on('click','.videos_section',function(){
+        
                 $('#section_row').append(`
-                    <div class="appended_video_box row section_`+no+`">
+                    <div class="row section_`+no+`">
                         <div class="col-lg-4 mt-4 mb-4 form-group">
                             <label for="" class="required mb-2"> Video Source </label>
                             <select name="offer_video_source[]" class="form-control" required>
@@ -500,7 +566,7 @@
                             <input type="text" name="offer_video_description[]" class="form-control" placeholder="Description" required>
                         </div>
                         <div class="col-lg-1 mt-4 mb-4 pt-9">
-                             <button class='btn btn-sm btn-square btn-light-danger delete_section_video'  type="button">
+                             <button class='btn btn-sm btn-square btn-light-danger'  type="button">
                                 <i class='la la-trash'></i>
                              </button>
                         </div>
@@ -518,7 +584,7 @@
             }else{
                 $('#embed_url').removeClass('error');
                 $('.video_wrapper').append(`
-                    <div class="video_column col-lg-4 mt-4 mb-4">
+                    <div class="col-lg-4 mt-4 mb-4">
                         <div class="row">
                             <div class="col-lg-12 text-center">
                                 <iframe width="250" height="250" src="`+video_source+`"></iframe>
@@ -531,9 +597,7 @@
                                 <input type="hidden"  value="`+access+`"       name="access[]" required />
                             </div>
                             <div class="col-lg-12 text-center">
-                                <button class='btn btn-sm delete_video_wrapper' type="button"> 
-                                    <i class='text-danger fa fa-trash'></i>
-                                </button>
+                                <button class='btn btn-sm ' type="button"> <i class='text-danger fa fa-trash'></i> </button>
                             </div>
                         </div> 
                     </div>
@@ -553,72 +617,6 @@
         $('#section_row').on('click','.delete_section',function(){
               var id = $(this).data('id');
               $("#section_1").remove(); 
-        });
-        $('#submit_offer').click(function(){
-            var offer_name = $('#offer_name').val();
-            var symbol = $('#symbol').val();
-            var min_invesment = $('#min_invesment').val();
-            var max_invesment = $('#max_invesment').val();
-            if(offer_name == ''){
-                toastr.error("Offer Name is Required", "Success");
-            }
-            if(symbol == ''){
-                toastr.error("Symbol is Required", "Success");
-            }
-            // if(min_invesment == ''){
-            //     toastr.error("Min Invesment filed is Required", "Success");
-            // }
-            // if(max_invesment == ''){
-            //     toastr.error("Max Invesment filed is Required", "Success");
-            // }  
-        });
-
-        $('#investment_steps').on('click', '.investment_step_button_row i', function() {
-            $(this).closest('.button_row_wrapper').remove();
-        });
-
-        $('#section_row').on('click', '.delete_section', function() {
-            $(this).closest('.appended_summary_box').remove();
-        });
-
-        $('#section_row').on('click', '.delete_section_tiles', function() {
-            $(this).closest('.appended_tiles_box').remove();
-        });
-
-        $('#section_row').on('click', '.delete_section_text', function() {
-            $(this).closest('.appended_text_box').remove();
-        });
-
-        $('#section_row').on('click', '.delete_section_images', function() {
-            $(this).closest('.appended_images_box').remove();
-        });
-
-        $('#section_row').on('click', '.delete_section_video', function() {
-            $(this).closest('.appended_video_box').remove();
-        });
-
-        $('.video_wrapper').on('click', '.delete_video_wrapper', function() {
-            $(this).closest('.video_column').remove();
-        });
-
-        
-        
-      </script>
-
-      <script>
-        $('.add_investment_button_section').click(function(){
-            var content = $(this).data('content');
-            $('.investment_step_button_row').append(`
-                <div class="col-lg-12  text-center button_row_wrapper">
-                    <div class="overflow-auto pb-1">
-                        <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                            <span class="col-lg-10 text-left"> `+content+` </span>
-                            <span class="col-lg-2"> <i class="la la-times"></i>  </span>
-                        </div>
-                    </div>
-                    <input type="hidden" name="investment_setup[]" value="`+content+`">
-                </div>
-            `);
         });
       </script>
 

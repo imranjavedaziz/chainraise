@@ -491,7 +491,7 @@
                                 <label class="form-check form-check-custom "> 
                                     <input class="form-check-input h-20px w-20px" 
                                     type="checkbox" name="enable_questions">
-                                    <span class="form-check-label fw-semibold"> Enable Question & Answer Forum </span>
+                                    <span class="form-check-label fw-semibold" > Enable Question & Answer Forum </span>
                                 </label> 
                             </div> 
                         </div>
@@ -510,7 +510,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="show_funding_end_countdown">
                                     <span class="form-check-label fw-semibold"> Show Funding End Date Countdown</span>
                                 </label> 
                             </div> 
@@ -520,7 +520,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="show_blockchain_info">
                                     <span class="form-check-label fw-semibold"> Show Blockchain Info </span>
                                 </label> 
                             </div> 
@@ -530,7 +530,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="swap_issuer">
                                     <span class="form-check-label fw-semibold"> Swap Issuer and Offer Name </span>
                                 </label> 
                             </div> 
@@ -540,7 +540,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="hide_logo_container">
                                     <span class="form-check-label fw-semibold"> Hide Logo Container </span>
                                 </label> 
                             </div> 
@@ -550,7 +550,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="hide_logo_details">
                                     <span class="form-check-label fw-semibold"> Hide Logo in Details </span>
                                 </label> 
                             </div> 
@@ -560,7 +560,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="hide_logo_marketplace">
                                     <span class="form-check-label fw-semibold"> Hide Logo in Marketplace </span>
                                 </label> 
                             </div> 
@@ -570,7 +570,7 @@
                         <div class="d-flex flex-stack">  
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="details_notifications[]">
+                                    <input class="form-check-input h-20px w-20px" type="checkbox" value="phone" name="remove_hero_image_mask">
                                     <span class="form-check-label fw-semibold"> Remove Hero Image Mask </span>
                                 </label> 
                             </div> 
@@ -583,7 +583,7 @@
                         <hr>
                     </div>
                     <div class="col-lg-12 mb-3">
-                        <input type="text" class="form-control" name="price_per_share" placeholder="Offer Details Tab Name">
+                        <input type="text" class="form-control"  placeholder="Offer Details Tab Name">
                     </div>
                 </div>
                 <div class="row">
@@ -592,23 +592,23 @@
                         <hr>
                     </div>
                     <div class="col-lg-12 mt-3">
-                        <input type="text" class="form-control custom_input" name="price_per_share" placeholder="Offer Details Tab Name">
+                        <input type="text" class="form-control custom_input" name="offer_tab_name" placeholder="Offer Details Tab Name">
                     </div>
 
                     <div class="col-lg-12 mt-3">
-                        <input type="text" class="form-control custom_input" name="price_per_share" placeholder="Videos Tab Name">
+                        <input type="text" class="form-control custom_input" name="video_tab_name" placeholder="Videos Tab Name">
                     </div>
 
                     <div class="col-lg-12 mt-3">
-                        <input type="text" class="form-control custom_input" name="price_per_share" placeholder="Document Tab Name">
+                        <input type="text" class="form-control custom_input" name="document_tab_name" placeholder="Document Tab Name">
                     </div>
 
                     <div class="col-lg-12 mt-3">
-                        <input type="text" class="form-control custom_input" name="price_per_share" placeholder="Updates Tab Name">
+                        <input type="text" class="form-control custom_input" name="update_tab_name" placeholder="Updates Tab Name">
                     </div>
 
                     <div class="col-lg-12 mt-3">
-                        <input type="text" class="form-control custom_input" name="price_per_share" placeholder="Q & A Tab Name">
+                        <input type="text" class="form-control custom_input" name="qa_tab_name" placeholder="Q & A Tab Name">
                     </div>
                 </div>
                 <div class="row">
@@ -616,7 +616,7 @@
                         <div class="d-flex flex-stack p-2"> 
                             <div class="d-flex"> 
                                 <label class="form-check form-check-custom "> 
-                                    <input class="form-check-input h-13px w-13px" type="checkbox" value="phone" name="details_notifications[]"> 
+                                    <input class="form-check-input h-13px w-13px" type="checkbox" value="phone" name="hide_contact_us_from"> 
                                 </label> 
                             </div> 
                             <div class="">

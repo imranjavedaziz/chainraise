@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('size_label')->nullable();
             $table->string('base_currency')->nullable();
             $table->string('price_per_unit')->nullable();
+            $table->string('share_unit_label')->nullable();
             $table->string('total_valuation')->nullable();
             $table->string('commencement_date')->nullable();
             $table->string('funding_end_date')->nullable();

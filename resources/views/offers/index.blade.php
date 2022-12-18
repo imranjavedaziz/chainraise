@@ -31,10 +31,8 @@
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">Offers</li>
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                        </li>
-                        <li class="breadcrumb-item text-muted">Listing</li>
+                       
+                         
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->

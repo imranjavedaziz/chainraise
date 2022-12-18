@@ -34,6 +34,14 @@ class Offer extends Model  implements HasMedia
     {
         return $this->hasOne(OfferContact::class);
     }
+    public function access()
+    {
+        return $this->hasOne(Access::class);
+    }
+    public function display()
+    {
+        return $this->hasOne(Display::class);
+    }
 
   
 
