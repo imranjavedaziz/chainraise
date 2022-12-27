@@ -298,7 +298,7 @@ class OfferController extends Controller
             
         }catch(Exception $error){
             //DB::rollBack();
-            return $error;
+          
            
             return redirect()->back()->with('error','Error while creating offer');
         }
@@ -436,7 +436,7 @@ class OfferController extends Controller
                 }
             }
              
-            dd(122);
+             
 
         }
        
