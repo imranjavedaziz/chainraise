@@ -4721,17 +4721,17 @@
                                                     <div class="col-lg-8">
                                                         Techware Labs <br> Techware Labs <br>
                                                         (Reg CF) Combining cybersecurity and computer maintenance services into the web3 space
-                                                        $1M
+                                                        
                                                         <br>
                                                         <strong class="text-success">$1M</strong>
 
                                                     </div>
                                                     <div class="col-lg-2">
                                                        <strong>
-                                                        Transaction Summary
+                                                         Transaction Summary
                                                        </strong>
                                                        <b>
-                                                        $3,000.00
+                                                            $3,000.00
                                                        </b>
                                                     </div>
                                                 </div>
