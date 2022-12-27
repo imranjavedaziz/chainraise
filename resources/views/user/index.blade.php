@@ -108,6 +108,7 @@
                                     <th class="min-w-140px">Total <small> Events </small>    </th>
                                     <th class="min-w-135px">Last Seen  </th>
                                     <th class="min-w-135px text-left rounded-end">Date  </th>
+                                    <th class="min-w-135px text-left rounded-end">Action  </th>
                                 </tr>
                             </thead>
                             <!--end::Table head-->
@@ -156,7 +157,13 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->created_at}} </a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   -- </a>
+                                    </td>
+
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="{{ $user->id}}" >
+                                            <i class="la la-trash fs-3 text-danger"></i>
+                                        </a>
                                     </td>
                                    
                                     
@@ -182,98 +189,48 @@
 
     <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
     <script>
-         
-        $(function() {
-            $('#account-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{!! route('user.index') !!}',
-                columns: [{
-                        data: function(data) {
-                            return data.DT_RowIndex;
-                        },
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data:function(data){
-                                return data.account_type;
-                        },name:'account_type'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions'
-                    }
-                ]
-            });
-        });
-    </script>
-
-
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $("#users-table").on("click", ".edit-user", function(e) {
+        $('.deleteUser').click(function() {
             var id = $(this).data('id');
-            var name = $(this).data('name');
-            var email = $(this).data('email');
-            var status = $(this).data('status');
-            $('#user-id').val(id);
-            $('#user-name').val(name);
-            $('#user-email').val(email);
-            $('#user-status').val(status);
-        });
-
-        function deleteUser(id) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             Swal.fire({
-                title: "Are you sure to delete ?",
-                text: "You won't be able to revert this!",
+                title: "Are you sure to delete this user?",
+                text: "This action can't undo are you sure to delete?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                customClass: {
-                    confirmButton: "btn-danger"
-                }
+                confirmButtonText: "Yes Delete"
             }).then(function(result) {
                 if (result.value) {
-                    var url = '{{ route('user.delete') }}';
                     $.ajax({
-                        url: url,
-                        method: 'POST',
+                        url: "{{ route('user.delete')}}",
+                        method: "POST",
                         data: {
-                            id: id
+                            id: id, 
                         },
-                        success: function(response) {
-                            if (response.status == true) {
-                                toastr.success(response.message, "success");
+                        success: function(result) {
+                            if(result.status == true){
+                                toastr.success(result.message, "Success");
                                 location.reload();
-                            } else {
-                                toastr.error(response.message, "error");
+                            }else{
+                                toastr.error(result.message, "Error");
                             }
-
-
                         }
                     });
+                     
                 }
+
+
+
+
             });
-        }
-    </script>
+
+        });
+       
+        
+     </script>
 
 
 @endsection

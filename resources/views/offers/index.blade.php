@@ -200,7 +200,7 @@
                                         @hasrole('investor')
                                             <div class="row">
                                                 <div class="col-lg-12" style="text-align: center">
-                                                    <a href="{{ route('offers.view',$offer->id) }}" class="btn btn-info btn-sm">  <i class="la la-eye"></i> </a>
+                                                    <a href="{{ route('dashboard') }}" class="btn btn-info btn-sm">  <i class="la la-eye"></i> </a>
                                                 </div>
                                             </div>
                                         @endhasrole

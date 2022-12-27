@@ -3344,13 +3344,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 text-right" style="text-align: right">
-                                                    <button class="btn btn-sm btn-light-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#kt_modal_create_account">
+                                                    <button class="btn btn-sm btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_top_up_wallet">
                                                         Invest $ 10000000
                                                     </button>
-                                                    <a href="#" class="btn btn-primary er fs-6 px-8 py-4"
-                                                        data-bs-toggle="modal" data-bs-target="#kt_modal_top_up_wallet">Top
-                                                        Up Wallet</a>
+                                                   
 
                                                 </div>
                                             </div>
@@ -3697,7 +3694,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header py-7 d-flex justify-content-between">
                     <!--begin::Modal title-->
-                    <h2>Top Up Wallet ss</h2>
+                    <h2></h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-kt-modal-action-type="close">
