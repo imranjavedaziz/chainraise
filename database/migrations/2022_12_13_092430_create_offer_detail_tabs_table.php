@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->string('input')->nullable();
-            $table->string('heading')->nullable();
-            $table->string('sub_heading')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('heading')->nullable();
+            $table->longText('sub_heading')->nullable();
+            $table->longText('description')->nullable();
             $table->string('priority')->default(0);
             $table->timestamps();
         });

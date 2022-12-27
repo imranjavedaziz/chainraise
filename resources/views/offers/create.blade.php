@@ -228,6 +228,11 @@
                                                         <button class="btn btn-default btn-sm btn-dark w-40" type="button" data-bs-toggle="modal" data-bs-target="#modal_new_sections">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
+
+                                                        <button class="btn btn-default btn-sm btn-dark w-40" type="button" data-bs-toggle="modal" data-bs-target="#modal_feture_video">
+                                                            <i class="fa fa-video"></i>
+                                                        </button>
+                                                        <input type="hidden" name="feature_video_url" class="feture_video_url" >
                                                     </div> 
                                                </div>
                                             </div> 
@@ -273,9 +278,7 @@
                                                             <div class="col-lg-4 mb-4">
                                                                 <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
                                                             </div>
-                                                            <div class="col-lg-1 mb-4">
-                                                                <button class="btn btn-sm btn-dark" type="button"> UPDATE </button>
-                                                            </div>
+                                                            
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-6">
@@ -415,25 +418,27 @@
         $('#modal_new_sections').on('click','.tiles_section',function(){
             $('#section_row').append(`
                 <div class="appended_tiles_box  row section_`+no+`">
-                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
+                    <div class="col-lg-1 mt-6 mb-6 tiles_box_warpper">
+                    </div>
+                    <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
-                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
+                    <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
-                    <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
+                    <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
                             <input type="file" class="form-control" name="tiles_source[]" required> 
                         </div>
                     </div>
-                    <div class="col-lg-4 mt-6 mb-6">
+                    <div class="col-lg-1 mt-6 mb-6 ">
                         <button type="button" class="btn btn-sm btn-danger delete_section_tiles" data-id="`+no+`"> <i class='fa fa-times'></i> </button>
                     </div>
                 </div>
@@ -445,7 +450,7 @@
         $('#modal_new_sections').on('click','.text_section',function(){
             no++;
             $('#section_row').append(`
-                <div class="appended_text_box no++;row section_`+no+`">
+                <div class="mt-4 appended_text_box row section_`+no+`">
                     <div class="col-lg-6 mt-3 mb-4">
                         <input type="text" class="form-control" name="text_title[]" value="Title" required > 
                     </div>
@@ -621,6 +626,11 @@
             `);
         });
       </script>
-
+      <script>
+              $('.add_feature_video_btn').click(function(){
+                    var videourl = $('.video_url').val();
+                    $('.feture_video_url').val(videourl);
+              });
+      </script>
 
 @endsection

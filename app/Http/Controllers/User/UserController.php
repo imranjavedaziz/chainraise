@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\Http;
 class UserController extends Controller
 {
     public function custom_login($email,$password)
@@ -194,13 +194,52 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-       
+
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
             $agree_consent_electronic =false;
         }
-      
+        $response = Http::put('https://api-sandboxdash.norcapsecurities.com/tapiv3/index.php/v3/createAccount', [
+            'clientID' => 'utOkV0rfA2mjtF9',
+            'developerAPIKey'=>'nPNTvQSmFCRGsudYWxAe9G7bqT0iAzhSGWa',
+            'accountRegistration'=>$request->first_name,
+            'type'=>'Individual',
+            'entityType' =>'LLC',
+            'domesticYN' =>'domestic_account',
+            'streetAddress1'=>$request->address,
+            'streetAddress2'=>'Account Street Address Line 2',
+            'city'=>$request->city,
+            'state'=>'Punjab',
+            'zip'=>'44000',
+            'country'=>'Pakitan',
+            'email'=>'tayyabshahzad1@outlook.com',
+            'phone'=>9794881,
+            'taxID'=>4881,
+            'KYCstatus'=>'Pending',
+            'AMLstatus'=>'Manually Approved',
+            'AMLdate'=>'02-18-2016',
+            'suitabilityScore'=>2,
+            'suitabilityDate'=>'02-18-2016',
+            'suitabilityApprover'=>'The name of the Registered Representative',
+            'AccreditedStatus'=>'Pending',
+            'Allow'=>'How the account was accredited',
+            'AIdate'=>'02-18-2016',
+            '506cLimit'=>500,
+            'accountTotalLimit'=>200000,
+            'singleInvestmentLimit'=>100,
+            'associatedAC'=>'yes',
+            'syndicate'=>'no',
+            'tags'=>'terms',
+            'notes'=>'Personal Account',
+            'approvalPrincipal'=>'Charles',
+            'approvalStatus'=>'pending',
+            'approvalLastReview'=>'02-15-2016',
+            'field1'=>'some text',
+            'field2'=>'some text',
+            'field3'=>'some text'
+        ]);
+       
         DB::beginTransaction();
         try{
             $user = new User;

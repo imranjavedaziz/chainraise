@@ -16,6 +16,8 @@
                     </span> 
                 </div> 
             </div> 
+
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Non culpa aperiam ipsa quibusdam perspiciatis quos velit, aliquid porro praesentium officia facilis iure. Minima laudantium similique perspiciatis, culpa corporis doloribus. Mollitia!
             <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"> 
                 <div class="text-center mb-13"> 
                     <h1> Contact Us </h1> 
@@ -291,6 +293,39 @@
                     <div class="row mt-3">
                         <div class="col-lg-12 form-group">
                             <button class="btn btn-sm btn-dark" type="button" id="offer_video_save"> Add Video </button>
+                        </div> 
+                    </div>
+                   
+               
+                <!--end:Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+
+<div class="modal fade" id="modal_feture_video" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+              
+            </div> 
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15"> 
+                    <div class="row mt-3">
+                        <div class="col-lg-12 form-group">
+                            <input type="text"  class="form-control video_url" placeholder="Enter Feature Video URL">
+                        </div> 
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-12 form-group">
+                            <button class="btn btn-sm btn-dark add_feature_video_btn" type="button" data-bs-dismiss="modal" > Add Feature Video </button>
                         </div> 
                     </div>
                    

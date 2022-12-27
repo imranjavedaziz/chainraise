@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -16,7 +17,11 @@ Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
 Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
-Route::get('/', function () {
+
+Route::get('/', [FrontendController::class, 'index'])->name('index');
+Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
+ 
+Route::get('login', function () {
     return view('auth.login');
 });
 Route::get('login-test', function () {

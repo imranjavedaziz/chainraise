@@ -78,13 +78,19 @@
                 <form action="{{ route('offers.update') }}" enctype="multipart/form-data" method="post"> @csrf
                     <input type="hidden" name="offer_id" value="{{ $offer->id}}">
                     <input type="hidden" name="investment_restrication_id" value="{{ $offer->investmentRestrictions->id}}">
+                    <input type="hidden" name="calltoaction_button_id" value="{{  $offer->callToAction->id }}">
+                    <input type="hidden" name="calltoaction_button_id" value="{{  $offer->callToAction->id }}">
+                    <input type="hidden" name="access_id" value="{{  $offer->access->id }}">
+                    <input type="hidden" name="display_id" value="{{  $offer->display->id }}">
+                    <input type="hidden" name="contact_id" value="{{  $offer->contactInfo->id }}">
+                    
                 <div class="row"> 
                    @include('offers.particles.left-bar-edit') 
                     <div class="col-lg-9">
                         
                         <div class="card-body mb-3"> 
                             <div class="position-relative"> 
-                                 
+                               
                                 <div class=" text-white mb-4 " 
                                 @if($offer->getFirstMediaUrl('banner_image', 'thumb') != null )
                                         style="padding:5px 20px;background-image:url('{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}')"
@@ -229,7 +235,7 @@
                                                 </a>
                                                 <!--end::Link-->
                                             </li>
-                                            
+                                           
                                         </ul>
                                         <!--end::Nav-->
                                         <!--begin::Tab Content-->
@@ -244,17 +250,15 @@
                                                     <div class="row mt-8">
                                                         @foreach ($offer->offerDetail as $offerDetail)
                                                                 @if($offerDetail->input == 'summary')
-                                                                    <div class="col-lg-12 mt-4">
-                                                                        <label for=""> Summary Fileds </label>
+                                                                    <input type="hidden" name="summary_id[]" class="form-control" value="{{ $offerDetail->id}}">
+                                                                    <div class="col-lg-6 mt-4">
+                                                                        <input type="text" name="summary_heading[]" class="form-control" value="{{ $offerDetail->heading}}">
                                                                     </div>
                                                                     <div class="col-lg-6 mt-4">
-                                                                        <input type="text" name="heading[]" class="form-control" value="{{ $offerDetail->heading}}">
-                                                                    </div>
-                                                                    <div class="col-lg-6 mt-4">
-                                                                        <input type="text" name="sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
+                                                                        <input type="text" name="summary_sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
                                                                     </div>
                                                                     <div class="col-lg-11 mt-4">
-                                                                        <textarea type="text" name="description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
+                                                                        <textarea type="text" name="summary_description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
                                                                     </div>
                                                                     <div class="col-lg-1 mt-4">
                                                                           <button type="button" class="btn btn-sm btn-light-danger remove_filed" data-method="summary" data-id="{{ $offerDetail->id }}">
@@ -265,20 +269,23 @@
                                                                         <div class="col-lg-12 mt-4">
                                                                           <label for=""> Text Fileds </label>
                                                                         </div>
+                                                                        <input type="hidden" name="text_id[]" class="form-control" value="{{ $offerDetail->id}}">
                                                                         <div class="col-lg-6 mt-4">
-                                                                            <input type="text" name="heading[]" class="form-control" value="{{ $offerDetail->heading }}">
+                                                                            <input type="text" name="text_heading[]" class="form-control" value="{{ $offerDetail->heading }}">
                                                                         </div>
                                                                         <div class="col-lg-6 mt-4">
-                                                                            <input type="text" name="sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
+                                                                            <input type="text" name="text_sub_heading[]" class="form-control" value="{{ $offerDetail->sub_heading }}">
                                                                         </div>
                                                                         <div class="col-lg-12 mt-4">
-                                                                            <textarea type="text" name="description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
+                                                                            <textarea type="text" name="text_description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
                                                                         </div>
                                                                 @elseif($offerDetail->input == 'tiles')
                                                                         @if($offerDetail->offerTiles)
                                                                             @foreach($offerDetail->offerTiles as $tiles)
                                                                                 <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper" style="">
                                                                                     <div class="tiles_box text-center">
+                                                                                        <input type="hidden" name="offer_detail_id[]" 
+                                                                                               class="form-control" value="{{ $tiles->offer_detail_tabs_id}}">
                                                                                         <img src="{{ asset('files/'.$tiles->path) }}" alt="" class="mb-5 img img-thumbnail" style="height: 100px;">
                                                                                         <br>
                                                                                         <input type="file" class="form-control" name="tiles_source[]"> 
@@ -323,10 +330,12 @@
                                                                </span>
                                                                &nbsp;
                                                                <label class="required fs-6 fw-semibold mb-2">   Address  </label> 
-                                                                <p id="address_label"> &nbsp; </p>
+                                                                <p id="address_label"> {{ $offer->contactInfo->address}} </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control" placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" id="offer_address" >
+                                                                <input type="text" class="form-control"
+                                                                value="{{ $offer->contactInfo->address}}"
+                                                                placeholder="Full Address (map and address will be hidden if blank)" name="offer_address" id="offer_address" >
                                                             </div>
                                                         </div>
 
@@ -339,16 +348,15 @@
                                                                &nbsp;
                                                                 <label class="required fs-6 fw-semibold mb-2"> 
                                                                     Phone
-                                                                </label>
-                                                                 
-                                                                <p id="phone_label"> &nbsp; </p>
+                                                                </label> 
+                                                                <p id="phone_label"> {{ $offer->contactInfo->phone}}  </p>
                                                             </div>
                                                             <div class="col-lg-4 mb-4">
-                                                                <input type="text" class="form-control " placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
+                                                                <input type="text" class="form-control "
+                                                                value="{{ $offer->contactInfo->phone}}"
+                                                                placeholder="Phone # or Contact info"id="offer_phone"  name="phone">
                                                             </div>
-                                                            <div class="col-lg-1 mb-4">
-                                                                <button class="btn btn-sm btn-dark" type="button"> UPDATE </button>
-                                                            </div>
+                                                            
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-6">
@@ -368,7 +376,8 @@
                                                                         <label class="required fs-6 fw-semibold mb-2"> 
                                                                             Contact Us
                                                                         </label>
-                                                                        <textarea type="text" class="form-control " placeholder="Type your message here." name="contact_us"></textarea>
+                                                                        <textarea type="text" class="form-control" 
+                                                                        placeholder="Type your message here." name="contact_us">{{ $offer->contactInfo->contact_us}}</textarea>
                                                                     </div>
                                                                     
                                                                 </div>

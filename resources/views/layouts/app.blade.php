@@ -484,9 +484,9 @@
                                             <div class="d-flex flex-column">
                                                 <div class="fw-bold d-flex align-items-center fs-5">
                                                     {{ Auth::user()->name }} &nbsp;
-                                                    <span
-                                                        class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">
-                                                        {{ Auth::user()->roles->pluck('name')[0] ?? '' }} </span>
+                                                    <span  class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">
+                                                        {{ Auth::user()->roles->pluck('name')[0] ?? '' }}
+                                                    </span>
                                                 </div>
                                                 <a href="#"
                                                     class="fw-semibold text-muted text-hover-primary fs-7">
@@ -644,6 +644,13 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
     
+
+	 
+ 
+		 
+    <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
+
+	 
 
 
     @if (Session::has('success') or Session::has('error'))

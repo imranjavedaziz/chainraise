@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->string('source')->nullable();
             $table->string('url')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->enum('visible',['every_one','auth_user'])->default('every_one');
             $table->timestamps();
         });

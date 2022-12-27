@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/*===== HTML Reset =====*/
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+}
+
+:active,
+:hover,
+:focus {
+    outline: 0 !important;
+    outline-offset: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 400;
+}
+
+button.btn.bg-change {
+    color: white;
+    font-size: 14px;
+    background-color: #282727;
+    padding: 5px 25px;
+}
+
+body {
+    font-family: var(--primary-font);
+    font-size: 100%;
+    font-weight: 400;
+}
+
+/*===== Variable Define =====*/
+:root {
+    --primary-color: #000000;
+    ;
+    --text-color: #555;
+    --text-gray: #999;
+    --primary-font: 'Poppins', sans-serif;
+    --button-color: #191919;
+}
+
+.header-sec {
+    background-color: #000000;
+}
+
+.bfs {
+    background-color: #000000;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+h2 {
+    font-family: var(--primary-font);
+    color: white;
+    margin: 0px;
+    font-size: 35px;
+    font-weight: 600;
+    line-height: 55px;
+    color: white;
+
+}
+
+.border-white {
+    border-color: #ffffff4a !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #7a7a7a61 !important;
+}
+
+h3 {
+    color: white;
+}
+
+h5 {
+    font-weight: 600;
+    color: white;
+}
+
+.nav-pills .nav-link {
+    background: 0 0;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 3px 25px;
+    font-size: 25px;
+    color: white;
+
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: #fff;
+    font-size: 25px;
+    background-color: transparent;
+    border-bottom: 1px solid #fff;
+    border-radius: 0px;
+}
+
+p {
+    color: white;
+}
+
+h4 {
+    color: white;
+}
+
+h6 {
+    color: white;
+}
+
+.bg-image {
+    /* background: url(../images/portfolio/background-chainraise.jpg); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+}
+
+.cc {
+    color: #4b1dff;
+}
+
+li {
+    line-height: 35px;
+}
+
+a:hover {
+    color: #4b1dff !important;
+}
+
+.bord {
+    border: 1px solid #3399ff;
+    ;
+    border-radius: 5px;
+}
+.embed-responsive-item{
+    width: 100%;
+    height: 520px;
+}
+
+/* Media Query */
+@media screen and (max-width: 576px) {
+    .h-mob{
+    text-align: center;
+    padding: 10px;
+    }
+    h2{
+        font-size: 25px !important;
+        line-height: 30px !important;;
+    }
+    .bfs{
+        padding-top: 50px !important;
+        padding-bottom: 50px !important;
+    }
+    .bor-remove{
+        border: none !important;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff;
+        font-size: 20px !important;
+    }
+    .nav-pills .nav-link {
+        padding: 3px 15px;
+        font-size: 20px;
+        color: white;
+    }
+    .embed-responsive-item{
+        width: 100%;
+        height: 400px;
+    }
+}
+  @media screen and (min-width: 576px) and (max-width:768px) {
+    h2{
+        font-size: 30px !important;
+    }
+    .bfs{
+        padding-top: 50px !important;
+        padding-bottom: 50px !important;
+    }
+    .bor-remove{
+        border: none !important;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff;
+        font-size: 20px !important;
+    }
+    .nav-pills .nav-link {
+        padding: 3px 15px;
+        font-size: 20px;
+        color: white;
+    }
+    .embed-responsive-item{
+        width: 100%;
+        height: 400px;
+    }
+  }
+  @media screen and (min-width: 768px) and (max-width:1200px) {
+    .bor-remove{
+        border: none !important;
+    }
+    .embed-responsive-item{
+        width: 100%;
+        height: 420px;
+    }
+
+  }

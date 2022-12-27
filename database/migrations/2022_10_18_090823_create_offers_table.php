@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('issuer_id');
             $table->foreign('issuer_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
-            $table->string('short_description')->nullable();
+            $table->longText('short_description')->nullable();
             $table->string('security_type')->nullable();
             $table->string('symbol')->nullable();
             $table->string('size')->nullable();

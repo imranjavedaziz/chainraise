@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
             $table->unsignedBigInteger('offer_id')->nullable();
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
