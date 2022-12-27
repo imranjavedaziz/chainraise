@@ -4899,10 +4899,9 @@
                                 </div>
                                 
                             </div>
-
+                            
                           
-                            <!--end::Step 5-->
-                            <!--begin::Actions-->
+                             
                             <div class="d-flex flex-stack pt-10">
                                 <!--begin::Wrapper-->
                                 <div class="me-2">
