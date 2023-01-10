@@ -127,43 +127,43 @@
                         <div class="tab-pane fade show active " id="pills-home" role="tabpanel"
                             aria-labelledby="pills-home-tab">
                             @foreach ($offer->offerDetail as $offerDetail)
-                            @if($offerDetail->input == 'summary')
-                               
-                                <div class="col-lg-6 mt-4">
-                                   <h5>{{ $offerDetail->heading}}</h5>
-                                </div>
-                                <div class="col-lg-6 mt-4">
-                                    <h5>{{ $offerDetail->sub_heading}}</h6> 
-                                </div>
-                                <div class="col-lg-11 mt-4">
-                                     {!!$offerDetail->description !!}
-                                </div>
-                               
-                            @elseif($offerDetail->input == 'text')
-                                     
+                                @if($offerDetail->input == 'summary')
+                                
                                     <div class="col-lg-6 mt-4">
-                                        <h6>{{ $offerDetail->heading}}</h6> 
+                                    <h5>{{ $offerDetail->heading}}</h5>
                                     </div>
                                     <div class="col-lg-6 mt-4">
                                         <h5>{{ $offerDetail->sub_heading}}</h6> 
                                     </div>
-                                    <div class="col-lg-12 mt-4">
+                                    <div class="col-lg-11 mt-4">
                                         {!!$offerDetail->description !!}
-                                    </div>
-                            @elseif($offerDetail->input == 'tiles')
-                                    <div class="row">
-                                        @if($offerDetail->offerTiles)
-                                            @foreach($offerDetail->offerTiles as $tiles) 
-                                                <div class="col-lg-6 col-md-6  p-3"> 
-                                                    <figure class="figure">
-                                                        <img src="{{ asset('files/'.$tiles->path) }}" class="img img-thumbnail figure-img img-fluid rounded" alt="..." style="width:200px">
-                                                    </figure> 
-                                                </div> 
-                                            @endforeach
-                                        @endif
-                                    </div>
-                            @endif
-                    @endforeach
+                                    </div> 
+                                @elseif($offerDetail->input == 'text') 
+                                        <div class="col-lg-6 mt-4">
+                                            <h6>{{ $offerDetail->heading}}</h6> 
+                                        </div>
+                                        <div class="col-lg-6 mt-4">
+                                            <h5>{{ $offerDetail->sub_heading}}</h6> 
+                                        </div>
+                                        <div class="col-lg-12 mt-4">
+                                            {!!$offerDetail->description !!}
+                                        </div>
+                                @elseif($offerDetail->input == 'tiles')
+                                        <div class="row">
+                                            @if($offerDetail->offerTiles)
+                                                @foreach($offerDetail->offerTiles as $tiles) 
+                                                    <div class="col-lg-6 col-md-6  p-3"> 
+                                                        <figure class="figure">
+                                                            <img src="{{ asset('files/'.$tiles->path) }}" class="img img-thumbnail figure-img img-fluid rounded" alt="..." style="width:200px">
+                                                        </figure> 
+                                                    </div> 
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                @endif
+                            @endforeach
+
+
                         </div>
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                             aria-labelledby="pills-profile-tab">

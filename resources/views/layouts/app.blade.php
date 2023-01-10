@@ -20,6 +20,11 @@
     <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico')}}" />
     <!--end::Global Stylesheets Bundle-->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <style>
+        .no-radius{
+            border-radius: 0!important;
+        }
+    </style>
     @section('page_head')
     @show
 </head>
@@ -643,29 +648,22 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
-    
 
-	 
- 
 		 
     <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
-
-	 
-
-
     @if (Session::has('success') or Session::has('error'))
-    <script>
-        @if (Session::has('success'))
-            toastr.success("{{ Session::get('success') }}", "Success");
-        @endif
-        @if (Session::has('error'))
-            toastr.error("{{ Session::get('error') }}", "Error");
-        @endif
-    </script>
+        <script>
+            @if (Session::has('success'))
+                toastr.success("{{ Session::get('success') }}", "Success");
+            @endif
+            @if (Session::has('error'))
+                toastr.error("{{ Session::get('error') }}", "Error");
+            @endif
+        </script>
     @endif
     
     @section('page_js')
-    
+        
     @show
 
 </body>

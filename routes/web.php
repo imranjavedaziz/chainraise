@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MakeInvestmentController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -21,6 +23,21 @@ Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirect
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
  
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
+    Route::get('make', ['as' => 'make','uses' => 'MakeInvestmentController@make']);
+    Route::post('submit', ['as' => 'submit','uses' => 'MakeInvestmentController@submitInvestment']);
+    Route::get('details/{id}', ['as' => 'detail','uses' => 'MakeInvestmentController@detail']);
+    Route::post('submit-kyc', ['as' => 'kyc.submit','uses' => 'MakeInvestmentController@kycSubmit']);
+    Route::get('verify-identity', ['as' => 'verify.identity','uses' => 'MakeInvestmentController@verify_identity']);
+    Route::get('investment-limits', ['as' => 'investment.limits','uses' => 'MakeInvestmentController@investment_limits']);
+    Route::get('payment-method', ['as' => 'payment.method','uses' => 'MakeInvestmentController@payment_method']);
+    Route::get('connect-bank', ['as' => 'connect.bank','uses' => 'MakeInvestmentController@connect_bank']);
+    Route::get('sign-subscription', ['as' => 'sign.subscription','uses' => 'MakeInvestmentController@sign_subscription']);
+});
+
+
 Route::get('login', function () {
     return view('auth.login');
 });
@@ -31,9 +48,11 @@ Route::get('login-test', function () {
 Route::get('db2', function () {
     return view('layouts.dashboard-issuer');
 });
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+ 
+
+
+
+
 Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Role'], function () {
     Route::get('index', ['as' => 'index','uses' => 'RoleController@index']);
     Route::post('create', ['as' => 'save','uses' => 'RoleController@save']);

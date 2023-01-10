@@ -161,7 +161,9 @@
                                     </td>
 
                                     <td>
-                                        <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="{{ $user->id}}" >
+                                        <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser"
+                                         @if(Auth::user()->id ==  $user->id ) disabled @endif
+                                          data-id="--" >
                                             <i class="la la-trash fs-3 text-danger"></i>
                                         </a>
                                     </td>
