@@ -454,7 +454,7 @@
                                                                     <span class="text-danger"  >*</span></label>
                                                                 <input type=""   class="form-control"  placeholder="Primary Contact Social Security"
                                                                     required=""  name="primary_contact_social_security"
-                                                                    value="{{ $user->identityVerification->primary_contact_social_security }}" />
+                                                                    @if( $user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                                             </div> 
                                                         </div>
                                                         <div class="form-group row mb-10">
@@ -469,7 +469,10 @@
                                                                     <span class="text-danger"
                                                                         >*</span
                                                                     ></label>
-                                                                <input  type="text" class="form-control" name="country_residence"  value="{{  $user->identityVerification->country_residence}}" />
+                                                                <input  type="text" class="form-control" name="country_residence"  
+                                                                @if( $user->identityVerification) 
+                                                                value="{{  $user->identityVerification->country_residence}}"
+                                                                @endif />
                                                             </div>
                                                             <div class="col-lg-4">
                                                                 <label>Identification Type
