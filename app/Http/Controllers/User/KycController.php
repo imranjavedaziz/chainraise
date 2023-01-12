@@ -54,6 +54,7 @@ class KycController extends Controller
                         ->withToken($token_json['access_token'])
                         ->post($url);
                         $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
+                        dd($json_upload_document);
                         if ($upload_document->successful()) {
                             return response([
                                 'status' => $check_identity_container->status(),
