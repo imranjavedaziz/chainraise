@@ -48,7 +48,7 @@ class KycController extends Controller
                     ])->get('https://api.sandbox.fortressapi.com/api/trust/v1/identity-containers/' . $fortress_id);
                     $json_check_identity_container =  json_decode((string) $check_identity_container->getBody(), true);
                     if ($check_identity_container->successful()) {
-                        $document_path = fopen('https://i.brecorder.com/primary/2022/05/626e8e55ac3c3.jpg', 'r');
+                        $document_path = fopen($user->getFirstMediaUrl('kyc_document_collection'), 'r');
                         $url = "https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/" . $personal_identity . "/documents";
                         $upload_document = Http::attach('DocumentType', 'license')->attach('DocumentFront', $document_path)
                         ->withToken($token_json['access_token'])
