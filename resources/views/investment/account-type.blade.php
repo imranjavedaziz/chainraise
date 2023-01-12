@@ -488,6 +488,7 @@
                                                         <div class="col-lg-12">
                                                             <div class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
                                                                 <div class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper"> 
+                                                                    File Name
                                                                     <button type="button" class="update_profile_photo btn btn-sm btn-dark-primary btn-square mb-1"> 
                                                                         <i class="fa fa-upload"></i>
                                                                         Upload Document
@@ -933,7 +934,9 @@
 					$('.notice').removeClass('d-none');
 				}
 			});
-			$('.nationality').val('{{ $user->identityVerification->nationality  }}')
+            @if( $user->identityVerification)
+			    $('.nationality').val('{{ $user->identityVerification->nationality  }}')
+            @endif
 			 
 		 </script>
 		 <script>
@@ -988,12 +991,27 @@
                         processData: false,
                         success:function(response)
                         {
-                           
-                            if(response.status == true){
-                                toastr.success('Verification Completed', "Success");
-                            }else{
-                                toastr.error(response.message, "Error");
+                            if(response.status){
+                                if(response.status == 400){
+                                    jQuery.each(response.data.errors, function(index, item) {
+                                        console.log(item);
+                                        toastr.error(item, "Error");
+                                    });
+                                     // toastr.error(response.data.title, "Error");
+                                }
+
+                                if(response.status == 409){
+                                      toastr.error(response.data.title, "Error");
+                                }
                             }
+                            console.log(response);
+                            // if(response.status == true){
+                            //     toastr.success('Verification Completed', "Success");
+                            // }else if(response.erros){
+                            //     console.log(response.erros);
+                            // }else{
+                            //     toastr.error(response.message, "Error");
+                            // }
                             //$('.spinner').addClass('d-none');
                             //$('.kyc_submit_button').removeClass('d-none')
                         },

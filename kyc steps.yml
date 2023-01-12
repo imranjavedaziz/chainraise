@@ -3,3 +3,47 @@
 3-Costodial = Only for issuer
 4-https://developers.fortressapi.com/docs/testing-ach-in-sandbox
 5-https://developers.fortressapi.com/reference/post_api-trust-v1-payments
+
+
+
+
+
+https://api.sandbox.fortressapi.com/api/trust/v1/external-accounts/financial/widget-url/e6046052-db14-4150-b144-bc1e7e2e9474
+
+Responce  =  "https://charles.biz"
+
+
+
+
+https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/sandbox/members/e6046052-db14-4150-b144-bc1e7e2e9474Q
+
+{
+    "data": [
+        {
+            "memberGuid": "MBR-70965f41-ebe6-3be7-8edf-474bf542c609",
+            "name": "Prohaska - Bahringer",
+            "connectionStatus": "connected"
+        },
+        {
+            "memberGuid": "MBR-7d608c61-3235-9288-c68c-ba7ee7469d00",
+            "name": "Frami - Feest",
+            "connectionStatus": "pending"
+        }
+    ]
+}
+
+
+https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/members
+
+  {
+    "type": "https://tools.ietf.org/html/rfc7231#section-6.5.13",
+    "title": "Unsupported Media Type",
+    "status": 415,
+    "traceId": "00-72df1895d8fd827464a684f7a24a96b0-e5c7e1321e1a2ba8-00"
+  }    Please Explain this
+
+
+
+  https://api.sandbox.fortressapi.com/api/api/trust/v1/financial-institutions/accounts/e6046052-db14-4150-b144-bc1e7e2e9474Q/MBR-70965f41-ebe6-3be7-8edf-474bf542c609
+
+  

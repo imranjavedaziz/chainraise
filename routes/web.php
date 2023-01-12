@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MakeInvestmentController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('upload-doc', [TestController::class, 'upload_doc']);
 Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
@@ -77,6 +79,12 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::post('update-child', ['as' => 'child.update','uses' => 'UserController@childUpdate']);
     Route::post('invesment/update', ['as' => 'invesment.update','uses' => 'UserController@invesmentUpdate']);
     Route::post('delete-child', ['as' => 'child.delete','uses' => 'UserController@childUDelete']);
+
+    /// KYC Checking
+
+    Route::post('check/kyc', ['as' => 'kyc.check','uses' => 'KycController@checkKyc']);
+
+
 });
 
 Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Accreditation'], function () {

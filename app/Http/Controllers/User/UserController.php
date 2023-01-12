@@ -345,8 +345,7 @@ class UserController extends Controller
     }
     public function issuerAccountUpdate(Request $request)
     {
-
-      
+       
         $request->validate([
             //Users Table
             'id' => 'required',
@@ -360,18 +359,18 @@ class UserController extends Controller
            //'title' => 'required',
            'dob' => 'required',
             //'profile_avatar' => 'required',
-            'entity_name'=>'required',
+            //'entity_name'=>'required',
             'address' => 'required',
             //'suit' => 'required',
             'city' => 'required',
             'state' => 'required',
             'zip' => 'required',
-            'legal_formation'=>'required',
-            'date_incorporation'=>'required',
+            //'legal_formation'=>'required',
+            //'date_incorporation'=>'required',
             // Identity Verifiation
             'primary_contact_social_security' => 'required',
-            'tax_entity_type'=>'required',
-            'tax_identification'=>'required',
+            //'tax_entity_type'=>'required',
+            //'tax_identification'=>'required',
             'nationality' => 'required',
             'country_residence' => 'required',
             
@@ -383,7 +382,8 @@ class UserController extends Controller
            // 'view_all_invite_offers' => 'required',
             //'allow_manual_ach_bank_input' => 'required',
 
-        ]); 
+        ]);
+        
         $user = User::find($request->id);
         $user->name = $request->first_name;
         $user->phone = $request->phone; 
@@ -392,6 +392,12 @@ class UserController extends Controller
             $user->clearMediaCollection('profile_photo');
             $user->addMediaFromRequest('profile_avatar')->toMediaCollection('profile_photo');
         }
+        if($request->has('kyc_document')){
+           
+            $user->clearMediaCollection('kyc_document');
+            $user->addMediaFromRequest('kyc_document')->toMediaCollection('kyc_document_collection');
+        }
+      
 
         $userDetails = UserDetail::updateOrCreate(
             ['user_id' => $request->id],
@@ -757,4 +763,6 @@ class UserController extends Controller
             ]);
         }
     }
+
+    
 }
