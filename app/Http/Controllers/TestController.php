@@ -28,5 +28,16 @@ class TestController extends Controller
     
            
     }
+
+    public function email_signup( )
+    {
+        return view('email.welcome');
+    }
+    public function email_signup_2( )
+    {
+        return view('email.kyc_email');
+    }
+    
+
     
 }

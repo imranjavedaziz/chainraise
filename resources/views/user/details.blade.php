@@ -622,15 +622,51 @@
                                                     name="primary_contact_social_security"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                             </div>
+                                            <div class="form-group mb-10 col-lg-6 text-right kyc_buttons"
+                                                style="text-align: right">
+                                                 
+                                                    <strong> KYC STATUS : <span class="text-success kyc_level_wrapper">
+                                                                            @if ($user->kyc)
+                                                                                {{ ucfirst($user->kyc->kyc_level) }}
+                                                                            @endif
+                                                                         </span> 
+                                                     </strong>
+                                                     <br>
 
-                                            <div class="form-group mb-10 col-lg-6 text-right" style="text-align: right">
-                                                <p>
-                                                    <strong>   KYC Status: <span class="text-success">   </span>   </strong> 
-                                                </p>
-                                                
-                                                <button type="button" class="btn btn-sm no-radius -square btn-dark check_kyc" data-id="{{ $user->id }}">
-                                                    VIEW KYC STATUS
-                                                </button>
+                                                     <strong> DOCUMENT STATUS : <span class="text-success kyc_doc_wrapper">
+                                                                            @if ($user->kyc)
+                                                                                {{ ucfirst($user->kyc->doc_status) }}
+                                                                            @endif
+                                                                                </span> 
+                                                     </strong>
+                                                  
+
+                                                     <br>
+                                                     @if($user->fortress_id == null)
+                                                        <button type="button"
+                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                        data-id="{{ $user->id }}">
+                                                        Check User KYC
+                                                        </button>
+                                                    @endif
+                                                      <br><br>
+                                                    <p class="kyc_wrapper">
+                                                        <button type="button"
+                                                        id="check_kyc_leavel"
+                                                        class="btn btn-sm no-radius -square btn-dark check_kyc_leavel"
+                                                        data-id="{{ $user->id }}">
+                                                         Re Run KYC
+                                                        </button>
+                                                    </p>
+
+                                                    <button type="button"
+                                                    class="btn btn-sm no-radius -square btn-dark update_document"
+                                                    data-id="{{ $user->id }}">
+                                                    Upload New Document 
+                                                    </button>
+ 
+
+                                                  
                                             </div>
                                         @endif
                                     </div>
@@ -651,23 +687,29 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
-                                            <div class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper"> 
+                                        <div
+                                            class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
+                                            <div
+                                                class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
                                                 <div class="col-lg-12 mb-5">
-                                                    <a href="{{ $user->getFirstMediaUrl('kyc_document_collection', 'thumb')  }}" download title="Download Document File" >
+                                                    <a href="{{ $user->getFirstMediaUrl('kyc_document_collection', 'thumb') }}"
+                                                        download title="Download Document File">
                                                         <i class="la la-download"></i>
                                                     </a>
                                                 </div>
-                                              
-                                                <button type="button" class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1"> 
+
+                                                <button type="button"
+                                                    class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1">
                                                     <i class="fa fa-upload"></i>
                                                     Upload Document
                                                 </button>
-                                                <input type="file" name="kyc_document" class="new_profile_photo  d-none change_photo" data-type="project_logo">
+                                                <input type="file" name="kyc_document"
+                                                    class="new_profile_photo  d-none change_photo"
+                                                    data-type="project_logo">
                                             </div>
-                                            
+
                                         </div>
-                                        
+
                                     </div>
 
 
@@ -1042,7 +1084,8 @@
                         <div class="card-body pt-0 pb-5">
                             <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="table-responsive">
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="customers_table">
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
+                                        id="customers_table">
                                         <thead>
                                             <!--begin::Table row-->
                                             <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
@@ -1090,86 +1133,78 @@
                                             <!--end::Table row-->
                                         </thead>
                                         @foreach ($childs as $child)
-                                        <tr class="odd">
-                                            <td>
-                                                {{ $child->email }}
-                                            </td>
-                                            <td>
-                                                {{ $child->name }}
-                                            </td>
-                                            <td>
-                                                {{ $child->userDetail->last_name }}
-                                            </td>
-                                            <td>
-                                                {{ Str::substr($child->phone, 0, 4) }}***
-                                            </td>
-                                            <td>
-                                                @if ($child->status == 'active')
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="status" value="true"
-                                                            checked="checked">
-                                                    </label>
-                                                @else
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="status" value="false">
-                                                    </label>
-                                                @endif
+                                            <tr class="odd">
+                                                <td>
+                                                    {{ $child->email }}
+                                                </td>
+                                                <td>
+                                                    {{ $child->name }}
+                                                </td>
+                                                <td>
+                                                    {{ $child->userDetail->last_name }}
+                                                </td>
+                                                <td>
+                                                    {{ Str::substr($child->phone, 0, 4) }}***
+                                                </td>
+                                                <td>
+                                                    @if ($child->status == 'active')
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="status" value="true" checked="checked">
+                                                        </label>
+                                                    @else
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="status" value="false">
+                                                        </label>
+                                                    @endif
 
-                                            </td>
-                                            <td>
-                                                @if ($child->is_primary == true)
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="status" value="true"
-                                                            checked="checked">
-                                                    </label>
-                                                @else
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="status" value="false">
-                                                    </label>
-                                                @endif
+                                                </td>
+                                                <td>
+                                                    @if ($child->is_primary == true)
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="status" value="true" checked="checked">
+                                                        </label>
+                                                    @else
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="status" value="false">
+                                                        </label>
+                                                    @endif
 
-                                            </td>
-                                            <td class="">
-                                                @if ($child->email_verified_at == null)
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="email_verified" value="true">
-                                                        <span class="form-check-label fw-semibold">Resend</span>
-                                                    </label>
-                                                @else
-                                                    <label
-                                                        class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px"
-                                                            type="checkbox" name="email_verified" value="false">
-                                                    </label>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)">Manage</a>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-secondary btn-sm">Create
-                                                    Invite
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-default getUserDetail"
-                                                    data-bs-toggle="modal" data-bs-target="#edit_new_user"
-                                                    data-id="{{ $child->id }}">
-                                                    <i class="fas fa-pen fs-3"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                </td>
+                                                <td class="">
+                                                    @if ($child->email_verified_at == null)
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="email_verified" value="true">
+                                                            <span class="form-check-label fw-semibold">Resend</span>
+                                                        </label>
+                                                    @else
+                                                        <label class="form-check form-check-custom form-check-solid me-10">
+                                                            <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                                name="email_verified" value="false">
+                                                        </label>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0)">Manage</a>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary btn-sm">Create
+                                                        Invite
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-default getUserDetail"
+                                                        data-bs-toggle="modal" data-bs-target="#edit_new_user"
+                                                        data-id="{{ $child->id }}">
+                                                        <i class="fas fa-pen fs-3"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>
@@ -1184,8 +1219,8 @@
                                         </button>
                                     </div>
                                     <div class="">
-                                        <button type="submit" class="btn-sm btn btn-primary mr-2"
-                                            data-bs-toggle="modal" data-bs-target="#add_new_user">
+                                        <button type="submit" class="btn-sm btn btn-primary mr-2" data-bs-toggle="modal"
+                                            data-bs-target="#add_new_user">
                                             Add New User
                                         </button>
                                     </div>
@@ -1514,8 +1549,8 @@
                                                             <th class="min-w-125px sorting_disabled" rowspan="1"
                                                                 colspan="1" style="width: 317.969px;">Last Modified
                                                             </th>
-                                                             
-                                                        <!--end::Table row-->
+
+                                                            <!--end::Table row-->
                                                     </thead>
                                                 </table>
                                             </div>
@@ -1577,14 +1612,15 @@
                                                 <!--end::Table head-->
                                                 <!--begin::Table body-->
                                                 <tbody class="fw-semibold text-gray-600">
-                                                    
-                                                    @foreach($folders as $folder)
+
+                                                    @foreach ($folders as $folder)
                                                         <tr class="odd">
                                                             <!--begin::Checkbox-->
                                                             <td>
                                                                 <div
                                                                     class="form-check form-check-sm form-check-custom form-check-solid">
-                                                                    <input class="form-check-input" type="checkbox"  value="1">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        value="1">
                                                                 </div>
                                                             </td>
                                                             <!--end::Checkbox-->
@@ -1592,7 +1628,8 @@
                                                             <td data-order="account">
                                                                 <div class="d-flex align-items-center">
                                                                     <!--begin::Svg Icon | path: icons/duotune/files/fil012.svg-->
-                                                                    <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                                                                    <span
+                                                                        class="svg-icon svg-icon-2x svg-icon-primary me-4">
                                                                         <svg width="24" height="24"
                                                                             viewBox="0 0 24 24" fill="none"
                                                                             xmlns="http://www.w3.org/2000/svg">
@@ -1605,14 +1642,20 @@
                                                                         </svg>
                                                                     </span>
                                                                     <!--end::Svg Icon-->
-                                                                    <a href="#"  class="text-gray-800 text-hover-primary "> {{$folder->name}}  </a> 
+                                                                    <a href="#"
+                                                                        class="text-gray-800 text-hover-primary ">
+                                                                        {{ $folder->name }} </a>
                                                                     &nbsp;&nbsp;
-                                                                    <i class="la la-plus uploadFIle" title="Add Document" data-bs-toggle="modal" data-id="{{ $folder->id }}"
-                                                                        data-bs-target="#modal-addFile"> </i>   
-                                                                        &nbsp;&nbsp;
-                                                                    <i class="la la-eye viewDocuments text-primary" title="View Document" data-bs-toggle="modal" data-id="{{ $folder->id }}"
-                                                                            data-bs-target="#modal-viewDocument"> </i>   
-                                                                   
+                                                                    <i class="la la-plus uploadFIle"
+                                                                        title="Add Document" data-bs-toggle="modal"
+                                                                        data-id="{{ $folder->id }}"
+                                                                        data-bs-target="#modal-addFile"> </i>
+                                                                    &nbsp;&nbsp;
+                                                                    <i class="la la-eye viewDocuments text-primary"
+                                                                        title="View Document" data-bs-toggle="modal"
+                                                                        data-id="{{ $folder->id }}"
+                                                                        data-bs-target="#modal-viewDocument"> </i>
+
                                                                 </div>
                                                             </td>
                                                             <!--end::Name=-->
@@ -1623,15 +1666,15 @@
                                                             <!--end::Size-->
                                                             <!--begin::Last modified-->
                                                             <td data-order="Invalid date">
-                                                                {{$folder->updated_at->diffForHumans()}}
+                                                                {{ $folder->updated_at->diffForHumans() }}
                                                             </td>
                                                             <!--end::Last modified-->
                                                             <!--begin::Actions-->
-                                                            
+
                                                             <!--end::Actions-->
                                                         </tr>
                                                     @endforeach
-                                                   
+
 
                                                 </tbody>
                                                 <!--end::Table body-->
@@ -1998,13 +2041,10 @@
     </script>
 
     <script>
-
-    $('.uploadFIle').click(function() {
-        var id = $(this).data('id');
-       $('#folder_id').val(id);
-    });
-
-
+        $('.uploadFIle').click(function() {
+            var id = $(this).data('id');
+            $('#folder_id').val(id);
+        });
         $('.deleteUser').click(function() {
             var id = $('#user_id').val();
             Swal.fire({
@@ -2024,13 +2064,13 @@
                         data: {
                             id: id
                         },
-                        success: function(response){
+                        success: function(response) {
                             if (response.status == true) {
 
                                 toastr.success("User has been deleted", "Success");
                                 location.reload();
                                 //$( "#kt_customers_table" ).load( "your-current-page.html #mytable" );
-                            }else{
+                            } else {
                                 toastr.error("Error while deleting user", "Error");
                             }
                         }
@@ -2038,37 +2078,33 @@
                 }
             });
         });
-
-
         let input = document.getElementById('upload_file');
-        input.addEventListener("change",(event)=>{
-          
+        input.addEventListener("change", (event) => {
             let image_file = event.target.files[0]
             let name = image_file.name
             $('#file_name').val(name)
             console.log(name);
         });
-       
+        $('.viewDocuments').click(function() {
+            var folder_id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('folder.get.files') }}",
+                method: 'GET',
+                data: {
+                    folder_id: folder_id
+                },
+                success: function(response) {
+                    var listItem = '';
+                    if (response.status == true) {
 
-    $('.viewDocuments').click(function(){
-        var folder_id = $(this).data('id');
-        $.ajax({
-            url: "{{ route('folder.get.files') }}",
-            method: 'GET',
-            data: {
-                folder_id: folder_id
-            },
-            success: function(response) {
-                var listItem = '';
-               if(response.status == true){
-                    
-                    $(response.data).each(function(index, value) {
-                        listItem += 
-                        
-                        `  <div class="col-lg-6 mb-10">
+                        $(response.data).each(function(index, value) {
+                            listItem +=
+
+                                `  <div class="col-lg-6 mb-10">
                             <div class="d-flex flex-center flex-column py-5" style="border:1px solid #000" >
                                 <!--begin::Avatar-->
-                                <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3"> `+ value.name +` </a>
+                                <a href="#" class="fs-3 text-gray-800 text-hover-primary fw-bold mb-3"> ` + value
+                                .name + ` </a>
                                 <!--end::Name-->
                                 <!--begin::Position-->
                                 <div class="mb-9">
@@ -2106,27 +2142,24 @@
                         </div> 
                         
                         
-                        `; 
-                    });
-               }
-               
-               $('#all_documents').html(listItem);
+                        `;
+                        });
+                    }
 
-            },
+                    $('#all_documents').html(listItem);
+
+                },
+            });
         });
-    });
-
-    @if( $user->identityVerification)
-			    $('.nationality').val('{{ $user->identityVerification->nationality  }}')
-    @endif
+        @if ($user->identityVerification)
+            $('.nationality').val('{{ $user->identityVerification->nationality }}')
+        @endif
     </script>
-     <script>	
-        $('.kyc_document_upload_btn').click(function(){
-                var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
-                imgBtnWrapper.find('.change_photo').click();
-        });  
-
-       
+    <script>
+        $('.kyc_document_upload_btn').click(function() {
+            var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
+            imgBtnWrapper.find('.change_photo').click();
+        });
         $('.check_kyc').click(function() {
             var id = $(this).data('id');
             Swal.fire({
@@ -2140,37 +2173,44 @@
                 }
             }).then(function(result) {
                 if (result.value) {
+                    $('.spinner').removeClass('d-none');
+                    $('.check_kyc').hide();
                     $.ajax({
                         url: "{{ route('user.kyc.check') }}",
                         method: 'POST',
                         data: {
                             id: id
                         },
-                        success: function(response){
-                            if(response.status){
-                                if(response.status == 200){
-                                    toastr.success('Verification Complete', "Success");
-                                }else if(response.status == 201){
-                                    toastr.success('Verification Complete', "Success");
-                                }else if(response.status == 400){
+                        success: function(response) {
+                            if (response.status) {
+                                $('.spinner').addClass('d-none');
+                                $('.check_kyc').show();
+                                if (response.status == 200) {
+                                    toastr.success(
+                                        'Verification has been competed checking Updating KYC Level',  "Success");
+                                } else if (response.status == 201) {
+                                    toastr.success(
+                                        'Verification has been competed checking Updating KYC Level',
+                                        "Success");
+                                } else if (response.status == 400) {
                                     jQuery.each(response.data.errors, function(index, item) {
                                         console.log(item);
                                         toastr.error(item, "Error");
                                     });
-                                     // toastr.error(response.data.title, "Error");
-                                }else if(response.status == 401){
+                                    // toastr.error(response.data.title, "Error");
+                                } else if (response.status == 401) {
                                     toastr.error('Unauthorized Access Denied', "Error");
-                                }else if(response.status == 404){
+                                } else if (response.status == 404) {
                                     toastr.error(response.data.title, "Error");
                                 }
-                                if(response.status == 409){
-                                      toastr.error(response.data.title, "Error");
+                                if (response.status == 409) {
+                                    toastr.error(response.data.title, "Error");
                                 }
-                                if(response.status == 'document'){
-                                      toastr.error('Please Upload Document First', "Error");
+                                if (response.status == 'document') {
+                                    toastr.error('Please Upload Document First', "Error");
                                 }
-                                if(response.status == false){
-                                      toastr.error('Internal Server Error', "Error");
+                                if (response.status == false) {
+                                    toastr.error('Internal Server Error', "Error");
                                 }
                             }
                         }
@@ -2178,5 +2218,63 @@
                 }
             });
         });
-     </script>
+        $('.check_kyc_leavel').click(function() {
+            $(this).html('Loading ....');
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('user.kyc.check.level') }}",
+                method: 'POST',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    $('.kyc_wrapper').load(' .kyc_wrapper');
+                    $('.kyc_doc_wrapper').load(' .kyc_doc_wrapper');
+                    $('.check_kyc_leavel').load(' .check_kyc_leavel');
+                    if (response.status == 200) {
+                        toastr.success('KYC Level Has Been Updated',  "Success");
+                    }else{
+                        toastr.error('Error while updating status',  "Error");
+                    }
+                }
+            });
+        });
+        $('.rerun_check_kyc_leavel').click(function() {
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('user.kyc.re.run') }}",
+                method: 'POST',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if(response.status) {
+                        console.log(response)
+                    }
+                }
+            });
+        });
+
+        $('.update_document').click(function() {
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('user.kyc.document.update') }}",
+                method: 'POST',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    if (response.status == 201) {
+                        toastr.success('Document Has Been Updated',  "Success");
+                    }else{
+                        toastr.error('Error while updating status',  "Error");
+                    }
+                }
+            });
+        });
+
+        
+
+        
+    </script>
 @endsection

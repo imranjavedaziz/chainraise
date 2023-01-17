@@ -103,6 +103,7 @@
                                     <th class="ps-4 min-w-150px rounded-start">Name (User)</th>
                                     <th class="min-w-125px">Account Name</th>
                                     <th class="min-w-125px">Account Type</th>
+                                    <th class="min-w-125px">KYC Level</th>
                                     <th class="min-w-100px">Page <small> Views </small>    </th>
                                     <th class="min-w-150px">Time <small> Spent (s) </small>    </th>
                                     <th class="min-w-140px">Total <small> Events </small>    </th>
@@ -134,10 +135,13 @@
                                         <a href="{{ route('user.details',$user->id)}}" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ $user->name}} </a> 
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->userDetail->middle_name }}</a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->userDetail->middle_name }}  </a>
                                     </td>
                                     <td>
                                         <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))}} </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">    @if($user->kyc) {{ $user->kyc->level }} @endif  </a>
                                     </td>
 
                                     <td>
@@ -163,7 +167,7 @@
                                     <td>
                                         <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser"
                                          @if(Auth::user()->id ==  $user->id ) disabled @endif
-                                          data-id="--" >
+                                          data-id="{{  $user->id  }}" >
                                             <i class="la la-trash fs-3 text-danger"></i>
                                         </a>
                                     </td>

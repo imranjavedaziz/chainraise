@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('view-email-1', [TestController::class, 'email_signup']);
+Route::get('view-email-2', [TestController::class, 'email_signup_2']);
 Route::get('upload-doc', [TestController::class, 'upload_doc']);
 Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
@@ -83,7 +85,10 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     /// KYC Checking
 
     Route::post('check/kyc', ['as' => 'kyc.check','uses' => 'KycController@checkKyc']);
-
+    Route::post('check/kyc/level', ['as' => 'kyc.check.level','uses' => 'KycController@checkKycLeavel']);
+    Route::post('re/run/kyc', ['as' => 'kyc.re.run','uses' => 'KycController@re_run_kyc']);
+    Route::post('kyc/document/update', ['as' => 'kyc.document.update','uses' => 'KycController@kycDocumentUpoad']);
+    
 
 });
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Mail\InvesterUpdate;
+use App\Mail\WelcomeEmail;
 use App\Models\Accreditation;
 use App\Models\Folder;
 use App\Models\IdentityVerification;
@@ -19,6 +21,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Events\Registered;
+
 class UserController extends Controller
 {
     public function custom_login($email,$password)
@@ -73,7 +78,6 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        
         $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->get();
         return view('user.index',compact('users'));
     }
@@ -154,6 +158,7 @@ class UserController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
+      
         try {
             $user = User::find($request->id);
             if ($user->delete()) {
@@ -175,7 +180,7 @@ class UserController extends Controller
     }
     public function save(Request $request)
     {
-       // dd($request);
+       
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',
@@ -279,6 +284,8 @@ class UserController extends Controller
             }
             
             DB::commit();
+             event(new Registered($user));
+             Mail::to($user)->send(new WelcomeEmail($user));
             return redirect()->route('user.index')->with('success','New investor user has been created');
         }catch(Exception $error){
             return $error;
@@ -442,6 +449,7 @@ class UserController extends Controller
         // $userDetails->state = $request->state;
         // $userDetails->zip = $request->zip;
         // $userDetails->save();
+        Mail::to($user)->send(new InvesterUpdate($user));
 
         $trustSetting = TrustSetting::where('user_id',$request->id)->first();
         if($trustSetting){
@@ -689,7 +697,7 @@ class UserController extends Controller
              ]);
 
          }
-         DB::beginTransaction();
+        
         
          try{
              $user = User::find($request->id);
