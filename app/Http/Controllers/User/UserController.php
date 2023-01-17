@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Mail\InvesterUpdate;
+use App\Mail\InvestorAccountDelete;
+use App\Mail\IssuerSubAcccount;
 use App\Mail\WelcomeEmail;
 use App\Models\Accreditation;
 use App\Models\Folder;
@@ -161,12 +163,14 @@ class UserController extends Controller
       
         try {
             $user = User::find($request->id);
+            Mail::to($user)->send(new InvestorAccountDelete($user));
             if ($user->delete()) {
                 return response([
                     'status' => true,
                     'message' => 'User has been deleted successfully'
                 ]);
             }
+            Mail::to($user)->send(new InvestorAccountDelete($user));
         } catch (Exception $error) {
             return response([
                 'status' => false,
@@ -619,6 +623,8 @@ class UserController extends Controller
             if($request->hasFile('photo')) {
                 $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
             }
+            $parent_email = User::find($request->parent_id)->email;
+            Mail::to($user)->send(new IssuerSubAcccount($parent_email));
             $user_detail = new UserDetail;
             $user_detail->user_id = $user->id;
             $user_detail->last_name = $request->last_name;

@@ -17,9 +17,8 @@
                 </div> 
             </div> 
 
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Non culpa aperiam ipsa quibusdam perspiciatis quos velit, aliquid porro praesentium officia facilis iure. Minima laudantium similique perspiciatis, culpa corporis doloribus. Mollitia!
             <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15"> 
-                <div class="text-center mb-13"> 
+                <div class="text-center mb-10"> 
                     <h1> Contact Us </h1> 
                    
                 </div> 

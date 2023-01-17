@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Mail\KYC_Status_Email;
+use App\Mail\UploadDocument;
 use App\Models\KYC;
 use App\Models\User;
 use Carbon\Carbon;
@@ -104,7 +105,6 @@ class KycController extends Controller
   
     public function checkKycLeavel(Request $request)
     {
-       
         $request->validate([
             'id' => 'required',
         ]);
@@ -247,7 +247,7 @@ class KycController extends Controller
             ->withToken($token_json['access_token'])
             ->post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
-            
+            Mail::to($user)->send(new UploadDocument($user));
             return response([
                 'status' => $upload_document->status(),
                 'data'   => $json_upload_document,

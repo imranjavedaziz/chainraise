@@ -658,12 +658,13 @@
                                                          Re Run KYC
                                                         </button>
                                                     </p>
-
-                                                    <button type="button"
-                                                    class="btn btn-sm no-radius -square btn-dark update_document"
-                                                    data-id="{{ $user->id }}">
-                                                    Upload New Document 
-                                                    </button>
+                                                    <p class="update_document_wrapper">
+                                                        <button type="button"
+                                                        class="btn btn-sm no-radius -square btn-dark update_document"
+                                                        data-id="{{ $user->id }}">
+                                                        Upload New Document 
+                                                        </button>
+                                                    </p>
  
 
                                                   
@@ -2218,7 +2219,8 @@
                 }
             });
         });
-        $('.check_kyc_leavel').click(function() {
+        
+        $('body').on('click','.check_kyc_leavel' , function() {
             $(this).html('Loading ....');
             var id = $(this).data('id');
             $.ajax({
@@ -2255,8 +2257,9 @@
             });
         });
 
-        $('.update_document').click(function() {
+        $('body').on('click','.update_document', function() {
             var id = $(this).data('id');
+            $(this).html('Loading ....');
             $.ajax({
                 url: "{{ route('user.kyc.document.update') }}",
                 method: 'POST',
@@ -2264,6 +2267,7 @@
                     id: id
                 },
                 success: function(response) {
+                    $('.update_document_wrapper').load(' .update_document_wrapper');
                     if (response.status == 201) {
                         toastr.success('Document Has Been Updated',  "Success");
                     }else{

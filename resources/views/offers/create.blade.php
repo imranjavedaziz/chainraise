@@ -169,7 +169,7 @@
                                             </div> 
                                        </div> 
                                        <div class="col-lg-6">
-                                        <button class="btn btn-sm btn-dark"   data-bs-toggle="modal" data-bs-target="#modal_contact_us">   Contact Us
+                                        <button class="btn btn-sm btn-dark"  type="button" data-bs-toggle="modal" data-bs-target="#modal_contact_us">   Contact Us
                                         </button>
                                         </div>
                                     </div>

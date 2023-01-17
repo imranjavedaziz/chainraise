@@ -37,6 +37,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Deploying CMS
         run: |
+           npm run build
           cp /home/ubuntu/actions-runner/_work/env-backup/.env $GITHUB_WORKSPACE
           php artisan migrate:fresh --seed
           php artisan cache:clear

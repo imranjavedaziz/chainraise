@@ -3358,7 +3358,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-lg-12 text-center">
-                                                                    <a href="{{ route('invest.detail',$offer->id) }}" class="btn btn-sm btn-dark mt-4 no-radius" style="width:200%"> Learn More </a>
+                                                                    <a href="{{ route('invest.detail',$offer->id) }}" class="btn btn-sm btn-dark mt-4 no-radius" style="width:100%"> Learn More </a>
                                                                 </div> 
                                                             </div> 
                                                         </div>
