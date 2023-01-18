@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\MakeInvestmentController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\UserController;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('view-email-1', [TestController::class, 'email_signup']);
 Route::get('view-email-2', [TestController::class, 'email_signup_2']);
 Route::get('upload-doc', [TestController::class, 'upload_doc']);
@@ -25,6 +27,8 @@ Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_lo
 Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
+Route::get('otp', [GeneralController::class, 'otp'])->name('otp');
+
 Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
  
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -52,7 +56,8 @@ Route::get('login-test', function () {
 Route::get('db2', function () {
     return view('layouts.dashboard-issuer');
 });
- 
+
+
 
 
 
@@ -85,7 +90,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     /// KYC Checking
 
     Route::post('check/kyc', ['as' => 'kyc.check','uses' => 'KycController@checkKyc']);
-    Route::post('check/kyc/level', ['as' => 'kyc.check.level','uses' => 'KycController@checkKycLeavel']);
+    Route::post('check/kyc/level', ['as' => 're.run.kyc.level','uses' => 'KycController@re_run_kyc']);
     Route::post('re/run/kyc', ['as' => 'kyc.re.run','uses' => 'KycController@re_run_kyc']);
     Route::post('kyc/document/update', ['as' => 'kyc.document.update','uses' => 'KycController@kycDocumentUpoad']);
     

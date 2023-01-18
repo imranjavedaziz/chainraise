@@ -44,7 +44,3 @@ jobs:
           sudo php /var/www/html/manage/artisan storage:link
           sudo chown -R www-data. /var/www/html/manage
           sudo service apache2 start
-          npm install
-          npm run dev
-          npm run build
-

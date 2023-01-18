@@ -48,10 +48,10 @@ class RegisteredUserController extends Controller
             'status'=>'active',
             'password' => Hash::make($request->password),
         ]);
-
+        $user->assignRole('investor');
         event(new Registered($user));
-
-        Auth::login($user);
+        return redirect()->route('');
+        //Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

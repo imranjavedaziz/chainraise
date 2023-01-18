@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Mail\KYC_Status_Email;
 use App\Mail\UploadDocument;
+use App\Models\Custodial;
 use App\Models\KYC;
 use App\Models\User;
 use Carbon\Carbon;
@@ -31,7 +32,7 @@ class KycController extends Controller
                 'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
-        //   dd($token_json);
+            // dd($token_json);
             if ($get_token->failed()) {
                 return response([
                     'status' => $get_token->status(),
@@ -78,7 +79,52 @@ class KycController extends Controller
                         'status' => $upload_document->status(),
                         'data'   => $json_upload_document,
                     ]);
-                } 
+                }
+                // Checking Level Of New User
+
+                $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
+                withHeaders(['Content-Type' => 'application/json'])->
+                get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
+                $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
+                if($upgrade_existing_l0->failed()) {
+                    return response([
+                        'status' => $upgrade_existing_l0->status(),
+                        'data'   => $json_upgrade_existing_l0,
+                    ]);
+                }else{
+                    KYC::updateOrCreate(
+                        ['user_id' => $user->id],
+                        ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
+                    );
+                    // Get User Role If role is issuer Make A custodial Account
+                    if($json_upgrade_existing_l0['kycLevel'] != 'L0'){
+                        // Create custodial Account
+                        $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
+                            'Content-Type' => 'application/json',
+                        ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
+                            'type' => 'personal',
+                            'personalIdentityId' => $user->fortress_personal_identity,
+                        ]);
+                        $json_custodial_account = json_decode((string) $custodial_account->getBody(), true);
+                        Custodial::updateOrCreate(
+                            ['user_id' => $user->id],
+                            ['custodial_id' =>   $json_custodial_account['ownerIdentityId'],
+                             'ownerIdentityId'=> $json_custodial_account['ownerIdentityId'],
+                             'accountStatus' => $json_custodial_account['json_custodial_account'],
+                             'accountType'=> $json_custodial_account['accountType'],
+                             'accountNumber'=> $json_custodial_account['accountNumber'],
+                             ]
+                        );
+                        dd($json_custodial_account);
+                    }
+                }
+
+
+
+
+                // Get User Role If role is issuer Make A custodial Account
+
+
                 Mail::to($user)->send(new KYC_Status_Email($user));
                 $identityId = $json_identity_containers['personalIdentity'];
                 return response([
@@ -103,12 +149,18 @@ class KycController extends Controller
     }
 
   
-    public function checkKycLeavel(Request $request)
+    public function re_run_kyc(Request $request)
     {
         $request->validate([
             'id' => 'required',
-        ]);
+        ]); 
         $user = User::find($request->id);
+        if($user->fortress_personal_identity == null){
+            return response([
+                'status' => false,
+                'message' =>'Please run KYC Check First then try again',
+            ]);
+        }
         try {
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -136,23 +188,15 @@ class KycController extends Controller
                     'data' => $json_upgrade_existing_l0,
                 ]);
             }else{
-               // dd($json_upgrade_existing_l0['documents'][0]['documentCheckStatus']);
-                // $kyc = KYC::firstOrNew(
-                //     ['user_id' => $user->id],
-                //     ['kyc_level' => $json_upgrade_existing_l0['kycLevel']],
-                //     ['doc_status' => $json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
-                // );
-             
-                $flight = KYC::updateOrCreate(
-                    ['user_id' => $user->id],
-                    ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
-                );
-
-
-                return response([
-                    'status' => $upgrade_existing_l0->status(),
-                    'data'   => $json_upgrade_existing_l0,
-                ]);
+            
+            KYC::updateOrCreate(
+                ['user_id' => $user->id],
+                ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
+            );
+            return response([
+                'status' => $upgrade_existing_l0->status(),
+                'data'   => $json_upgrade_existing_l0,
+            ]);
             }
         }catch(Exception $error){
             dd($error);
@@ -164,7 +208,7 @@ class KycController extends Controller
 
 
     }
-    public function re_run_kyc(Request $request)
+    public function re_run_kyc_2(Request $request)
     {
         $request->validate([
             'id' => 'required',
@@ -223,6 +267,12 @@ class KycController extends Controller
             'id' => 'required',
         ]);
         $user = User::find($request->id);
+        if($user->fortress_personal_identity == null){
+            return response([
+                'status' => false,
+                'message' =>'Please run KYC Check First then try again',
+            ]);
+        }
         try {
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',

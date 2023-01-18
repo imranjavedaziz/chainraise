@@ -2,6 +2,7 @@
 @section('title', 'User Detail')
 @section('page_name', 'Listings')
 @section('page_head')
+    <style></style>
 @endsection
 @section('page_content')
 
@@ -622,54 +623,79 @@
                                                     name="primary_contact_social_security"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                             </div>
-                                            <div class="form-group mb-10 col-lg-6 text-right kyc_buttons"
-                                                style="text-align: right">
-                                                 
-                                                    <strong> KYC STATUS : <span class="text-success kyc_level_wrapper">
-                                                                            @if ($user->kyc)
-                                                                                {{ ucfirst($user->kyc->kyc_level) }}
-                                                                            @endif
-                                                                         </span> 
-                                                     </strong>
-                                                     <br>
-
-                                                     <strong> DOCUMENT STATUS : <span class="text-success kyc_doc_wrapper">
-                                                                            @if ($user->kyc)
-                                                                                {{ ucfirst($user->kyc->doc_status) }}
-                                                                            @endif
-                                                                                </span> 
-                                                     </strong>
-                                                  
-
-                                                     <br>
-                                                     @if($user->fortress_id == null)
-                                                        <button type="button"
-                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
-                                                        data-id="{{ $user->id }}">
-                                                        Check User KYC
-                                                        </button>
-                                                    @endif
-                                                      <br><br>
-                                                    <p class="kyc_wrapper">
-                                                        <button type="button"
-                                                        id="check_kyc_leavel"
-                                                        class="btn btn-sm no-radius -square btn-dark check_kyc_leavel"
-                                                        data-id="{{ $user->id }}">
-                                                         Re Run KYC
-                                                        </button>
-                                                    </p>
-                                                    <p class="update_document_wrapper">
-                                                        <button type="button"
-                                                        class="btn btn-sm no-radius -square btn-dark update_document"
-                                                        data-id="{{ $user->id }}">
-                                                        Upload New Document 
-                                                        </button>
-                                                    </p>
- 
-
-                                                  
-                                            </div>
+                                            
                                         @endif
+                                        <div class="row">
+                                            <div class="form-group mb-10 col-lg-12 text-right kyc_buttons">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <strong>
+                                                            KYC STATUS : 
+                                                                    <span class="text-success kyc_level_wrapper">
+                                                                        @if ($user->kyc)
+                                                                            {{ ucfirst($user->kyc->kyc_level) }}
+                                                                        @endif
+                                                                    </span> 
+                                                         </strong>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <strong> 
+                                                            DOCUMENT STATUS : 
+                                                                <span class="text-success kyc_doc_wrapper">
+                                                                    @if ($user->kyc)
+                                                                        {{ ucfirst($user->kyc->doc_status) }}
+                                                                    @endif
+                                                                </span> 
+                                                         </strong>
+                                                    </div>
+
+                                                    <div class="col-lg-6 ">
+                                                        <div class="row">
+                                                            <div class="col-lg-4 check_kyc_wrapper text-center">
+                                                                @if($user->fortress_id == null)
+                                                                    <button type="button" style="width: 100%"
+                                                                    class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                    data-id="{{ $user->id }}">
+                                                                    Check User KYC
+                                                                    </button>
+                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                    class="img img-thumbnail d-none loader_img"
+                                                                    style="width: 40px;"
+                                                                    alt="">
+                                                                @endif
+                                                            </div>
+                                                            <div class="col-lg-4 text-center">
+                                                                <button type="button" style="width: 100%"
+                                                                id="check_kyc_leavel"
+                                                                class="btn btn-sm no-radius -square btn-dark re_run_kyc"
+                                                                data-id="{{ $user->id }}">
+                                                                 Re Run KYC
+                                                                </button>
+                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                style="width: 40px;"
+                                                                alt="">
+                                                            </div>
+                                                            <div class="col-lg-4 text-center">
+                                                                <button type="button" style="width: 100%"
+                                                                class="btn btn-sm no-radius -square btn-dark update_document"
+                                                                data-id="{{ $user->id }}">
+                                                                Upload New Document 
+                                                                </button>
+                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                class="img img-thumbnail d-none loader_img_for_document_upload"
+                                                                style="width: 40px;"
+                                                                alt="">
+                                                            </div>
+                                                        </div>
+                                                         
+                                                    </div>
+
+                                                </div> 
+                                    </div>
+                                        </div>
+                                        
                                     </div>
 
                                     <div class="form-group row mb-10">
@@ -2162,6 +2188,7 @@
             imgBtnWrapper.find('.change_photo').click();
         });
         $('.check_kyc').click(function() {
+             
             var id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure to to check KYC status ?",
@@ -2173,9 +2200,9 @@
                     confirmButton: "btn-danger"
                 }
             }).then(function(result) {
-                if (result.value) {
-                    $('.spinner').removeClass('d-none');
-                    $('.check_kyc').hide();
+                if (result.value) { 
+                    $('.loader_img').removeClass('d-none');
+                    $('.check_kyc').addClass('d-none');
                     $.ajax({
                         url: "{{ route('user.kyc.check') }}",
                         method: 'POST',
@@ -2184,8 +2211,6 @@
                         },
                         success: function(response) {
                             if (response.status) {
-                                $('.spinner').addClass('d-none');
-                                $('.check_kyc').show();
                                 if (response.status == 200) {
                                     toastr.success(
                                         'Verification has been competed checking Updating KYC Level',  "Success");
@@ -2213,6 +2238,8 @@
                                 if (response.status == false) {
                                     toastr.error('Internal Server Error', "Error");
                                 }
+                                $('.loader_img').addClass('d-none');
+                                $('.check_kyc').removeClass('d-none');
                             }
                         }
                     });
@@ -2220,46 +2247,39 @@
             });
         });
         
-        $('body').on('click','.check_kyc_leavel' , function() {
-            $(this).html('Loading ....');
+        $('body').on('click','.re_run_kyc' , function() {
+            $('.loader_img_for_re_run_kyc').removeClass('d-none');
+            $('.re_run_kyc').addClass('d-none');
             var id = $(this).data('id');
             $.ajax({
-                url: "{{ route('user.kyc.check.level') }}",
+                url: "{{ route('user.re.run.kyc.level') }}",
                 method: 'POST',
                 data: {
                     id: id
                 },
                 success: function(response) {
+                    $('.loader_img_for_re_run_kyc').addClass('d-none');
+                     $('.re_run_kyc').removeClass('d-none');
                     $('.kyc_wrapper').load(' .kyc_wrapper');
                     $('.kyc_doc_wrapper').load(' .kyc_doc_wrapper');
                     $('.check_kyc_leavel').load(' .check_kyc_leavel');
+                    $('.kyc_level_wrapper').load(' .kyc_level_wrapper');
                     if (response.status == 200) {
                         toastr.success('KYC Level Has Been Updated',  "Success");
-                    }else{
-                        toastr.error('Error while updating status',  "Error");
                     }
+                    if(response.status == false){
+                        toastr.error(response.message,  "Error");
+                    }
+
                 }
             });
         });
-        $('.rerun_check_kyc_leavel').click(function() {
-            var id = $(this).data('id');
-            $.ajax({
-                url: "{{ route('user.kyc.re.run') }}",
-                method: 'POST',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    if(response.status) {
-                        console.log(response)
-                    }
-                }
-            });
-        });
+        
 
         $('body').on('click','.update_document', function() {
             var id = $(this).data('id');
-            $(this).html('Loading ....');
+            $('.loader_img_for_document_upload').removeClass('d-none');
+            $('.update_document').addClass('d-none');
             $.ajax({
                 url: "{{ route('user.kyc.document.update') }}",
                 method: 'POST',
@@ -2267,6 +2287,10 @@
                     id: id
                 },
                 success: function(response) {
+                    
+                    $('.loader_img_for_document_upload').addClass('d-none');
+                    $('.update_document').removeClass('d-none');
+
                     $('.update_document_wrapper').load(' .update_document_wrapper');
                     if (response.status == 201) {
                         toastr.success('Document Has Been Updated',  "Success");
