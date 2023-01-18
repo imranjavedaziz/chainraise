@@ -24,7 +24,6 @@ jobs:
     steps:
       - name: Clear repository
         run: sudo rm -rf $GITHUB_WORKSPACE && mkdir $GITHUB_WORKSPACE    
-            npm run build
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -45,3 +44,7 @@ jobs:
           sudo php /var/www/html/manage/artisan storage:link
           sudo chown -R www-data. /var/www/html/manage
           sudo service apache2 start
+          npm install
+          npm run dev
+          npm run build
+
