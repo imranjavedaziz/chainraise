@@ -287,9 +287,9 @@ class UserController extends Controller
                 $user->assignRole('issuer');
             }
             
-            DB::commit();
-             event(new Registered($user));
-             Mail::to($user)->send(new WelcomeEmail($user));
+             DB::commit();
+             //event(new Registered($user));
+             //Mail::to($user)->send(new WelcomeEmail($user));
             return redirect()->route('user.index')->with('success','New investor user has been created');
         }catch(Exception $error){
             return $error;

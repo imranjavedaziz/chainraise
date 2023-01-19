@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('investor');
-        event(new Registered($user));
+        //event(new Registered($user));
         return redirect()->route('');
         //Auth::login($user);
 

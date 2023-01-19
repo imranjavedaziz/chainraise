@@ -116,7 +116,7 @@
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}
-                                        {{ $user->userDetail->last_name }}
+                                        @if($user->userDetail){{ $user->userDetail->last_name }}@endif
                                         - <small class="text-info">
                                             {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
                                     </span>
@@ -348,13 +348,13 @@
                                                         <label>Middle Name: <span class="text-danger"></span></label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Middle Name" name="middle_name"
-                                                            value="{{ $user->userDetail->middle_name }}" />
+                                                            @if($user->userDetail) value="{{ $user->userDetail->middle_name }}" @endif />
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <label>Last Name: <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Last Name" name="last_name"
-                                                            value="{{ $user->userDetail->last_name }}" />
+                                                            @if($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -363,7 +363,7 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                 placeholder="Title" name="title"
-                                                                value="{{ $user->userDetail->title }}" />
+                                                                @if($user->userDetail) value="{{ $user->userDetail->title }}" @endif/>
 
                                                         </div>
                                                     </div>
@@ -381,7 +381,7 @@
                                                         <div class="input-group" id="">
                                                             <input type="date" class="form-control"
                                                                 placeholder="Date of Birth*" required name="dob"
-                                                                value="{{ $user->userDetail->dob }}">
+                                                                @if($user->userDetail) value="{{ $user->userDetail->dob }}" @endif>
 
                                                         </div>
 
@@ -458,8 +458,8 @@
                                             <div class="col-lg-6 mb-10">
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
-                                                    placeholder="Entity Name"
-                                                    value="{{ $user->userDetail->entity_name }}" required>
+                                                    placeholder="Entity Name" 
+                                                    @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
                                             </div>
                                             <div class="clear-fix"></div>
                                         @endif
@@ -476,14 +476,14 @@
                                         <div class="col-lg-6">
                                             <label>Address <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="address"
-                                                value="{{ $user->userDetail->address }}" placeholder="Street Address*"
+                                            @if($user->userDetail) value="{{ $user->userDetail->address }}" @endif  placeholder="Street Address*"
                                                 required>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <label> Suit / Unit </label>
                                             <input type="text" class="form-control" name="suit"
-                                                value="{{ $user->userDetail->suit }}" placeholder="Suit / Unit">
+                                            @if($user->userDetail)   value="{{ $user->userDetail->suit }}" @endif placeholder="Suit / Unit">
                                         </div>
                                     </div>
 
@@ -494,20 +494,20 @@
                                         <div class="col-lg-4">
                                             <label>City <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="city"
-                                                value="{{ $user->userDetail->city }}" placeholder="City*" required>
+                                              @if($user->userDetail)  value="{{ $user->userDetail->city }}" @endif placeholder="City*" required>
                                         </div>
 
                                         <div class="col-lg-4">
                                             <label>State / Region <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="state"
-                                                value="{{ $user->userDetail->state }}" placeholder="State / Region*"
+                                              @if($user->userDetail)  value="{{ $user->userDetail->state }}" @endif placeholder="State / Region*"
                                                 required>
                                         </div>
 
                                         <div class="col-lg-4">
                                             <label>Zip / Postal Code <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="zip" id="zip_code"
-                                                value="{{ $user->userDetail->zip }}" placeholder="Zip / Postal Code*"
+                                              @if($user->userDetail)  value="{{ $user->userDetail->zip }}" @endif placeholder="Zip / Postal Code*"
                                                 required>
                                         </div>
                                     </div>
@@ -519,14 +519,14 @@
                                                 </label>
                                                 <input type="text" class="form-control" name="legal_formation"
                                                     placeholder="State/Region of Legal Formation*"
-                                                    value="{{ $user->userDetail->legal_formation }}" required>
+                                                    @if($user->userDetail) value="{{ $user->userDetail->legal_formation }}" @endif required>
                                             </div>
 
                                             <div class="col-lg-6">
                                                 <label>Date of Incorporation <span class="text-danger">*</span> </label>
                                                 <input type="date" class="form-control" name="date_incorporation"
                                                     placeholder="Date of Incorporation*"
-                                                    value="{{ $user->userDetail->date_incorporation }}" required>
+                                                    @if($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif required>
                                             </div>
                                         </div>
                                     @endif

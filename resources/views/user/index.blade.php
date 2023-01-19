@@ -135,7 +135,7 @@
                                         <a href="{{ route('user.details',$user->id)}}" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ $user->name}} </a> 
                                     </td>
                                     <td>
-                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   {{ $user->userDetail->middle_name }}  </a>
+                                        <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">   @if($user->userDetail) {{ $user->userDetail->middle_name }} @endif </a>
                                     </td>
                                     <td>
                                         <a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))}} </a>

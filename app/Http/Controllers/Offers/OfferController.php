@@ -28,7 +28,7 @@ class OfferController extends Controller
     }
     public function edit($id)
     {
-              $offer = Offer::with('contactInfo','access','user','display','investmentRestrictions','access','callToAction','offerDetail','offerDetail.offerTiles','offerVideos','contactInfo')->find($id);
+        $offer = Offer::with('contactInfo','access','user','display','investmentRestrictions','access','callToAction','offerDetail','offerDetail.offerTiles','offerVideos','contactInfo')->find($id);
         $issuers = User::role('issuer')->get();
         
         $photos = $offer->getMedia('offer_detail_images');
@@ -213,7 +213,6 @@ class OfferController extends Controller
                                $offerContact->phone = $request->phone; 
                                $offerContact->contact_us = $request->contact_us; 
                                if($offerContact->save()){
-
                                }
                           
                         }
@@ -465,13 +464,18 @@ class OfferController extends Controller
         }
 
     }
-     
-
     public function view($id)
     {
         $offer = Offer::with('user')->find($id); 
         $issuers = User::role('issuer')->get();
         return view('offers.view',compact('offer','issuers'));
+    }
+
+    public function checkCustodial(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]); 
     }
 
 }

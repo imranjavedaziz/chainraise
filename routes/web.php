@@ -44,24 +44,15 @@ Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verif
     Route::get('connect-bank', ['as' => 'connect.bank','uses' => 'MakeInvestmentController@connect_bank']);
     Route::get('sign-subscription', ['as' => 'sign.subscription','uses' => 'MakeInvestmentController@sign_subscription']);
 });
-
-
 Route::get('login', function () {
     return view('auth.login');
 });
 Route::get('login-test', function () {
     return view('auth.login_test');
 });
-
 Route::get('db2', function () {
     return view('layouts.dashboard-issuer');
 });
-
-
-
-
-
-
 Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Role'], function () {
     Route::get('index', ['as' => 'index','uses' => 'RoleController@index']);
     Route::post('create', ['as' => 'save','uses' => 'RoleController@save']);
@@ -71,7 +62,6 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::get('get-childs', ['as' => 'childs','uses' => 'UserController@getChilds']);
     Route::get('details/{id}', ['as' => 'details','uses' => 'UserController@details']);
     Route::post('accountUpdate', ['as' => 'issuer.account.update','uses' => 'UserController@issuerAccountUpdate']);
-
     Route::get('investor/create', ['as' => 'investor.create','uses' => 'UserController@investor']);
     Route::get('issuer/create', ['as' => 'issuer.create','uses' => 'UserController@issuer']);
     Route::post('investor/save', ['as' => 'save','uses' => 'UserController@save']);
@@ -86,9 +76,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::post('update-child', ['as' => 'child.update','uses' => 'UserController@childUpdate']);
     Route::post('invesment/update', ['as' => 'invesment.update','uses' => 'UserController@invesmentUpdate']);
     Route::post('delete-child', ['as' => 'child.delete','uses' => 'UserController@childUDelete']);
-
     /// KYC Checking
-
     Route::post('check/kyc', ['as' => 'kyc.check','uses' => 'KycController@checkKyc']);
     Route::post('check/kyc/level', ['as' => 're.run.kyc.level','uses' => 'KycController@re_run_kyc']);
     Route::post('re/run/kyc', ['as' => 'kyc.re.run','uses' => 'KycController@re_run_kyc']);
@@ -110,6 +98,7 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::get('view/{id}', ['as' => 'view','uses' => 'OfferController@view']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
+    Route::post('update', ['as' => 'check.custodial','uses' => 'OfferController@checkCustodial']);
 });
 
 Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Organizations'], function () {
@@ -125,4 +114,6 @@ Route::group(['as'=> 'folder.','prefix'=>'folder','middleware' => ['auth','verif
     Route::post('upload-file', ['as' => 'upload.file','uses' => 'FolderController@uploadFile']);
     Route::get('get-files', ['as' => 'get.files','uses' => 'FolderController@getFiles']);
 });
+
+
 require __DIR__.'/auth.php';
