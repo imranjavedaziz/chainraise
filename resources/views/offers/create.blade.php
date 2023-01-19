@@ -697,15 +697,7 @@
     <script>
         $('#issuer_account').on('change', function() {
             var id =  $(this).val();
-            // $.ajax({
-            //     url: "{{ route('') }}",
-            //     data:{
-            //         id:id
-            //     },
-            //     success: function(html) {
-            //         $("#results").append(html);
-            //     }
-            // });
+            
         });
     </script>
 
