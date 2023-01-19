@@ -298,13 +298,13 @@ class KycController extends Controller
             ->withToken($token_json['access_token'])
             ->post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
-            //Mail::to($user)->send(new UploadDocument($user));
+            Mail::to($user)->send(new UploadDocument($user));
             return response([
                 'status' => $upload_document->status(),
                 'data'   => $json_upload_document,
             ]);
         }catch(Exception $error){
-            //
+            
             return response([
                 'status' => false,
                 'error'=>$error,
