@@ -304,7 +304,7 @@ class KycController extends Controller
                 'data'   => $json_upload_document,
             ]);
         }catch(Exception $error){
-            
+            //
             return response([
                 'status' => false,
                 'error'=>$error,
