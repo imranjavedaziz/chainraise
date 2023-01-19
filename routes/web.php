@@ -98,7 +98,7 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::get('view/{id}', ['as' => 'view','uses' => 'OfferController@view']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
-    Route::post('update', ['as' => 'check.custodial','uses' => 'OfferController@checkCustodial']);
+    Route::post('check/custodial', ['as' => 'check.custodial','uses' => 'OfferController@checkCustodial']);
 });
 
 Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Organizations'], function () {
