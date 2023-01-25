@@ -35,10 +35,11 @@ class MakeInvestmentController extends Controller
             'investment_amount' => 'integer',
         ]);
         $investment_amount = $request->investment_amount;
-       
+     
         $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail')->find($request->offer_id);
         $user = User::where('id', Auth::user()->id)->first();
         $fortress_personal_identity = Auth::user()->fortress_personal_identity;
+        $fortress_id = Auth::user()->fortress_id;
         $get_token = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
@@ -49,15 +50,24 @@ class MakeInvestmentController extends Controller
             'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
         ]);
         $token_json =  json_decode((string) $get_token->getBody(), true);   
+         
         if($get_token->failed()){
             return redirect()->back()->with('error','Internal Server Error');
         }
-        $url_member = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/sandbox/members/" . $fortress_personal_identity;
+
+        $url_widget = "https://api.sandbox.fortressapi.com/api/trust/v1/external-accounts/financial/widget-url/".$fortress_personal_identity;
+        $widget = Http::withToken($token_json['access_token'])->get($url_widget);
+        $json_widget =  json_decode((string) $widget->getBody(), true);
+        
+        
+        $url_member = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/sandbox/members/".$fortress_personal_identity;
         $member = Http::withToken($token_json['access_token'])->get($url_member);
         $json_member =  json_decode((string) $member->getBody(), true);
+        
         if ($member->failed()) {
             return redirect()->back()->with('error','Internal Server Error');
         }
+        
         if($member->successful()){
             foreach ($json_member['data'] as $data) {
                 if ($data['connectionStatus'] == 'connected') {
