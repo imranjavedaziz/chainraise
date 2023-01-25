@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('custodials', function (Blueprint $table) {
+        Schema::create('account_g_u_i_d_s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
-            $table->string('custodial_id');
-            $table->string('ownerIdentityId');
-            $table->string('accountStatus');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name');
+            $table->string('accountNumberLast4');
+            $table->string('accountGuid');
+            $table->string('financialInstitutionName');
             $table->string('accountType');
-            $table->string('accountNumber');
+            $table->string('smallLogoUrl');
+            $table->string('mediumLogoUrl');
             $table->timestamps();
         });
     }
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('custodials');
+        Schema::dropIfExists('account_g_u_i_d_s');
     }
 };

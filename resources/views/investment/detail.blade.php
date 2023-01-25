@@ -219,9 +219,14 @@
                             @csrf
                             <input type="hidden" name="offer_id" value="{{ $offer->id }}"> 
                             <h4 class="fs-5 fw-semibold text-gray-800"> Enter Amount to Invest </h4>
-                            <div class="d-flex">
+                            <div class="d-flex hide_on_submit">
                                 <input id="kt_share_earn_link_input" type="number" class="form-control form-control-solid me-3 flex-grow-1 investment_amount" name="investment_amount" required placeholder="Enter Amount Min $ {{ $offer->investmentRestrictions->min_invesment}}">
                                 <button  type="submit" class="btn-dark no-radius btn btn-light fw-bold flex-shrink-0 submit_btn" > Submit </button>
+                               
+                            </div>
+
+                            <div class="show_on_submit d-none" style="text-align: center">
+                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" alt="" class="img img-thumbnail" style="width:100px">
                             </div>
                             <label for="" class="text-danger text-">
                                $ {{ $offer->investmentRestrictions->min_invesment}} minimum
@@ -245,10 +250,18 @@
     <script>
             $('.submit_btn').click(function(e){
                 e.preventDefault();
+                if($('.investment_amount').val() == ''){
+                    toastr.error("Please Enter Amount", "Error");
+                    return false;
+                }
                 if($('.investment_amount').val() < {{ $offer->investmentRestrictions->min_invesment}}){
                     toastr.error("Enter Atlest minimum amount", "Error");
                 }else{
-                    $( "#investForm" )[0].submit();       
+                   
+                    $( "#investForm" )[0].submit();   
+                    $('.hide_on_submit').addClass('d-none');
+                    $('.show_on_submit').removeClass('d-none');
+                    
                 }
               
 

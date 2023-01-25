@@ -453,7 +453,8 @@ class UserController extends Controller
         // $userDetails->state = $request->state;
         // $userDetails->zip = $request->zip;
         // $userDetails->save();
-        Mail::to($user)->send(new InvesterUpdate($user));
+       
+        //Mail::to($user)->send(new InvesterUpdate($user));
 
         $trustSetting = TrustSetting::where('user_id',$request->id)->first();
         if($trustSetting){
@@ -624,7 +625,7 @@ class UserController extends Controller
                 $user->addMediaFromRequest('photo')->toMediaCollection('profile_photo');
             }
             $parent_email = User::find($request->parent_id)->email;
-            Mail::to($user)->send(new IssuerSubAcccount($parent_email));
+           // Mail::to($user)->send(new IssuerSubAcccount($parent_email));
             $user_detail = new UserDetail;
             $user_detail->user_id = $user->id;
             $user_detail->last_name = $request->last_name;

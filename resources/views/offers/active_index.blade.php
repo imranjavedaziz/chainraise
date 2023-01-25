@@ -14,8 +14,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Offer
-                        Create</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Active Offers</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -30,7 +29,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Offers</li>
+                        <li class="breadcrumb-item text-muted">Active Offers</li>
                        
                          
                         <!--end::Item-->
@@ -52,7 +51,7 @@
                 <div class="row">
                     @hasrole('admin|issuer')
                         <div class="col-xl-12 text-right" style="text-align:right">
-                            <a href="{{ route('offers.create') }}" class="btn btn-primary btn-sm btn-square"> Create</a>
+                            <a href="{{ route('offers.create') }}" class="btn btn-primary btn-sm btn-square"> Create New Offer</a>
                         </div>
                     @endhasrole
                     @foreach ($offers as $offer)

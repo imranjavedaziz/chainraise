@@ -10,7 +10,7 @@
         @hasrole('investor')
         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
             class="menu-item menu-lg-down-accordion me-0 me-lg-2">
-            <a href="{{ route('offers.index') }}">
+            <a href="{{ route('offers.active.index') }}">
                 <span class="menu-link">
                     <span class="menu-title">Offerings</span>
                     <span class="menu-arrow d-lg-none"></span>

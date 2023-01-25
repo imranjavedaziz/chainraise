@@ -97,7 +97,7 @@
                                 </div>
                                 <!--end::Step 1-->
                                 <!--begin::Step 2-->
-                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                <div class="stepper-item verify_identity_tab " data-kt-stepper-element="nav">
                                     <h3 class="stepper-title"> Verify Identity </h3>
                                 </div>
                                 <!--end::Step 2-->
@@ -112,13 +112,13 @@
                                 </div>
                                 <!--end::Step 4-->
                                 <!--begin::Step 5-->
-                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                <div class="stepper-item connect_bank" data-kt-stepper-element="nav">
                                     <h3 class="stepper-title">Connect Bank</h3>
                                 </div>
 
-                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                {{-- <div class="stepper-item" data-kt-stepper-element="nav">
                                     <h3 class="stepper-title"> Sign Subscription Agreement and Token Grant </h3>
-                                </div>
+                                </div> --}}
                                 <!--end::Step 5-->
                             </div>
                             <!--end::Nav-->
@@ -142,6 +142,7 @@
                                             <form data-action="{{ route('invest.kyc.submit') }}" method="post"
                                                 id="kyc_form" enctype="multipart/form-data">
                                                 @csrf
+                                                <input type="hidden" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
                                                 <!--begin::Label-->
                                                 <label class="required fw-semibold fs-6 mb-5">Account Type</label>
                                                 <!--end::Label-->
@@ -645,31 +646,23 @@
                                             <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-2">
-                                                        <img src="https://www.motionworship.com/thumb/Announcements/EpicSummerAerialOfferingHD.jpg"
+                                                       
+                                                        <img src="{{ $offer->getFirstMediaUrl('offer_image')}}"
                                                             class="img img-thumbnail img-circle" alt="">
                                                     </div>
                                                     <div class="col-lg-8">
                                                         <strong class="text-dark">
-                                                            Techware Labs
+                                                           {{ $offer->name }}
                                                         </strong>
+                                                        
                                                         <p class="fw-normal">
-                                                            Techware Labs
-                                                        </p>
-                                                        <p class="fw-normal">
-                                                            (Reg CF) Combining cybersecurity and computer maintenance
-                                                            services into the web3 space
+                                                            {{ $offer->short_description }}
                                                         </p>
                                                         <p class="fw-normal text-success">
-                                                            $1M
+                                                            {{ $offer->size }}
                                                         </p>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        Transaction Summary
-                                                        <br>
-                                                        <b>
-                                                            $3,000.00
-                                                        </b>
-                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -778,20 +771,25 @@
                                                         <!--end:Icon-->
                                                         <!--begin:Info-->
                                                         <span class="d-flex flex-column">
-                                                            <span class="fw-bold fs-6">Bank Account</span>
+                                                            <span class="fw-bold fs-6"> ACH </span>
                                                         </span>
                                                         <!--end:Info-->
                                                     </span>
                                                     <!--end:Label-->
                                                     <!--begin:Input-->
                                                     <span class="form-check form-check-custom form-check-solid">
-                                                        <input class="form-check-input connect_bank" type="radio"
-                                                            name="connect_bank" value="bank" required="">
+
+                                                        <button type="button" class="make_payment btn btn-sm btn-dark no-radius">
+                                                            Make Payment
+                                                        </button>
+
+                                                        {{-- <input class="form-check-input connect_bank" type="radio"
+                                                            name="connect_bank" value="bank" required=""> --}}
                                                     </span>
                                                     <!--end:Input-->
                                                 </label>
                                             </div>
-                                            <div class="col-lg-12">
+                                            {{-- <div class="col-lg-12">
                                                 <label class="mb-10 d-flex flex-stack mb-5 cursor-pointer">
                                                     <!--begin:Label-->
                                                     <span class="d-flex align-items-center me-2">
@@ -816,11 +814,11 @@
                                                     </span>
                                                     <!--end:Input-->
                                                 </label>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
-                                <div data-kt-stepper-element="content">
+                                {{-- <div data-kt-stepper-element="content">
                                     <div class="w-100">
                                         <h5 class="fw-bold d-flex align-items-center text-dark mb-10">
                                             SIGN SUBSCRIPTION AGREEMENT & TOKEN GRANK
@@ -834,7 +832,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="d-flex flex-stack pt-15">
                                     <!--begin::Wrapper-->
                                     <div class="mr-2">
@@ -878,8 +876,7 @@
                                                 <span
                                                     class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-dark no-radius"
-                                            data-kt-stepper-action="next">Continue
+                                        <button type="button" class="btn btn-sm btn-dark no-radius next_button" data-kt-stepper-action="next">Continue
                                             <!--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg-->
                                             <span class="svg-icon svg-icon-4 ms-1 me-0">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -998,16 +995,7 @@
                                 toastr.error(response.data.title, "Error");
                             }
                             if (response.status == 200) {
-                                toastr.success(response.data, "Success");
-                                if (response.data.kycLevel == "L0") {
-                                    Swal.fire({
-                                        title: "Your KYC Level is 'LO' ",
-                                        text: "Please Update your KYC Status and then try agin",
-                                        icon: "warning",
-                                        showCancelButton: false,
-                                        confirmButtonText: "Ok"
-                                    });
-                                }
+                                toastr.success('Verification Completed', "Success");
                             }
                         }
                         console.log(response);
@@ -1028,6 +1016,51 @@
         });
     </script>
 
+    <script>
+         
+         $('.make_payment').click(function(){
+            $('.make_payment').html('Loading ...');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var id =  "{{ $offer->id}}";
+            var external_account = $('#external_account').val();
+            var investment_amount = "{{ $investment_amount }}"
+            $.ajax({
+                    url: "{{ route('payment.ach') }}",
+                    method: 'POST',
+                    data:{
+                        id:id,
+                        external_account:external_account,
+                        investment_amount:investment_amount,
+
+                    },
+                    success: function(response) {
+                        if(response.error == true){
+                            toastr.error("Internal server error", "Error");
+                        }
+                        if(response.status == true){
+                            toastr.success(response.message, "Success");
+                            window.location.href = "{{ route('dashboard')}}";
+                        }
+                    },
+
+            });
+         });
+       
+    </script>
+    <script>
+        $('body').on('click','.next_button',function(){
+           
+           if($('.connect_bank').hasClass('current')){
+                $('.next_button').hide();
+           } 
+        });
+         
+        
+    </script>
 
 
 @endsection

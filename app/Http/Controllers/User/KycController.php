@@ -54,7 +54,6 @@ class KycController extends Controller
                 'phone' =>  $user->phone,
                 'email' => $user->email,
                 'dateOfBirth' => "1990-09-02",
-                'ssn' => $user->identityVerification->primary_contact_social_security,
                 'address.street1' => $user->userDetail->address,
                 'address.street2' => '-',
                 'address.postalCode' => $user->userDetail->zip,
@@ -62,15 +61,17 @@ class KycController extends Controller
                 'address.state' => $user->userDetail->state,
                 'address.country' => $user->identityVerification->nationality,
             ]);
-
             $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);
             if ($identity_containers->successful()) {
                 $user->fortress_id =  $json_identity_containers['id'];
                 $user->fortress_personal_identity =  $json_identity_containers['personalIdentity'];
                 $user->save();
                 $document_path = fopen('https://i.brecorder.com/primary/2022/05/626e8e55ac3c3.jpg', 'r');
+                $document_path_back = fopen('https://st2.depositphotos.com/1063296/8337/i/950/depositphotos_83370180-stock-photo-luxury-dark-red-car-back.jpg', 'r');
                 $url = "https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/".$user->fortress_personal_identity."/documents";
-                $upload_document = Http::attach('DocumentType', 'passport')->attach('DocumentFront', $document_path)->attach('DocumentBack', $document_path)
+                $upload_document = Http::attach('DocumentType', 'passport')->
+                                         attach('DocumentFront', $document_path)->
+                                         attach('DocumentBack', $document_path_back)
                 ->withToken($token_json['access_token'])
                 ->post($url);
                 $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
@@ -94,38 +95,8 @@ class KycController extends Controller
                     KYC::updateOrCreate(
                         ['user_id' => $user->id],
                         ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
-                    );
-                    // Get User Role If role is issuer Make A custodial Account
-                    if($json_upgrade_existing_l0['kycLevel'] != 'L0'){
-                        // Create custodial Account
-                        $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
-                            'Content-Type' => 'application/json',
-                        ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
-                            'type' => 'personal',
-                            'personalIdentityId' => $user->fortress_personal_identity,
-                        ]);
-                        $json_custodial_account = json_decode((string) $custodial_account->getBody(), true);
-                        if($custodial_account->successful()){ 
-                            Custodial::updateOrCreate(
-                            ['user_id' => $user->id],
-                            ['custodial_id' =>   $json_custodial_account['ownerIdentityId'],
-                                'ownerIdentityId'=> $json_custodial_account['ownerIdentityId'],
-                                'accountStatus' => $json_custodial_account['accountStatus'],
-                                'accountType'=> $json_custodial_account['accountType'],
-                                'accountNumber'=> $json_custodial_account['accountNumber'],
-                            ]);
-                        }else{
-                            return response([
-                                'status' => $custodial_account->status(),
-                                'data'   => $json_custodial_account,
-                            ]);
-                        }
-                    }
+                    ); 
                 }
-                // Get User Role If role is issuer Make A custodial Account
-
-
-               // Mail::to($user)->send(new KYC_Status_Email($user));
                 $identityId = $json_identity_containers['personalIdentity'];
                 return response([
                     'status' => $identity_containers->status(),

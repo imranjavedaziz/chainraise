@@ -61,7 +61,7 @@
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item ">
-                            <a class="text-muted" href="{{ route('offers.index') }}"> Offers </a>
+                            <a class="text-muted" href="#"> Offers </a>
                         </li>
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>
@@ -81,7 +81,7 @@
         </div>
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container">
-                <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post"> @csrf
+                <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post" id="create_offer_form"> @csrf
                     <div class="row">
                         @include('offers.particles.left-bar')
                         <div class="col-lg-9">
@@ -696,8 +696,33 @@
 
     <script>
         $('#issuer_account').on('change', function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             var id =  $(this).val();
-            
+            $.ajax({
+                    url: "{{ route('offers.check.custodial') }}",
+                    method: 'POST',
+                    data:{
+                        id:id
+                    }, 
+                    success: function(result) {
+                        if(result.status == false){
+                            toastr.error(result.message, "Error");
+                            $('#submit_offer').prop('disabled',true);
+                            $("#create_offer_form input").prop("disabled", true);
+                            $("#create_offer_form select").prop("disabled", true);
+                            $("#issuer_account").prop("disabled", false);
+                        }else{
+                            $("#create_offer_form input").prop("disabled", false);
+                            $("#create_offer_form select").prop("disabled", false);
+                            $('#submit_offer').prop('disabled',false);
+                        }
+                    }
+            });
+             
         });
     </script>
 

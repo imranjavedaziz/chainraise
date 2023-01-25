@@ -55,7 +55,7 @@
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item ">
-                           <a class="text-muted" href="{{ route('offers.index')}}"> Offers </a> 
+                           <a class="text-muted" href="{{ route('offers.active.index')}}"> Offers </a> 
                         </li>
                         <li class="breadcrumb-item">
                             <span class="bullet bg-gray-400 w-5px h-2px"></span>

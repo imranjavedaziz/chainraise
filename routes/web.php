@@ -57,6 +57,10 @@ Route::group(['as'=> 'role.','prefix'=>'roles','middleware' => ['auth','verified
     Route::get('index', ['as' => 'index','uses' => 'RoleController@index']);
     Route::post('create', ['as' => 'save','uses' => 'RoleController@save']);
 });
+
+Route::group(['as'=> 'payment.','prefix'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
+    Route::post('ach', ['as' => 'ach','uses' => 'PaymentController@ach']);
+});
 Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
     Route::get('index', ['as' => 'index','uses' => 'UserController@index']);
     Route::get('get-childs', ['as' => 'childs','uses' => 'UserController@getChilds']);
@@ -90,7 +94,8 @@ Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => [
 });
 
 Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verified','role:admin|investor'],'namespace'=>'App\Http\Controllers\Offers'], function () {
-    Route::get('listing', ['as' => 'index','uses' => 'OfferController@index']);
+    Route::get('active/listing', ['as' => 'active.index','uses' => 'OfferController@active_index']);
+    Route::get('inactive/listing', ['as' => 'inactive.index','uses' => 'OfferController@inactive_index']);
     Route::get('create', ['as' => 'create','uses' => 'OfferController@create']);
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
     Route::post('save', ['as' => 'save','uses' => 'OfferController@save']);

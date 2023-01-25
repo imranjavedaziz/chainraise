@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Offers;
 use App\Http\Controllers\Controller;
 use App\Models\Access;
 use App\Models\CallToAction;
+use App\Models\Custodial;
 use App\Models\Display;
 use App\Models\InvestmentRestrication;
+use App\Models\KYC;
 use App\Models\Offer;
 use App\Models\OfferContact;
 use App\Models\OfferDetailTab;
@@ -17,15 +19,25 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class OfferController extends Controller
 {
-    public function index()
+    public function active_index()
     {
         $issuers = User::role('issuer')->get();
-        $offers = Offer::orderBy('id','desc')->get();
-        return view('offers.index',compact('issuers','offers'));
+        $offers = Offer::where('status','active')->orderBy('id','desc')->get();
+        return view('offers.active_index',compact('issuers','offers'));
     }
+
+    public function inactive_index()
+    {
+        $issuers = User::role('issuer')->get();
+        $offers = Offer::where('status','inactive')->orderBy('id','desc')->get();
+        return view('offers.inactive_index',compact('issuers','offers'));
+    }
+
+
     public function edit($id)
     {
         $offer = Offer::with('contactInfo','access','user','display','investmentRestrictions','access','callToAction','offerDetail','offerDetail.offerTiles','offerVideos','contactInfo')->find($id);
@@ -41,7 +53,6 @@ class OfferController extends Controller
     }
     public function save(Request $request)
     {
-      
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',
@@ -52,8 +63,33 @@ class OfferController extends Controller
             //'min_invesment'=>'required',
             //'max_invesment'=>'required'
         ]);
+        $get_token = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+            'grant_type' => 'password',
+            'username'   => 'tayyabshahzad@sublimesolutions.org',
+            'password'   => 'x0A1PGhevtkJu4qeXBXF',
+            'audience'   => 'https://fortressapi.com/api',
+            'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+        ]);
+        $token_json =  json_decode((string) $get_token->getBody(), true);
+        //dd($token_json);
+        if($get_token->failed()){
+            return redirect()->back()->with('error','Internal Server Error');
+        }
+        $user = User::find($request->issuer);
+        $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
+        withHeaders(['Content-Type' => 'application/json'])->
+        get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
+        $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
+        if($upgrade_existing_l0->failed()){
+            return redirect()->back()->with('error','Internal Server Error');
+        }else{
+            if($json_upgrade_existing_l0['kycLevel'] == 'L0'){
+                return redirect()->back()->with('error','KYC Level Must Be Greater Then L0');
+            }
+        }
         try{
-            
             $Offer = new Offer;
             $Offer->feature_video  = $request->feature_video_url;
             $Offer->issuer_id =  $request->issuer;
@@ -70,10 +106,28 @@ class OfferController extends Controller
             $Offer->commencement_date =              $request->commencement_date;
             $Offer->funding_end_date =              $request->funding_end_date;
             $Offer->status =              'active' ;
-
-            
             if($Offer->save()) {
-                
+                $user = User::find($request->issuer);
+                $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
+                    'type' => 'personal',
+                    'personalIdentityId' => $user->fortress_personal_identity,
+                ]);
+                $json_custodial_account =  json_decode((string) $custodial_account->getBody(), true);
+                if($custodial_account->failed()){
+                  DB::rollBack();
+                }else{
+                    $custodial = new Custodial;
+                    $custodial->user_id = $request->issuer;
+                    $custodial->offer_id = $Offer->id;
+                    $custodial->custodial_id = $json_custodial_account['id'];
+                    $custodial->ownerIdentityId = $json_custodial_account['ownerIdentityId'];
+                    $custodial->accountStatus = $json_custodial_account['accountStatus'];
+                    $custodial->accountType = $json_custodial_account['accountType'];
+                    $custodial->accountNumber = $json_custodial_account['accountNumber'];
+                    $custodial->save();
+                }
                 if($request->hasFile('offer_image')) {
                     $Offer->addMediaFromRequest('offer_image')->toMediaCollection('offer_image');
                 }
@@ -214,11 +268,9 @@ class OfferController extends Controller
                                $offerContact->contact_us = $request->contact_us; 
                                if($offerContact->save()){
                                }
-                          
                         }
 
                     }
-                    
                     if($request->has('src')){
                        for($i=0;$i<count($request->src);$i++){
                             $offer_videos = new OfferVideos();
@@ -277,10 +329,6 @@ class OfferController extends Controller
                             $offer_detail_tab->save();
                        }
                     }
-
-                   
-
-
                     if($request->hasFile('image')) {
                         $Offer->addMultipleMediaFromRequest(['image'])
                         ->each(function ($fileAdder) {
@@ -288,17 +336,14 @@ class OfferController extends Controller
                         });
                     }
 
-                    
                 }
-                 
+                
                 DB::commit();
-                return redirect()->route('offers.index')->with('success','Offer has been created successfully');
+                return redirect()->route('offers.active.index')->with('success','Offer has been created successfully');
             }
             
         }catch(Exception $error){
-            //DB::rollBack();
-          
-           
+            dd($error);
             return redirect()->back()->with('error','Error while creating offer');
         }
     }
@@ -439,7 +484,7 @@ class OfferController extends Controller
 
         }
        
-        return redirect()->route('offers.index')->with('success','Offer has been created successfully');
+        return redirect()->route('offers.active.index')->with('success','Offer has been created successfully');
  
     }
 
@@ -475,7 +520,22 @@ class OfferController extends Controller
     {
         $request->validate([
             'id' => 'required',
-        ]); 
+        ]);
+        $kyc = KYC::where('user_id',$request->id)->first();
+        if($kyc){
+            $check_level = $kyc->kyc_level;
+            if($check_level == 'L0'){
+                return response([
+                    'status'=>false,
+                    'message'=>'KYC Status Must Be Greater Then LO'
+                ]);
+            }
+        }else{
+            return response([
+                'status'=>false,
+                'message'=>'Issuer KYC not yet completed'
+            ]);
+        }
     }
 
 }
