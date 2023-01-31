@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GeneralController;
@@ -98,7 +99,12 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
 Route::group(['as'=> 'user.info.','prefix'=>'users/info','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
     Route::post('update/trust/setting', ['as' => 'update.trust.setting','uses' => 'UpdateBasicDetailController@update_trust_settings']);
     Route::post('upload/document', ['as' => 'update.document','uses' => 'UpdateBasicDetailController@updateDocument']);
+    Route::post('e/document', ['as' => 'e.document','uses' => 'UpdateBasicDetailController@eDocument']);
+    Route::post('invite/email', ['as' => 'invite.email','uses' => 'UpdateBasicDetailController@inviteEmail']);
+    Route::get('csv', ['as' => 'csv','uses' => 'UpdateBasicDetailController@exportCSV']);
+    Route::get('export-csv', ['as' => 'csv','uses' => 'UpdateBasicDetailController@export']);
 });
+ 
 
 Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Accreditation'], function () {
     Route::post('update', ['as' => 'update','uses' => 'accreditationController@update']);

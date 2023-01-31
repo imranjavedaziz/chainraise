@@ -2,7 +2,7 @@
 @section('title', 'Account Users')
 @section('page_name','Listings')
 @section('page_head')
-    
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endsection
 @section('page_content')
     
@@ -58,7 +58,9 @@
 
                     
                     <div class="card-toolbar ">
-
+                        <span data-href="{{ route('user.info.csv') }}" id="export" class="btn no-radius btn-sm btn-dark btn-sm" onclick ="exportTasks (event.target);">Export Excel</span>
+                        &nbsp;&nbsp;
+                        
                         <div class="card-toolbar d-none show_on_multi_check">
                             <!--begin::Menu-->
                             <button class="btn btn-dark btn-sm no-radius btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true"> 
@@ -70,10 +72,7 @@
                                 <div class="menu-item px-3">
                                     <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
                                 </div>
-                                
-                                
-                              
-                                {{-- <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                                  {{-- <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
                                     <!--begin::Menu item-->
                                     <a href="#" class="menu-link px-3">
                                         <span class="menu-title"> Accounts </span>
@@ -92,6 +91,17 @@
                                     </div>
                                     <!--end::Menu sub-->
                                 </div> --}}
+                                
+                              
+                                <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                                    <!--begin::Menu item-->
+                                    <a href="#" class="menu-link px-3" id="action-upload-document"  data-bs-toggle="modal" 
+                                    data-bs-target="#modal-quick-action-account-email-invite">
+                                        <span class="menu-title"> Email </span>
+                                         
+                                    </a>
+                                    
+                                </div>
                                 <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
                                     <!--begin::Menu item-->
                                     <a href="#" class="menu-link px-3">
@@ -103,9 +113,15 @@
                                     <div class="menu-sub menu-sub-dropdown w-185px py-4">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                        <a href="#" id="action-upload-document" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal-quick-action-upload-document" >
+                                        <a href="#" id="action-upload-document" class="menu-link px-3" data-bs-toggle="modal" 
+                                        data-bs-target="#modal-quick-action-upload-document" >
                                              Upload Document
                                         </a>
+                                        </div>
+                                        <div class="menu-item px-3">
+                                            <a href="#" id="action-upload-e-document" class="e_sign menu-link px-3" data-bs-toggle="modal" data-bs-target="#modal-quick-action-upload-e-document" >
+                                                 E Sign Document
+                                            </a>
                                         </div>
                                         
                                     </div>
@@ -270,6 +286,7 @@
 @section('page_js')
 
     <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script>
         $('.deleteUser').click(function() {
             var id = $(this).data('id');
@@ -324,6 +341,7 @@
                 checked_values.push($(this).val());
             });
             console.log(checked_values);
+            $('.user_ids').val(checked_values);
            } else{
             $('.show_on_multi_check').addClass('d-none');
            }
@@ -349,7 +367,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-           
             var form = $('#update_document_form')[0];
             var data = new FormData(form);
             $.ajax({
@@ -370,8 +387,73 @@
        $('body').on('click','#action-upload-document',function(event){
             $('#user_ids').val(checked_values);
        })
-      
-     </script>
 
+       $('body').on('click','#action-upload-e-document',function(event){
+            $('.user_ids').val(checked_values);
+       })
+
+       $('body').on('click','.e_sign', function() {
+            var id = 1; 
+            $.ajax({
+                url: "{{ route('user.esign.template') }}",
+                method: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    $('select[name="template"]').html('');
+                    jQuery.each(response.data.data, function(index, item) {
+                        $('select[name="template"]').append(` <option value="`+item.template_id+`"> `+item.template_name+` </option>`);
+                    });
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                placeholder: 'Please Enter Your Content Here  ....',
+                tabsize: 2,
+                height: 130
+            });
+            
+        });
+        
+
+     </script>
+    <script>
+        function exportTasks(_this) {
+            let _url = $(_this).data('href');
+            window.location.href = _url;
+        }
+
+        $('body').on('submit','#upload_e_sign_document_form',function(event){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+ 
+            event.preventDefault();
+            
+ 
+            
+            var form = $('#upload_e_sign_document_form')[0];
+            var data = new FormData(form);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{{ route('user.info.e.document') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 800000,
+                success: function(result) {
+                    console.log(result);
+                }
+            });
+
+        });
+    </script>
 
 @endsection

@@ -82,7 +82,8 @@ class UserController extends Controller
     {
         $offers = Offer::get();
         $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->get();
-        return view('user.index',compact('users','offers'));
+        $issuers = User::role('issuer')->orderby('id','DESC')->get();
+        return view('user.index',compact('users','offers','issuers'));
     }
     public function details($id)
     {   

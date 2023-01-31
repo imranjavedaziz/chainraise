@@ -509,9 +509,6 @@
                 </div>
             `);
         });
-
-
-
         $('#modal_new_sections').on('click', '.text_section', function() {
             no++;
             $('#section_row').append(`

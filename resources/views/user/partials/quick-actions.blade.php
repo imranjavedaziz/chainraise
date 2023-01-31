@@ -226,3 +226,103 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-quick-action-upload-e-document" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload E Sign Documents </h5>
+            </div>
+            <form class="form" method="post" action="" enctype="multipart/form-data" id="upload_e_sign_document_form"> 
+                <div class="modal-body">
+                    <div class="card card-custom">
+                       @csrf
+                         <div class="card-body">
+                            <div class="row mt-4">
+                                <input type="hidden" name="user_ids" id="user_ids" class="user_ids" required=""> 
+                                <div class="form-group col-lg-6 mb-5">
+                                    <label for=""> Select Template </label>
+                                    <select class="form-select form-select-solid mt-4" name="template" required></select> 
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for=""> Offer </label>
+                                    <select class="form-select form-select-solid mt-4" name="offer" required>
+                                        @foreach($offers as $offer)
+                                            <option value="{{ $offer->id}}"> {{ $offer->name }}  </option>
+                                        @endforeach
+                                    </select> 
+                                </div>
+                                
+                            </div>
+                            <div class="row mt-4"> 
+                                <div class="form-group col-lg-6 mb-5">
+                                    <label for=""> Issuer </label>
+                                    <select class="form-select form-select-solid mt-4" name="issuer" required>
+                                        @foreach($issuers as $issuer)
+                                            <option value="{{ $issuer->id}}"> {{ $issuer->name }}  </option>
+                                        @endforeach
+                                    </select> 
+                                </div> 
+                            </div>
+                            
+                        </div>
+                        <!--end::Form-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark btn-sm font-weight-bold no-radius"> Request E-Sign </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-quick-action-account-email-invite" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Email Message </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <form class="form" method="post" action="{{ route('user.info.invite.email') }}" id="update_setting_form" >
+                @csrf
+                <input type="hidden" name="user_ids" id="user_ids" class="user_ids" required=""> 
+                <div class="modal-body"> 
+                    <div class="card-body"> 
+                        <div class="form-group row">
+                             <div class="col-lg-4">
+                                <input type="text" name="subject" class="form-control" required placeholder="Subject" value="Chain Raise Invite">
+                             </div>
+                             <div class="col-lg-4">
+                                <input type="text" name="from_name" class="form-control" required placeholder="From Name" value="{{ Auth::user()->name }}"> 
+                             </div>
+                             <div class="col-lg-4">
+                                <input type="email" name="from_email" class="form-control" required placeholder="From Email" value="{{ Auth::user()->email }}">
+                             </div>
+                        </div> 
+
+                        <div class="form-group row">
+                            <div class="col-lg-12 mt-5">
+                               <textarea type="text" name="content" class="form-control summernote" required placeholder="Details"></textarea>
+                            </div>
+                            
+                            
+                       </div> 
+                    </div>
+                     
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark btn-sm font-weight-bold no-radius">
+                       Send Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+ 
+
