@@ -85,8 +85,19 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::post('check/kyc/level', ['as' => 're.run.kyc.level','uses' => 'KycController@re_run_kyc']);
     Route::post('re/run/kyc', ['as' => 'kyc.re.run','uses' => 'KycController@re_run_kyc']);
     Route::post('kyc/document/update', ['as' => 'kyc.document.update','uses' => 'KycController@kycDocumentUpoad']);
-    
+    Route::get('account', ['as' => 'account','uses' => 'UserController@account']);
+    Route::get('esign-template', ['as' => 'esign.template','uses' => 'UserController@template']);
+    Route::post('esign-template-save', ['as' => 'esign.template.save','uses' => 'UserController@templateSave']);
 
+    //Front Listing Page
+
+    Route::post('esign-template-save', ['as' => 'esign.template.save','uses' => 'UserController@templateSave']);
+
+});
+
+Route::group(['as'=> 'user.info.','prefix'=>'users/info','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\User'], function () {
+    Route::post('update/trust/setting', ['as' => 'update.trust.setting','uses' => 'UpdateBasicDetailController@update_trust_settings']);
+    Route::post('upload/document', ['as' => 'update.document','uses' => 'UpdateBasicDetailController@updateDocument']);
 });
 
 Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Accreditation'], function () {

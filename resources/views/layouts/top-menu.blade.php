@@ -29,21 +29,34 @@
         @endhasrole
         
         @hasrole('admin|issuer|investor')
-        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
-        class="menu-item menu-lg-down-accordion me-0 me-lg-2">
+        <div  class="menu-item menu-lg-down-accordion me-0 me-lg-2">
         <span class="menu-link">
-            <span class="menu-title">My Account</span>
+            <span class="menu-title">
+             <a href="{{ route('offers.active.index') }}"> Offerings </a>   
+            </span>
             <span class="menu-arrow d-lg-none"></span>
         </span>
          </div>
 
-        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
-         class="menu-item menu-lg-down-accordion me-0 me-lg-2">
+        <div  class="menu-item menu-lg-down-accordion me-0 me-lg-2">
          <span class="menu-link">
-             <span class="menu-title">My Documents</span>
+             <span class="menu-title">
+              <a href="{{route('user.account')}}"> My Account </a>  
+            </span>
              <span class="menu-arrow d-lg-none"></span>
          </span>
-     </div>
+        </div>
+
+        <div 
+        class="menu-item menu-lg-down-accordion me-0 me-lg-2">
+        <span class="menu-link">
+            <span class="menu-title">
+               
+                <a href="{{route('user.account')}}">  My Documents </a>  
+            </span>
+            <span class="menu-arrow d-lg-none"></span>
+        </span>
+       </div>
 
          @endhasrole
         

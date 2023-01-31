@@ -21,7 +21,7 @@
                     </ul>
                 </div>
             </div>
-            <form method="post" enctype="multipart/form-data" id="updateSettingForm" action="{{ route('user.profile.update')}}" >
+            <form method="post" enctype="multipart/form-data" id="updateSettingForm" action="" >
                 @csrf
                 <div class="row">
                     <div class="col-lg-12">

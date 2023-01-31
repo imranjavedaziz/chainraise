@@ -215,19 +215,16 @@
                                 <div class="my-lg-0 my-1 mx-auto">
                                     <div class="d-flex align-items-center mr-10">
                                         <div class="m-lg-2 text-center">
-                                            <div class="fw-bold mb-2 fs-2">0</div>
-                                            <span class="badge badge-primary p-4 text-uppercase fw-bold">Total
-                                                Investment</span>
+                                            <div class="fw-bold mb-2 fs-2"></div>
+                                             
                                         </div>
                                         <div class="m-lg-2 text-center mr-6">
-                                            <div class="fw-bold mb-2 fs-2">$0.00</div>
-                                            <span class="badge badge-danger p-4 text-uppercase fw-bold">Total Funds
-                                                Committed</span>
+                                            <div class="fw-bold mb-2 fs-2"></div>
+                                            
                                         </div>
                                         <div class="text-center m-lg-2">
-                                            <div class="fw-bold mb-2 fs-2">$0.00</div>
-                                            <span class="badge badge-warning p-4 text-uppercase fw-bold">Total Funds
-                                                Contributed</span>
+                                            <div class="fw-bold mb-2 fs-2"></div>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -1513,11 +1510,14 @@
                                     </button>
 
                                     <!--begin::Add customer-->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#modal_sign">
+                                    @if ($user->hasRole('investor'))
+                                    <button type="button" class="btn btn-dark btn-sm no-radius e_sign"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal_e_sign">
                                         <i class="fas fa-pen"></i>
                                         Request E-Sign
                                     </button>
+                                    @endif
                                     <!--end::Add customer-->
                                 </div>
                                 <!--end::Toolbar-->
@@ -2297,6 +2297,22 @@
                     }else{
                         toastr.error('Error while updating status',  "Error");
                     }
+                }
+            });
+        });
+        $('body').on('click','.e_sign', function() {
+            var id = 1;
+            $.ajax({
+                url: "{{ route('user.esign.template') }}",
+                method: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(response) {
+                    $('select[name="template"]').html('');
+                    jQuery.each(response.data.data, function(index, item) {
+                        $('select[name="template"]').append(` <option value="`+item.template_id+`"> `+item.template_name+` </option>`);
+                    });
                 }
             });
         });

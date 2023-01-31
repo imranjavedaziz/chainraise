@@ -1,0 +1,992 @@
+@extends('layouts.master')
+@section('page_head')
+@endsection
+@section('title', 'Unit Edit')
+@section('content')
+    <div class="container">
+        <div class="row mb-6">
+            <div class="col-lg-12">
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('client.dashboard') }}"><i class="fa fa-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('client.dashboard') }}" class="text-muted">Dashboard</a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('admin.unit.index') }}" class="text-muted">Unit</a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <span class="text-muted">Edit</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="card card-custom">
+                <div class="card-body p-0">
+                    <!--begin: Wizard-->
+                    <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="first" data-wizard-clickable="true">
+                        <!--begin: Wizard Nav-->
+                        <div class="wizard-nav">
+                            <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+                                <!--begin::Wizard Step 1 Nav-->
+                                <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">
+                                            <span>1.</span>Basic Details
+                                        </h3>
+                                        <div class="wizard-bar"></div>
+                                    </div>
+                                </div>
+                                <!--end::Wizard Step 1 Nav-->
+                                <!--begin::Wizard Step 2 Nav-->
+                                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">
+                                            <span>2.</span>Nearby Locations
+                                        </h3>
+                                        <div class="wizard-bar"></div>
+                                    </div>
+                                </div>
+                                <!--end::Wizard Step 2 Nav-->
+                                <!--begin::Wizard Step 3 Nav-->
+                                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                                    <div class="wizard-label">
+                                        <h3 class="wizard-title">
+                                            <span>3.</span>Special Features
+                                        </h3>
+                                        <div class="wizard-bar"></div>
+                                    </div>
+                                </div>
+                                <!--end::Wizard Step 3 Nav-->
+                                <!--begin::Wizard Step 4 Nav-->
+                                <div class="wizard-step" data-wizard-type="step" data-wizard-state="pending">
+                                <div class="wizard-label">
+                                    <h3 class="wizard-title">
+                                    <span>4.</span>Attachments</h3>
+                                    <div class="wizard-bar"></div>
+                                </div>
+                            </div>
+                                <!--end::Wizard Step 4 Nav-->
+                            </div>
+                        </div>
+                        <!--end: Wizard Nav-->
+                        <!--begin: Wizard Body-->
+                        <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+                            <div class="col-xl-12">
+                                <!--begin: Wizard Form-->
+                                <form action="{{ route('admin.unit.update') }}" method="post" enctype="multipart/form-data"
+                                    id="kt_form" class="form fv-plugins-bootstrap fv-plugins-framework">
+                                    @csrf
+                                    <input type="hidden" name="unit_id" value="{{ $unit->id }}">
+                                    <input type="hidden" name="location_id" value="{{ $unit->location->id }}">
+                                    <input type="hidden" name="special_feature_id" value="{{ $unit->specialFeature->id }}">
+                                    <!--begin: Wizard Step 1-->
+                                    <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                        <div class="col-lg-12">
+                                            <h4 class="mb-8">
+                                                Basic Details
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Project Name <span class="text-danger">*</span> </label>
+                                                        <select name="project_id" required=""
+                                                            class="form-control form-control-solid add_group_id"
+                                                            id="project">
+                                                            <option value="" disabled="" selected=""> Select
+                                                                Project
+                                                            </option>
+                                                            @foreach ($projects as $project)
+                                                                <option value="{{ $project->id }}"> {{ $project->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Floors <span class="text-danger">*</span> </label>
+                                                        <select name="floor" required=""
+                                                            class="form-control form-control-solid" id="floor">
+                                                            @foreach ($floors as $floor)
+                                                                <option value="{{ $floor->id }}"> {{ $floor->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Units <span class="text-danger">*</span> </label>
+                                                        <select name="total_units" required=""   class="form-control form-control-solid" id="total_unit">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Unit Name <span class="text-danger">*</span> </label>
+                                                        <input type="text" class="form-control form-control-solid"
+                                                            placeholder="Unit Name" name="name" required=""
+                                                            value="{{ $unit->name }}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 d-none">
+                                                    <div class="form-group">
+                                                        <label> Number <span class="text-danger">*</span> </label>
+                                                        <input type="text" class="form-control form-control-solid"
+                                                            placeholder="Unit Number" value="{{ $unit->number }}"
+                                                            name="number" required="">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <label> PKR <span class="text-danger">*</span> </label>
+                                                        <input type="text" class="form-control form-control-solid"
+                                                            value="{{ $unit->amount }}" placeholder="Unit Amount"
+                                                            name="amount" required="">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Listing Purpose <span class="text-danger">*</span> </label>
+                                                        <select name="listing_purpose" id="listing_purpose"
+                                                            autocomplete="off" class="form-control form-control-solid">
+                                                            <option value="sale">For Sale</option>
+                                                            <option value="rent">For Rent</option>
+                                                            <option value="wanted-rent">Wanted For Rent</option>
+                                                            <option value="wanted-purchase">Wanted For Purchase</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Type <span class="text-danger">*</span> </label>
+                                                        <select name="type" id="type" autocomplete="off"
+                                                            class="form-control form-control-solid">
+                                                            <option value="house">House</option>
+                                                            <option value="commercial">commercial</option>
+                                                            <option value="plot">plot</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label> Purpose <span class="text-danger">*</span> </label>
+                                                        <select name="purpose" id="purpose" autocomplete="off"
+                                                            class="form-control form-control-solid">
+                                                            <option value="house">House</option>
+                                                            <option value="flat">Flat</option>
+                                                            <option value="lower_portion">Lower Portion</option>
+                                                            <option value="upper_portion">Upper Portion</option>
+                                                            <option value="farm_house">Farm House</option>
+                                                            <option value="room">Room</option>
+                                                            
+                                                            <option value="room">Room</option>
+                                                            <option value="shop">Shop</option>
+                                                            <option value="kiok">Kiosk</option>
+                                                            <option value="appartment">Appartment</option>
+                                                            <option value="office">Office</option>
+                                                            <option value="retailspace">Retail Space</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-4">
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDou1mpe-oc7bIbB40DTqKvciV9eeovPX0"></script>
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label> Address <span class="text-danger">*</span> </label>
+                                                        <input type="text" class="form-control project_address" name="address" disabled>
+                                                        <div id="map_canvas2" style="border: 2px solid #3872ac;"></div>
+                                                        <input type="text" class="form-control project_lat d-none" id="lat" name="lat" value="34.0151366">
+                                                        <input type="text" class="form-control project_lng d-none" id="lng" name="lng" value="71.5249154">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label> Description <span class="text-danger">*</span> </label>
+                                                        <input type="text" class="form-control project_address"
+                                                            name="description" value="{{ $unit->description }}"
+                                                            placeholder="Description">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h4 class="mb-8">
+                                                    Nearby Locations and Other Facilities
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nearby Schools <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Nearby Schools" name="school"
+                                                        value="{{ $unit->location->school }}" required="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nearby Hospitals</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Nearby Hospitals"
+                                                        value="{{ $unit->location->hospital }}" name="hospital"
+                                                        required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nearby Shopping Malls</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Nearby Shopping Malls"
+                                                        value="{{ $unit->location->shopping_mall }}" name="shopping_mall"
+                                                        required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nearby Restaurants <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Nearby Restaurants" name="resturant"
+                                                        value="{{ $unit->location->resturant }}" required="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Distance From Airport (kms)</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Distance From Airport (kms)"
+                                                        value="{{ $unit->location->distance_airport }}"
+                                                        name="distance_airport" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Nearby Public Transport Service</label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        placeholder="Nearby Public Transport Service"
+                                                        value="{{ $unit->location->public_transport }}"
+                                                        name="public_transport" required="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Other <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control form-control-solid"
+                                                        value="{{ $unit->location->others }}" placeholder="Others"
+                                                        name="others" required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h4 class="mb-8">
+                                                    Add Extra Feature
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Area <span class="text-danger">*</span> </label>
+                                                    <input type="text" class="form-control " placeholder="Unit Area"
+                                                        value="{{ $unit->specialFeature->area }}" name="area"
+                                                        required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Unit Area Type <span class="text-danger">*</span> </label>
+                                                    <select name="area_type" autocomplete="off" class="form-control ">
+                                                        <option value="N/A">Select</option>
+                                                        <option value="sq_feet">Square Feet</option>
+                                                        <option value="sq_yard">Square Yard</option>
+                                                        <option value="sq_meters">Square Meters</option>
+                                                        <option value="kanal">Kanal</option>
+                                                        <option value="narla">Marla</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Unit Type <span class="text-danger">*</span> </label>
+                                                    <select name="unit_type" id="type" autocomplete="off"
+                                                        class="form-control " required="">
+                                                        <option value="N/A">Select</option>
+                                                        <option value="gross">Gross</option>
+                                                        <option value="net">Net</option>
+                                                        <option value="carpet">Carpet</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Bed Rooms <span class="text-danger">*</span> </label>
+                                                    <input type="number" class="form-control " placeholder="Bedrooms"
+                                                        value="{{ $unit->specialFeature->bedroom }}" name="bedroom"
+                                                        required="">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Bedroom Area <span class="text-danger">*</span> </label>
+                                                    <input type="number" class="form-control "
+                                                        value="{{ $unit->specialFeature->bedroom_area }}"
+                                                        placeholder="Bath Rooms Area" name="bedroom_area" required="">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Bedroom Type <span class="text-danger">*</span> </label>
+                                                    <select name="bedroom_type" autocomplete="off" class="form-control ">
+                                                        <option value="N/A">Select</option>
+                                                        <option value="sq_feet">Square Feet</option>
+                                                        <option value="sq_yard">Square Yard</option>
+                                                        <option value="sq_meters">Square Meters</option>
+                                                        <option value="kanal">Kanal</option>
+                                                        <option value="narla">Marla</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Unit Type <span class="text-danger">*</span> </label>
+                                                    <select name="bedroom_unit_type" id="type" autocomplete="off"
+                                                        class="form-control " required="">
+                                                        <option value="N/A">Select</option>
+                                                        <option value="gross">Gross</option>
+                                                        <option value="net">Net</option>
+                                                        <option value="carpet">Carpet</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Bathrooms <span class="text-danger">*</span> </label>
+                                                    <input type="number" class="form-control"
+                                                        value="{{ $unit->specialFeature->bathroom }}"
+                                                        placeholder="Bathroom" name="bathroom" required="">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Bath Floors <span class="text-danger">*</span> </label>
+                                                    <select name="bathroom_floor" id="bathroom_floor" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="N/A">Select</option>
+                                                        <option value="tiles">Tiles</option>
+                                                        <option value="marble">Marble</option>
+                                                        <option value="wooden">Wooden</option>
+                                                        <option value="chip">Chip</option>
+                                                        <option value="cement">Cement</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Fittings <span class="text-danger">*</span> </label>
+                                                    <select name="fitting" id="fitting" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> No. of Floors <span class="text-danger">*</span> </label>
+                                                    <input type="number" class="form-control"
+                                                        value="{{ $unit->specialFeature->floor_no }}"
+                                                        placeholder="No. of Floors" name="floor_no" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Central A/C <span class="text-danger">*</span> </label>
+                                                    <select name="ac" id="ac" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Passenger Elevator <span class="text-danger">*</span> </label>
+                                                    <select name="passenger_elevator" id="passenger_elevator"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Service Elevator <span class="text-danger">*</span> </label>
+                                                    <select name="service_elevator" id="service_elevator"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Construction Status <span class="text-danger">*</span> </label>
+                                                    <select name="construction_status" id="construction_status"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="none">Select</option>
+                                                        <option value="completed">Completed</option>
+                                                        <option value="under_construction">Under Construction</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Completion Certificate <span class="text-danger">*</span>
+                                                    </label>
+                                                    <select name="completion_certificate" id="completion_certificate"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Approval Status <span class="text-danger">*</span> </label>
+                                                    <select name="approval_status" id="approval_status"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Approved</option>
+                                                        <option value="0">Pending</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Ownership Status <span class="text-danger">*</span> </label>
+                                                    <select name="ownership_status" id="ownership_status"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Year Build <span class="text-danger">*</span> </label>
+                                                    <input type="text" class="form-control "
+                                                        value="{{ $unit->specialFeature->year_build }}"
+                                                        placeholder="Year Build" name="year_build" required="">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Parking Space </label>
+                                                    <select name="parking_space" id="parking_space" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Electricity Backup </label>
+                                                    <select name="electricity_backup" id="electricity_backup"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Solar Backup </label>
+                                                    <select name="solar_backup" id="solar_backup" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> UPS Backup </label>
+                                                    <select name="ups_backup" id="ups_backup" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Swimming Pool </label>
+                                                    <select name="swimming_pool" id="swimming_pool" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Broadband Internet </label>
+                                                    <select name="broadband_internet" id="broadband_internet"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Cable TV </label>
+                                                    <select name="cable_tv" id="cable_tv" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label> Furnished </label>
+                                                    <select name="furnished" id="furnished" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Concierge Service </label>
+                                                    <select name="concierge_service" id="concierge_service"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Centrally Managed </label>
+                                                    <select name="centrally_managed" id="centrally_managed"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Security Staff </label>
+                                                    <select name="security_staff" id="security_staff" autocomplete="off"
+                                                        class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label> Maintenance Staff </label>
+                                                    <select name="maintenance_staff" id="maintenance_staff"
+                                                        autocomplete="off" class="form-control ">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label> Other Features </label>
+                                                    <input type="text" name="other"
+                                                        value="{{ $unit->specialFeature->other }}" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                    <!--end: Wizard Step 3-->
+                                    <!--begin: Wizard Step 4-->
+                                    <div class="pb-5" data-wizard-type="step-content">
+                                          <div class="row">
+                                        <div class="col-lg-12 mt-4">
+                                            <div class="form-group">
+                                               <div class="col-lg-12 mt-10">
+                                                <table class="table" style="width:59em!important;">
+                                                    @php
+                                                       $media = App\Models\UnitDocument::where('unit_id',$unit->id)->get();
+                                                    @endphp                                                                               
+                                                    <tr align="right">
+                                                        <td colspan="2">
+                                                            <button class="add_new_file btn btn-sm btn-light-primary btn-square" 
+                                                            data-id="{{ $unit->id }}"
+                                                            type="button"> 
+                                                             Add New File 
+                                                             </button>
+                                                        </td>
+                                                    </tr>
+                                                    @foreach($media as $item)
+                                                    
+                                                        <tr>
+                                                            <th valign="middle" >
+                                                               {{ $item->file_name }}
+                                                            </th>
+                                                            <th style="text-align: right">
+                                                                <a href="{{$item->getFirstMediaUrl('unit_document', 'thumb') }}" download class="  btn btn-sm btn-light-warning btn-square">
+                                                                    <i class="la la-download"></i>
+                                                                </a>
+                                                                
+                                                                <button type="button" data-id="{{ $item->id }}" class="delete_file btn btn-sm btn-light-danger btn-square">
+                                                                    <i class="la la-trash"></i>
+                                                                </button>
+                                                            </th>
+                                                        </tr>
+
+                                                    @endforeach
+
+                                                   
+                                                </table>
+                                                <div class="overlay text-left" style="width:100%">
+                                                    <div class="form-group p-6"> </div>
+                                                </div>
+                                            </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <!--end: Wizard Step 4-->
+                                    <!--begin: Wizard Actions-->
+                                    <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                                        <div class="mr-2">
+                                            <button type="button" class="btn btn-sm btn-square btn-primary"
+                                                data-wizard-type="action-prev">Previous</button>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-square btn-success"
+                                                data-wizard-type="action-submit">Update</button>
+                                            <button type="button" class="btn btn-sm btn-square btn-primary"
+                                                data-wizard-type="action-next">Next</button>
+                                        </div>
+                                    </div>
+                                    <!--end: Wizard Actions-->
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </form>
+                                <!--end: Wizard Form-->
+                            </div>
+                        </div>
+                        <!--end: Wizard Body-->
+                    </div>
+                    <!--end: Wizard-->
+                </div>
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+
+
+
+@include('admin.unit.models.document');
+@endsection
+@section('page_js')
+@include('admin.unit.models.js.wizard');
+<script>
+    
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    <script>
+        $("#project").change(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('admin.unit.project.floors') }}",
+                method: 'POST',
+                data: {
+                    'project_id': $(this).val()
+                },
+                success: function(result) {
+                    $('select[name="floor"]').empty();
+                    var floors = '';
+                    jQuery.each(result.data, function(index, item) {
+                        $('select[name="floor"]').append(`<option value="` + item.id + `"> ` +
+                            item.name + `</option>`);
+                    });
+                    $('input[name="address"]').val(result.location.address);
+                    
+                    
+                    console.log(result.location.lat);
+                    console.log(result.location.lng);
+                    var lat = parseFloat(result.location.lat)
+                    var lng = parseFloat(result.location.lng)
+                    google.maps.event.addDomListener(window, "load", initialize(lat, lng));
+                }
+
+            });
+        });
+        $("#floor").change(function() {
+            $('select[name="total_units"]').html('');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('admin.unit.floors.units') }}",
+                method: 'POST',
+                data: {
+                    'floor_id': $(this).val()
+                },
+                success: function(result) {
+                    var count = result.data.total_units;
+                    for (i = 1; i <= count; i++) {
+                        $('select[name="total_units"]').append(`<option value="` + i + `"> Unit # ` +
+                            i + `</option>`);
+                    }
+
+
+                }
+
+            });
+        });
+    </script>
+    <script>
+        $('#project').val('{{ $unit->floor->project->id }}');
+        $('#floor').val('{{ $unit->floor->id }}');
+        $('#listing_purpose').val('{{ $unit->listing_purpose }}');
+        $('#type').val('{{ $unit->type }}');
+        $('#purpose').val('{{ $unit->purpose }}');
+        $('input[name="address"]').val('{{$unit->floor->project->address}}');
+
+        // Extra Feature
+
+        $('select[name="area_type"]').val('{{ $unit->specialFeature->area_type }}');
+        $('select[name="unit_type"]').val('{{ $unit->specialFeature->unit_type }}');
+        $('select[name="bedroom_type"]').val('{{ $unit->specialFeature->bedroom_type }}');
+        $('select[name="bedroom_unit_type"]').val('{{ $unit->specialFeature->bedroom_unit_type }}');
+        $('select[name="bathroom_floor"]').val('{{ $unit->specialFeature->bathroom_floor }}');
+        $('select[name="construction_status"]').val('{{ $unit->specialFeature->construction_status }}');
+        $('select[name="completion_certificate"]').val('{{ $unit->specialFeature->completion_certificate }}');
+        $('select[name="approval_status"]').val('{{ $unit->specialFeature->approval_status }}');
+        $('select[name="ownership_status"]').val('{{ $unit->specialFeature->ownership_status }}');
+        $('select[name="parking_space"]').val('{{ $unit->specialFeature->parking_space }}');
+        $('select[name="electricity_backup"]').val('{{ $unit->specialFeature->electricity_backup }}');
+        $('select[name="solar_backup"]').val('{{ $unit->specialFeature->solar_backup }}');
+        $('select[name="ups_backup"]').val('{{ $unit->specialFeature->ups_backup }}');
+        $('select[name="swimming_pool"]').val('{{ $unit->specialFeature->swimming_pool }}');
+        $('select[name="broadband_internet"]').val('{{ $unit->specialFeature->broadband_internet }}');
+        $('select[name="cable_tv"]').val('{{ $unit->specialFeature->cable_tv }}');
+        $('select[name="furnished"]').val('{{ $unit->specialFeature->furnished }}');
+        $('select[name="concierge_service"]').val('{{ $unit->specialFeature->concierge_service }}');
+        $('select[name="centrally_managed"]').val('{{ $unit->specialFeature->centrally_managed }}');
+        $('select[name="security_staff"]').val('{{ $unit->specialFeature->security_staff }}');
+        $('select[name="maintenance_staff"]').val('{{ $unit->specialFeature->maintenance_staff }}');
+
+        src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=Rawalpindi Railway Station, Station Road, Saddar, Rawalpindi, Pakistan&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+
+      
+        $.ajax({
+            url: "{{ route('admin.unit.floors.units') }}",
+            method: 'POST',
+            data: {
+                'floor_id': {{ $unit->floor->id }}
+            },
+            success: function(result) {
+                var count = result.data.total_units;
+                for (i = 1; i <= count; i++) {
+                   
+                    $('select[name="total_units"]').append(`
+                        <option  value="` + i + `"> Unit # ` + i +   `</option>`);
+                }
+            }
+        });
+       
+
+        setTimeout(function() { 
+            $("#total_unit").val("{{ $unit->number}}");
+        }, 1000);
+       
+        
+    </script>
+    
+    
+<style>
+#map_canvas2 { height: 300px; width: 100%; margin: 0px; padding: 0px }
+</style>    
+
+<script>
+function initialize(a, b) {
+    var myLatLng = {
+        lat: a,
+        lng: b
+    };
+    var mapOptions = {
+        center: {
+            lat: a,
+            lng: b
+        },
+        zoom: 8,
+    };
+    var map = new google.maps.Map(
+        document.getElementById("map_canvas2"),
+        mapOptions
+    );
+    addMarker(myLatLng, map);
+}
+function addMarker(location, map) {
+    var marker = new google.maps.Marker({
+        position: location,
+        title: 'Home Center',
+        map: map
+    });
+}
+google.maps.event.addDomListener(window, "load", initialize({{ $unit->floor->project->lat }}, {{ $unit->floor->project->lng }}));
+
+// sami work start 17-1-22
+// Add file
+    $(document).on('click', '.add_new_file', function(event) {
+        var id = $(this).data('id');
+        $('#project_id').val(id);
+        $('#modal_document').modal('show');
+        
+    });
+    
+    $('.delete_file').click(function() {
+            var id = $(this).data('id');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }); 
+            Swal.fire({
+                title: "Are you sure to delete this file?",
+                text: "This action can't undo are you sure to file?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes Delete"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{ route('admin.unit.deleted.file') }}",
+                        method: "POST",
+                        data: {
+                            id: id,
+                        },
+                        success: function(result) {
+                            if (result.status == true) {
+                                toastr.success(result.message, "Success");
+                                location.reload();
+                            } else {
+                                toastr.error(result.message, "Error");
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+// sami work end
+</script>
+@endsection
+
+
+

@@ -42,8 +42,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Modal-->
     <div class="modal fade" id="modal-editUser" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -101,7 +99,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="add_new_user" tabindex="-1" style="display: none;" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog  modal-xl">
@@ -670,8 +667,6 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-
-
     <div class="modal fade" id="modal-addFolder" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -774,9 +769,6 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="modal fade" id="modal-addFile" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -843,8 +835,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="modal fade" id="modal-viewDocument" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -858,6 +848,58 @@
                     </div> 
                 </div>
                
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_e_sign" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> E Sign </h5> 
+                </div>
+                <form class="form" method="post" action="{{ route('user.esign.template.save') }}">
+                    <div class="modal-body">
+                        <div class="card card-custom">
+                            @csrf
+                            <div class="card-body row">
+                                <div class="form-group col-lg-6 mb-5">
+                                    <label for="" class="required"> Select Template </label>
+                                    <select class="form-select form-select-solid" id="templates" name="template" required>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-6 mb-5">
+                                    <label for="" class="required"> Offers </label>
+                                    <select class="form-select form-select-solid" name="offer">
+                                        @foreach ($offers as $offer)
+                                            <option value="{{ $offer->id }}"> {{ $offer->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                               
+                                <div class="form-group col-lg-6">
+                                    <label for="" class="required"> Investors </label>
+                                    <select class="form-select form-select-solid" name="investor">
+                                        @foreach ($investors as $investor)
+                                            <option value="{{ $investor->id }}"> {{ $investor->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="" class=""> Investment Amount </label>
+                                    <input type="text" name="investment_amount"  placeholder="Investment Amount (if applicable)" class="form-control">
+                                </div> 
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-sm btn btn-light-primary font-weight-bold btn-square"
+                            data-dismiss="modal">CANCEL</button>
+                        <button type="submit"
+                            class="btn-sm btn btn-primary font-weight-bold btn-square">SAVE</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
