@@ -32,7 +32,7 @@ class UpdateBasicDetailController extends Controller
             $fileName = time().'.'.$request->document->extension();   
             $request->document->move(public_path('uploads'), $fileName);
         }
-        $path = "http://127.0.0.1:8000/uploads/".$fileName; 
+        $path = "https://beta.chainraise.info/manage/uploads/".$fileName; 
         
   
         foreach($users as $user){
@@ -51,7 +51,7 @@ class UpdateBasicDetailController extends Controller
                 $document->offer_id =  $request->offer;
                 $document->description =  $request->description; 
                 $document->save();
-                $document->addMediaFromUrl('https://beta.chainraise.info/manage/storage/3/49dfd984589075283f191270ef1995fb.png')->toMediaCollection('documents');
+                $document->addMediaFromUrl($path)->toMediaCollection('documents');
                 
             }
             
