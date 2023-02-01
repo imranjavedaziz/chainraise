@@ -1027,7 +1027,7 @@
             });
             var id =  "{{ $offer->id}}";
             var external_account = $('#external_account').val();
-            var investment_amount = "{{ $investment_amount }}"
+            var investment_amount = "{{ $investment_amount }}";
             $.ajax({
                     url: "{{ route('payment.ach') }}",
                     method: 'POST',
@@ -1042,8 +1042,11 @@
                             toastr.error("Internal server error", "Error");
                         }
                         if(response.status == true){
-                            toastr.success(response.message, "Success");
-                            window.location.href = "{{ route('dashboard')}}";
+                            toastr.success(response.message + 'You will be redirecting ', "Success");
+                            setTimeout(() => {
+                                window.location.href = "{{ route('dashboard')}}";
+                            }, 3000);
+                           
                         }
                     },
 

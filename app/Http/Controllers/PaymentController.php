@@ -76,8 +76,6 @@ class PaymentController extends Controller
             // $transaction_url = "https://api.sandbox.fortressapi.com/api/trust/v1/payments/".$json_response_ach->id;
             // $transaction = Http::withToken($token_json['access_token'])->get($transaction_url);
             // $json_transaction = json_decode($transaction);
-
-          
                 $db_transaction = new Transaction;
                 $db_transaction->transaction_id = $json_response_ach->id;
                 $db_transaction->type = $json_response_ach->type;

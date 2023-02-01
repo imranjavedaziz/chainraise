@@ -1,0 +1,1447 @@
+@extends('layouts.master')
+@section('page_head')
+    <script
+        src="https://maps.googleapis.com/maps/api/js?v=9.exp&libraries=places&key=AIzaSyDou1mpe-oc7bIbB40DTqKvciV9eeovPX0">
+    </script>
+
+@endsection
+@section('title', 'Project Create')
+<style>
+    .fv-plugins-message-container:last-child {
+        display: none;
+    }
+
+    ge-input .image-input-wrapper {
+        width: 180px !important;
+        height: 180px !important;
+    }
+
+    .preview {
+        overflow: hidden;
+        width: 160px;
+        height: 160px;
+        margin: 10px;
+        border: 1px solid red;
+    }
+
+    .error_msg_label {
+        text-align: center;
+        color: red;
+        margin-top: 10px;
+    }
+
+    .input_show_error {
+        border: 1px solid red !important;
+    }
+</style>
+@section('content')
+    <div class="container">
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+            <div class="container">
+                <div class="row mb-6">
+                    <div class="col-lg-12">
+                        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('client.dashboard') }}"><i class="fa fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('client.dashboard') }}" class="text-muted">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.project.index') }}" class="text-muted">Project</a>
+                            </li>
+
+                            <li class="breadcrumb-item">
+                                <span class="text-muted">Create</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="d-flex flex-column-fluid">
+                <div class="container">
+                    <div class="card card-custom">
+                        <div class="card-body p-0">
+                            <!--begin: Wizard-->
+                            <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="first"
+                                data-wizard-clickable="true">
+                                <!--begin: Wizard Nav-->
+                                <div class="wizard-nav">
+                                    <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+                                        <!--begin::Wizard Step 1 Nav-->
+                                        <div class="wizard-step wizard-step1" data-wizard-type="step"
+                                            data-wizard-state="current">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>1.</span>Basic Details
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="wizard-step wizard-step2" data-wizard-type="step"
+                                            data-wizard-state="pending">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>2.</span>Nearyby Locations
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="wizard-step wizard-step3" data-wizard-type="step"
+                                            data-wizard-state="pending">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>3.</span>Special Features
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="wizard-step wizard-step4" data-wizard-type="step"
+                                            data-wizard-state="pending">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>4.</span>Additional Files
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+
+                                        <!--end::Wizard Step 3 Nav-->
+                                        <!--begin::Wizard Step 4 Nav-->
+                                        <div class="wizard-step wizard-step5" data-wizard-type="step"
+                                            data-wizard-state="pending">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>5.</span> Mail Configuration
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="wizard-step wizard-step5" data-wizard-type="step"
+                                            data-wizard-state="pending">
+                                            <div class="wizard-label">
+                                                <h3 class="wizard-title">
+                                                    <span>6.</span> Tax Configurations
+                                                </h3>
+                                                <div class="wizard-bar"></div>
+                                            </div>
+                                        </div>
+                                        <!--end::Wizard Step 4 Nav-->
+                                    </div>
+                                </div>
+                                <!--end: Wizard Nav-->
+                                <!--begin: Wizard Body-->
+                                <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+                                    <div class="col-xl-12 col-xxl-10">
+                                        <!--begin: Wizard Form-->
+                                        <form method="post" action="{{ route('admin.project.save') }}"
+                                            enctype="multipart/form-data" id="kt_form">
+                                            @csrf
+                                            <!--begin: Wizard Step 1-->
+                                            <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                                <div class="col-lg-12">
+                                                    <h4 class="mb-8">Project Basic Details</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-9">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <div class="form-group fv-plugins-icon-container">
+                                                                        <label> Project Name <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <input type="text"
+                                                                            class="project_name form-control form-control-solid"
+                                                                            placeholder="Project Name" name="name"
+                                                                            required>
+                                                                        <div class="fv-plugins-message-container"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label> Company </label>
+                                                                    <input type="text" disabled class="form-control"
+                                                                        placeholder="Project Name"@if (Auth::user()->company) value="{{ Auth::user()->company->name }}" @endif>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="floor_fileds" class="mt-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group fv-plugins-icon-container">
+                                                                            <label> Floor Name<span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="text"
+                                                                                class="form-control form-control-solid floor_name floor_name_label"
+                                                                                placeholder="Floor Name"
+                                                                                name="floor_name[]" required>
+                                                                            <p class="error_msg_label floor_name_label">
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-5">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group fv-plugins-icon-container">
+                                                                            <label>Total Units in Floor<span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="number"
+                                                                                class="form-control form-control-solid total_unit"
+                                                                                placeholder="Total Units in Floor"
+                                                                                name="total_unit[]" required>
+                                                                            <div class="fv-plugins-message-container">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-1 pt-8">
+                                                                    <button
+                                                                        class="btn btn-sm btn-icon btn-light-info btn-square add_floor"
+                                                                        type="button">
+                                                                        <i class="la la-plus"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        class="btn btn-sm btn-icon btn-light-danger btn-square remove_floor d-none"
+                                                                        type="button">
+                                                                        <i class="la la-minus"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group fv-plugins-icon-container"
+                                                            style="display:none;">
+                                                            <input type="hidden" class="floor_work" name="floor_work"
+                                                                required>
+                                                        </div>
+
+
+                                                        <div class="row mt-5">
+                                                            {{-- <div class="col-lg-12">
+                                                                <h4 class="mb-8">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group fv-plugins-icon-container">
+                                                                            <label for=""> Tax Rate es</label>
+                                                                            <div class="input-group">
+                                                                                <input type="number" class="form-control"
+                                                                                    name="tax_rate" placeholder="Tax Rate"
+                                                                                    min="0" max="100"
+                                                                                    required>
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text"> <i
+                                                                                            class="fa fa-percentage"></i>
+                                                                                    </span></div>
+                                                                            </div>
+                                                                            <div class="fv-plugins-message-container">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </h4>
+                                                            </div> --}}
+                                                            <div class="col-lg-12">
+                                                                <h4 class="mb-8">
+                                                                    <div class="form-group">
+                                                                        <label> Address<span
+                                                                                class="text-danger">*</span></label>
+                                                                        <div style="height:100%; width:100%">
+                                                                            <div
+                                                                                class="form-group fv-plugins-icon-container">
+                                                                                <input type="text"
+                                                                                    class="form-control pac-target-input mb-5"
+                                                                                    id="my-map" name="address"
+                                                                                    placeholder="Enter a location"
+                                                                                    autocomplete="off" required>
+                                                                                <div class="fv-plugins-message-container">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div id="map-canvas1"
+                                                                                style="display: list-item; height: 270px; max-height: 270px; border: 2px solid rgba(0, 0, 0, 0.16) !important; position: relative; overflow: hidden;">
+                                                                            </div>
+                                                                            <input type="hidden" required name="lat"
+                                                                                id="lat">
+                                                                            <input type="hidden" required name="lng"
+                                                                                id="lng">
+                                                                        </div>
+                                                                    </div>
+                                                                </h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label> Description <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <div class="form-group fv-plugins-icon-container">
+                                                                        <textarea type="text" class="form-control form-control-solid" placeholder="Description" name="description"
+                                                                            required=""></textarea>
+                                                                        <div class="fv-plugins-message-container"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 pt-7">
+                                                        <div class="card card-custom card-shadowless info">
+                                                            <div class="card-body p-0">
+                                                                <div class="overlay">
+                                                                    <div
+                                                                        class="overlay-wrapper rounded bg-light text-center">
+                                                                        <img src="{{ asset('assets/media/dummy.png') }}"
+                                                                            alt="" id="set_profile_photo"
+                                                                            class="set_profile_photo mw-100 w-200px">
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
+                                                                    <button type="button"
+                                                                        class="update_profile_photo btn btn-sm btn-light-primary btn-square mb-1">
+                                                                        <i class="la la-pen"></i> Update Photo
+                                                                    </button>
+                                                                    <input type="file" id="image_file"
+                                                                        name="project_logo"
+                                                                        class="new_profile_photo  d-none change_photo"
+                                                                        data-type="project_logo">
+                                                                    <small class="text-danger text-center"> Max Size 1
+                                                                        MB</small>
+                                                                </div>
+
+                                                                <!--end::Details-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--end: Wizard Step 1-->
+                                            <!--begin: Wizard Step 2-->
+                                            {{-- <div class="pb-5" data-wizard-type="step-content">
+                                     
+                        
+                                </div> --}}
+
+                                            <!--end: Wizard Step 2-->
+                                            <!--begin: Wizard Step 3-->
+                                            <div class="pb-5" data-wizard-type="step-content">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="mb-8">
+                                                            Nearby Locations and Other Facilities
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Nearby Schools </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Nearby Schools" name="school">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Nearby Hospitals</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Nearby Hospitals" name="hospital">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Nearby Shopping Malls</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Nearby Shopping Malls"
+                                                                        name="shopping_mall">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Nearby Restaurants </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Nearby Restaurants" name="resturant">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Distance From Airport (kms)</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Distance From Airport (kms)"
+                                                                        name="distance_airport">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Nearby Public Transport Service</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Nearby Public Transport Service"
+                                                                        name="public_transport">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label>Other</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Others" name="others">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <!--end: Wizard Step 3-->
+                                            <!--begin: Wizard Step 4-->
+                                            <div class="pb-5" data-wizard-type="step-content">
+                                                <div class="row">
+                                                    <div class="col-xl-11">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <h4 class="mb-8" style="text-align: left;">
+                                                                    Special Features
+                                                                </h4>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+
+
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label>Electricity Backup <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="electricity_backup"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label>Passenger Elevators <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="passenger_elevator"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label>Service Elevators <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="service_elevator"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label>High Speed Internet <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="internet"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label> Cable TV/Digital TV <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="cabel"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <div class="form-group">
+                                                                            <label> Centrally Managed Security Staff <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <select name="security_staff"
+                                                                                class="form-control form-control-solid"
+                                                                                required="">
+                                                                                <option value="1"> Yes </option>
+                                                                                <option value="0"> No </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <label> Upload Approval Document </label>
+                                                                        <div class="row">
+                                                                            <div class="form-group col-lg-6">
+                                                                                <div></div>
+                                                                                <div class="custom-file">
+                                                                                    <input type="file"
+                                                                                        class="custom-file-input"
+                                                                                        name="document_1">
+                                                                                    <label class="custom-file-label"
+                                                                                        for="customFile">
+                                                                                        File 1</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-6">
+                                                                                <div></div>
+                                                                                <div class="custom-file">
+                                                                                    <input type="file"
+                                                                                        class="custom-file-input"
+                                                                                        name="document_2">
+                                                                                    <label class="custom-file-label"
+                                                                                        for="customFile">
+                                                                                        File 2</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <!--begin: Wizard Step 5-->
+                                            <div class="pb-5" data-wizard-type="step-content">
+                                                <div class="row">
+                                                    <div class="card-body p-0">
+                                                        <div class="overlay text-right">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <button
+                                                                        class="project_additonal_files btn btn-sm btn-light-primary btn-square"
+                                                                        type="button"> Add New File </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 document_wrapper_files">
+                                                                <div class="row document_wrapper_row_files mb-5">
+                                                                </div>
+
+                                                                <div class="form-group fv-plugins-icon-container"
+                                                                    style="display:none;">
+                                                                    <input type="hidden" class="document_work"
+                                                                        name="document_work" required>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="pb-5" data-wizard-type="step-content">
+                                                <div class="row">
+                                                    <div class="col-lg-12 mt-4">
+                                                        <div class="form-group">
+                                                            <div class="radio-list">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="smtp_settings"
+                                                                        value="default" class="smtpSettings"
+                                                                        checked="checked">
+                                                                    <span></span>Generat New Email
+                                                                </label>
+
+                                                                <label class="radio">
+                                                                    <input type="radio" name="smtp_settings"
+                                                                        value="customize" class="smtpSettings">
+                                                                    <span></span> Customize Mail Settings
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="smtp_default_setting">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="mb-8">
+                                                            Create Email
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label> Write your email here <span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control"
+                                                                            placeholder="Email" name="email_address"
+                                                                            required="" maxlength="15"
+                                                                            onkeypress="return /[0-9a-zA-Z]/i.test(event.key)">
+                                                                        <div class="input-group-append">
+                                                                            <button class="btn btn-default"
+                                                                                type="button">
+                                                                                @info.property360.biz
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Password must be strong: <span
+                                                                            class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <input type="text"
+                                                                            class="email_default_password form-control"
+                                                                            placeholder="Password must be strong"
+                                                                            name="email_default_password"
+                                                                            value="SGVAIQ==619263" id="emailPassword"
+                                                                            required="">
+                                                                        <div class="email_default_password_btn input-group-append"
+                                                                            id="generate_code_action"
+                                                                            style="cursor: pointer">
+                                                                            <span class="input-group-text">
+                                                                                <i class="flaticon-refresh"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-none" id="smtp_custom_setting">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="mb-8">
+                                                            SMTP Settings
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Transport <span
+                                                                            class="text-danger">*</span> </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        value="smtp" name="mail_transport" disabled>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Host <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Mail Host" name="mail_host">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Mail Port <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Mail Port" name="mail_port">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Mail Encryption <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid" disabled
+                                                                        value="tls">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Mail Username <span
+                                                                            class="text-danger">*</span> </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Mail Username " name="mail_username">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Sender Name <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Sender Name" name="sender_name">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail From <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Mail From" name="mail_from">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Password<span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Others" name="customize_password">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-3">
+                                                            <div class="col-lg-12">
+                                                                <h4>
+                                                                    IMAP Settings
+                                                                </h4>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Mail Transport <span
+                                                                            class="text-danger">*</span> </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        value="IMAP" disabled>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label> Mail Host <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Host Name" name="imap_host">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Port <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Mail From" name="imap_port">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Username<span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Others" name="imap_user_name">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label>Mail Password<span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-solid"
+                                                                        placeholder="Others" name="imap_password">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pb-5" data-wizard-type="step-content">
+                                                 
+                                                <div class="row" id="smtp_default_setting">
+                                                    <div class="col-lg-12">
+                                                        <h4 class="mb-8">
+                                                            Tax Configuration
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="">
+                                                                         Area
+                                                                   </label>
+                                                                   <input type="text"    value="area" name="tax_type[]" required>
+                                                                    <div class="input-group"> 
+                                                                       <input type="number"
+                                                                       class="form-control"
+                                                                       placeholder="Enter Tax By Area Value"
+                                                                       name="value[]" required
+                                                                       required="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="">
+                                                                        Percentage
+                                                                   </label>  
+                                                                   <input type="text" value="percentage" name="tax_type[]" required>
+                                                                    <div class="input-group"> 
+                                                                       <input type="number"
+                                                                       class="form-control"
+                                                                       placeholder="Enter Tax By Percentage Value"
+                                                                       name="value[]" required
+                                                                       required="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 
+                                            </div>
+
+                                            <!--end: Wizard Step 4-->
+                                            <!--begin: Wizard Actions-->
+                                            <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                                                <div class="mr-2">
+                                                    <button type="button" class="btn btn-sm btn-square btn-primary"
+                                                        data-wizard-type="action-prev">Previous</button>
+                                                </div>
+
+                                                <div>
+                                                    <button type="submit" class="btn btn-sm btn-square btn-success"
+                                                        data-wizard-type="action-submit">Submit</button>
+                                                    <button type="button"
+                                                        class="next_btn btn btn-sm btn-square btn-primary"
+                                                        data-wizard-type="action-next">Next</button>
+                                                </div>
+                                            </div>
+                                            <!--end: Wizard Actions-->
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </form>
+                                        <!--end: Wizard Form-->
+                                    </div>
+                                </div>
+                                <!--end: Wizard Body-->
+                            </div>
+                            <!--end: Wizard-->
+                        </div>
+                    </div>
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::Entry-->
+        </div>
+    </div>
+    @include('admin.project.models.index')
+@endsection
+@section('page_js')
+    <script src="{{ asset('assets/js/pages/custom/wizard/wizard-3.js') }}"></script>
+    @include('admin.project.models.js.wizard');
+    @if (Session::has('tab'))
+        <script>
+            $(".tab-pane").removeClass("active");
+            $('.nav-link').removeClass("active");
+            $('#kt_user_edit_tab_2').addClass('active');
+            $('.nav_2').addClass('active')
+        </script>
+    @endif
+
+    <script>
+        $("#kt_inputmask_4").inputmask({
+            "mask": "-0-0",
+            placeholder: "" // remove underscores from the input mask
+        });
+
+        $('.update_profile_photo').click(function() {
+            $('.change_photo').val(null);
+            var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
+            imgBtnWrapper.find('.change_photo').click();
+        });
+
+        $('.viewOTPForm').click(function() {
+            $('#verify-top-form').toggleClass('d-none');
+
+        });
+        $('#cnic_number').mask('00000-0000000-0', {
+            placeholder: "00000-0000000-0"
+        });
+        $('#phone_number').mask('3339090909', {
+            placeholder: "3339090909"
+        });
+
+        $('.smtpSettings').click(function() {
+
+            if ($(this).val() == 'default') {
+
+                $('#smtp_default_setting').removeClass("d-none");
+                $('#smtp_custom_setting').addClass("d-none");
+
+                var inputs_default = $('#smtp_default_setting').find(':input');
+                inputs_default.prop('required', true);
+
+                var inputs_customize = $('#smtp_custom_setting').find(':input');
+                inputs_customize.prop('required', false);
+
+            } else if ($(this).val() == 'customize') {
+                $('#smtp_default_setting').addClass("d-none");
+                $('#smtp_custom_setting').removeClass("d-none");
+
+                var inputs_default = $('#smtp_default_setting').find(':input');
+                inputs_default.prop('required', false);
+
+                var inputs_customize = $('#smtp_custom_setting').find(':input');
+                inputs_customize.prop('required', true);
+            }
+
+        });
+
+        var floorCounter = 1;
+        $('.add_floor').click(function(event) {
+
+            floorCounter++;
+            var inputs = $('#floor_fileds').find(':input');
+            inputs.prop('required', true);
+
+            $("#floor_fileds").append(`
+            <div class="row" id="counter_` + floorCounter +
+                `">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label> Floor Name<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-solid floor_name floor_name_label"  placeholder="Floor Name" name="floor_name[]"  required>
+                        <p class="error_msg_label floor_name_label"></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label>Total Units in Floor<span class="text-danger">*</span></label>
+                        <input type="number" class="form-control form-control-solid total_unit"  placeholder="Total Units in Floor" name="total_unit[]" required>
+                    </div>
+                </div>
+                <div class="col-lg-1 pt-8">
+                    <button class="btn btn-sm btn-icon btn-light-danger btn-square remove_floor" type="button" onclick="deleteField('counter_` +
+                floorCounter + `')">
+                        <i class="la la-minus"></i>
+                    </button>
+                </div></div>`
+            );
+        });
+
+
+        function deleteField(counter) {
+            $('#' + counter).remove();
+            floorCounter--;
+        }
+
+        function init1() {
+            var mapOptions = {
+                zoom: 18,
+                center: {
+                    lat: 33.5701753,
+                    lng: 73.1543326
+                    // lat: -340.39723,
+                    // lng: 150.644
+                }
+            };
+            map3 = new google.maps.Map(document.getElementById('map-canvas1'), mapOptions);
+            // Get GEOLOCATION
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    $('#lat').val(position.coords.latitude);
+                    $('#lng').val(position.coords.longitude)
+                    map3.setCenter(pos);
+                    marker = new google.maps.Marker({
+                        position: pos,
+                        map: map3,
+                        draggable: true
+                    });
+                }, function() {
+                    handleNoGeolocation(true);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleNoGeolocation(false);
+            }
+
+
+
+            // get places auto-complete when user type in location-text-box
+            /** @type    {HTMLInputElement} */
+            var input = (document.getElementById('my-map'));
+
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map3);
+
+
+
+
+            var infowindow = new google.maps.InfoWindow();
+            marker = new google.maps.Marker({
+                map: map3,
+                anchorPoint: new google.maps.Point(0, -29),
+                draggable: true
+            });
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                // infowindow.close();
+                // marker.setVisible(false);
+                var place = autocomplete.getPlace();
+
+                var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+
+                console.log(lat + ' ' + lng);
+
+                var markers = [{
+                    GPS1: lat,
+                    GPS2: lng,
+                    client_address: "somewhere1"
+                }];
+                $('#lat').val(lat);
+                $('#lng').val(lng)
+                // Here you can get your coordinates like this
+
+
+
+                var latlng = new google.maps.LatLng(lat, lng); // default location
+                var myOptions = {
+                    zoom: 16,
+                    center: latlng,
+                    mapTypeControl: true
+                };
+
+                var map = new google.maps.Map(document.getElementById('map-canvas1'), myOptions);
+                var infowindow = new google.maps.InfoWindow(),
+                    marker, lat, lng;
+
+                for (i = 0; i < markers.length; i++) {
+                    lat = (markers[i].GPS1);
+                    lng = (markers[i].GPS2);
+                    name = (markers[i].client_address);
+
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, lng),
+                        name: name,
+                        map: map
+                    });
+                    google.maps.event.addListener(marker, 'click', function(e) {
+                        infowindow.setContent(this.name);
+                        infowindow.open(map, this);
+                    }.bind(marker));
+                }
+            });
+        }
+
+        function initialize() {
+            init1();
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+        $(document).ready(function() {
+
+            $("body").on("keyup change", '.floor_name', function(event) {
+                $('.floor_name').removeClass('input_show_error');
+            });
+
+            $("body").on("keyup change", '.total_unit', function(event) {
+                $('.total_unit').removeClass('input_show_error');
+            });
+
+            $("body").on("keyup change", '.document_file', function(event) {
+                $('.document_file').removeClass('input_show_error');
+            });
+
+            $("body").on("keyup change", '.document_name', function(event) {
+                $('.document_name').removeClass('input_show_error');
+            });
+
+            $("body").on("keyup change", '.project_name', function(event) {
+                $('.project_name').removeClass('input_show_error');
+            });
+
+            var modalProfileLogo = $('#modalProfileLogo');
+            var sample_image2 = document.getElementById('project_image');
+            var profilePhoto = document.getElementById('set_profile_photo');
+            var cropperProv;
+            $('.change_photo').change(function(event) {
+                var type = $(this).data('type');
+                $('.type').val(type)
+                event.preventDefault();
+                var imgSize = this.files[0].size;
+                if (imgSize >= 250000) {
+                    event.preventDefault();
+                    $('.image-input').css('background-image',
+                        "url(https://www.w3resource.com/includes/jquery-images/jquery.gif)");
+                    $('.image-input-wrapper').css('background-image',
+                        'url(https://www.w3resource.com/includes/jquery-images/jquery.gif)');
+                    toastr.error("Image size exceeds", "Error");
+                    $('.image-input-wrapper').css('background-image',
+                        'url(https://www.w3resource.com/includes/jquery-images/jquery.gif)');
+                    event.preventDefault();
+                } else {
+                    var files = event.target.files;
+                    var done = function(url) {
+                        sample_image2.src = url;
+                        modalProfileLogo.modal('show');
+                    };
+                    if (files && files.length > 0) {
+                        reader = new FileReader();
+                        reader.onload = function(event) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(files[0]);
+                        //}
+                    }
+                }
+
+            });
+
+            modalProfileLogo.on('shown.bs.modal', function() {
+                cropperProv = new Cropper(sample_image2, {
+                    aspectRatio: NaN,
+                    viewMode: 1,
+                    preview: '.preview'
+                });
+            }).on('hidden.bs.modal', function() {
+                cropperProv.destroy();
+                cropperProv = null;
+            });
+
+            $("#save_crop").click(function() {
+                canvas = cropperProv.getCroppedCanvas({
+                    width: 300,
+                    height: 300,
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                canvas.toBlob(function(blob) {
+                    // alert(blob);
+                    var type = $('.type').val();
+                    //url = URL.createObjectURL(blob);
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = function() {
+                        var base64data = reader.result;
+                        //  $('#uploaded_image').attr('src', base64data); 
+                        modalProfileLogo.modal('hide');
+                        // var imgSize = blob.files[0].size;         
+                        var fd = new FormData();
+                        // var files = $('#uplodfile')[0].files;
+                        fd.append('file', blob);
+                        fd.append('type', type);
+
+                        profilePhoto.src = base64data;
+
+                        let fileInputElement = document.getElementById('image_file');
+                        let data = blob;
+                        let file = new File([data], "g" + 0 + ".jpg", {
+                            type: "image/jpeg",
+                            lastModified: new Date().getTime()
+                        });
+                        let container = new DataTransfer();
+                        container.items.add(file);
+                        fileInputElement.files = container.files;
+                    }
+                });
+            });
+
+
+
+
+            // additional files code here    
+            var file_no = 0;
+            $('.project_additonal_files').click(function(event) {
+                file_no++;
+                $('.document_wrapper_files').append(`
+            <div class="row document_wrapper_row_files mb-5">
+                <div class="col-lg-6 mt-4">
+                    <label style="float: left;">Choose File<span class="text-danger">*</span></label>
+                    <input type="file" name="document_file[]" class="document_file form-control">
+                </div> 
+                <div class="col-lg-4 mt-4">
+                    <label style="float: left;">File Name<span class="text-danger">*</span></label>
+                    <input type="text" name="document_name[]" class="document_name form-control" required placeholder="File Name">
+                </div>
+                <div class="col-lg-2 mt-4 pt-1">
+                    <button class="btn btn-sm btn-light-danger btn-square remove_document_row" type="button">  <i class="la la-times"></i> </button>
+                </div> 
+            </div>
+       `);
+            });
+
+
+            $('body').on('click', '.remove_document_row', function(event) {
+                $(this).closest('.document_wrapper_row_files').remove();
+            });
+
+
+            $('#cancel_crop').click(function(event) {
+                event.preventDefault();
+                $('.change_photo').val(null);
+            });
+
+
+            $(".email_default_password_btn").click(function() {
+                var randomString = Math.random().toString(36).slice(2) + Math.random().toString(36)
+                    .toUpperCase().slice(2);
+                $(".email_default_password").val(randomString);
+            });
+
+            function projectNameIsNull_showError() {
+                // if(!$('.project_name').val()){ $('.project_name').addClass('input_show_error'); }
+                // else { $('.project_name').removeClass('input_show_error'); }
+            }
+
+            $(".wizard-step2").click(function() {
+                projectNameIsNull_showError();
+
+                // tab1 data validation
+                var checkCountFloorName = 0;
+                var checkCountTotalUnit = 0;
+                $(".floor_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountFloorName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".total_unit").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountTotalUnit++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountFloorName < 1 && checkCountTotalUnit < 1) {
+                    $(".floor_work").val('validation-work');
+                } else {
+                    $(".floor_work").val('');
+                }
+            });
+
+
+
+            $(".wizard-step3").click(function() {
+                projectNameIsNull_showError();
+
+                // tab1 data validation
+                var checkCountFloorName = 0;
+                var checkCountTotalUnit = 0;
+                $(".floor_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountFloorName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".total_unit").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountTotalUnit++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountFloorName < 1 && checkCountTotalUnit < 1) {
+                    $(".floor_work").val('validation-work');
+                } else {
+                    $(".floor_work").val('');
+                }
+            });
+
+            $(".wizard-step4").click(function() {
+                projectNameIsNull_showError();
+
+                // tab1 data validation
+                var checkCountFloorName = 0;
+                var checkCountTotalUnit = 0;
+                $(".floor_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountFloorName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".total_unit").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountTotalUnit++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountFloorName < 1 && checkCountTotalUnit < 1) {
+                    $(".floor_work").val('validation-work');
+                } else {
+                    $(".floor_work").val('');
+                }
+            });
+
+            $(".wizard-step5").click(function() {
+                projectNameIsNull_showError();
+
+                // tab1 data validation
+                var checkCountFloorName = 0;
+                var checkCountTotalUnit = 0;
+                $(".floor_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountFloorName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".total_unit").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountTotalUnit++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountFloorName < 1 && checkCountTotalUnit < 1) {
+                    $(".floor_work").val('validation-work');
+                } else {
+                    $(".floor_work").val('');
+                }
+
+
+
+                // tab4 data validation
+                var checkCountDocumentFile = 0;
+                var checkCountDocumentName = 0;
+                $(".document_file").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountDocumentFile++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".document_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountDocumentName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountDocumentFile < 1 && checkCountDocumentName < 1) {
+                    $(".document_work").val('validation-work');
+                } else {
+                    $(".document_work").val('');
+                }
+            });
+
+
+
+            $(".next_btn").click(function() {
+                projectNameIsNull_showError();
+
+                // tab1 data validation
+                var checkCountFloorName = 0;
+                var checkCountTotalUnit = 0;
+                $(".floor_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountFloorName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".total_unit").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountTotalUnit++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountFloorName < 1 && checkCountTotalUnit < 1) {
+                    $(".floor_work").val('validation-work');
+                } else {
+                    $(".floor_work").val('');
+                }
+
+
+
+                // tab4 data validation
+                var checkCountDocumentFile = 0;
+                var checkCountDocumentName = 0;
+                $(".document_file").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountDocumentFile++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                $(".document_name").each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('input_show_error');
+                        checkCountDocumentName++;
+                    } else {
+                        $(this).removeClass('input_show_error');
+                    }
+                });
+                if (checkCountDocumentFile < 1 && checkCountDocumentName < 1) {
+                    $(".document_work").val('validation-work');
+                } else {
+                    $(".document_work").val('');
+                }
+            });
+
+        });
+    </script>
+@endsection

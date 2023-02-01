@@ -74,7 +74,6 @@
                                             <h3 class="text-white fs-2qx fw-bold  text-white"
                                                 id="issuer_account_label"> {{ $offer->name }}   </h3>
                                         </div>
-                                        
                                         <div class="col-lg-12">
                                             <strong id="short_description_label" class="fs-1qx fw-bold">  
                                                 {{ $offer->short_description }} 

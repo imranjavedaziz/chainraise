@@ -95,7 +95,7 @@
                               
                                 <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
                                     <!--begin::Menu item-->
-                                    <a href="#" class="menu-link px-3" id="action-upload-document"  data-bs-toggle="modal" 
+                                    <a href="#" class="menu-link px-3" id="action-send-email"  data-bs-toggle="modal" 
                                     data-bs-target="#modal-quick-action-account-email-invite">
                                         <span class="menu-title"> Email </span>
                                          
@@ -408,6 +408,41 @@
                 }
             });
         });
+        $('body').on('submit','#send_email_form',function(event){
+        
+            if ($('.summernote').summernote('isEmpty')) {
+                    toastr.error('Required fileds are missing', "Error");
+                   return false;
+            }
+            event.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            var form = $('#send_email_form')[0];
+            var data = new FormData(form);
+            $('#sendEmailBtn').prop('disabled',true);
+            $('#sendEmailBtn').html('Loading ...');
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{{ route('user.info.invite.email') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 800000,
+                success: function(result) {
+                    if(result.status==true){ 
+                        $('.dismiss').click();
+                        toastr.success(result.message, "Success");
+                    }
+                }
+            });
+
+        });
         $(document).ready(function() {
             $('.summernote').summernote({
                 placeholder: 'Please Enter Your Content Here  ....',
@@ -416,29 +451,90 @@
             });
             
         });
-        
 
-     </script>
-    <script>
-        function exportTasks(_this) {
-            let _url = $(_this).data('href');
-            window.location.href = _url;
-        }
-
-        $('body').on('submit','#upload_e_sign_document_form',function(event){
-
+        $('body').on('submit','#send_email_form',function(event){
+            if ($('.summernote').summernote('isEmpty')) {
+                    toastr.error('Required fileds are missing', "Error");
+                return false;
+            }
+            event.preventDefault();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
- 
+            var form = $('#send_email_form')[0];
+            var data = new FormData(form);
+            $('#sendEmailBtn').prop('disabled',true);
+            $('#sendEmailBtn').html('Loading ...');
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{{ route('user.info.invite.email') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 800000,
+                success: function(result) {
+                    if(result.status==true){ 
+                        $('.dismiss').click();
+                        toastr.success(result.message, "Success");
+                    }
+                }
+            });
+        });
+
+        $('body').on('submit','#upload_document_form',function(event){
             event.preventDefault();
-            
- 
-            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var form = $('#upload_document_form')[0];
+            var data = new FormData(form);
+            $('#document_upload_btn').prop('disabled',true);
+            $('#document_upload_btn').html('Loading ...');
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "{{ route('user.info.update.document') }}",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 800000,
+                success: function(result) {
+                    $('#document_upload_btn').prop('disabled',false);
+                    $('#document_upload_btn').html('Upload Document');
+                    if(result.status == true){
+                        $('.dismiss').click();
+                        toastr.success(result.message, "Success");
+                        
+                    }else{
+                        toastr.error(result.message, "Error");
+                    }
+                },
+                error:function(result){
+                    $('#document_upload_btn').prop('disabled',false);
+                    $('#document_upload_btn').html('Upload Document');
+                    toastr.error(result.message, "Error");
+                   
+                }
+            });
+        });
+        $('body').on('submit','#upload_e_sign_document_form',function(event){
+            event.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }); 
             var form = $('#upload_e_sign_document_form')[0];
             var data = new FormData(form);
+            $('#e_document_upload_btn').prop('disabled',true);
+            $('#e_document_upload_btn').html('Loading ...');
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -449,10 +545,39 @@
                 cache: false,
                 timeout: 800000,
                 success: function(result) {
-                    console.log(result);
+                    $('#e_document_upload_btn').prop('disabled',false);
+                    $('#e_document_upload_btn').html('Upload Document');
+                    if(result.status == true){
+                        $('.dismiss').click();
+                        toastr.success(result.message, "Success");
+                        
+                    }else{
+                        toastr.error(result.message, "Error");
+                    }
+                },
+                error:function(result){
+                    $('#document_upload_btn').prop('disabled',false);
+                    $('#document_upload_btn').html('Upload Document');
+                    toastr.error(result.message, "Error");
+                   
                 }
             });
+        });
+        
 
+    </script>
+    <script>
+        function exportTasks(_this) {
+            let _url = $(_this).data('href');
+            window.location.href = _url;
+        }
+
+        $('#action-send-email').click(function(){
+            var form = $('#send_email_form')[0].reset();
+            $('.summernote').summernote('reset');
+            $('#sendEmailBtn').prop('disabled',false);
+            $('#sendEmailBtn').html('Send Email');
+            
         });
     </script>
 

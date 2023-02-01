@@ -137,5 +137,10 @@ Route::group(['as'=> 'folder.','prefix'=>'folder','middleware' => ['auth','verif
     Route::get('get-files', ['as' => 'get.files','uses' => 'FolderController@getFiles']);
 });
 
+Route::group(['as'=> 'transaction.','prefix'=>'transaction','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Transaction'], function () {
+    Route::get('transaction', ['as' => 'index','uses' => 'TransactionController@index']); 
+});
+
+
 
 require __DIR__.'/auth.php';
