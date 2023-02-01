@@ -33,7 +33,7 @@
                    
                 </div>
                 <div class="card-body">
-                    <!--begin: Datatable-->
+                    <!--begin: Datatables-->
                     <table class="table table-sm" id="organizations-table">
                         <thead>
                             <tr>
@@ -46,6 +46,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             @foreach($transactions as $transaction)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
