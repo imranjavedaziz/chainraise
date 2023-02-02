@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('message', [TestController::class, 'message'])->name('messss');
+Route::post('message-sent', [TestController::class, 'message_send']);
 Route::get('view-email-1', [TestController::class, 'email_signup']);
 Route::get('view-email-2', [TestController::class, 'email_signup_2']);
 Route::get('upload-doc', [TestController::class, 'upload_doc']);
@@ -37,6 +38,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
     Route::get('make', ['as' => 'make','uses' => 'MakeInvestmentController@make']);
     Route::post('submit', ['as' => 'submit','uses' => 'MakeInvestmentController@submitInvestment']);
+    Route::post('step/two', ['as' => 'step.two','uses' => 'MakeInvestmentController@step_two']);
+    Route::get('check/kyc', ['as' => 'check.kyc','uses' => 'MakeInvestmentController@kyc_checking']);
+    Route::post('step/three', ['as' => 'step.three','uses' => 'MakeInvestmentController@step_three']);
+    Route::post('step/four', ['as' => 'step.four','uses' => 'MakeInvestmentController@step_four']);
+    Route::post('step/five', ['as' => 'step.five','uses' => 'MakeInvestmentController@step_five']);
+    Route::get('step/six/e/template', ['as' => 'step.six.e.template','uses' => 'MakeInvestmentController@e_template']);
+    Route::post('save', ['as' => 'save','uses' => 'MakeInvestmentController@save']);
+
+
     Route::get('details/{id}', ['as' => 'detail','uses' => 'MakeInvestmentController@detail']);
     Route::post('submit-kyc', ['as' => 'kyc.submit','uses' => 'MakeInvestmentController@kycSubmit']);
     Route::get('verify-identity', ['as' => 'verify.identity','uses' => 'MakeInvestmentController@verify_identity']);

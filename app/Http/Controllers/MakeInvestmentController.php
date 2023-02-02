@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountGUID;
+use App\Models\Custodial;
 use App\Models\ExternalAccount;
 use App\Models\MemberGuid;
 use App\Models\Offer;
+use App\Models\Order;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use CURLFile;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use  Illuminate\Support\Collection;
-use File; 
+use File;
+use Illuminate\Support\Facades\DB;
+
 class MakeInvestmentController extends Controller
 {
 
@@ -30,6 +36,7 @@ class MakeInvestmentController extends Controller
     }
     public function submitInvestment(Request $request)
     {
+       
         $request->validate([
             'offer_id' => 'required',
             'investment_amount' => 'integer',
@@ -128,138 +135,323 @@ class MakeInvestmentController extends Controller
                 'accountNumberLast4' => $json_external_acc['accountNumberLast4']
             ]
         );
-        return view('investment.account-type', compact('offer', 'user','external_account','investment_amount'));
+        return view('investment.step-1-account-type', compact('offer', 'user','external_account','investment_amount'));
+    }
+    public function step_two(Request $request)
+    { 
+        
+        $request->validate([
+            'external_account' => 'required',
+            'offer_id' => 'required',
+            'investment_amount'=>'required',
+        ]);
+        $user = User::where('id', Auth::user()->id)->first();
+        $external_account = $request->external_account;
+        $offer_id = $request->offer_id;
+        $investment_amount = $request->investment_amount;
+       
+        return view('investment.step-2-verify-identity',compact('external_account','offer_id','investment_amount','user'));
+    }
+     public function step_three(Request $request)
+    { 
+       
+        $request->validate([
+            'external_account' => 'required',
+            'investment_amount' => 'required',
+            'offer_id'=>'required',
+        ]);
+      
+       
+        $user = User::where('id', Auth::user()->id)->first();
+        $external_account = $request->external_account;
+        $offer_id = $request->offer_id;
+        $investment_amount = $request->investment_amount;
+        
+        return view('investment.step-3-investment-limits',compact('external_account','offer_id','investment_amount','user'));
     }
 
-    public function kycSubmit(Request $request)
+    public function step_four(Request $request)
     {
-        // Create Barear Token
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
-            'grant_type' => 'password',
-            'username'   => 'tayyabshahzad@sublimesolutions.org',
-            'password'   => 'x0A1PGhevtkJu4qeXBXF',
-            'audience'   => 'https://fortressapi.com/api',
-            'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+      
+        $request->validate([
+            'external_account' => 'required',
+            'investment_amount' => 'required',
+            'offer_id'=>'required',
         ]);
-        $response_json =  json_decode((string) $response->getBody(), true);
-        if($response->successful()){
-            
-            $upgrade_existing_l0 = Http::withToken($response_json['access_token'])->
-            withHeaders(['Content-Type' => 'application/json'])->
-            get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.Auth::user()->fortress_personal_identity);
-            $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
-            if($upgrade_existing_l0->successful()){
-               //dd($upgrade_existing_l0->status());
-                return response([
-                    'status'=>$upgrade_existing_l0->status(),
-                    'data'=>$json_upgrade_existing_l0,
-                ]);
-            }   
-        }else{
-           
+        $user = User::where('id', Auth::user()->id)->first();
+        $offer = Offer::where('id',$request->offer_id)->first();
+        $external_account = $request->external_account;
+        $offer_id = $request->offer_id;
+        $investment_amount = $request->investment_amount;
+        return view('investment.step-4-payment_method',compact('offer','external_account','offer_id','investment_amount','user'));
+    }
+    public function step_five(Request $request){
+     
+        $request->validate([
+            'external_account' => 'required',
+            'investment_amount' => 'required',
+            'offer_id'=>'required',
+        ]);
+        
+        $user = User::where('id', Auth::user()->id)->first();
+        $offer = Offer::where('id',$request->offer_id)->first();
+        $external_account = $request->external_account;
+        $offer_id = $request->offer_id;
+        $investment_amount = $request->investment_amount;
+      
+        return view('investment.step-5-e-sign',compact('offer','external_account','offer_id','investment_amount','user'));
+    }
+    public function e_template(Request $request){
+        
+        $e_sign = Http::get('https://esignatures.io/api/templates?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5');
+        $json_e_sign = json_decode((string) $e_sign->getBody(), true);
+        if($e_sign->successful()){
             return response([
-                'status'=>false,
-                'message'=>ucfirst($response_json['error']),
+                'status'=> true,
+                'data'=>$json_e_sign
             ]);
         }
-       dd(1);
-        // Create Identity Container
-        // dd($response_json['access_token']);
-       //dd($request->documents);
-      
-         
-         // Create Custodial Account
-         $custodial_accounts = Http::withToken($response_json['access_token'])->withHeaders([
-            'accept' => 'application/json',
-            'content-type' => 'application/*+json',
-        ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
-            'type' => $request->account_type,
-            'personalIdentityId' => $response_json_2['personalIdentity'],
-            //'businessIdentityId' => '',
-        ]);
-        $response_json_3 =  json_decode((string) $custodial_accounts->getBody(), true);
-        dd($response_json_3);
-
-        //Testing ACH In Sandbox
-
-
-
-
-
-
-
-
-
-        //dd($response_json['access_token']);
-        //dd($response_json);
-//         $curl = curl_init();
-
-// curl_setopt_array($curl, array(
-//   CURLOPT_URL => 'https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/e5f46c21-efea-414f-9aae-61e7c16bf05c/documents',
-//   CURLOPT_RETURNTRANSFER => true,
-//   CURLOPT_ENCODING => '',
-//   CURLOPT_MAXREDIRS => 10,
-//   CURLOPT_TIMEOUT => 0,
-//   CURLOPT_FOLLOWLOCATION => true,
-//   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//   CURLOPT_CUSTOMREQUEST => 'POST',
-//   CURLOPT_POSTFIELDS => array('DocumentType' => 'license','DocumentFront'=> new CURLFILE($fileContent),'DocumentBack'=> new CURLFILE('/path/to/file'),'SelfPortrait'=> new CURLFILE('/path/to/file')),
-//   CURLOPT_HTTPHEADER => array(
-//     'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlYycEtyLTlQUGotRVFLR1d4cV8yMiJ9.eyJodHRwczovL2ZvcnRyZXNzYXBpLmNvbS9vcmdhbml6YXRpb25faWQiOiI3YzZmMzhlMC1lMGJkLTQ3NDYtOGI3Ny03OWU5MTFjOTE5OGEiLCJpc3MiOiJodHRwczovL2ZvcnRyZXNzLXNhbmRib3gudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYzYWNhMjlmZmYxOTZmZjcxZWZmNDc5MSIsImF1ZCI6Imh0dHBzOi8vZm9ydHJlc3NhcGkuY29tL2FwaSIsImlhdCI6MTY3MzAzMDM5MywiZXhwIjoxNjczMDMzOTkzLCJhenAiOiJwWTZYb1Z1Z2sxd0NZWXNpaVB1SjV3ZXFNb05ValhibiIsImd0eSI6InBhc3N3b3JkIn0.h5cWtXTSSJgweT-EcEpF19PNLjWyENXzEjJBqA2NUW-cXBmmoUwYpfPxmORi1Yrm6LrogMX9rVGp2lTdOPWhRai9C7a4YuW315uPvReR-9yIuAk3wt4lAWwDAU_sXKzhY2uRiDdYHb-0U1jixhZ3HkAdK8ZpUdvohsxUaPZmEkCgRQIJ2DzaWcITOqR5PB_qb49M3_UMHow6vW2RKpAviS1XDMO-ed1BA4hdlihlIdfyuC4Po3nhuN8Yk1OBxmMd6-y_Xx7Bf-spKaNfKFUrPoO_gD4eh7iao3KM9dLwHcjBl8dc99OznUE-pxJvXCzWCQWzVJ78SEizt_gaVAuskg'
-//   ),
-// ));
-
-// $response = curl_exec($curl);
-
-// curl_close($curl);
-// echo $response;
-
-         // dd($response_json);
-        //     $firstName = $request->first_name;
-        //     $middle_name = $request->middle_name;
-        //     $last_name = $request->last_name;
-        //     $phone = $request->phone;
-        //     $dob =  Carbon::parse($request->dob)->format('Y-m-d');
-        //     $email = Auth::user()->email;
-        //     $street1 = $request->address;
-        //     $street2 = $request->address;
-        //     $postalCode = $request->zip;
-        //     $city = $request->city;
-        //     $state = $request->state;
-        //     $country = $request->nationality;
-        //     $ssn = $request->primary_contact_social_security;
-
-        // $identity_containers = Http::withToken($response_json['access_token'])->withHeaders([
-        //     'Content-Type' => 'application/json',
-        // ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/identity-containers', [
-        //     'firstName' => 'Jhon-3110',
-        //     'middleName' => 'Jhon',
-        //     'lastName' => 'Doi',
-        //     'phone' => '+929019729989',
-        //     'email' => 'jqJP01@gmail.com.com ',
-        //     'dateOfBirth' => '1992-09-12',
-        //     'ssn' => '172-69-4912',
-        //     'address.street1' => 'Islamabad',
-        //     'address.street2' => 'Islamabad',
-        //     'address.postalCode' => '44000',
-        //     'address.city' => 'RWP',
-        //     'address.state' => 'Punjab',
-        //     'address.' => 'PK',
-        // ]);
-        //  $response_json_2 =  json_decode((string) $identity_containers->getBody(), true);
-        //  dd($response_json_2);
-
-
-
-
-  
-
+        
+    }
+    public function kyc_checking(Request $request)
+    {
+        
+        try{
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+                'grant_type' => 'password',
+                'username'   => 'tayyabshahzad@sublimesolutions.org',
+                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+                'audience'   => 'https://fortressapi.com/api',
+                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+            ]);
+            $response_json =  json_decode((string) $response->getBody(), true);
+            if($response->successful()){ 
+                $upgrade_existing_l0 = Http::withToken($response_json['access_token'])->
+                withHeaders(['Content-Type' => 'application/json'])->
+                get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.Auth::user()->fortress_personal_identity);
+                $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
+                if($upgrade_existing_l0->successful()){
+                   //dd($upgrade_existing_l0->status());
+                    return response([
+                        'status'=>$upgrade_existing_l0->status(),
+                        'data'=>$json_upgrade_existing_l0,
+                    ]);
+                }   
+            }else{ 
+                return response([
+                    'status'=>false,
+                    'message'=>ucfirst($response_json['error']),
+                ]);
+            } 
+        }catch(Exception $error){
+            return response([
+                'status'=>false,
+                'message'=>'Internal Server Error',
+            ]);
+        }
 
        
+        
+        
+       
     }
+    public function save(Request $request)
+    {
+      
+        $request->validate([
+            'offer_id' => 'required',
+            'external_account' => 'required',
+            'investment_amount'=> 'required',
+            'templates'=> 'required'
+        ]);
+      
+        $offer = Offer::with('user')->findOrFail($request->offer_id);  
+        try{
+            $get_token = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+                'grant_type' => 'password',
+                'username'   => 'tayyabshahzad@sublimesolutions.org',
+                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+                'audience'   => 'https://fortressapi.com/api',
+                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+            ]); 
+            $token_json =  json_decode((string) $get_token->getBody(), true); 
+        }catch(Exception $error){
+           return redirect()->route('dashboard');
+        }
+     
+       
+        
+        try{
+            DB::beginTransaction();
+            $custodial_account = Custodial::where('offer_id', $request->offer_id)->first(); 
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://api.sandbox.fortressapi.com/api/trust/v1/payments',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => '{
+                "source": {
+                    "externalAccountId": "'.$request->external_account.'"
+                },
+                "destination": {
+                    "custodialAccountId": "'.$custodial_account->custodial_id.'"
+                },
+                "comment": "Offering Payment",
+                "funds": '.$request->investment_amount.'
+                }',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer '.$token_json['access_token'],
+                    'Content-Type: application/json'
+                ),
+            ));
+            $response_ach = curl_exec($curl);
+            curl_close($curl);
+            $json_response_ach = json_decode($response_ach); 
+    
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://esignatures.io/api/contracts?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS =>'{
+            "template_id":"'.$request->templates.'",
+            "title":"Loan Agreement - Saver package",
+            "metadata":"ID0001",
+            "locale":"en",
+            "test":"no",
+            "custom_webhook_url":"https://google.com",
+            "signers":[
+                {
+                    "name":"'.$offer->user->name.'",
+                    "email":"'.$offer->user->email.'",
+                    "mobile":"'.$offer->user->phone.'",
+                    "company_name":"Investor Company",
+                "signing_order":"1",
+                "auto_sign":"no",
+                "signature_request_delivery_method":"email",
+                "signed_document_delivery_method":"email",
+                "required_identification_methods":[
+                    "email",
+                    "sms"
+                ],
+                    "redirect_url":"https://your-website.com/aftersign",
+                    "embedded_redirect_iframe_only":"no"
+                },
+                {
+                    "name":"'. Auth::user()->name .'",
+                    "email":"'.Auth::user()->email.'",
+                    "mobile":"'.Auth::user()->phone.'",
+                    "company_name":"Issuer Company",
+                    "signing_order":"1",
+                    "auto_sign":"no",
+                    "signature_request_delivery_method":"email",
+                    "signed_document_delivery_method":"email",
+                    "required_identification_methods":[
+                        "email",
+                        "sms"
+                    ],
+                "redirect_url":"https://your-website.com/aftersign",
+                "embedded_redirect_iframe_only":"no"
+            }
+            ],
+            "placeholder_fields":[
+                {
+                    "api_key":"interest_rate",
+                    "value":"3.2%"
+                },
+                {
+                    "api_key":"floor-plan",
+                    "document_elements":[
+                        {
+                        "type":"image",
+                        "image_base64":"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P4v5ThPwAG7wKklwQ/bwAAAABJRU5ErkJggg=="
+                        }
+                    ]
+                }
+            ],
+            "signer_fields":[
+                {
+                    "signer_field_id":"preferred_term",
+                    "default_value":"15 years"
+                }
+            ],
+            "emails":{
+                "signature_request_subject":"Your document is ready to sign",
+                "signature_request_text":"Hi __FULL_NAME__, \\n\\n To review and sign the contract please press the button below \\n\\n Kind Regards",
+                "final_contract_subject":"Your document is signed",
+                "final_contract_text":"Hi __FULL_NAME__, \\n\\n Your document is signed.\\n\\nKind Regards",
+                "cc_email_addresses":[
+                    "tom@email.com",
+                    "francis@email.com"
+                ],
+                "reply_to":"support@customdomain.com"
+            },
+            "custom_branding":{
+                "company_name":"WhiteLabel LLC",
+                "logo_url":"https://online-logo-store.com/yourclient-logo.png"
+            }
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+            ));
+            
+            $response = curl_exec($curl);
+            curl_close($curl); 
+            $order = new Order();
+            $order->offer_id = $offer->id;
+            $order->investor_id = Auth::user()->id;
+            $order->total = $request->investment_amount;
+            $order->currency = $json_response_ach->currency;
+            $order->type = $json_response_ach->type;
+            $order->payment_method = 'wire';
+            $order->e_sign = 'incomplete';
+            $order->status = 'pending';
+            $order->save();
 
+            $db_transaction = new Transaction;
+            $db_transaction->order_id = $order->id;
+            $db_transaction->offer_id = $offer->id;
+            $db_transaction->investor_id = Auth::user()->id;
+            $db_transaction->funds =$request->investment_amount;
+            $db_transaction->kyc_status = '---';
+            $db_transaction->status = 'will-set';
+            $db_transaction->type = $json_response_ach->type;
+            $db_transaction->payment_method = 'wire';
+            $db_transaction->e_sign = 'incomplete'; 
+            $db_transaction->transaction_id = $json_response_ach->id;   
+            $db_transaction->source_identityId = $json_response_ach->source->identityId;
+            $db_transaction->source_externalAccountId = $json_response_ach->source->externalAccountId; 
+            $db_transaction->destination_identityId = $json_response_ach->destination->identityId;
+            $db_transaction->destination_custodialAccountId = $json_response_ach->destination->custodialAccountId; 
+            $db_transaction->comment = $json_response_ach->comment;
+            $db_transaction->funds = $json_response_ach->funds;
+            $db_transaction->currency = $json_response_ach->currency;
+            $db_transaction->save(); 
+            DB::commit(); 
+             return redirect()->route('dashboard')->with('success','Investment Has Been Completed');
+        }catch(Exception $error){ 
+            DB::rollBack();
+            return redirect()->route('dashboard')->with('error','Internal Server Error');
+        }
+        
+
+
+    }
 
 
     public function verify_identity(Request $request)

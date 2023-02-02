@@ -60,18 +60,6 @@
                         <li class="breadcrumb-item">
                             <li class="breadcrumb-item text-muted">Make Investment</li>
                         </li>
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <li class="breadcrumb-item text-muted"> Account Type </li>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <li class="breadcrumb-item text-muted"> Verify Identity </li>
-                        </li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -92,12 +80,12 @@
                             <!--begin::Nav-->
                             <div class="stepper-nav mb-5">
                                 <!--begin::Step 1-->
-                                <div class="stepper-item  " data-kt-stepper-element="nav">
+                                <div class="stepper-item " data-kt-stepper-element="nav">
                                     <h3 class="stepper-title">Account Type</h3>
                                 </div>
                                 <!--end::Step 1-->
                                 <!--begin::Step 2-->
-                                <div class="stepper-item current" data-kt-stepper-element="nav">
+                                <div class="stepper-item" data-kt-stepper-element="nav">
                                     <h3 class="stepper-title"> Verify Identity </h3>
                                 </div>
                                 <!--end::Step 2-->
@@ -107,7 +95,7 @@
                                 </div>
                                 <!--end::Step 3-->
                                 <!--begin::Step 4-->
-                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                <div class="stepper-item current" data-kt-stepper-element="nav">
                                     <h3 class="stepper-title"> Payment Method </h3>
                                 </div>
                                 <!--end::Step 4-->
@@ -123,44 +111,132 @@
                             </div>
                             <!--end::Nav-->
                             <!--begin::Form-->
-                            <div class="mx-auto mw-1000px w-100 pt-6 pb-10 fv-plugins-bootstrap5 fv-plugins-framework" id="">
+                            <div class="mx-auto mw-1000px w-100 pt-6 pb-10 fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" id="kt_create_account_form">
                                
-                                <div > 
+                                
+								<div class="current" data-kt-stepper-element="content"> 
                                     <div class="w-100"> 
                                         <h5  class="fw-bold d-flex align-items-center text-dark" >
-                                            VERIFY IDENTITY
-                                        </h5> 
-                                        <div class="text-muted fw-semibold fs-7">
-                                            ChainRaise has implemented this verification step to stay legally compliant with KYC/AML (Know Your Customer/Anti-Money Laundering) regulations. This is an additional measure to ensure against accepting fraudulent contributions. All investors must complete the KYC/AML form before making any investments through ChainRaise.
-                                        </div> 
-
-                                        <div class="d-flex flex-stack pt-15">
-                                    
-                                            <div class=" row">
-                                                <div class="col-lg-12 text-right">
-
-                                                    <a href="{{ route('invest.verify.identity') }}" class="btn btn-sm btn-dark no-radius">
-                                                        Account Type
-                                                    </a>
-
-                                                    <a href="{{ route('invest.verify.identity') }}" class="btn btn-sm btn-dark no-radius">
-                                                        Continue 
-                                                        <span class="svg-icon svg-icon-4 ms-1 me-0">
-                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1" transform="rotate(-180 18 13)" fill="currentColor"></rect>
-                                                                <path d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z" fill="currentColor"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!--end::Wrapper-->
-                                        </div>
-                                       
+											PAYMENT METHOD
+                                        </h5>  
+                                       <div class="row">
+											<div class="col-lg-12">
+												<div class="row">
+													<div class="col-lg-2">
+														<img src="{{  $offer->getFirstMediaUrl('banner_image', 'thumb') }}" 
+														class="img img-thumbnail img-circle"
+														alt="">
+													</div>
+													<div class="col-lg-8">
+														<strong class="text-dark">
+															{{ $offer->name }}
+														</strong>
+														 
+														<p class="fw-normal">
+															{{ $offer->short_description }}
+														</p>
+														<p class="fw-normal text-success">
+                                                            {{ $offer->size }} {{ $offer->base_currency }}
+														</p>
+													</div>
+													<div class="col-lg-2">
+														Transaction Summary
+														<br>
+														<b>
+                                                            ${{ $investment_amount }}
+														</b>
+													</div>
+												</div>
+                                                <form action="{{ route('invest.step.five') }}" method="post" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="type" value="investor" />
+                                                    <input type="hidden" name="external_account" value="{{ $external_account }}" />
+                                                    <input type="hidden" name="investment_amount" value="{{ $investment_amount }}" />
+                                                    <input type="hidden" name="offer_id" value="{{ $offer_id }}" />
+												<div class="row"> 
+													<div class="col-lg-12">
+														<label class="form-check form-check-custom me-10  mb-5">
+															<input class="form-check-input h-20px w-20px" type="checkbox" name="bypass_account_setup" required>
+															&nbsp;&nbsp;
+															<span class="mat-checkbox-label"><span style="display: none">&nbsp;</span>By checking this box, I,
+																the investor, acknowledge
+																that I have reviewed the
+																Issuer's
+																<a _ngcontent-nlk-c373="" target="_blank" href="https://www.sec.gov/cgi-bin/browse-edgar?CIK=0001927195&amp;owner=exclude">Form C and Disclosure
+																	Materials</a>, as well as the
+																<a _ngcontent-nlk-c373="" target="_blank" href="https://chainraise.io/wp-content/uploads/2022/09/NEW-Educational-Materials-ChainRaise-Portal-LLC-9_28_22.docx.pdf">educational
+																	materials</a>
+																provided on the Portal,
+																understood the risks that
+																come with investing in
+																issuing companies on the
+																Portal, and acknowledge that
+																my entire investment may be
+																lost and I will be
+																financially and
+																psychologically fine if it
+																is. I understand that the
+																decision whether to consult
+																a professional advisor
+																regarding my investment is
+																my decision and that the
+																Portal does not offer any
+																investment advice or
+																suggestions.</span>
+														</label>
+														<label class="form-check form-check-custom me-10 mb-5 ">
+															<input class="form-check-input h-20px w-20px" type="checkbox" required name="bypass_account_setup">
+															&nbsp;&nbsp;
+															<span class="mat-checkbox-label"><span style="display: none">&nbsp;</span>
+																By checking this box, I, the
+																investor, acknowledge that I
+																understand I can cancel my
+																investment commitment up to
+																48 hours before the offer's
+																closing deadline. If I have
+																made a commitment within
+																this 48-hour window, I
+																cannot cancel my
+																investment.</span>
+														</label>
+														<label class="form-check form-check-custom me-10 mb-5">
+															<input class="form-check-input h-20px w-20px" type="checkbox" required name="bypass_account_setup">
+															&nbsp;&nbsp;
+															<span class="mat-checkbox-label"><span style="display: none">&nbsp;</span>
+																By checking this box, I, the
+																investor, acknowledge that
+																the securities are subject
+																to transfer restrictions and
+																that I have reviewed and
+																understood these transfer
+																restrictions as provided in
+																the Portal's .</span>
+														</label>
+														<label class="form-check form-check-custom me-10 mb-5">
+															<input class="form-check-input h-20px w-20px" type="checkbox" required name="bypass_account_setup">
+															&nbsp;&nbsp;
+															<span class="mat-checkbox-label"><span style="display: none">&nbsp;</span>
+																By checking this box, I, the
+																investor, acknowledge that I
+																have provided truthful and
+																accurate representations of
+																the documents and
+																information requested by the
+																Portal.</span>
+														</label>
+													</div>
+                                                    <div class="col-lg-12 " style="text-align: right">
+                                                            <button type="submit" class="btn btn-sm btn-dark no-radius">
+                                                                Next
+                                                            </button>
+                                                    </div> 
+												</div>
+                                                </form>
+											</div>
+									   </div>
                                     </div> 
-                                </div> 
-                                
-                                
+                                </div>
+                                 
                                 <!--end::Actions-->
                             </div>
                             <!--end::Form-->
@@ -201,7 +277,7 @@
 					$('.notice').removeClass('d-none');
 				}
 			});
-			 
+			$('.nationality').val('{{ $user->identityVerification->nationality  }}')
 			 
 		 </script>
 		 <script>

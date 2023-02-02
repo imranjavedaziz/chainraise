@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use CURLFile;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client; 
 use GuzzleHttp\Psr7\Utils; 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Request;
+
 class TestController extends Controller
 {
+
+    public function message()
+    {
+        return view('email.message');
+    }
+
+    public function message_send(Request $request)
+    {
+        
+        return redirect()->route('messss')
+        ->withSuccess('You have no permission for this page!');
+         
+    }
     public function upload_doc()
     {
        

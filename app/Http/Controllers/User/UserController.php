@@ -94,8 +94,7 @@ class UserController extends Controller
         $offers = Offer::get();
         $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id)->get();
         $folders = Folder::where('user_id',$id)->get();
-        
-         $investors = User::role('investor')->get();
+        $investors = User::role('investor')->get();
         return view('user.details',compact('user','accreditations','offers','childs','id','folders','investors'));
     }
     public function getChilds(Request $request){
@@ -810,6 +809,7 @@ class UserController extends Controller
     }
     public function templateSave(Request $request)
     {
+        
         $request->validate([
             'template' => 'required',
             'offer' => 'required',
@@ -817,7 +817,7 @@ class UserController extends Controller
         ]);
         $investor = User::find($request->investor);
         $issuer =Auth::user();
- 
+       
         try{
             $curl = curl_init();
             curl_setopt_array($curl, array(
@@ -869,54 +869,53 @@ class UserController extends Controller
                 "redirect_url":"https://your-website.com/aftersign",
                 "embedded_redirect_iframe_only":"no"
             }
-        ],
-        "placeholder_fields":[
-            {
-                "api_key":"interest_rate",
-                "value":"3.2%"
-            },
-            {
-                "api_key":"floor-plan",
-                "document_elements":[
-                    {
-                    "type":"image",
-                    "image_base64":"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P4v5ThPwAG7wKklwQ/bwAAAABJRU5ErkJggg=="
-                    }
-                ]
-            }
-        ],
-        "signer_fields":[
-            {
-                "signer_field_id":"preferred_term",
-                "default_value":"15 years"
-            }
-        ],
-        "emails":{
-            "signature_request_subject":"Your document is ready to sign",
-            "signature_request_text":"Hi __FULL_NAME__, \\n\\n To review and sign the contract please press the button below \\n\\n Kind Regards",
-            "final_contract_subject":"Your document is signed",
-            "final_contract_text":"Hi __FULL_NAME__, \\n\\n Your document is signed.\\n\\nKind Regards",
-            "cc_email_addresses":[
-                "tom@email.com",
-                "francis@email.com"
             ],
-            "reply_to":"support@customdomain.com"
-        },
-        "custom_branding":{
-            "company_name":"WhiteLabel LLC",
-            "logo_url":"https://online-logo-store.com/yourclient-logo.png"
-        }
-        }',
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json'
-        ),
-        ));
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-        return "OK";
+            "placeholder_fields":[
+                {
+                    "api_key":"interest_rate",
+                    "value":"3.2%"
+                },
+                {
+                    "api_key":"floor-plan",
+                    "document_elements":[
+                        {
+                        "type":"image",
+                        "image_base64":"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2P4v5ThPwAG7wKklwQ/bwAAAABJRU5ErkJggg=="
+                        }
+                    ]
+                }
+            ],
+            "signer_fields":[
+                {
+                    "signer_field_id":"preferred_term",
+                    "default_value":"15 years"
+                }
+            ],
+            "emails":{
+                "signature_request_subject":"Your document is ready to sign",
+                "signature_request_text":"Hi __FULL_NAME__, \\n\\n To review and sign the contract please press the button below \\n\\n Kind Regards",
+                "final_contract_subject":"Your document is signed",
+                "final_contract_text":"Hi __FULL_NAME__, \\n\\n Your document is signed.\\n\\nKind Regards",
+                "cc_email_addresses":[
+                    "tom@email.com",
+                    "francis@email.com"
+                ],
+                "reply_to":"support@customdomain.com"
+            },
+            "custom_branding":{
+                "company_name":"WhiteLabel LLC",
+                "logo_url":"https://online-logo-store.com/yourclient-logo.png"
+            }
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+            ));
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return redirect()->back()->with('success','E-Sign request has been sent');
         }catch(Exception $error){
-            return "Error" ;        
+            return redirect()->back()->with('error','Error while sending E-Sign');
         } 
         //echo $response;
 

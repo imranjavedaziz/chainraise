@@ -10,7 +10,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::get();
+        $transactions = Transaction::with('offer','user')->get();
         return view('transaction.index',compact('transactions'));
     }
 }

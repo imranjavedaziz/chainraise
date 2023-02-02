@@ -34,27 +34,39 @@
                 </div>
                 <div class="card-body">
                     <!--begin: Datatables-->
-                    <table class="table table-sm" id="organizations-table">
+                    <table class="table" id="organizations-table">
                         <thead>
                             <tr>
                                 <th>S#</th>
-                                <th>Id</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>KYC</th>
+                                <th>Status</th>
                                 <th>Type</th>
-                                <th>Currency</th>
-                                <th>Funds</th>
-                                <th>Created At</th>
+                                <th>Payment Method</th>
+                                <th>E-Sign</th> 
+                                <th> Action </th>
                             </tr>
                         </thead>
                         <tbody>
                             
                             @foreach($transactions as $transaction)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td> {{ $transaction->transaction_id }}</td>
-                                <td> {{ $transaction->type }}</td>
-                                <td> {{ $transaction->currency }}</td>
-                                <td> {{ $transaction->funds }}</td>
-                                <td> {{ $transaction->created_at }}</td>
+                                 <td> {{ $loop->iteration }} </td>
+                                 <td> {{ $transaction->user->name }} </td>
+                                 <td> {{ $transaction->offer->name }} </td>
+                                 <td> {{ $transaction->funds }} </td>
+                                 <td> {{ $transaction->created_at }} </td>
+                                 <td> {{ $transaction->kyc_status }} </td>
+                                 <td> {{ $transaction->status }} </td>
+                                 <td> {{ $transaction->type }} </td>
+                                 <td> {{ $transaction->payment_method }} </td>
+                                 <td> {{ $transaction->e_sign }} </td> 
+                                 <td>   
+                                    <i class="fa fa-edit"></i>
+                                </td> 
                             </tr>
                             @endforeach
                     

@@ -142,11 +142,9 @@
                                             <form data-action="{{ route('invest.kyc.submit') }}" method="post"
                                                 id="kyc_form" enctype="multipart/form-data">
                                                 @csrf
-                                                <input type="hidden" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
+                                                <input type="" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
                                                 <!--begin::Label-->
-                                                <label class="required fw-semibold fs-6 mb-5">Account Type</label>
-                                                <!--end::Label-->
-                                                <!--begin::Row-->
+                                                <label class="required fw-semibold fs-6 mb-5">Account Type</label>  
                                                 <div class="row row-cols-1 row-cols-md-2 g-5">
                                                     <div class="col">
                                                         <input type="radio" class="btn-check" name="account_type"
@@ -179,9 +177,7 @@
                                                             </span>
                                                         </label>
                                                         <!--end::Option-->
-                                                    </div>
-                                                    <!--end::Col-->
-                                                    <!--begin::Col-->
+                                                    </div> 
                                                     <div class="col">
                                                         <!--begin::Option-->
                                                         <input type="radio" class="btn-check" name="account_type"
@@ -216,9 +212,9 @@
                                                             </span>
                                                         </label>
                                                         <!--end::Option-->
-                                                    </div>
-                                                    <!--end::Col-->
+                                                    </div> 
                                                 </div>
+                                            </form>
                                                 <!--end::Row-->
                                         </div>
                                         <!--end::Input group-->
@@ -246,7 +242,7 @@
                                                     <h5 class="d-flex align-items-center text-dark fw-normal mb-4">
                                                         CONTACT INFORMATION
                                                     </h5>
-                                                    <input type="hidden" name="type" value="investor" />
+                                                    <input type="" name="type" value="investor" />
                                                     <div class="row">
                                                         <div class="col-lg-12" style="text-align:left;">
                                                             <div class="row mb-4 text-left">

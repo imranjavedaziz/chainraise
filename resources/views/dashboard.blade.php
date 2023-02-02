@@ -115,6 +115,16 @@
             @endhasrole
             @hasrole('investor')
                     <div class="container">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    
                         @foreach($offers as $offer)
                             <div class="row mb-15">
                                 <div class="col-lg-12 offering_row" >
