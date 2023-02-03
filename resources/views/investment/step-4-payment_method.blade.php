@@ -147,7 +147,7 @@
 														</b>
 													</div>
 												</div>
-                                                <form action="{{ route('invest.step.five') }}" method="post" enctype="multipart/form-data">
+                                                <form action="{{ route('invest.step.five') }}" method="get" enctype="multipart/form-data">
                                                     @csrf
                                                     <input type="hidden" name="type" value="investor" />
                                                     <input type="hidden" name="external_account" value="{{ $external_account }}" />

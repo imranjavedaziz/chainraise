@@ -37,12 +37,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
     Route::get('make', ['as' => 'make','uses' => 'MakeInvestmentController@make']);
-    Route::post('submit', ['as' => 'submit','uses' => 'MakeInvestmentController@submitInvestment']);
-    Route::post('step/two', ['as' => 'step.two','uses' => 'MakeInvestmentController@step_two']);
+    Route::get('submit', ['as' => 'submit','uses' => 'MakeInvestmentController@submitInvestment']);
+    Route::get('step/two', ['as' => 'step.two','uses' => 'MakeInvestmentController@step_two']);
     Route::get('check/kyc', ['as' => 'check.kyc','uses' => 'MakeInvestmentController@kyc_checking']);
-    Route::post('step/three', ['as' => 'step.three','uses' => 'MakeInvestmentController@step_three']);
-    Route::post('step/four', ['as' => 'step.four','uses' => 'MakeInvestmentController@step_four']);
-    Route::post('step/five', ['as' => 'step.five','uses' => 'MakeInvestmentController@step_five']);
+    Route::get('step/three', ['as' => 'step.three','uses' => 'MakeInvestmentController@step_three']);
+    Route::get('step/four', ['as' => 'step.four','uses' => 'MakeInvestmentController@step_four']);
+    Route::get('step/five', ['as' => 'step.five','uses' => 'MakeInvestmentController@step_five']);
     Route::get('step/six/e/template', ['as' => 'step.six.e.template','uses' => 'MakeInvestmentController@e_template']);
     Route::post('save', ['as' => 'save','uses' => 'MakeInvestmentController@save']);
 
@@ -131,6 +131,9 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('view/{id}', ['as' => 'view','uses' => 'OfferController@view']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
     Route::post('check/custodial', ['as' => 'check.custodial','uses' => 'OfferController@checkCustodial']);
+    Route::get('policy', ['as' => 'policy','uses' => 'OfferController@policy']);
+    Route::post('policy/create', ['as' => 'policy.create','uses' => 'OfferController@policyCreate']);
+    Route::post('policy/delete', ['as' => 'policy.delete','uses' => 'OfferController@policyDelete']);
 });
 
 Route::group(['as'=> 'organizations.','prefix' => 'organizations','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Organizations'], function () {

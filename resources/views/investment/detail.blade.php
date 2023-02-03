@@ -214,7 +214,7 @@
                 </div> 
                 <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
                     <div class="mb-10">
-                        <form action="{{ route('invest.submit') }}" method="post" id="investForm">
+                        <form action="{{ route('invest.submit') }}" method="get" id="investForm">
                             @csrf
                             <input type="hidden" name="offer_id" value="{{ $offer->id }}"> 
                             <h4 class="fs-5 fw-semibold text-gray-800"> Enter Amount to Invest </h4>

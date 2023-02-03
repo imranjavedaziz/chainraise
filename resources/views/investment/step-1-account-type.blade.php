@@ -71,6 +71,12 @@
                         <li class="breadcrumb-item">
                         <li class="breadcrumb-item text-muted">Make Investment</li>
                         </li>
+                        <li class="breadcrumb-item">
+                            <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <li class="breadcrumb-item text-muted"> Account Type </li>
+                        </li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -124,7 +130,7 @@
                             <!--end::Nav-->
                             <!--begin::Form-->
                             <div class="mx-auto mw-1000px w-100 pt-6 pb-10 fv-plugins-bootstrap5 fv-plugins-framework"  novalidate="novalidate" id="kt_create_account_form">
-                                <form action="{{ route('invest.step.two') }}" method="post"  enctype="multipart/form-data">
+                                <form action="{{ route('invest.step.two') }}" method="get"  enctype="multipart/form-data">
                                 @csrf
                                     <div class="current" data-kt-stepper-element="content">
                                         <div class="w-100">
@@ -140,9 +146,9 @@
                                             </div>
                                             <div class="mb-10">
             
-                                                    <input type="hidden" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
-                                                    <input type="hidden" name="offer_id"   value="{{ $offer->id }}">
-                                                    <input type="hidden" name="investment_amount" id="investment_amount" value="{{ $investment_amount }}">
+                                                    <input type="" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
+                                                    <input type="" name="offer_id"   value="{{ $offer->id }}">
+                                                    <input type="" name="investment_amount" id="investment_amount" value="{{ $investment_amount }}">
                                                     
                                                     <!--begin::Label-->
                                                     <label class="required fw-semibold fs-6 mb-5">Account Type</label>  

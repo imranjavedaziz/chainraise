@@ -123,7 +123,7 @@
                                                 CF) offerings </a> on any platform in the past 12 months (including
                                             ChainRaise)?
                                         </div>
-                                        <form method="post" enctype="multipart/form-data" action="{{ route('invest.step.four')}}">
+                                        <form method="get" enctype="multipart/form-data" action="{{ route('invest.step.four')}}">
                                             @csrf
                                             <input type="hidden" name="type" value="investor" />
                                             <input type="hidden" name="external_account" value="{{ $external_account }}" />

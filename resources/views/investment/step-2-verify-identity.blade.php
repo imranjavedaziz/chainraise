@@ -124,7 +124,7 @@
                             <!--end::Nav-->
                             <!--begin::Form-->
                             <div class="mx-auto mw-1000px w-100 pt-6 pb-10 fv-plugins-bootstrap5 fv-plugins-framework" id="">
-                                <form action="{{ route('invest.step.three') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('invest.step.three') }}" method="get" enctype="multipart/form-data">
                                     @csrf
                                     <div class="current"data-kt-stepper-element="content">
                                         <div class="w-100">

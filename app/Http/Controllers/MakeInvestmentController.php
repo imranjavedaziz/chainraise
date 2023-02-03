@@ -139,7 +139,7 @@ class MakeInvestmentController extends Controller
     }
     public function step_two(Request $request)
     { 
-        
+      
         $request->validate([
             'external_account' => 'required',
             'offer_id' => 'required',
@@ -149,7 +149,6 @@ class MakeInvestmentController extends Controller
         $external_account = $request->external_account;
         $offer_id = $request->offer_id;
         $investment_amount = $request->investment_amount;
-       
         return view('investment.step-2-verify-identity',compact('external_account','offer_id','investment_amount','user'));
     }
      public function step_three(Request $request)

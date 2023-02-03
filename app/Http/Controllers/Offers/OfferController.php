@@ -538,4 +538,15 @@ class OfferController extends Controller
         }
     }
 
+    public function policy(){
+        return view('offers.policy');
+    }
+    public function policyDelete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        dd(1);
+    }
+
 }

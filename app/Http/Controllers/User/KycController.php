@@ -53,6 +53,7 @@ class KycController extends Controller
                 'lastName' => $user->userDetail->last_name,
                 'phone' =>  $user->phone,
                 'email' => $user->email,
+                'ssn' => $user->identityVerification->primary_contact_social_security,
                 'dateOfBirth' => "1990-09-02",
                 'address.street1' => $user->userDetail->address,
                 'address.street2' => '-',

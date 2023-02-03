@@ -145,6 +145,13 @@
                                 </span>
                                 <span class="menu-title"> Active </span>
                             </a>
+
+                            <a class="menu-link" href="{{ route('offers.policy') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title"> Policies </span>
+                            </a>
                             <!--end:Menu link-->
                         </div>
                         @hasrole('admin')
