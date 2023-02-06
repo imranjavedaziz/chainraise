@@ -27,6 +27,7 @@ class MakeInvestmentController extends Controller
 
     public function make()
     {
+        //
         $user = User::with('userDetail', 'identityVerification')->find(Auth::user()->id);
         return view('investment.make', compact('user'));
     }
