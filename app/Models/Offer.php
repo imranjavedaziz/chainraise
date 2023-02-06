@@ -42,6 +42,10 @@ class Offer extends Model  implements HasMedia
     {
         return $this->hasOne(Display::class);
     }
+    public function investmentSteps()
+    {
+        return $this->hasMany(InvestmentStep::class);
+    }
 
   
 

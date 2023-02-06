@@ -104,6 +104,11 @@
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Recurring Investment </span> 
                             </div>
                         </div>
+                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Investment Limits">
+                            <div class="align-items-center border border-dashed border-primary   px-7 py-3"> 
+                                <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Investment Limits </span> 
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <!--end:Form-->

@@ -8,6 +8,7 @@ use App\Models\CallToAction;
 use App\Models\Custodial;
 use App\Models\Display;
 use App\Models\InvestmentRestrication;
+use App\Models\InvestmentStep;
 use App\Models\KYC;
 use App\Models\Offer;
 use App\Models\OfferContact;
@@ -63,6 +64,7 @@ class OfferController extends Controller
             //'min_invesment'=>'required',
             //'max_invesment'=>'required'
         ]);
+        //dd($request);
         $get_token = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
@@ -94,19 +96,28 @@ class OfferController extends Controller
             $Offer->feature_video  = $request->feature_video_url;
             $Offer->issuer_id =  $request->issuer;
             $Offer->name =              $request->offer_name;
-            $Offer->short_description =              $request->short_description;
-            $Offer->security_type =              $request->security_type;
-            $Offer->symbol =              $request->symbol;
-            $Offer->size =              $request->size;
-            $Offer->size_label =              $request->size_label;
-            $Offer->base_currency =              $request->base_currency;
-            $Offer->price_per_unit =              $request->price_per_unit;
-            $Offer->share_unit_label =              $request->share_unit_label;
-            $Offer->total_valuation =              $request->total_valuation;
-            $Offer->commencement_date =              $request->commencement_date;
-            $Offer->funding_end_date =              $request->funding_end_date;
+            $Offer->short_description =  $request->short_description;
+            $Offer->security_type =    $request->security_type;
+            $Offer->symbol =      $request->symbol;
+            $Offer->size =        $request->size;
+            $Offer->size_label =    $request->size_label;
+            $Offer->base_currency =   $request->base_currency;
+            $Offer->price_per_unit =   $request->price_per_unit;
+            $Offer->share_unit_label =    $request->share_unit_label;
+            $Offer->total_valuation =     $request->total_valuation;
+            $Offer->commencement_date =   $request->commencement_date;
+            $Offer->funding_end_date =   $request->funding_end_date;
             $Offer->status =              'active' ;
             if($Offer->save()) {
+                $priority = 0;
+                foreach($request->investment_setups as $setup ){
+                    $priority ++;
+                    $investmentStep = new InvestmentStep;
+                    $investmentStep->offer_id = $Offer->id;
+                    $investmentStep->title = $setup;
+                    $investmentStep->priority = $priority;
+                    $investmentStep->save();
+                }
                 $user = User::find($request->issuer);
                 $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
                     'Content-Type' => 'application/json',
@@ -337,13 +348,15 @@ class OfferController extends Controller
                     }
 
                 }
+                // Investor FLow 
                 
+               
                 DB::commit();
                 return redirect()->route('offers.active.index')->with('success','Offer has been created successfully');
             }
             
         }catch(Exception $error){
-            dd($error);
+           // dd($error);
             return redirect()->back()->with('error','Error while creating offer');
         }
     }
@@ -541,6 +554,15 @@ class OfferController extends Controller
     public function policy(){
         return view('offers.policy');
     }
+
+    public function policyCreate(Request $request){
+        
+        $request->validate([
+            'content' => 'required',
+        ]);
+        
+    }
+
     public function policyDelete(Request $request)
     {
         $request->validate([

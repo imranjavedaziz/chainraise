@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountGUID;
 use App\Models\Custodial;
 use App\Models\ExternalAccount;
+use App\Models\InvestmentStep;
 use App\Models\MemberGuid;
 use App\Models\Offer;
 use App\Models\Order;
@@ -31,18 +32,22 @@ class MakeInvestmentController extends Controller
     }
     public function detail($id)
     {
+        $key = $_ENV['MAIL_USERNAME'] = 'tayyy';
+        $key2 = $_ENV['MAIL_USERNAME'];
+        dd($key2);
         $offer = Offer::with('investmentRestrictions')->find($id);
         return view('investment.detail', compact('offer'));
     }
     public function submitInvestment(Request $request)
     {
-       
         $request->validate([
             'offer_id' => 'required',
             'investment_amount' => 'integer',
         ]);
         $investment_amount = $request->investment_amount;
-        $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail')->find($request->offer_id);
+        $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
+        find($request->offer_id);
+        $investment_step = InvestmentStep::where('offer_id',$offer->id)->where('priority',1)->first();
         $user = User::where('id', Auth::user()->id)->first();
         $fortress_personal_identity = Auth::user()->fortress_personal_identity;
         $fortress_id = Auth::user()->fortress_id;
@@ -135,7 +140,27 @@ class MakeInvestmentController extends Controller
                 'accountNumberLast4' => $json_external_acc['accountNumberLast4']
             ]
         );
-        return view('investment.step-1-account-type', compact('offer', 'user','external_account','investment_amount'));
+
+        // Check Next Step 
+        $top_nav =  $offer->investmentSteps;
+        if($investment_step->title == 'Select Account Type'){
+            return view('investment.step-1-account-type', compact('top_nav','offer', 'user','external_account','investment_amount'));
+        }
+        if($investment_step->title == 'Complete Account Form'){
+            return view('investment.step-2-verify-identity', compact('top_nav','offer', 'user','external_account','investment_amount'));
+        }
+        if($investment_step->title == 'Accreditation'){
+            return view('investment.step-1-account-type', compact('top_nav','offer', 'user','external_account','investment_amount'));
+        }
+        if($investment_step->title == 'E-Sign Document'){
+            return view('investment.step-1-account-type', compact('top_nav','offer', 'user','external_account','investment_amount'));
+        }
+        if($investment_step->title == 'Payment Method'){
+            return view('investment.step-1-account-type', compact('top_nav','offer', 'user','external_account','investment_amount'));
+        }
+
+        
+       
     }
     public function step_two(Request $request)
     { 
@@ -149,7 +174,10 @@ class MakeInvestmentController extends Controller
         $external_account = $request->external_account;
         $offer_id = $request->offer_id;
         $investment_amount = $request->investment_amount;
-        return view('investment.step-2-verify-identity',compact('external_account','offer_id','investment_amount','user'));
+        $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
+        find($request->offer_id);
+        $top_nav =  $offer->investmentSteps;
+        return view('investment.step-2-verify-identity',compact('external_account','offer','investment_amount','user','top_nav'));
     }
      public function step_three(Request $request)
     { 

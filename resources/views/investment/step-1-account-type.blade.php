@@ -98,34 +98,11 @@
                             <!--begin::Nav-->
                             <div class="stepper-nav mb-5">
                                 <!--begin::Step 1-->
-                                <div class="stepper-item current" data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title">Account Type</h3>
-                                </div>
-                                <!--end::Step 1-->
-                                <!--begin::Step 2-->
-                                <div class="stepper-item verify_identity_tab " data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title"> Verify Identity </h3>
-                                </div>
-                                <!--end::Step 2-->
-                                <!--begin::Step 3-->
-                                <div class="stepper-item" data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title"> Investment Limits </h3>
-                                </div>
-                                <!--end::Step 3-->
-                                <!--begin::Step 4-->
-                                <div class="stepper-item" data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title"> Payment Method </h3>
-                                </div>
-                                <!--end::Step 4-->
-                                <!--begin::Step 5-->
-                                <div class="stepper-item connect_bank" data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title">Connect Bank</h3>
-                                </div>
-
-                                {{-- <div class="stepper-item" data-kt-stepper-element="nav">
-                                    <h3 class="stepper-title"> Sign Subscription Agreement and Token Grant </h3>
-                                </div> --}}
-                                <!--end::Step 5-->
+                                @foreach($top_nav as $nav)
+                                    <div class="stepper-item " data-kt-stepper-element="nav">
+                                        <h3 class="stepper-title"> {{ $nav->title }} </h3>
+                                    </div>
+                                @endforeach
                             </div>
                             <!--end::Nav-->
                             <!--begin::Form-->
@@ -146,9 +123,9 @@
                                             </div>
                                             <div class="mb-10">
             
-                                                    <input type="" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
-                                                    <input type="" name="offer_id"   value="{{ $offer->id }}">
-                                                    <input type="" name="investment_amount" id="investment_amount" value="{{ $investment_amount }}">
+                                                    <input type="hidden" name="external_account" id="external_account" value="{{ $external_account->external_account_id }}">
+                                                    <input type="hidden" name="offer_id"   value="{{ $offer->id }}">
+                                                    <input type="hidden" name="investment_amount" id="investment_amount" value="{{ $investment_amount }}">
                                                     
                                                     <!--begin::Label-->
                                                     <label class="required fw-semibold fs-6 mb-5">Account Type</label>  

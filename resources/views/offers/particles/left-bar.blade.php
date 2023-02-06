@@ -157,12 +157,12 @@
                                 <div class="row investment_step_button_row">
                                     <div class="col-lg-12  text-center button_row_wrapper">
                                         <div class="overflow-auto pb-1">
-                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                            <div class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white">
                                                <span class="col-lg-10 text-left"> Select Account Type  </span>
                                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                                             </div>
                                         </div> 
-                                        <input type="hidden" name="investment_setup[]" value="Select Account Type">
+                                        <input type="hidden" name="investment_setups[]" value="Select Account Type">
                                     </div>
                                     <div class="col-lg-12  text-center button_row_wrapper">
                                         <div class="overflow-auto pb-1">
@@ -171,7 +171,7 @@
                                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="investment_setup[]" value="Complete Account Form">
+                                        <input type="hidden" name="investment_setups[]" value="Complete Account Form">
                                     </div>
                                     <div class="col-lg-12  text-center button_row_wrapper">
                                         <div class="overflow-auto pb-1">
@@ -180,7 +180,7 @@
                                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                                             </div>
                                         </div> 
-                                        <input type="hidden" name="investment_setup[]" value="Accreditation">
+                                        <input type="hidden" name="investment_setups[]" value="Accreditation">
                                     </div>
                                     <div class="col-lg-12  text-center button_row_wrapper">
                                         <div class="overflow-auto pb-1">
@@ -189,7 +189,7 @@
                                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="investment_setup[]" value="E-Sign Document">
+                                        <input type="hidden" name="investment_setups[]" value="E-Sign Document">
                                     </div>
                                     <div class="col-lg-12  text-center button_row_wrapper">
                                         <div class="overflow-auto pb-1">
@@ -198,7 +198,7 @@
                                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="investment_setup[]" value="Payment Method">
+                                        <input type="hidden" name="investment_setups[]" value="Payment Method">
                                     </div>
                                 </div>
                             </div>

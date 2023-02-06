@@ -679,7 +679,7 @@
                             <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                         </div>
                     </div>
-                    <input type="hidden" name="investment_setup[]" value="` + content + `">
+                    <input type="hidden" name="investment_setups[]" value="` + content + `">
                 </div>
             `);
         });

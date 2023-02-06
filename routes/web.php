@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('mailTrap', [TestController::class, 'mailTrap'])->name('mailTrap');
 Route::get('message', [TestController::class, 'message'])->name('messss');
 Route::post('message-sent', [TestController::class, 'message_send']);
 Route::get('view-email-1', [TestController::class, 'email_signup']);

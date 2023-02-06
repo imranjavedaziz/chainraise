@@ -16,6 +16,13 @@ class TestController extends Controller
         return view('email.message');
     }
 
+    public function mailTrap()
+    {
+        return view('email.mailTrap');
+    }
+
+    
+
     public function message_send(Request $request)
     {
         

@@ -58,7 +58,10 @@
                     
                     <div class="card-toolbar ">
                         
-                        <button type="button" class="btn btn-sm  btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                        <button type="button" class="btn btn-sm  btn-color-primary btn-active-light-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#modal-policy-create"
+                        >
                             <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
                             <span class="svg-icon svg-icon-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
@@ -86,45 +89,46 @@
                             
                             <div class="card-body p-0">
                                 <!--begin::Table-->
-                                <div id="kt_inbox_listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="table-responsive"><table class="table table-hover table-row-dashed fs-6 gy-5 my-0 dataTable no-footer" id="kt_inbox_listing"> 
-                                    <tbody> 
-                                        <tr class="odd">
+                                <div id="kt_inbox_listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-row-dashed fs-6 gy-5 my-0 dataTable no-footer" id="kt_inbox_listing"> 
+                                        <tbody> 
+                                            <tr class="odd">
+                                                    <td class="ps-9"> 
+                                                        S #
+                                                    </td> 
+                                                    <th class="ps-9 fw-bold"> 
+                                                    Title
+                                                    </th> 
+
+                                                    <th class="ps-9 fw-bold"> 
+                                                    Action
+                                                    </th>  
+                                            </tr>  
+                                        
+                                            <tr class="odd">
+                                                <td class="ps-9">
+                                                    1
+                                                </td>
                                                 <td class="ps-9"> 
-                                                    S#
-                                                </td> 
-                                                <th class="ps-9 fw-bold"> 
-                                                Title
-                                                </th> 
+                                                    wewewewew
+                                                    wewewewew wewewewew wewewewew wewewewew wewewewew
+                                                </td>
+                                                <td class="ps-9">
+                                                    <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
+                                                        <i class="la la-trash fs-3 text-danger"></i>
+                                                    </a>
 
-                                                <th class="ps-9 fw-bold"> 
-                                                Action
-                                                </th>  
-                                        </tr>  
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>
-                                                wewewewew
-                                                wewewewew wewewewew wewewewew wewewewew wewewewew
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
-                                                    <i class="la la-trash fs-3 text-danger"></i>
-                                                </a>
+                                                    <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
+                                                        <i class="la la-edit fs-3 text-warning"></i>
+                                                    </a>
 
-                                                <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
-                                                    <i class="la la-edit fs-3 text-warning"></i>
-                                                </a>
-
-                                                <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
-                                                    <i class="la la-eye fs-3 text-info"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                                    <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser" data-id="5">
+                                                        <i class="la la-eye fs-3 text-info"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tb    ody>
                                     <!--end::Table body-->
                                 </table>
                             </div>
@@ -145,23 +149,27 @@
     </div>
 </div> 
 
-<div class="modal fade" id="policy_create" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal-policy-create" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px"> 
-        <div class="modal-content rounded">
-            <!--begin::Modal header-->
-            <div class="modal-header pb-0 border-0 justify-content-end">   </div> 
-            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15"> 
-                    <div class="row mt-3">
-                        <div class="col-lg-12 form-group">
-                            <input type="text"  class="form-control video_url" placeholder="Enter Feature Video URL">
+        <div class="modal-content rounded"> 
+            <form action="{{ route('offers.policy.create')}}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body scroll-y px-10 px-lg-15 pt-10 pb-15"> 
+                        <h3>
+                            Policy
+                        </h3>
+                        <div class="row mt-3">
+                            <div class="col-lg-12 form-group">
+                                <textarea type="text"  class="form-control" name="content" placeholder="Policy Content" required></textarea>
+                            </div> 
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-12 form-group">
+                                <button class="btn btn-sm btn-dark no-radius" type="submit"  > Add Policy </button>
+                            </div> 
                         </div> 
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-lg-12 form-group">
-                            <button class="btn btn-sm btn-dark add_feature_video_btn" type="button" data-bs-dismiss="modal" > Add Feature Video </button>
-                        </div> 
-                    </div> 
-            </div> 
+                </div>
+            </form>
         </div> 
     </div> 
 </div>
@@ -186,6 +194,8 @@
         </div> 
     </div> 
 </div>
+
+
 
 
 @endsection
