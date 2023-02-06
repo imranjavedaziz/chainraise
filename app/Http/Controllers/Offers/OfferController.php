@@ -17,13 +17,21 @@ use App\Models\OfferTiles;
 use App\Models\OfferVideos;
 use App\Models\Organization;
 use App\Models\User;
+use App\Repositories\Interfaces\OfferRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use App\Repositories\Interfaces\RegCFRepositoryInterface;
 class OfferController extends Controller
 {
+    private $RegCFRepository;
+    private $offerRepository;
+    public function __construct(RegCFRepositoryInterface $RegCFRepository, OfferRepositoryInterface $offerRepository)
+    {
+        $this->RegCFRepository = $RegCFRepository;
+        $this->offerRepository = $offerRepository;
+    }
     public function active_index()
     {
         $issuers = User::role('issuer')->get();
@@ -346,6 +354,15 @@ class OfferController extends Controller
                             $fileAdder->toMediaCollection('offer_detail_images');
                         });
                     }
+                    $data = [
+                        'offer_id' => $Offer->id,
+                        'url_educational_materials' => 'url_educational_materials',
+                        'url_issuer_form_c' => 'url_issuer_form_c',
+                        'status' => 'active',
+                    ];
+                     
+                    $this->RegCFRepository->storeRegCF($data);
+                    dd(1);
 
                 }
                 // Investor FLow 
@@ -356,7 +373,7 @@ class OfferController extends Controller
             }
             
         }catch(Exception $error){
-           // dd($error);
+            dd($error);
             return redirect()->back()->with('error','Error while creating offer');
         }
     }

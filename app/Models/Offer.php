@@ -10,6 +10,24 @@ class Offer extends Model  implements HasMedia
 {
     use HasFactory,InteractsWithMedia;
 
+    protected $fillable = [
+        'issuer_id',
+        'name',
+        'short_description',
+        'security_type',
+        'symbol',
+        'size',
+        'size_label',
+        'base_currency',
+        'price_per_unit',
+        'share_unit_label',
+        'total_valuation',
+        'commencement_date',
+        'funding_end_date',
+        'status',
+        'feature_video',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class,'issuer_id');

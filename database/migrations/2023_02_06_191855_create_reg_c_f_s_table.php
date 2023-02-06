@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payment_policies', function (Blueprint $table) {
+        Schema::create('reg_c_f_s', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('offer_id');
+            $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
+            $table->string('url_educational_materials');
+            $table->string('url_issuer_form_c');
+            $table->enum('status',['active','inactive']);
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_policies');
+        Schema::dropIfExists('reg_c_f_s');
     }
 };

@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\OfferRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
-
+use App\Repositories\Interfaces\RegCFRepositoryInterface;
+use App\Repositories\OfferRepository;
+use App\Repositories\RegCFRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(RegCFRepositoryInterface::class, RegCFRepository::class);
+        $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
     }
 
     /**
