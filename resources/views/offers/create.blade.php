@@ -703,9 +703,9 @@
                         <small class="text-left" style="text-align:left">
                             <label class="required"> Select Template </label>
                             <select class="form-control" style="height:42px;font-size:13px">
-                                @foreach($templates as $template)    
-                                    <option> 33 </option>
-                                @endforeach
+                                  
+                                    <option> Upload Soon </option>
+                                
                             </select>
                         </small>
                         <input type="hidden" name="investment_setups[]" value="` + content + `">

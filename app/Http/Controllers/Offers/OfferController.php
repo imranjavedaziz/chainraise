@@ -363,8 +363,7 @@ class OfferController extends Controller
                         'url_educational_materials' => 'url_educational_materials',
                         'url_issuer_form_c' => 'url_issuer_form_c',
                         'status' => 'active',
-                    ];
-                     
+                    ]; 
                     $this->RegCFRepository->storeRegCF($data);
                     
 
