@@ -172,34 +172,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="investment_setups[]" value="Complete Account Form">
-                                    </div>
-                                    <div class="col-lg-12  text-center button_row_wrapper">
-                                        <div class="overflow-auto pb-1">
-                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                               <span class="col-lg-10 text-left"> Accreditation  </span>
-                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
-                                            </div>
-                                        </div> 
-                                        <input type="hidden" name="investment_setups[]" value="Accreditation">
-                                    </div>
-                                    <div class="col-lg-12  text-center button_row_wrapper">
-                                        <div class="overflow-auto pb-1">
-                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                               <span class="col-lg-10 text-left">  E-Sign Document  </span>
-                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="investment_setups[]" value="E-Sign Document">
-                                    </div>
-                                    <div class="col-lg-12  text-center button_row_wrapper">
-                                        <div class="overflow-auto pb-1">
-                                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                                               <span class="col-lg-10 text-left">  Payment Method  </span>
-                                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="investment_setups[]" value="Payment Method">
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
                        

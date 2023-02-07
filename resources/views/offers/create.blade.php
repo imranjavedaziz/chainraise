@@ -82,6 +82,7 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container">
                 <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post" id="create_offer_form"> @csrf
+                    
                     <div class="row">
                         @include('offers.particles.left-bar')
                         <div class="col-lg-9">
@@ -671,17 +672,60 @@
     <script>
         $('.add_investment_button_section').click(function() {
             var content = $(this).data('content');
-            $('.investment_step_button_row').append(`
-                <div class="col-lg-12  text-center button_row_wrapper">
-                    <div class="overflow-auto pb-1">
-                        <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
-                            <span class="col-lg-10 text-left"> ` + content + ` </span>
-                            <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+            alert(content);
+           if(content == 'Income Verification (Reg CF)'){
+                $('.investment_step_button_row').append(`
+                    <div class="col-lg-12  text-center button_row_wrapper">
+                        <div class="overflow-auto pb-1">
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                <span class="col-lg-10 text-left"> ` + content + ` </span>
+                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                            </div>
                         </div>
+                        <small class="text-left" style="text-align:left">
+                            <label class="required"> Educational Materials </label>
+                            <input type="" name="url_educational_materials[]" value="https://www.google.com" class="mt-3 form-control no-radius" style="height:33px;font-size:13px" required>
+                            <label class="required"> Issuer Form C </label>
+                            <input type="" name="url_issuer_form_c[]" value="https://www.google.com" class="mt-3 form-control no-radius" style="height:33px;font-size:13px" required>
+                        </small>
+                        <input type="hidden" name="investment_setups[]" value="` + content + `">
                     </div>
-                    <input type="hidden" name="investment_setups[]" value="` + content + `">
-                </div>
-            `);
+                `);
+           }else if(content == 'E-Sign Document'){
+                $('.investment_step_button_row').append(`
+                    <div class="col-lg-12  text-center button_row_wrapper">
+                        <div class="overflow-auto pb-1">
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                <span class="col-lg-10 text-left"> ` + content + ` </span>
+                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                            </div>
+                        </div>
+                        <small class="text-left" style="text-align:left">
+                            <label class="required"> Select Template </label>
+                            <select class="form-control" style="height:42px;font-size:13px">
+                                @foreach($templates as $template)    
+                                    <option> 33 </option>
+                                @endforeach
+                            </select>
+                        </small>
+                        <input type="hidden" name="investment_setups[]" value="` + content + `">
+                    </div>
+                `);
+           }else{
+                $('.investment_step_button_row').append(`
+                    <div class="col-lg-12  text-center button_row_wrapper">
+                        <div class="overflow-auto pb-1">
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                <span class="col-lg-10 text-left"> ` + content + ` </span>
+                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="investment_setups[]" value="` + content + `">
+                    </div>
+                `);
+           }
+          
+                
         });
     </script>
     <script>

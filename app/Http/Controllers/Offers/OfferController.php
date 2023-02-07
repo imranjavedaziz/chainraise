@@ -23,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Repositories\Interfaces\RegCFRepositoryInterface;
+use Illuminate\Contracts\Session\Session;
+
 class OfferController extends Controller
 {
     private $RegCFRepository;
@@ -57,11 +59,13 @@ class OfferController extends Controller
     }
     public function create()
     {
+        $templates = '';
         $issuers = User::role('issuer')->get(); 
-        return view('offers.create',compact('issuers'));
+        return view('offers.create',compact('issuers','templates'));
     }
     public function save(Request $request)
     {
+        
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',
@@ -362,7 +366,7 @@ class OfferController extends Controller
                     ];
                      
                     $this->RegCFRepository->storeRegCF($data);
-                    dd(1);
+                    
 
                 }
                 // Investor FLow 

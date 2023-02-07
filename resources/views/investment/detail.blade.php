@@ -228,7 +228,7 @@
                                 <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" alt="" class="img img-thumbnail" style="width:100px">
                             </div>
                             <label for="" class="text-danger text-">
-                               $ {{ $offer->investmentRestrictions->min_invesment}} minimum
+                               $ {{ $offer->investmentRestrictions->min_invesment}} minimum  -> $ {{ $offer->investmentRestrictions->max_invesment}} maximum
                             </label>
                         </form>
                         <!--end::Title-->
@@ -255,8 +255,9 @@
                 }
                 if($('.investment_amount').val() < {{ $offer->investmentRestrictions->min_invesment}}){
                     toastr.error("Enter Atlest minimum amount", "Error");
+                }else if($('.investment_amount').val() > {{ $offer->investmentRestrictions->max_invesment}}){
+                    toastr.error("Amount is greater then max amount", "Error");
                 }else{
-                   
                     $( "#investForm" )[0].submit();   
                     $('.hide_on_submit').addClass('d-none');
                     $('.show_on_submit').removeClass('d-none');
