@@ -653,11 +653,11 @@
     <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
     @if (Session::has('success') or Session::has('error'))
         <script>
-            @if (Session::has('success'))
-                toastr.success("{{ Session::get('success') }}", "Success");
+            @if (session('success'))
+                toastr.success("{{ session('success') }}", "Success");
             @endif
-            @if (Session::has('error'))
-                toastr.error("{{ Session::get('error') }}", "Error");
+            @if (session('error'))
+                toastr.error("{{ session('error') }}", "Error");
             @endif
         </script>
     @endif

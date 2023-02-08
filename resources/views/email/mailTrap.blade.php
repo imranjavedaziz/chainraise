@@ -10,9 +10,11 @@
     
  
 
-
+    @if (Session::has('xx')))
+    @dd(1)
+    @endif
     
-    
+    ss
     <form action="message-sent" method="post">
         @csrf
         <h1> Set Mail Trap Varaibles </h1>

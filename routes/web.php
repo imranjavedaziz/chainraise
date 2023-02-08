@@ -5,9 +5,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\MakeInvestmentController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Route::get('mailTrap', [TestController::class, 'mailTrap'])->name('mailTrap');
 Route::get('message', [TestController::class, 'message'])->name('messss');
 Route::post('message-sent', [TestController::class, 'message_send']);
@@ -30,7 +34,19 @@ Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_lo
 Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
+Route::get('login-social', [FrontendController::class, 'socialLogin'])->name('login.social');
 Route::get('otp', [GeneralController::class, 'otp'])->name('otp');
+
+Route::get('login/google', [App\Http\Controllers\SocialiteController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [App\Http\Controllers\SocialiteController::class, 'handleGoogleCallback']);
+
+
+Route::get('login/google', [App\Http\Controllers\SocialiteController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('login/google/callback', [App\Http\Controllers\SocialiteController::class, 'handleGoogleCallback']);
+
+Route::get('login/facebook', [App\Http\Controllers\SocialiteController::class, 'redirectToFacebook'])->name('login.facebook');
+Route::get('login/facebook/callback', [App\Http\Controllers\SocialiteController::class, 'handleFacebookCallback']);
+
 
 Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
  

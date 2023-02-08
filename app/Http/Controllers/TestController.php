@@ -13,11 +13,13 @@ class TestController extends Controller
 
     public function message()
     {
+
         return view('email.message');
     }
 
     public function mailTrap()
     {
+        
         return view('email.mailTrap');
     }
 
@@ -26,8 +28,8 @@ class TestController extends Controller
     public function message_send(Request $request)
     {
         
-        return redirect()->route('messss')
-        ->withSuccess('You have no permission for this page!');
+        return redirect('mailTrap')->with('xx','manan');
+      
          
     }
     public function upload_doc()

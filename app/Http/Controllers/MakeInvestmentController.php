@@ -27,13 +27,14 @@ class MakeInvestmentController extends Controller
 
     public function make()
     {
-        //
         $user = User::with('userDetail', 'identityVerification')->find(Auth::user()->id);
         return view('investment.make', compact('user'));
     }
     public function detail($id)
     {
-         
+        $key = $_ENV['MAIL_USERNAME'] = 'tayyy';
+        $key2 = $_ENV['MAIL_USERNAME'];
+       // dd($key2);
         $offer = Offer::with('investmentRestrictions')->find($id);
         return view('investment.detail', compact('offer'));
     }
