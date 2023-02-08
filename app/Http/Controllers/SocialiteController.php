@@ -36,7 +36,7 @@ class SocialiteController extends Controller
             $user->assignRole('investor');
         }
         Auth::login($user);
-        event(new Registered($user));
+        //event(new Registered($user));
         return redirect()->route('dashboard');
     }
 
@@ -48,26 +48,26 @@ class SocialiteController extends Controller
     // Google callback
     public function handleFacebookCallback()
     {
-        $google_data = Socialite::driver('facebook')->user();
-        $user = User::where('email', '=', $google_data->email)->first();
+        $faceBook = Socialite::driver('facebook')->user();
+        $user = User::where('email', '=', $faceBook->email)->first();
         if (!$user) {
             $user = new User();
-            $user->name = $google_data->name;
-            $user->email = $google_data->email;
+            $user->name = $faceBook->name;
+            $user->email = $faceBook->email;
             $user->email_verified_at = Carbon::now();
             $user->password = 'Google@123';
             $user->phone = 'Google@123';
             $user->agree_consent_electronic = false;
             $user->status = 'active';
             $user->is_primary = 'yes';
-            $user->social_id = $google_data->id;
+            $user->social_id = $faceBook->id;
             $user->social_type = 'google';
             $user->save();
-            $user->addMediaFromUrl($google_data->avatar)->toMediaCollection('profile_photo');
+            $user->addMediaFromUrl($faceBook->avatar)->toMediaCollection('profile_photo');
             $user->assignRole('investor');
         }
         Auth::login($user);
-        event(new Registered($user));
+       // event(new Registered($user));
         return redirect()->route('dashboard');
     }
 

@@ -28,8 +28,8 @@ return [
     ], 
 
     'facebook' => [
-        'client_id' => '1104528113341035',
-        'client_secret' => '88c3dabe7599d8e975a500bbf4dbdd3d',
+        'client_id' => '1600777097062911',
+        'client_secret' => '110fa51eadb59f8993d82c30a03a62cf',
         'redirect' => 'https://beta.chainraise.info/manage/login/facebook/callback',
     ], 
 
