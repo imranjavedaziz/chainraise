@@ -24,7 +24,7 @@ return [
     'google' => [
         'client_id' => '267275484890-dabde5ler61qd3lpa4k2t7ft2e0fga3d.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'http://127.0.0.1:8000/login/google/callback',
+        'redirect' => 'ttps://beta.chainraise.info/manage/login/google/callback',
     ], 
 
     'facebook' => [
