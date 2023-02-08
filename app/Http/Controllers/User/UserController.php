@@ -168,14 +168,14 @@ class UserController extends Controller
       
         try {
             $user = User::find($request->id);
-            Mail::to($user)->send(new InvestorAccountDelete($user));
+            //Mail::to($user)->send(new InvestorAccountDelete($user));
             if ($user->delete()) {
                 return response([
                     'status' => true,
                     'message' => 'User has been deleted successfully'
                 ]);
             }
-            Mail::to($user)->send(new InvestorAccountDelete($user));
+            //Mail::to($user)->send(new InvestorAccountDelete($user));
         } catch (Exception $error) {
             return response([
                 'status' => false,
@@ -293,8 +293,8 @@ class UserController extends Controller
             }
             
             DB::commit();
-             event(new Registered($user));
-             Mail::to($user)->send(new WelcomeEmail($user));
+             //event(new Registered($user));
+             //Mail::to($user)->send(new WelcomeEmail($user));
             return redirect()->route('user.index')->with('success','New investor user has been created');
         }catch(Exception $error){
             return $error;
@@ -616,12 +616,15 @@ class UserController extends Controller
             $user->name  = $request->first_name;
             $user->email  = $request->email;
             $user->phone  = $request->phone_number;
+            $user->phone  = Carbon::now();
             if($request->has('password') && $request->password != null){
                 $user->password  =  Hash::make($request->password);
             }
             if($request->has('email_verified')){
                 $user->email_verified_at = Carbon::now();
             }
+            $user->email_verified_at = Carbon::now();
+            $user->phone  = Carbon::now();
             $user->status  = 'active';
             $user->parent_id = $request->parent_id;
             $user->is_primary = 'no';

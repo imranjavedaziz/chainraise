@@ -65,9 +65,7 @@ class OfferController extends Controller
     }
     public function save(Request $request)
     {
-       dd(Session::all());
-        return redirect()->back()->withSuccess('kkkakkak');
-        dd(1);
+       
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',

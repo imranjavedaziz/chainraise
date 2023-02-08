@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\CanResetPassword;
  
-class User extends Authenticatable  implements HasMedia ,MustVerifyEmail
+class User extends Authenticatable  implements HasMedia 
 { 
     
     use HasApiTokens, HasFactory, Notifiable, HasRoles,InteractsWithMedia;

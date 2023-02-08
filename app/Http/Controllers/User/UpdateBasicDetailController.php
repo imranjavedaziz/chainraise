@@ -216,7 +216,7 @@ class UpdateBasicDetailController extends Controller
         $user_count = count($users);
         foreach($users as $user){
             $user = User::find($user);
-            Mail::to($user)->send(new SendInvite($request->content,$request->from_email,$request->from_email));
+            //Mail::to($user)->send(new SendInvite($request->content,$request->from_email,$request->from_email));
         }
         return response([
             'status'=>true,
