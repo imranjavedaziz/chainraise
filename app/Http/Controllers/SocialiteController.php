@@ -19,7 +19,9 @@ class SocialiteController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         $code = $request->get('code');
-        dd($code);
+        if($code == null){
+            return redirect()->route('login.social');
+        }
         $google_data = Socialite::driver('google')->user();
         $user = User::where('email', '=', $google_data->email)->first();
         if (!$user) {
@@ -52,7 +54,9 @@ class SocialiteController extends Controller
     public function handleFacebookCallback(Request $request)
     {
         $code = $request->get('code');
-        dd($code);
+        if($code == null){
+            return redirect()->route('login.social');
+        }
         $faceBook = Socialite::driver('facebook')->user();
         $user = User::where('email', '=', $faceBook->email)->first();
         if (!$user) {
