@@ -58,28 +58,30 @@ class SocialiteController extends Controller
         dd($code);
         if($code == null){
             return redirect()->route('login.social');
+        }else{
+            $faceBook = Socialite::driver('facebook')->user();
+            $user = User::where('email', '=', $faceBook->email)->first();
+            if (!$user) {
+                $user = new User();
+                $user->name = $faceBook->name;
+                $user->email = $faceBook->email;
+                $user->email_verified_at = Carbon::now();
+                $user->password  =  Hash::make('Google@123'); 
+                $user->phone = '0000-000-00';
+                $user->agree_consent_electronic = false;
+                $user->status = 'active';
+                $user->is_primary = 'yes';
+                $user->social_id = $faceBook->id;
+                $user->social_type = 'google';
+                $user->save();
+                $user->addMediaFromUrl($faceBook->avatar)->toMediaCollection('profile_photo');
+                $user->assignRole('investor');
+            }
+            Auth::login($user);
+        // event(new Registered($user));
+            return redirect()->route('dashboard');
         }
-        $faceBook = Socialite::driver('facebook')->user();
-        $user = User::where('email', '=', $faceBook->email)->first();
-        if (!$user) {
-            $user = new User();
-            $user->name = $faceBook->name;
-            $user->email = $faceBook->email;
-            $user->email_verified_at = Carbon::now();
-            $user->password  =  Hash::make('Google@123'); 
-            $user->phone = '0000-000-00';
-            $user->agree_consent_electronic = false;
-            $user->status = 'active';
-            $user->is_primary = 'yes';
-            $user->social_id = $faceBook->id;
-            $user->social_type = 'google';
-            $user->save();
-            $user->addMediaFromUrl($faceBook->avatar)->toMediaCollection('profile_photo');
-            $user->assignRole('investor');
-        }
-        Auth::login($user);
-       // event(new Registered($user));
-        return redirect()->route('dashboard');
+        
     }
 
 }
