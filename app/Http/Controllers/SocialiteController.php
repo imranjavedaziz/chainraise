@@ -55,7 +55,6 @@ class SocialiteController extends Controller
     {
         //
         $code = $request->get('code');
-        dd($code);
         if($code == null){
             return redirect()->route('login.social');
         }else{
