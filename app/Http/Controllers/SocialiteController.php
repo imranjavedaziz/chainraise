@@ -53,6 +53,7 @@ class SocialiteController extends Controller
     // Google callback
     public function handleFacebookCallback(Request $request)
     {
+        //
         $code = $request->get('code');
         dd($code);
         if($code == null){
