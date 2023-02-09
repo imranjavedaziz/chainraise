@@ -21,7 +21,8 @@ class UserDetail extends Model
         'zip',
         'entity_name',
         'legal_formation',
-        'date_incorporation'
+        'date_incorporation',
+        'user_id'
     ];
 
 

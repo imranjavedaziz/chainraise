@@ -208,7 +208,7 @@ class UserController extends Controller
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-
+      
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
@@ -253,7 +253,6 @@ class UserController extends Controller
             'field2'=>'some text',
             'field3'=>'some text'
         ]);
-       
         DB::beginTransaction();
         try{
             $user = new User;
@@ -327,9 +326,6 @@ class UserController extends Controller
             'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-
-   
-      
         DB::beginTransaction();
         try{
             $user = new User;
@@ -399,7 +395,7 @@ class UserController extends Controller
             //'allow_manual_ach_bank_input' => 'required',
 
         ]);
-        
+       
         $user = User::find($request->id);
         $user->name = $request->first_name;
         $user->phone = $request->phone; 
@@ -413,11 +409,11 @@ class UserController extends Controller
             $user->clearMediaCollection('kyc_document');
             $user->addMediaFromRequest('kyc_document')->toMediaCollection('kyc_document_collection');
         }
-      
-
+        
+        
         $userDetails = UserDetail::updateOrCreate(
-            ['user_id' => $request->id],
-            [
+            ['user_id' => $user->id],
+            [ 
              'middle_name' => $request->middle_name,
              'last_name' => $request->last_name,
              'title' => $request->title, 
@@ -428,6 +424,7 @@ class UserController extends Controller
              'state'=> $request->state,'zip'=> $request->zip,'entity_name'=>$request->entity_name
             ]
         );
+       
         $identityVerification = IdentityVerification::updateOrCreate(
             ['user_id' => $request->id],
             [
@@ -438,7 +435,7 @@ class UserController extends Controller
              'country_residence' => $request->country_residence
             ]
         );
-       
+        
 
        
 

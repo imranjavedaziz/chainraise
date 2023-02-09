@@ -60,14 +60,14 @@ class MakeInvestmentController extends Controller
             'audience'   => 'https://fortressapi.com/api',
             'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
         ]);
-        $token_json =  json_decode((string) $get_token->getBody(), true);   
-         
+        $token_json =  json_decode((string) $get_token->getBody(), true);
         if($get_token->failed()){
             return redirect()->back()->with('error','Internal Server Error');
         }
         $url_widget = "https://api.sandbox.fortressapi.com/api/trust/v1/external-accounts/financial/widget-url/".$fortress_personal_identity;
         $widget = Http::withToken($token_json['access_token'])->get($url_widget);
         $json_widget =  json_decode((string) $widget->getBody(), true);
+        dd($json_widget);
         $url_member = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/sandbox/members/".$fortress_personal_identity;
         $member = Http::withToken($token_json['access_token'])->get($url_member);
         $json_member =  json_decode((string) $member->getBody(), true);
@@ -76,33 +76,32 @@ class MakeInvestmentController extends Controller
             return redirect()->back()->with('error','Internal Server Error');
         }
         if($member->successful()){
+            dd($json_member);
             foreach ($json_member['data'] as $data) {
-                if ($data['connectionStatus'] == 'connected') {
-                    MemberGuid::updateOrCreate(
-                        ['user_id' => Auth::user()->id, 'offer_id' => $request->offer_id],
-                        [
-                            'offer_id' => $request->offer_id,
-                            'memberGuid' => $data['memberGuid'],
-                            'name' => $data['name'],
-                            'connectionStatus' => $data['connectionStatus']
-                        ]
-                    );
-                }
+                MemberGuid::updateOrCreate(
+                    ['user_id' => Auth::user()->id, 'offer_id' => $request->offer_id],
+                    [
+                        'offer_id' => $request->offer_id,
+                        'memberGuid' => $data['memberGuid'],
+                        'name' => $data['name'],
+                        'connectionStatus' => $data['connectionStatus']
+                    ]
+                );
             }
         }
        
         $get_guid = MemberGuid::where('offer_id', $request->offer_id)->where('user_id', Auth::user()->id)->first();
-        $connect_guid_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/members/";
-        $connect_guid = Http::withToken($token_json['access_token'])->post(
-            $connect_guid_url,
+        $connect_g_uid_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/members/";
+        $connect_g_uid = Http::withToken($token_json['access_token'])->post(
+            $connect_g_uid_url,
             [
                 'identityId' => $fortress_personal_identity,
                 'memberGuid' => $get_guid->memberGuid,
             ]
         );
-        $json_connect_guid =  json_decode((string) $connect_guid->getBody(), true);
-        if($connect_guid->failed()) {
-            if($connect_guid->status() == 409){
+        $json_connect_g_uid =  json_decode((string) $connect_g_uid->getBody(), true);
+        if($connect_g_uid->failed()) {
+            if($connect_g_uid->status() == 409){
                 $url_account_id = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/accounts/" . $fortress_personal_identity . "/" . $get_guid->memberGuid;
                 $account_id = Http::withToken($token_json['access_token'])->get($url_account_id);
                 $json_account_id =  json_decode((string) $account_id->getBody(), true);
@@ -120,7 +119,7 @@ class MakeInvestmentController extends Controller
                     ['offer_id' => $request->offer_id, 'name' => $json_account_id[0]['name'], 'accountNumberLast4' => $json_account_id[0]['name'], 'accountGuid' => $json_account_id[0]['accountGuid'], 'financialInstitutionName' => $json_account_id[0]['financialInstitutionName'], 'accountType' => $json_account_id[0]['accountType'], 'smallLogoUrl' => $json_account_id[0]['smallLogoUrl'], 'mediumLogoUrl' => $json_account_id[0]['mediumLogoUrl']]
                 );
         }
-
+        dd(1);
         $url_external_acc = "https://api.sandbox.fortressapi.com/api/trust/v1/external-accounts/financial";
         $external_acc = Http::withToken($token_json['access_token'])->post(
             $url_external_acc,

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 class SocialiteController extends Controller
 {
@@ -15,8 +16,10 @@ class SocialiteController extends Controller
         return Socialite::driver('google')->redirect();
     }
     // Google callback
-    public function handleGoogleCallback()
+    public function handleGoogleCallback(Request $request)
     {
+        $code = $request->get('code');
+        dd($code);
         $google_data = Socialite::driver('google')->user();
         $user = User::where('email', '=', $google_data->email)->first();
         if (!$user) {
@@ -24,8 +27,8 @@ class SocialiteController extends Controller
             $user->name = $google_data->name;
             $user->email = $google_data->email;
             $user->email_verified_at = Carbon::now();
-            $user->password = 'Google@123';
-            $user->phone = 'Google@123';
+            $user->password  =  Hash::make('Google@123'); 
+            $user->phone = '0000-000-00';
             $user->agree_consent_electronic = false;
             $user->status = 'active';
             $user->is_primary = 'yes';
@@ -46,8 +49,10 @@ class SocialiteController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
     // Google callback
-    public function handleFacebookCallback()
+    public function handleFacebookCallback(Request $request)
     {
+        $code = $request->get('code');
+        dd($code);
         $faceBook = Socialite::driver('facebook')->user();
         $user = User::where('email', '=', $faceBook->email)->first();
         if (!$user) {
@@ -55,8 +60,8 @@ class SocialiteController extends Controller
             $user->name = $faceBook->name;
             $user->email = $faceBook->email;
             $user->email_verified_at = Carbon::now();
-            $user->password = 'Google@123';
-            $user->phone = 'Google@123';
+            $user->password  =  Hash::make('Google@123'); 
+            $user->phone = '0000-000-00';
             $user->agree_consent_electronic = false;
             $user->status = 'active';
             $user->is_primary = 'yes';
