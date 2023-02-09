@@ -54,6 +54,7 @@ class SocialiteController extends Controller
     public function handleFacebookCallback(Request $request)
     {
         $code = $request->get('code');
+        dd($code);
         if($code == null){
             return redirect()->route('login.social');
         }
