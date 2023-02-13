@@ -125,6 +125,11 @@
                         </div>
                     @endif
                     
+                  
+                    
+                   
+
+                    
                         @foreach($offers as $offer)
                             <div class="row mb-15">
                                 <div class="col-lg-12 offering_row" >
@@ -197,5 +202,28 @@
 
 @endsection
 @section('page_js')
+
+
+    @if(Session::has('success'))
+        @php 
+            $message = (session::get('success'));
+        @endphp 
+        <script> 
+            toastr.success('{{$message}}', "Success");
+        </script>
+      
+    @endif
+
+
+    @if(Session::has('error'))
+        @php 
+            $message = (session::get('error'));
+        @endphp 
+        <script> 
+            toastr.error('{{$message}}', "Error");
+        </script>
+        
+    @endif
+
    
 @endsection

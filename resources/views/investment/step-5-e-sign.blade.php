@@ -144,7 +144,6 @@
     </div>
 
     <div class="modal fade" id="e_sign_model" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
         <div class="modal-dialog mw-650px">
             <!--begin::Modal content-->
             <div class="modal-content">
@@ -189,8 +188,7 @@
             </div>
             <!--end::Modal content-->
         </div>
-        <!--end::Modal dialog-->
-</div>
+    </div>
    
 
 @endsection

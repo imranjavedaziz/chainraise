@@ -80,9 +80,16 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        $offers = Offer::get();
-        $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->get();
-        $issuers = User::role('issuer')->orderby('id','DESC')->get();
+         
+          $offers = Offer::get();
+          $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->
+                  whereHas('roles',function($query){
+                        $query->where('name', '!=', 'admin');
+                  })->get();
+          $issuers = User::role('issuer')->orderby('id','DESC')->get();
+
+      
+        
         return view('user.index',compact('users','offers','issuers'));
     }
     public function details($id)

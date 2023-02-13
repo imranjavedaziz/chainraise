@@ -715,6 +715,54 @@
                         <input type="hidden" name="investment_setups[]" value="` + content + `">
                     </div>
                 `);
+           }else if(content == 'Payment Method'){
+                $('.investment_step_button_row').append(`
+                    <div class="col-lg-12  text-center button_row_wrapper">
+                        <div class="overflow-auto pb-1">
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                                <span class="col-lg-10 text-left"> ` + content + ` </span>
+                                <span class="col-lg-2"> <i class="la la-times"></i>  </span>
+                            </div>
+                        </div>
+                        <br/>
+                        <div id="kt_job_1_1" class="collapse show fs-6 ms-1"> 
+                            <div class="mb-4"> 
+                                <div class="d-flex align-items-center ps-10 mb-n1">
+                                    <!--begin::Bullet-->
+                                    <span class="bullet me-3"></span>
+                                    <!--end::Bullet-->
+                                    <!--begin::Label-->
+                                    <div class="text-gray-600 fw-semibold fs-6">
+                                        <input type="checkbox" name="investment_setups_payment_method[]" value="ach" checked />    ACH
+                                    </div> 
+                                </div> 
+                            </div> 
+                            <div class="mb-4"> 
+                                <div class="d-flex align-items-center ps-10 mb-n1">
+                                    <!--begin::Bullet-->
+                                    <span class="bullet me-3"></span>
+                                    <!--end::Bullet-->
+                                    <!--begin::Label-->
+                                    <div class="text-gray-600 fw-semibold fs-6">
+                                        <input type="checkbox" name="investment_setups_payment_method[]" value="bank-transfer"   /> Bank Transfer
+                                    </div> 
+                                </div> 
+                            </div> 
+                            <div class="mb-4"> 
+                                <div class="d-flex align-items-center ps-10 mb-n1">
+                                    <!--begin::Bullet-->
+                                    <span class="bullet me-3"></span>
+                                    <!--end::Bullet-->
+                                    <!--begin::Label-->
+                                    <div class="text-gray-600 fw-semibold fs-6">
+                                        <input type="checkbox" name="investment_setups_payment_method[]" value="bitcoin"   /> Bitcoin
+                                    </div> 
+                                </div> 
+                            </div> 
+						</div>
+                        <input type="hidden" name="investment_setups[]" value="` + content + `">
+                    </div>
+                `);
            }else{
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
