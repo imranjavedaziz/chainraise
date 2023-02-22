@@ -20,6 +20,10 @@ use Laravel\Socialite\Facades\Socialite;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//----
+
+
+Route::get('ki', [TestController::class, 'mailTrap'])->name('king');
 
 
 Route::get('mailTrap', [TestController::class, 'mailTrap'])->name('mailTrap');

@@ -50,8 +50,8 @@ class RegisteredUserController extends Controller
         ]);
         $user->assignRole('investor');
         event(new Registered($user));
-        return redirect()->route('');
-        //Auth::login($user);
+        //return redirect()->route('dashboard');
+        Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }
