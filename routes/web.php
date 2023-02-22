@@ -23,7 +23,7 @@ use Laravel\Socialite\Facades\Socialite;
 //----
 
 
-Route::get('ki', [TestController::class, 'mailTrap'])->name('king');
+Route::get('ki', [TestController::class, 'mailTrap'])->name('king2');
 
 
 Route::get('mailTrap', [TestController::class, 'mailTrap'])->name('mailTrap');
