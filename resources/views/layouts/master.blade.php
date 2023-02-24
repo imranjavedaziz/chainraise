@@ -10,7 +10,7 @@
   <link rel="icon" type="image/x-icon" href="{{ asset('media/logo/favicon.ico')}}">
   <link rel="stylesheet" href="{{ asset('front-end/css/style.css') }}">
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" /> 
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
   <title> Chain Rasied Portal | @yield('title') </title>
     <style>
         .bg-image {
@@ -21,8 +21,8 @@
         }
     </style>
   @section('page_head')
-  @show 
-  
+  @show
+
 </head>
 
 <body>
@@ -54,7 +54,7 @@
   </div>
 
 
-  
+
   @section('content')
   @show
   <div class="modal fade" id="sign-in-popup" tabindex="-1" aria-labelledby="sign-in-popupLabel" aria-hidden="true">
@@ -70,22 +70,22 @@
             <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                 <a href="{{ route('login.facebook') }}">
                     <i class="fab fa-facebook" style="font-size: 25px;"></i>
-                </a> 
+                </a>
             </div>
             <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
               <a href="{{ route('login.google') }}">
                 <i class="fab fa-google" style="font-size: 25px;"></i>
-              </a>  
-              
+              </a>
+
             </div>
-            
+
           </div>
         </div>
         <div class="container py-3 px-5 ">
           <div class="row justify-content-around">
             <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-                  -------- 
-            </div> 
+                  --------
+            </div>
             <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
               <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with</p>
             </div>
@@ -104,13 +104,16 @@
                 @enderror
               </div>
               <div class="my-3 ">
-                <input type="password" class="form-control" id="password1" placeholder="Your password..." required name="password">
+                <input type="password" class="form-control user_password" id="password1" placeholder="Your password..." required name="password">
               </div>
               <div class="row">
-                <div class="col-5 d-flex align-items-center"><div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;">Remember me</label>
-                </div></div>
+
+                <div class="col-5 d-flex align-items-center">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input show_password" >
+                        <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password </label>
+                    </div>
+                </div>
                 <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0">
                   <div class="form-group ">
                   <button type="button" class="btn btn-link"  href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#reset-popup" style="font-size: 14px; font-weight: 500;"> Forgot your password?</button>
@@ -148,22 +151,22 @@
             <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                 <a href="{{ route('login.facebook') }}">
                     <i class="fab fa-facebook" style="font-size: 25px;"></i>
-                </a> 
+                </a>
             </div>
             <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
               <a href="{{ route('login.google') }}">
                 <i class="fab fa-google" style="font-size: 25px;"></i>
-              </a>  
-              
+              </a>
+
             </div>
-            
+
           </div>
         </div>
         <div class="container py-3 px-5 ">
           <div class="row justify-content-around">
             <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-                  -------- 
-            </div> 
+                  --------
+            </div>
             <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
               <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with</p>
             </div>
@@ -189,21 +192,19 @@
                 @enderror
               </div>
               <div class="my-3 ">
-                <input type="password" class="form-control" id="password11" placeholder="Your password..." required name="password">
+                <input type="password" class="form-control user_password" id="password11" placeholder="Your password..." required name="password">
               </div>
               <div class="my-3 ">
-                <input type="password" class="form-control" id="password12" placeholder="Your password..." required name="password_confirmation">
+                <input type="password" class="form-control user_password" id="password12" placeholder="Your password..." required name="password_confirmation">
               </div>
               <div class="row">
-                <div class="col-5 d-flex align-items-center"><div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;">Remember me</label>
-                </div></div>
-                <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0">
-                  <div class="form-group ">
-                  <button type="button" class="btn btn-link"  href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#reset-popup" style="font-size: 14px; font-weight: 500;"> Forgot your password?</button>
+                <div class="col-5 d-flex align-items-center">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input show_password" >
+                        <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password </label>
+                    </div>
                 </div>
-             </div>
+                <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0"> </div>
               </div>
               <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
                 <button class="btn btn-primary" type="submit">Sign in</button>
@@ -219,7 +220,7 @@
   </div>
   </div>
 
- 
+
   <footer class="text-center text-lg-start  pt-4 header-sec">
     <!-- Grid container -->
     <div class="container border-top border-white bor-remove">
@@ -304,7 +305,7 @@
 
 
   <!--Bootstrap Bundle with Popper -->
-  
+
   <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
   <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
   <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
@@ -315,21 +316,21 @@
   <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
   <script src="{{ asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
   <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-  <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>   
+  <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
   <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
-    
+
 @section('page_js')
 @show
 </body>
 @if(Session::has('expire'))
-@php 
+@php
     $message = (session::get('expire'));
-@endphp 
-<script>  
+@endphp
+<script>
     toastr.error('{{$message}}', "Error");
 </script>
   @php
@@ -337,4 +338,22 @@
        session()->forget('success');
   @endphp
 @endif
+
+
+<script>
+
+
+      $(document).ready(function() {
+        $('.show_password').change(function() {
+          if($(this).is(':checked')) {
+            $('.user_password').prop('type', 'text');
+          } else {
+            $('.user_password').prop('type', 'password');
+          }
+        });
+      });
+
+
+</script>
 </html>
+
