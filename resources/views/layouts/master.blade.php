@@ -104,13 +104,13 @@
                 @enderror
               </div>
               <div class="my-3 ">
-                <input type="password" class="form-control user_password" id="password1" placeholder="Your password..." required name="password">
+                <input type="password" class="form-control user_login_password" id="password1" placeholder="Your password..." required name="password">
               </div>
               <div class="row">
 
                 <div class="col-5 d-flex align-items-center">
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input show_password" >
+                        <input type="checkbox" class="form-check-input show_login_password" >
                         <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password </label>
                     </div>
                 </div>
@@ -351,6 +351,16 @@
             $('.user_password').prop('type', 'password');
           }
         });
+
+        $('.show_login_password').change(function() {
+            if($(this).is(':checked')) {
+              $('.user_login_password').prop('type', 'text');
+            } else {
+              $('.user_login_password').prop('type', 'password');
+            }
+          });
+
+
       });
 
 
