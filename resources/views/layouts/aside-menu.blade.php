@@ -107,7 +107,7 @@
                 </div>
                 @endhasrole
                 @hasrole('admin|issuer')
-                
+
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -165,12 +165,12 @@
                             </a>
                             <!--end:Menu link-->
                         </div> --}}
-                        
+
                         @endhasrole
                     </div>
                     <!--end:Menu sub-->
                 </div>
-                
+
                 @endhasrole
                 @hasrole('admin|issuer')
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
@@ -204,7 +204,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="#">
+                            <a class="menu-link" href="{{  route('engagments.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -213,7 +213,7 @@
                             <!--end:Menu link-->
                         </div>
                         @hasrole('admin')
-                        <div class="menu-item">
+                        {{--  <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="#">
                                 <span class="menu-bullet">
@@ -242,7 +242,7 @@
                                 <span class="menu-title"> Leads </span>
                             </a>
                             <!--end:Menu link-->
-                        </div>
+                        </div>  --}}
                         @endhasrole
                     </div>
                     <!--end:Menu sub-->
@@ -333,7 +333,7 @@
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs014.svg-->
                             <span class="svg-icon svg-icon-2">
-                               
+
                                 <svg  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <rect x="0" y="0" width="24" height="24"/>
@@ -350,7 +350,7 @@
                     <!--end:Menu link-->
                 </div>
 
-                
+
             </div>
             <!--end::Menu-->
         </div>

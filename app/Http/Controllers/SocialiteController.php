@@ -29,7 +29,7 @@ class SocialiteController extends Controller
                 $user->name = $google_data->name;
                 $user->email = $google_data->email;
                 $user->email_verified_at = Carbon::now();
-                $user->password  =  Hash::make('Google@123'); 
+                $user->password  =  Hash::make('Google@123');
                 $user->phone = '0000-000-00';
                 $user->agree_consent_electronic = false;
                 $user->status = 'active';
@@ -44,7 +44,7 @@ class SocialiteController extends Controller
             //event(new Registered($user));
             return redirect()->route('dashboard');
         }
-        
+
     }
 
 
@@ -67,7 +67,7 @@ class SocialiteController extends Controller
                 $user->name = $faceBook->name;
                 $user->email = $faceBook->email;
                 $user->email_verified_at = Carbon::now();
-                $user->password  =  Hash::make('Google@123'); 
+                $user->password  =  Hash::make('Google@123');
                 $user->phone = '0000-000-00';
                 $user->agree_consent_electronic = false;
                 $user->status = 'active';
@@ -79,10 +79,10 @@ class SocialiteController extends Controller
                 $user->assignRole('investor');
             }
             Auth::login($user);
-        // event(new Registered($user));
+         event(new Registered($user));
             return redirect()->route('dashboard');
         }
-        
+
     }
 
 }

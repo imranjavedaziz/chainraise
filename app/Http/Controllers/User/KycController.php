@@ -32,7 +32,7 @@ class KycController extends Controller
                 'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
-           
+
             if ($get_token->failed()) {
                 return response([
                     'status' => $get_token->status(),
@@ -96,7 +96,7 @@ class KycController extends Controller
                     KYC::updateOrCreate(
                         ['user_id' => $user->id],
                         ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
-                    ); 
+                    );
                 }
                 $identityId = $json_identity_containers['personalIdentity'];
                 return response([
@@ -110,23 +110,23 @@ class KycController extends Controller
                     'data'   => $json_identity_containers,
                 ]);
             }
-            
+
         } catch (Exception $error) {
             dd($error);
             return response([
                 'status' => false,
             ]);
         }
-    
-        
+
+
     }
 
-  
+
     public function re_run_kyc(Request $request)
     {
         $request->validate([
             'id' => 'required',
-        ]); 
+        ]);
         $user = User::find($request->id);
         if($user->fortress_personal_identity == null){
             return response([
@@ -161,7 +161,7 @@ class KycController extends Controller
                     'data' => $json_upgrade_existing_l0,
                 ]);
             }else{
-            
+
             KYC::updateOrCreate(
                 ['user_id' => $user->id],
                 ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
@@ -270,13 +270,13 @@ class KycController extends Controller
             ->withToken($token_json['access_token'])
             ->post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
-            //Mail::to($user)->send(new UploadDocument($user));
+            Mail::to($user)->send(new UploadDocument($user));
             return response([
                 'status' => $upload_document->status(),
                 'data'   => $json_upload_document,
             ]);
         }catch(Exception $error){
-            
+
             return response([
                 'status' => false,
                 'error'=>$error,
@@ -284,5 +284,5 @@ class KycController extends Controller
         }
     }
 
-    
+
 }

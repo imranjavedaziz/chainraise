@@ -53,7 +53,7 @@ Route::get('login/facebook/callback', [App\Http\Controllers\SocialiteController:
 
 
 Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
- 
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
@@ -135,7 +135,7 @@ Route::group(['as'=> 'user.info.','prefix'=>'users/info','middleware' => ['auth'
     Route::get('csv', ['as' => 'csv','uses' => 'UpdateBasicDetailController@exportCSV']);
     Route::get('export-csv', ['as' => 'csv','uses' => 'UpdateBasicDetailController@export']);
 });
- 
+
 
 Route::group(['as'=> 'accreditation.','accreditation'=>'users','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Accreditation'], function () {
     Route::post('update', ['as' => 'update','uses' => 'accreditationController@update']);
@@ -172,7 +172,11 @@ Route::group(['as'=> 'folder.','prefix'=>'folder','middleware' => ['auth','verif
 });
 
 Route::group(['as'=> 'transaction.','prefix'=>'transaction','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Transaction'], function () {
-    Route::get('transaction', ['as' => 'index','uses' => 'TransactionController@index']); 
+    Route::get('transaction', ['as' => 'index','uses' => 'TransactionController@index']);
+});
+
+Route::group(['as'=> 'engagments.','prefix'=>'engagments','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Engagment'], function () {
+    Route::get('', ['as' => 'index','uses' => 'EngagmentController@index']);
 });
 
 
