@@ -75,6 +75,7 @@ Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verif
     Route::get('payment-method', ['as' => 'payment.method','uses' => 'MakeInvestmentController@payment_method']);
     Route::get('connect-bank', ['as' => 'connect.bank','uses' => 'MakeInvestmentController@connect_bank']);
     Route::get('sign-subscription', ['as' => 'sign.subscription','uses' => 'MakeInvestmentController@sign_subscription']);
+    Route::post('get.template', ['as' => 'get.template','uses' => 'MakeInvestmentController@getTemplate']);
 });
 Route::get('login', function () {
     return view('auth.login');

@@ -834,16 +834,15 @@
                                                         SIGN SUBSCRIPTION AGREEMENT & TOKEN GRANK
                                                     </h5>
                                                     <div class="row row-cols-1 row-cols-md-2 g-5">
-                                                        <div class="col-lg-12"> 
-                                                            <label class="required fw-semibold fs-6 mb-5">
-                                                                Select E-Sign Template
-                                                            </label>
-                                                            <select name="templates" id="" class="form-control" required> 
-                                                                <option value="" disabled selected> Select Template </option>
-                                                                @foreach($json_e_sign_templates['data'] as $template)
-                                                                    <option value="{{ $template['template_id']}}"> {{ $template['template_name']}} </option>
-                                                                @endforeach
-                                                            </select>
+                                                        <div class="col-lg-12">  
+                                                            <button type="button" class="no-radius btn btn-sm btn-dark view_template" 
+                                                            data-template="{{  $offer->offerEsing->template_id}}"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#e_template_model" >
+                                                               Get Template Name  
+                                                            </button>
+
+                                                           
                                                             <div class="row">
                                                                 <div class="col-lg-12 mt-5" style="text-align: right">
                                                                     <button type="button"
@@ -859,7 +858,8 @@
                                                             @if($loop->last)
                                                             <div class="row row-cols-1 row-cols-md-2 g-5">
                                                                 <div class="col-lg-12">
-                                                                    <button type="button" data-bs-toggle="modal"
+                                                                    <button type="button"
+                                                                    data-bs-toggle="modal"
                                                                     data-bs-target="#e_sign_model"
                                                                     class="btn btn-sm btn-dark no-radius">
                                                                     Submit
@@ -938,7 +938,29 @@
         </div>
 
     </div>
-   
+    <div class="modal fade" id="e_template_model" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header pb-0 border-0 justify-content-end">
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i>
+                    </div>
+                </div>
+                <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+                    <ul>
+                        <li>
+                            Name: <b class="template_name"></b>
+                        </li>
+                    </ul>    
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+    </div>
 @endsection
 @section('page_js')
     <script src="{{ asset('assets/js/custom/utilities/modals/create-account.js') }}"></script>
@@ -1038,6 +1060,31 @@
                 $('.connect_bank_account').removeClass('d-none');
             }
         });
+        $('body').on('click', '.view_template', function() {
+            $('.template_name').html('');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var template = $(this).data('template');  
+            var url = '{{ route('invest.get.template') }}';
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    id: template
+                },
+                success: function(response) {
+                    $('.template_name').html(response.data.data.template_name)
+                    console.log(response)
+                }
+            });
+
+
+            
+        });
+        
     </script>
     <script></script>
 @endsection

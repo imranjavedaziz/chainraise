@@ -255,8 +255,7 @@ class MakeInvestmentController extends Controller
         $offer = Offer::where('id',$request->offer_id)->first();
         $external_account = $request->external_account;
         $offer_id = $request->offer_id;
-        $investment_amount = $request->investment_amount;
-      
+        $investment_amount = $request->investment_amount; 
         return view('investment.step-5-e-sign',compact('offer','external_account','offer_id','investment_amount','user'));
     }
     public function e_template(Request $request){
@@ -613,5 +612,14 @@ class MakeInvestmentController extends Controller
     public function investment_limits(Request $request)
     {
         return view('investment.account-type');
+    }
+    public function getTemplate(Request $request){
+        
+        $e_sign = Http::get('https://esignatures.io/api/templates/'.$request->id.'?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5');
+        $json_e_sign = json_decode((string) $e_sign->getBody(), true);
+        return response([
+            'status'=>true,
+            'data'=>$json_e_sign
+        ]);
     }
 }

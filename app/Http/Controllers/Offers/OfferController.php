@@ -15,16 +15,15 @@ use App\Models\OfferContact;
 use App\Models\OfferDetailTab;
 use App\Models\OfferTiles;
 use App\Models\OfferVideos;
-use App\Models\Organization;
+use App\Models\OfferEsignTemplate;
 use App\Models\User;
 use App\Repositories\Interfaces\OfferRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use App\Repositories\Interfaces\RegCFRepositoryInterface;
-use Illuminate\Contracts\Session\Session;
-
+use App\Repositories\Interfaces\RegCFRepositoryInterface; 
+use Illuminate\Support\Facades\Session;
 class OfferController extends Controller
 {
     private $RegCFRepository;
@@ -52,16 +51,33 @@ class OfferController extends Controller
     public function edit($id)
     {
         $offer = Offer::with('contactInfo','access','user','display','investmentRestrictions','access','callToAction','offerDetail','offerDetail.offerTiles','offerVideos','contactInfo')->find($id);
-        $issuers = User::role('issuer')->get();
-        
+        $issuers = User::role('issuer')->get(); 
         $photos = $offer->getMedia('offer_detail_images');
         return view('offers.edit',compact('offer','issuers','photos'));
     }
     public function create()
     {
-        $templates = '';
+        $e_sign = Http::get('https://esignatures.io/api/templates?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5');
+        $json_e_sign = json_decode((string) $e_sign->getBody(), true);
+        if(!$e_sign->successful()){
+            Session::put('error','Esignatures Error');  
+            return redirect()->back();
+        }
+        $templates = $json_e_sign['data'];
         $issuers = User::role('issuer')->get(); 
+        
         return view('offers.create',compact('issuers','templates'));
+    }
+    public function e_template(Request $request){
+        $e_sign = Http::get('https://esignatures.io/api/templates?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5');
+        $json_e_sign = json_decode((string) $e_sign->getBody(), true);
+        if($e_sign->successful()){
+            return response([
+                'status'=> true,
+                'data'=>$json_e_sign
+            ]);
+        }
+        
     }
     public function save(Request $request)
     {
@@ -123,6 +139,12 @@ class OfferController extends Controller
             if($Offer->save()) {
                 $priority = 0;
                 foreach($request->investment_setups as $setup ){
+                    if ($setup == 'E-Sign Document') {
+                        $offer_esign_template = new OfferEsignTemplate;
+                        $offer_esign_template->offer_id = $Offer->id;
+                        $offer_esign_template->template_id = $request->e_sign_template;
+                        $offer_esign_template->save();
+                    }
                     $priority ++;
                     $investmentStep = new InvestmentStep;
                     $investmentStep->offer_id = $Offer->id;

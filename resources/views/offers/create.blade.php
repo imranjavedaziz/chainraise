@@ -704,8 +704,10 @@
                         </div>
                         <small class="text-left" style="text-align:left">
                             <label class="required"> Select Template </label>
-                            <select class="form-control" style="height:42px;font-size:13px">
-                                    <option> Upload Soon </option>
+                            <select class="form-control" name="e_sign_template" style="height:42px;font-size:13px">
+                                    @foreach($templates as $template)
+                                        <option value="{{ $template['template_id']  }}"> {{  $template['template_name'] }} </option>
+                                    @endforeach
                             </select>
                         </small>
                         <input type="hidden" name="investment_setups[]" value="` + content + `">
@@ -813,6 +815,34 @@
             });
 
         });
+        
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('body').on('change','#issuer_account',function(event){
+                    event.preventDefault(); 
+                    $.ajax({
+                        url: "{{ route('invest.step.six.e.template') }}",
+                        method: 'GET', 
+                        dataType: 'JSON',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success:function(response)
+                        {
+                            if(response.status == true){
+                                $('select[name="template"]').html('');
+                                    jQuery.each(response.data.data, function(index, item) {
+                                        $('select[name="templates"]').append(` <option value="`+item.template_id+`"> `+item.template_name+` </option>`);
+                                    });
+                            }
+                        },
+                        
+                    });
+                });
+
+            });
+    </script> 
 
 @endsection

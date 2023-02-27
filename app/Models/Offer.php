@@ -65,6 +65,11 @@ class Offer extends Model  implements HasMedia
         return $this->hasMany(InvestmentStep::class);
     }
 
+    public function offerEsing()
+    {
+        return $this->hasOne(OfferEsignTemplate::class);
+    }
+
   
 
 }
