@@ -30,15 +30,15 @@ class UserController extends Controller
 {
     public function custom_login($email,$password)
     {
-    
+
         $credentials = ([
             'email' => $email,
             'password' => $password,
         ]);
-        
+
         if (Auth::attempt($credentials)) {
             session()->regenerate();
-           
+
             return [
                 'status' => true,
                 'message' => 'User Verified'
@@ -57,12 +57,12 @@ class UserController extends Controller
 
     }
     public function redirection($email,$password){
-        
+
         $credentials = ([
             'email' => $email,
             'password' => $password,
         ]);
-        
+
         if (Auth::attempt($credentials)) {
             session()->regenerate();
             return redirect()->intended('dashboard');
@@ -80,7 +80,7 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-         
+
           $offers = Offer::get();
           $users = User::with('userDetail')->where('is_primary','yes')->orderby('id','DESC')->
                   whereHas('roles',function($query){
@@ -88,13 +88,13 @@ class UserController extends Controller
                   })->get();
           $issuers = User::role('issuer')->orderby('id','DESC')->get();
 
-      
-        
+
+
         return view('user.index',compact('users','offers','issuers'));
     }
     public function details($id)
-    {   
-        
+    {
+
         $id = $id;
         $user = User::with('userDetail','identityVerification','trustSetting','invesmentProfie','accreditation')->find($id);
         $accreditations = Accreditation::get();
@@ -105,7 +105,7 @@ class UserController extends Controller
         return view('user.details',compact('user','accreditations','offers','childs','id','folders','investors'));
     }
     public function getChilds(Request $request){
-        
+
         if($request->ajax()){
             return $request->id;
             $childs = User::with('userDetail','identityVerification','trustSetting','invesmentProfie')->where('parent_id',$id);
@@ -172,7 +172,7 @@ class UserController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
-      
+
         try {
             $user = User::find($request->id);
             //Mail::to($user)->send(new InvestorAccountDelete($user));
@@ -196,7 +196,7 @@ class UserController extends Controller
     }
     public function save(Request $request)
     {
-       
+
         $request->validate([
             'email' => 'required|unique:users',
             'first_name' => 'required',
@@ -210,12 +210,12 @@ class UserController extends Controller
             //'suit' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'zip_code' => 'required', 
+            'zip_code' => 'required',
             'account_type' => 'required|in:investor,issuer',
             //'agree_consent_electronic' => 'required',
             //'password' => 'required',
         ]);
-      
+
         if($request->agree_consent_electronic  == 'true'){
             $agree_consent_electronic = true;
         }else{
@@ -284,7 +284,7 @@ class UserController extends Controller
             $user_detail->suit = $request->suit;
             $user_detail->city = $request->city;
             $user_detail->state = $request->state;
-            $user->agree_consent_electronic  = $agree_consent_electronic;   
+            $user->agree_consent_electronic  = $agree_consent_electronic;
             $user_detail->zip = $request->zip_code;
             // -- This Detail is for issuer
             $user_detail->entity_name = $request->entity_name;
@@ -297,7 +297,7 @@ class UserController extends Controller
             }elseif($request->account_type == 'issuer') {
                 $user->assignRole('issuer');
             }
-            
+
             DB::commit();
              //event(new Registered($user));
              //Mail::to($user)->send(new WelcomeEmail($user));
@@ -307,7 +307,7 @@ class UserController extends Controller
             DB::rollBack();
 
             return redirect()->back()->with('error','Error while creating investor user');
-        }       
+        }
     }
     public function issuer()
     {
@@ -360,18 +360,19 @@ class UserController extends Controller
         }catch(Exception $error){
             DB::rollBack();
             return redirect()->back()->with('error','Error while creating investor user');
-        }       
+        }
     }
     public function issuerAccountUpdate(Request $request)
     {
-       
+
+
+
         $request->validate([
             //Users Table
             'id' => 'required',
             'first_name' => 'required',
             'phone' => 'required',
             //'agree_consent_electronic' => 'required',
-
             // User Detail
            //'middle_name' => 'required',
            'last_name' => 'required',
@@ -392,7 +393,7 @@ class UserController extends Controller
             //'tax_identification'=>'required',
             'nationality' => 'required',
             'country_residence' => 'required',
-            
+
             //Trust Settings
             //'bypass_account_setup' => 'required',
             //'bypass_kyc_checkup' => 'required',
@@ -402,28 +403,28 @@ class UserController extends Controller
             //'allow_manual_ach_bank_input' => 'required',
 
         ]);
-       
+
         $user = User::find($request->id);
         $user->name = $request->first_name;
-        $user->phone = $request->phone; 
+        $user->phone = $request->phone;
+        $user->cc = $request->cc;
         $user->save();
+
         if($request->has('profile_avatar')){
             $user->clearMediaCollection('profile_photo');
             $user->addMediaFromRequest('profile_avatar')->toMediaCollection('profile_photo');
         }
         if($request->has('kyc_document')){
-           
+
             $user->clearMediaCollection('kyc_document');
             $user->addMediaFromRequest('kyc_document')->toMediaCollection('kyc_document_collection');
         }
-        
-        
         $userDetails = UserDetail::updateOrCreate(
             ['user_id' => $user->id],
-            [ 
+            [
              'middle_name' => $request->middle_name,
              'last_name' => $request->last_name,
-             'title' => $request->title, 
+             'title' => $request->title,
              'dob' => $request->dob,
              'city' => $request->city,
              'address' => $request->address, 'suit' => $request->suit,'legal_formation'=>$request->legal_formation,
@@ -431,7 +432,7 @@ class UserController extends Controller
              'state'=> $request->state,'zip'=> $request->zip,'entity_name'=>$request->entity_name
             ]
         );
-       
+
         $identityVerification = IdentityVerification::updateOrCreate(
             ['user_id' => $request->id],
             [
@@ -442,9 +443,9 @@ class UserController extends Controller
              'country_residence' => $request->country_residence
             ]
         );
-        
 
-       
+
+
 
 
 
@@ -462,7 +463,7 @@ class UserController extends Controller
         // $userDetails->state = $request->state;
         // $userDetails->zip = $request->zip;
         // $userDetails->save();
-       
+
         //Mail::to($user)->send(new InvesterUpdate($user));
 
         $trustSetting = TrustSetting::where('user_id',$request->id)->first();
@@ -537,7 +538,7 @@ class UserController extends Controller
 
         }
         $trustSetting->save();
-         
+
         return redirect()->back()->with('success','Profile has been updated');
 
     }
@@ -547,7 +548,7 @@ class UserController extends Controller
             'id' => 'required',
             'type'=>'required',
         ]);
-        
+
         if($request->type == 'investor'){
             $request->validate([
                 'net_worth' => 'required',
@@ -565,18 +566,18 @@ class UserController extends Controller
                  'age' => $request->age, 'gender' => $request->gender,'annual_net_income'=> $request->annual_net_income,]
             );
         }else{
-            
-            
+
+
             $data = InvesmentProfile::updateOrCreate(
                 ['user_id' => $request->id],
                 ['finra_crd' => $request->finra_crd, 'linkedIn' => $request->linkedin_url ,
                  'website' => $request->website_url , 'investment_style' => $request->investment_style,
                  'assets_under_management'=>$request->assets_under_management]
             );
-           
+
         }
-       
-       
+
+
          return redirect()->back()->with('success','invesment Profile has been updated');
 
 
@@ -682,9 +683,9 @@ class UserController extends Controller
     }
     public function childUpdate(Request $request)
     {
-       
+
         if($request->has('identification_information')){
-           
+
             $request->validate([
                  'id'=>'required|integer',
                  'first_name' => 'required',
@@ -705,7 +706,7 @@ class UserController extends Controller
                  'country_residence'=>'required'
              ]);
          }else{
-            
+
             $request->validate([
                  'first_name' => 'required',
                  'last_name' => 'required',
@@ -716,8 +717,8 @@ class UserController extends Controller
              ]);
 
          }
-        
-        
+
+
          try{
              $user = User::find($request->id);
              $user->name  = $request->first_name;
@@ -812,11 +813,11 @@ class UserController extends Controller
                 'data'=>$json_e_sign
             ]);
         }
-        
+
     }
     public function templateSave(Request $request)
     {
-        
+
         $request->validate([
             'template' => 'required',
             'offer' => 'required',
@@ -824,7 +825,7 @@ class UserController extends Controller
         ]);
         $investor = User::find($request->investor);
         $issuer =Auth::user();
-       
+
         try{
             $curl = curl_init();
             curl_setopt_array($curl, array(
@@ -923,13 +924,13 @@ class UserController extends Controller
             return redirect()->back()->with('success','E-Sign request has been sent');
         }catch(Exception $error){
             return redirect()->back()->with('error','Error while sending E-Sign');
-        } 
+        }
         //echo $response;
 
     }
-    
 
-    
 
-    
+
+
+
 }

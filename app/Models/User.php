@@ -13,10 +13,10 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\CanResetPassword;
- 
-class User extends Authenticatable  implements HasMedia 
-{ 
-    
+
+class User extends Authenticatable  implements HasMedia
+{
+
     use HasApiTokens, HasFactory, Notifiable, HasRoles,InteractsWithMedia;
 
     /**
@@ -29,7 +29,9 @@ class User extends Authenticatable  implements HasMedia
         'email',
         'password',
         'phone',
-        'agree_consent_electronic'
+        'agree_consent_electronic',
+        'user_type',
+        'cc'
     ];
 
     /**
@@ -81,5 +83,5 @@ class User extends Authenticatable  implements HasMedia
     {
         return $this->hasOne(KYC::class);
     }
-     
+
 }

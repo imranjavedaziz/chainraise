@@ -506,13 +506,12 @@
                                     <!--end::Menu separator-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-5">
-                                        <a href="../../demo1/dist/account/overview.html" class="menu-link px-5">My
+                                        <a href="#" class="menu-link px-5">My
                                             Profile</a>
                                     </div>
 
-
                                     <div class="separator my-2"></div>
-                                     
+
                                     <div class="menu-item px-5 my-1">
                                         <a href="#"
                                             class="menu-link px-5">Account Settings</a>
@@ -623,7 +622,7 @@
             </svg>
         </span>
     </div>
-    
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -647,9 +646,9 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> 
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 
-		 
+
     <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
     @if (Session::has('success') or Session::has('error'))
         <script>
@@ -661,9 +660,9 @@
             @endif
         </script>
     @endif
-    
+
     @section('page_js')
-        
+
     @show
 
 </body>

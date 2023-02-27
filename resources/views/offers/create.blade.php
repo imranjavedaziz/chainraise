@@ -45,9 +45,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
 
-                    @if (Session::has('success'))
-                    dddd
-                    @endif
+
                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Offer
                         Create</h1>
                     <!--end::Title-->
@@ -86,7 +84,7 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <div id="kt_app_content_container" class="app-container">
                 <form action="{{ route('offers.save') }}" enctype="multipart/form-data" method="post" id="create_offer_form"> @csrf
-                    
+
                     <div class="row">
                         @include('offers.particles.left-bar')
                         <div class="col-lg-9">
@@ -468,13 +466,13 @@
                 <div class="appended_summary_box row section_` + no +
                 `">
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_title[]" value="Summary" required > 
+                        <input type="text" class="form-control" name="summary_title[]" value="Summary" required >
                     </div>
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required > 
+                        <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required >
                     </div>
                     <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_` + no + `" required ></textarea> 
+                        <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_` + no + `" required ></textarea>
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
                         <button type="button" class="btn btn-sm btn-danger delete_section" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -493,19 +491,19 @@
                     <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source[]" required>
                         </div>
                     </div>
                     <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source[]" required>
                         </div>
                     </div>
                     <div class="col-lg-3 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source[]" required>
                         </div>
                     </div>
                     <div class="col-lg-1 mt-6 mb-6 ">
@@ -520,13 +518,13 @@
                 <div class="mt-4 appended_text_box row section_` + no +
                 `">
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_title[]" value="Title" required > 
+                        <input type="text" class="form-control" name="text_title[]" value="Title" required >
                     </div>
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_sub_title[]" placeholder="Sub-title" required > 
+                        <input type="text" class="form-control" name="text_sub_title[]" placeholder="Sub-title" required >
                     </div>
                     <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="text_description[]" required id="textarea_` + no + `" ></textarea> 
+                        <textarea  class="form-control" cols="30" rows="10" name="text_description[]" required id="textarea_` + no + `" ></textarea>
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
                         <button type="button" class="btn btn-sm btn-danger delete_section_text" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -542,7 +540,7 @@
                 <div class="row  appended_images_box section_` + no + `">
                     <div class="col-lg-11 mt-3 mb-4">
                         <label class="required"> Image </label>
-                        <input type="file" class="form-control" name="image[]" value="Title"  required> 
+                        <input type="file" class="form-control" name="image[]" value="Title"  required>
                     </div>
                     <div class="col-lg-1 mt-3 mb-4 pt-5">
                         <button type="button" class="btn btn-sm btn-danger delete_section_images" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -604,11 +602,11 @@
                                 <input type="hidden"  value="` + access + `"       name="access[]" required />
                             </div>
                             <div class="col-lg-12 text-center">
-                                <button class='btn btn-sm delete_video_wrapper' type="button"> 
+                                <button class='btn btn-sm delete_video_wrapper' type="button">
                                     <i class='text-danger fa fa-trash'></i>
                                 </button>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 `);
                 $('.modalCloseBtn').click();
@@ -641,7 +639,7 @@
             // }
             // if(max_invesment == ''){
             //     toastr.error("Max Invesment filed is Required", "Success");
-            // }  
+            // }
         });
 
         $('#investment_steps').on('click', '.investment_step_button_row i', function() {
@@ -681,7 +679,7 @@
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
                         <div class="overflow-auto pb-1">
-                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white">
                                 <span class="col-lg-10 text-left"> ` + content + ` </span>
                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                             </div>
@@ -699,7 +697,7 @@
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
                         <div class="overflow-auto pb-1">
-                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white">
                                 <span class="col-lg-10 text-left"> ` + content + ` </span>
                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                             </div>
@@ -707,9 +705,7 @@
                         <small class="text-left" style="text-align:left">
                             <label class="required"> Select Template </label>
                             <select class="form-control" style="height:42px;font-size:13px">
-                                  
                                     <option> Upload Soon </option>
-                                
                             </select>
                         </small>
                         <input type="hidden" name="investment_setups[]" value="` + content + `">
@@ -719,14 +715,14 @@
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
                         <div class="overflow-auto pb-1">
-                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white">
                                 <span class="col-lg-10 text-left"> ` + content + ` </span>
                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                             </div>
                         </div>
                         <br/>
-                        <div id="kt_job_1_1" class="collapse show fs-6 ms-1"> 
-                            <div class="mb-4"> 
+                        <div id="kt_job_1_1" class="collapse show fs-6 ms-1">
+                            <div class="mb-4">
                                 <div class="d-flex align-items-center ps-10 mb-n1">
                                     <!--begin::Bullet-->
                                     <span class="bullet me-3"></span>
@@ -734,31 +730,31 @@
                                     <!--begin::Label-->
                                     <div class="text-gray-600 fw-semibold fs-6">
                                         <input type="checkbox" name="investment_setups_payment_method[]" value="ach" checked />    ACH
-                                    </div> 
-                                </div> 
-                            </div> 
-                            <div class="mb-4"> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
                                 <div class="d-flex align-items-center ps-10 mb-n1">
                                     <!--begin::Bullet-->
                                     <span class="bullet me-3"></span>
                                     <!--end::Bullet-->
                                     <!--begin::Label-->
                                     <div class="text-gray-600 fw-semibold fs-6">
-                                        <input type="checkbox" name="investment_setups_payment_method[]" value="bank-transfer"   /> Bank Transfer
-                                    </div> 
-                                </div> 
-                            </div> 
-                            <div class="mb-4"> 
+                                        <input type="checkbox" name="investment_setups_payment_method[]" value="wired"   /> Wired
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
                                 <div class="d-flex align-items-center ps-10 mb-n1">
                                     <!--begin::Bullet-->
                                     <span class="bullet me-3"></span>
                                     <!--end::Bullet-->
                                     <!--begin::Label-->
                                     <div class="text-gray-600 fw-semibold fs-6">
-                                        <input type="checkbox" name="investment_setups_payment_method[]" value="bitcoin"   /> Bitcoin
-                                    </div> 
-                                </div> 
-                            </div> 
+                                        <input type="checkbox" name="investment_setups_payment_method[]" value="credit-debit-card"   /> Credit/Debit Card
+                                    </div>
+                                </div>
+                            </div>
 						</div>
                         <input type="hidden" name="investment_setups[]" value="` + content + `">
                     </div>
@@ -767,7 +763,7 @@
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
                         <div class="overflow-auto pb-1">
-                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white"> 
+                            <div  class="row d-flex align-items-center border border-dashed border-gray-300 rounded p-3 bg-white">
                                 <span class="col-lg-10 text-left"> ` + content + ` </span>
                                 <span class="col-lg-2"> <i class="la la-times"></i>  </span>
                             </div>
@@ -776,8 +772,8 @@
                     </div>
                 `);
            }
-          
-                
+
+
         });
     </script>
     <script>
@@ -800,7 +796,7 @@
                     method: 'POST',
                     data:{
                         id:id
-                    }, 
+                    },
                     success: function(result) {
                         if(result.status == false){
                             toastr.error(result.message, "Error");
@@ -815,7 +811,7 @@
                         }
                     }
             });
-             
+
         });
     </script>
 

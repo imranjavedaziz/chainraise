@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -9,17 +10,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="{{ asset('media/logo/favicon.ico')}}">
   <link rel="stylesheet" href="{{ asset('front-end/css/style.css') }}">
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+  <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+  <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
   <title> Chain Rasied Portal | @yield('title') </title>
-    <style>
-        .bg-image {
-            background-image: url("{{ asset('media/portfolio/background-chainraise.jpg') }}");
-        }
-        #toastr-container{
-          background: rgb(247, 84, 92)!important;
-        }
-    </style>
+  <style>
+    .bg-image {
+      background-image: url("{{ asset('media/portfolio/background-chainraise.jpg') }}");
+    }
+
+    #toastr-container {
+      background: rgb(247, 84, 92) !important;
+    }
+  </style>
   @section('page_head')
   @show
 
@@ -66,78 +68,84 @@
         <div class="modal-body">
           <h5 style="color: #000000; text-align: center;">Sign in to your account</h5>
           <div class="container py-3 px-5 ">
-          <div class="row justify-content-around">
-            <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
+            <div class="row justify-content-around">
+              <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                 <a href="{{ route('login.facebook') }}">
-                    <i class="fab fa-facebook" style="font-size: 25px;"></i>
+                  <i class="fab fa-facebook" style="font-size: 25px;"></i>
                 </a>
-            </div>
-            <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
-              <a href="{{ route('login.google') }}">
-                <i class="fab fa-google" style="font-size: 25px;"></i>
-              </a>
-
-            </div>
-
-          </div>
-        </div>
-        <div class="container py-3 px-5 ">
-          <div class="row justify-content-around">
-            <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-                  --------
-            </div>
-            <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
-              <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with</p>
-            </div>
-            <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-              --------
-              <hr/>
-          </div>
-        </div>
-          <div class="d-flex flex-column text-center">
-            <form action="{{ route('login') }}" method="post" enctype="multipart/form-data">
-              @csrf
-              <div class="my-3">
-                <input type="email" class="form-control" id="email1"placeholder="Your email address..." required name="email">
-                @error('email')
-                <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
-                @enderror
               </div>
-              <div class="my-3 ">
-                <input type="password" class="form-control user_login_password" id="password1" placeholder="Your password..." required name="password">
-              </div>
-              <div class="row">
+              <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
+                <a href="{{ route('login.google') }}">
+                  <i class="fab fa-google" style="font-size: 25px;"></i>
+                </a>
 
-                <div class="col-5 d-flex align-items-center">
+              </div>
+
+            </div>
+          </div>
+          <div class="container py-3 px-5 ">
+            <div class="row justify-content-around">
+              <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
+                --------
+              </div>
+              <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
+                <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with
+                </p>
+              </div>
+              <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
+                --------
+                <hr />
+              </div>
+            </div>
+            <div class="d-flex flex-column text-center">
+              <form action="{{ route('login') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="my-3">
+                  <input type="email" class="form-control" id="email1" placeholder="Your email address..." required
+                    name="email">
+                  @error('email')
+                  <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
+                  @enderror
+                </div>
+                <div class="my-3 ">
+                  <input type="password" class="form-control user_login_password" id="password1"
+                    placeholder="Your password..." required name="password">
+                </div>
+                <div class="row">
+
+                  <div class="col-5 d-flex align-items-center">
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input show_login_password" >
-                        <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password </label>
+                      <input type="checkbox" class="form-check-input show_login_password">
+                      <label class="form-check-label" for="exampleCheck1"
+                        style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password
+                      </label>
                     </div>
+                  </div>
+                  <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0">
+                    <div class="form-group ">
+                      <button type="button" class="btn btn-link" href="#" data-bs-dismiss="modal" data-bs-toggle="modal"
+                        data-bs-target="#reset-popup" style="font-size: 14px; font-weight: 500;"> Forgot your
+                        password?</button>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0">
-                  <div class="form-group ">
-                  <button type="button" class="btn btn-link"  href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#reset-popup" style="font-size: 14px; font-weight: 500;"> Forgot your password?</button>
+                <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
+                  <button class="btn btn-primary" type="submit">Sign in</button>
                 </div>
-             </div>
-              </div>
-              <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
-                <button class="btn btn-primary" type="submit">Sign in</button>
-              </div>
-            </form>
-        </div>
-        </div>
-        <div class="modal-footer flex-column text-center ">
-          <div class="signup-section text-center">Not a member yet? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#sign-up-popup"style="color: #4b1dff;"> Sign Up</a>.</div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer flex-column text-center ">
+            <div class="signup-section text-center">Not a member yet? <a href="#" data-bs-dismiss="modal"
+                data-bs-toggle="modal" data-bs-target="#sign-up-popup" style="color: #4b1dff;"> Sign
+                Up</a>.</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
   <!-- Sign in Popop End -->
   <!-- Sign up Popop Start -->
-
-
-
   <div class="modal fade" id="sign-up-popup" tabindex="-1" aria-labelledby="sign-up-popupLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -147,77 +155,90 @@
         <div class="modal-body">
           <h5 style="color: #000000; text-align: center;">Sign Up</h5>
           <div class="container py-3 px-5 ">
-          <div class="row justify-content-around">
-            <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
+            <div class="row justify-content-around">
+              <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                 <a href="{{ route('login.facebook') }}">
-                    <i class="fab fa-facebook" style="font-size: 25px;"></i>
+                  <i class="fab fa-facebook" style="font-size: 25px;"></i>
                 </a>
-            </div>
-            <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
-              <a href="{{ route('login.google') }}">
-                <i class="fab fa-google" style="font-size: 25px;"></i>
-              </a>
+              </div>
+              <div class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
+                <a href="{{ route('login.google') }}">
+                  <i class="fab fa-google" style="font-size: 25px;"></i>
+                </a>
+
+              </div>
 
             </div>
-
           </div>
-        </div>
-        <div class="container py-3 px-5 ">
-          <div class="row justify-content-around">
-            <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-                  --------
+          <div class="container py-3 px-5 ">
+            <div class="row justify-content-around">
+              <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
+                --------
+              </div>
+              <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
+                <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with
+                </p>
+              </div>
+              <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
+                --------
+                <hr />
+              </div>
             </div>
-            <div class="col-5  d-flex align-items-center justify-content-center py-2 ">
-              <p style="color: #000000; text-align: center; padding: 0px; margin:0px;">Continue with</p>
-            </div>
-            <div class="col-3 d-flex align-items-center justify-content-center py-2 ">
-              --------
-              <hr/>
-          </div>
-        </div>
-          <div class="d-flex flex-column text-center">
-            <form action="{{ route('register') }}" method="post" enctype="multipart/form-data">
-              @csrf
-              <div class="my-3">
-                <input type="text" class="form-control" id="name"placeholder="Your name..." required name="name">
-                @error('name')
-                <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
-                @enderror
-              </div>
-
-              <div class="my-3">
-                <input type="email" class="form-control" id="email1"placeholder="Your email address..." required name="email">
-                @error('email')
-                <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
-                @enderror
-              </div>
-              <div class="my-3 ">
-                <input type="password" class="form-control user_password" id="password11" placeholder="Your password..." required name="password">
-              </div>
-              <div class="my-3 ">
-                <input type="password" class="form-control user_password" id="password12" placeholder="Your password..." required name="password_confirmation">
-              </div>
-              <div class="row">
-                <div class="col-5 d-flex align-items-center">
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input show_password" >
-                        <label class="form-check-label" for="exampleCheck1" style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password </label>
-                    </div>
+            <div class="d-flex flex-column text-center">
+              <form action="{{ route('register') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="my-3">
+                  <input type="text" class="form-control" id="name" placeholder="Your name..." required name="name">
+                  @error('name')
+                  <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
+                  @enderror
                 </div>
-                <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0"> </div>
-              </div>
-              <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
-                <button class="btn btn-primary" type="submit">Sign in</button>
-              </div>
-            </form>
-        </div>
-        </div>
-        <div class="modal-footer flex-column text-center ">
-          <div class="signup-section text-center">Already have account? <a href="#" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#sign-in-popup"style="color: #4b1dff;"> Sign In</a>.</div>
+
+                <div class="my-3">
+                  <input type="email" class="form-control" id="email1" placeholder="Your email address..." required
+                    name="email">
+                  @error('email')
+                  <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
+                  @enderror
+                </div>
+                <div class="my-3 ">
+                  <input type="password" class="form-control user_password" id="password11"
+                    placeholder="Your password..." required name="password">
+                </div>
+                <div class="my-3 ">
+                  <input type="password" class="form-control user_password" id="password12"
+                    placeholder="Your password..." required name="password_confirmation">
+                </div>
+                <div class="my-3 ">
+                  <select name="user_type" id="" class="form-control">
+                      <option value="individual"> Individual  </option>
+                      <option value="entity"> Entity  </option>
+                  </select>
+                </div>
+                <div class="row">
+                  <div class="col-5 d-flex align-items-center">
+                    <div class="form-group form-check">
+                      <input type="checkbox" class="form-check-input show_password">
+                      <label class="form-check-label" for="exampleCheck1"
+                        style="padding: 0px; font-size: 14px; font-weight: 500;"> Show Password
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0"> </div>
+                </div>
+                <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
+                  <button class="btn btn-primary" type="submit">Sign in</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer flex-column text-center ">
+            <div class="signup-section text-center">Already have account? <a href="#" data-bs-dismiss="modal"
+                data-bs-toggle="modal" data-bs-target="#sign-in-popup" style="color: #4b1dff;"> Sign In</a>.</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
 
@@ -280,7 +301,8 @@
 
           <div class="form-outline form-white mb-4">
             <input type="email" id="form5Example2" class="form-control" />
-            <label class="form-label text-white" for="form5Example2">The latest offerings and updates, sent to your
+            <label class="form-label text-white" for="form5Example2">The latest offerings and updates, sent
+              to your
               inbox weekly.</label>
           </div>
 
@@ -319,31 +341,29 @@
   <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
   <script src="{{asset('assets/js/custom/utilities/modals/top-up-wallet.js')}}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+  </script>
 
-@section('page_js')
-@show
+  @section('page_js')
+  @show
 </body>
 @if(Session::has('expire'))
 @php
-    $message = (session::get('expire'));
+$message = (session::get('expire'));
 @endphp
 <script>
-    toastr.error('{{$message}}', "Error");
+  toastr.error('{{$message}}', "Error");
 </script>
-  @php
-       session()->forget('expire');
-       session()->forget('success');
-  @endphp
+@php
+session()->forget('expire');
+session()->forget('success');
+@endphp
 @endif
 
 
 <script>
-
-
-      $(document).ready(function() {
+  $(document).ready(function() {
         $('.show_password').change(function() {
           if($(this).is(':checked')) {
             $('.user_password').prop('type', 'text');
@@ -365,5 +385,5 @@
 
 
 </script>
-</html>
 
+</html>

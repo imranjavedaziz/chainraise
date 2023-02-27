@@ -81,15 +81,7 @@
                         <div class="image-input-wrapper" style="background-image: none;"></div>
                         <!--end::Preview existing avatar-->
                         <!--begin::Label-->
-                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                            data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar"
-                            data-kt-initialized="1">
-                            <i class="bi bi-pencil-fill fs-7"></i>
-                            <!--begin::Inputs-->
-                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                            <input type="hidden" name="avatar_remove" value="1">
-                            <!--end::Inputs-->
-                        </label>
+
                         <!--end::Label-->
                         <!--begin::Cancel-->
                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
@@ -126,7 +118,7 @@
                                 <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                                     <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-                                        <!--end::Svg Icon--> {{ $user->phone }}
+                                        <!--end::Svg Icon--> {{ $user->phone }} <br>  {{ $user->user_type }}
                                     </span>
                                 </div>
                                 <!--end::Info-->
@@ -216,15 +208,15 @@
                                     <div class="d-flex align-items-center mr-10">
                                         <div class="m-lg-2 text-center">
                                             <div class="fw-bold mb-2 fs-2"></div>
-                                             
+
                                         </div>
                                         <div class="m-lg-2 text-center mr-6">
                                             <div class="fw-bold mb-2 fs-2"></div>
-                                            
+
                                         </div>
                                         <div class="text-center m-lg-2">
                                             <div class="fw-bold mb-2 fs-2"></div>
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -364,13 +356,19 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                   <div class="col-lg-4 row">
                                                         <label>Phone Number: <span class="text-danger">*</span> </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control"
-                                                                placeholder="(201) 555-0123" name="phone"
-                                                                value="{{ $user->phone }}" />
-
+                                                        <div class="col-lg-3">
+                                                            <select class="form-control cc" name="cc">
+                                                                @include('user.partials.cc')
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-9">
+                                                            <div class="input-group">
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="(201) 555-0123" name="phone"
+                                                                    value="{{ $user->phone }}" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -455,7 +453,7 @@
                                             <div class="col-lg-6 mb-10">
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
-                                                    placeholder="Entity Name" 
+                                                    placeholder="Entity Name"
                                                     @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
                                             </div>
                                             <div class="clear-fix"></div>
@@ -551,7 +549,7 @@
                                             </div>
                                         @endif
 
-                                        {{-- 
+                                        {{--
                                         <div class="col-lg-6 text-left ">
                                             <label class="form-check form-check-custom form-check-solid">
                                                 <input class="form-check-input h-15px w-15px" type="checkbox"  name="agree_consent_electronic"
@@ -620,30 +618,30 @@
                                                     name="primary_contact_social_security"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                             </div>
-                                            
+
                                         @endif
                                         <div class="row">
                                             <div class="form-group mb-10 col-lg-12 text-right kyc_buttons">
                                                 <div class="row">
                                                     <div class="col-lg-3">
                                                         <strong>
-                                                            KYC STATUS : 
+                                                            KYC STATUS :
                                                                     <span class="text-success kyc_level_wrapper">
                                                                         @if ($user->kyc)
                                                                             {{ ucfirst($user->kyc->kyc_level) }}
                                                                         @endif
-                                                                    </span> 
+                                                                    </span>
                                                          </strong>
                                                     </div>
 
                                                     <div class="col-lg-3">
-                                                        <strong> 
-                                                            DOCUMENT STATUS : 
+                                                        <strong>
+                                                            DOCUMENT STATUS :
                                                                 <span class="text-success kyc_doc_wrapper">
                                                                     @if ($user->kyc)
                                                                         {{ ucfirst($user->kyc->doc_status) }}
                                                                     @endif
-                                                                </span> 
+                                                                </span>
                                                          </strong>
                                                     </div>
 
@@ -656,7 +654,7 @@
                                                                     data-id="{{ $user->id }}">
                                                                     Check User KYC
                                                                     </button>
-                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                     class="img img-thumbnail d-none loader_img"
                                                                     style="width: 40px;"
                                                                     alt="">
@@ -669,7 +667,7 @@
                                                                 data-id="{{ $user->id }}">
                                                                  Re Run KYC
                                                                 </button>
-                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                 class="img img-thumbnail d-none loader_img_for_re_run_kyc"
                                                                 style="width: 40px;"
                                                                 alt="">
@@ -678,21 +676,21 @@
                                                                 <button type="button" style="width: 100%"
                                                                 class="btn btn-sm no-radius -square btn-dark update_document"
                                                                 data-id="{{ $user->id }}">
-                                                                Upload New Document 
+                                                                Upload New Document
                                                                 </button>
-                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" 
+                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                 class="img img-thumbnail d-none loader_img_for_document_upload"
                                                                 style="width: 40px;"
                                                                 alt="">
                                                             </div>
                                                         </div>
-                                                         
+
                                                     </div>
 
-                                                </div> 
+                                                </div>
                                     </div>
                                         </div>
-                                        
+
                                     </div>
 
                                     <div class="form-group row mb-10">
@@ -2158,17 +2156,17 @@
                                             <i class="text-info la la-download"></i>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                <p class='text-center'> 
+                                <p class='text-center'>
                                     Signed by McKall Cameron (mckall24@gmail.com). Awaiting a signature from you.
 
                                 </p>
                                 <!--end::Info-->
                             </div>
-                        </div> 
-                        
-                        
+                        </div>
+
+
                         `;
                         });
                     }
@@ -2188,7 +2186,7 @@
             imgBtnWrapper.find('.change_photo').click();
         });
         $('.check_kyc').click(function() {
-             
+
             var id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure to to check KYC status ?",
@@ -2200,7 +2198,7 @@
                     confirmButton: "btn-danger"
                 }
             }).then(function(result) {
-                if (result.value) { 
+                if (result.value) {
                     $('.loader_img').removeClass('d-none');
                     $('.check_kyc').addClass('d-none');
                     $.ajax({
@@ -2246,7 +2244,7 @@
                 }
             });
         });
-        
+
         $('body').on('click','.re_run_kyc' , function() {
             $('.loader_img_for_re_run_kyc').removeClass('d-none');
             $('.re_run_kyc').addClass('d-none');
@@ -2274,7 +2272,7 @@
                 }
             });
         });
-        
+
 
         $('body').on('click','.update_document', function() {
             var id = $(this).data('id');
@@ -2287,7 +2285,7 @@
                     id: id
                 },
                 success: function(response) {
-                    
+
                     $('.loader_img_for_document_upload').addClass('d-none');
                     $('.update_document').removeClass('d-none');
 
@@ -2316,9 +2314,10 @@
                 }
             });
         });
+        @if($user->cc)
+            $('.cc').val('{{  $user->cc }}')
+        @endif
 
-        
 
-        
     </script>
 @endsection

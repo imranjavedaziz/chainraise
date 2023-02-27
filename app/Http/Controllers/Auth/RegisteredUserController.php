@@ -46,13 +46,13 @@ class RegisteredUserController extends Controller
             'phone'=>'2333',
             'agree_consent_electronic'=>true,
             'status'=>'active',
+            'user_type'=> $request->user_type,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole('investor');
         event(new Registered($user));
         //return redirect()->route('dashboard');
         Auth::login($user);
-
         return redirect(RouteServiceProvider::HOME);
     }
 }

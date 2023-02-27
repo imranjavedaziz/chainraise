@@ -79,8 +79,8 @@
                         style="background-image: url('{{ $photo_path }}')">
                         <!--begin::Preview existing avatar-->
                         <div class="image-input-wrapper" style="background-image: none;"></div>
-                         
-                        
+
+
                     </div>
                     <!--end::Pic-->
                     <!--begin::Info-->
@@ -96,20 +96,22 @@
                                         - <small class="text-info">
                                             {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
                                     </span>
+
+
                                 </div>
                                 <!--end::Name-->
                                 <!--begin::Info-->
                                 <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                                     <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-                                        <!--end::Svg Icon--> {{ $user->phone }}
+                                        <!--end::Svg Icon--> {{ $user->phone }} <br> {{ $user->user_type}}
                                     </span>
                                 </div>
                                 <!--end::Info-->
                             </div>
                             <!--end::User-->
                             <div class="d-flex flex-row text-center">
-                                 
+
                                 <div class="m-lg-3">
                                     <b>0</b> <br>
                                     Total Investments
@@ -123,7 +125,7 @@
                                     Total Funds Contributed
                                 </div>
                             </div>
-                            
+
                         </div>
                         <!--end::Title-->
 
@@ -158,8 +160,8 @@
                 <li class="nav-item">
                     <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_users_tab">Users</a>
                 </li>
-                
-             
+
+
                 <li class="nav-item">
                     <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_payment_tab">Payment Method</a>
                 </li>
@@ -167,7 +169,7 @@
                     <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
                         href="#kt_documents_tab">Documents</a>
                 </li>
-                
+
             </ul>
             <!--end:::Tabs-->
             <!--begin:::Tab content-->
@@ -220,7 +222,7 @@
                                                     <div class="col-lg-4">
                                                         <label>Last Name: <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="Last Name" name="last_name"
+                                                            placeholder="Last Name" name="last_name" required
                                                             @if($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif/>
                                                     </div>
                                                 </div>
@@ -234,13 +236,19 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-4 row">
                                                         <label>Phone Number: <span class="text-danger">*</span> </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control"
-                                                                placeholder="(201) 555-0123" name="phone"
-                                                                value="{{ $user->phone }}" />
-
+                                                        <div class="col-lg-3">
+                                                            <select class="form-control cc" name="cc">
+                                                                @include('user.partials.cc')
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-9">
+                                                            <div class="input-group">
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="(201) 555-0123" name="phone"
+                                                                    value="{{ $user->phone }}" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -299,7 +307,7 @@
                                             </div>
                                         </div>
 
-                                         
+
 
 
                                     </div>
@@ -309,7 +317,7 @@
                                     </div>
 
                                     <div class="form-group row mb-10">
-                                        
+
                                             <div class="col-lg-12 mb-3">
                                                 <h3>
                                                     COMPANY INFORMATION
@@ -319,11 +327,11 @@
                                             <div class="col-lg-6 mb-10">
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
-                                                    placeholder="Entity Name" 
+                                                    placeholder="Entity Name"
                                                     @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
                                             </div>
                                             <div class="clear-fix"></div>
-                                         
+
                                         <div class="col-lg-12 mb-3">
                                             <h6>
                                                 Address
@@ -373,7 +381,7 @@
                                         </div>
                                     </div>
 
-                                   
+
                                         <div class="form-group row mb-10">
                                             <div class="col-lg-6">
                                                 <label>State/Region of Legal Formation <span class="text-danger">*</span>
@@ -390,14 +398,14 @@
                                                     @if($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif required>
                                             </div>
                                         </div>
-                                   
 
-                                    
+
+
                                     <div class="card-title mt-6 mb-3">
                                         <h2>Identity Verification</h2>
                                     </div>
                                     <div class="row">
-                                        
+
                                         <div class="form-group mb-10 col-lg-4">
                                             <label> Social Security # <small>(US Investors Only)</small>
                                                 <span class="text-danger">*</span></label>
@@ -419,14 +427,14 @@
                                                     placeholder="Tax Identification" required name="tax_identification"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
                                             </div>
-                                        
-                                           
-                                            
-                                       
+
+
+
+
                                         <div class="row">
-                                            
+
                                         </div>
-                                        
+
                                     </div>
 
                                     <div class="form-group row mb-10">
@@ -476,12 +484,12 @@
 
                                         </div>
 
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-lg-12 text-center ">
-                                            
+
                                             <button type="submit" class="btn-sm btn mr-2 no-radius btn-dark">
                                                  Update Account
                                             </button>
@@ -1053,7 +1061,7 @@
                     </div>
                     <!--end::Card-->
                 </div>
-               
+
             </div>
             <!--end:::Tab content-->
         </div>
@@ -1272,17 +1280,17 @@
                                             <i class="text-info la la-download"></i>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                <p class='text-center'> 
+                                <p class='text-center'>
                                     Signed by McKall Cameron (mckall24@gmail.com). Awaiting a signature from you.
 
                                 </p>
                                 <!--end::Info-->
                             </div>
-                        </div> 
-                        
-                        
+                        </div>
+
+
                         `;
                         });
                     }
@@ -1302,7 +1310,7 @@
             imgBtnWrapper.find('.change_photo').click();
         });
         $('.check_kyc').click(function() {
-             
+
             var id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure to to check KYC status ?",
@@ -1314,7 +1322,7 @@
                     confirmButton: "btn-danger"
                 }
             }).then(function(result) {
-                if (result.value) { 
+                if (result.value) {
                     $('.loader_img').removeClass('d-none');
                     $('.check_kyc').addClass('d-none');
                     $.ajax({
@@ -1360,7 +1368,7 @@
                 }
             });
         });
-        
+
         $('body').on('click','.re_run_kyc' , function() {
             $('.loader_img_for_re_run_kyc').removeClass('d-none');
             $('.re_run_kyc').addClass('d-none');
@@ -1399,7 +1407,7 @@
                     id: id
                 },
                 success: function(response) {
-                    
+
                     $('.loader_img_for_document_upload').addClass('d-none');
                     $('.update_document').removeClass('d-none');
 
@@ -1413,13 +1421,16 @@
             });
         });
 
-        
-        
-        
+
+
+
     </script>
     <script>
         jQuery(function(){
            jQuery('#kt_documents_tab').click();
         });
+        @if($user->cc)
+             $('.cc').val('{{  $user->cc  }}')
+        @endif
         </script>
 @endsection
