@@ -347,7 +347,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-2">
                                                         <label>Title:</label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
@@ -356,14 +356,15 @@
 
                                                         </div>
                                                     </div>
-                                                   <div class="col-lg-4 row">
+                                                   <div class="col-lg-7 row">
                                                         <label>Phone Number: <span class="text-danger">*</span> </label>
-                                                        <div class="col-lg-3">
-                                                            <select class="form-control cc" name="cc">
+                                                        <div class="col-lg-4">
+                                                            <select class="form-control cc" name="cc" data-control="select2">
                                                                 @include('user.partials.cc')
                                                             </select>
+
                                                         </div>
-                                                        <div class="col-lg-9">
+                                                        <div class="col-lg-8">
                                                             <div class="input-group">
                                                                 <input type="number" class="form-control"
                                                                     placeholder="(201) 555-0123" name="phone"
@@ -371,7 +372,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <label>Date of Birth <span class="text-danger">*</span> </label>
                                                         <div class="input-group" id="">
                                                             <input type="date" class="form-control"
@@ -437,9 +438,18 @@
 
 
                                     </div>
-                                    <div class="form-group row mb-10">
-
-
+                                    <div class="form-group row">
+                                            <div class="col-lg-12 mb-5">
+                                                    <label>User Type: <span class="text-danger">*</span> </label>
+                                                    <select class="form-control"  data-control="select2">
+                                                        <option value="individual" @if($user->user_type == 'individual') selected @endif>
+                                                            Individual
+                                                        </option>
+                                                        <option value="entity" @if($user->user_type == 'entity') selected @endif>
+                                                            Entity
+                                                        </option>
+                                                    </select>
+                                            </div>
                                     </div>
 
                                     <div class="form-group row mb-10">

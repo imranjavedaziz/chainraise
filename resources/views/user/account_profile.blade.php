@@ -317,19 +317,20 @@
                                     </div>
 
                                     <div class="form-group row mb-10">
-
+                                        @if($user->user_type == 'entity')
                                             <div class="col-lg-12 mb-3">
                                                 <h3>
                                                     COMPANY INFORMATION
                                                 </h3>
                                             </div>
-                                            {{-- Issuer Details --}}
+
                                             <div class="col-lg-6 mb-10">
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
                                                     placeholder="Entity Name"
                                                     @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
                                             </div>
+                                            @endif
                                             <div class="clear-fix"></div>
 
                                         <div class="col-lg-12 mb-3">

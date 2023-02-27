@@ -6,7 +6,7 @@
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('page_content')
-    
+
 <div class="d-flex flex-column flex-column-fluid">
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -15,8 +15,8 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">   
-                        Individual Investor   
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                        Individual Investor
                 </h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
@@ -33,7 +33,7 @@
                     <!--end::Item-->
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
-                          <a href="{{ route('user.index')}}"> Listings </a>      
+                          <a href="{{ route('user.index')}}"> Listings </a>
                     </li>
 
                     <li class="breadcrumb-item">
@@ -42,7 +42,7 @@
 
                     <li class="breadcrumb-item text-muted">Individual Investor</li>
 
-            
+
 
 
                     <!--end::Item-->
@@ -53,8 +53,8 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <!--begin::Filter menu-->
-                
-              
+
+
             </div>
             <!--end::Actions-->
         </div>
@@ -66,21 +66,23 @@
             <div class="card mb-5 mb-xl-8">
                 <!--begin::Header-->
                 <div class="card-header border-0 pt-5">
-                    <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold fs-3 mb-1">Individual Investor</span>
-                    </h3>
-                    <form class="form" method="post" action="{{ route('user.save') }}" enctype="multipart/form-data"> @csrf
-                        
-                        
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold fs-3 mb-1">Individual Investor</span>
+                            </h3>
+                        </div>
+                    </div>
 
-                        
+                    <form class="form row" method="post" action="{{ route('user.save') }}" enctype="multipart/form-data">
+                        @csrf
                         <div class="card-body">
                             <div class="form-group row mb-10">
                                 <div class="col-lg-3">
                                     <label>Email Address: <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control " placeholder="Email Address*" required  name="email" value="{{ old('email')}}"/>
                                     <input type="hidden"  required  name="account_type" value="investor"/>
-                                    
+
                                 </div>
                                 <input type="hidden" name="type" value="investor">
                                 <div class="col-lg-3">
@@ -96,6 +98,15 @@
                                 <div class="col-lg-3">
                                     <label>Last Name: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name')}}"/>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-10">
+                                <div class="col-lg-6">
+                                    <label>Entity Type: <span class="text-danger">*</span></label>
+                                    <select name="user_type" id="" class="form-control">
+                                        <option value="individual"> Individual  </option>
+                                        <option value="entity"> Entity  </option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row mb-10">
@@ -118,12 +129,12 @@
                                     <label>Date of Birth <span class="text-danger">*</span> </label>
                                     <div class="input-group" id="">
                                         <input type="date" class="form-control"  placeholder="Date of Birth*" required name="dob" value="{{ old('dob')}}">
-                                         
+
                                     </div>
-                                    
+
                                 </div>
                                 <div class="col-lg-3 ">
-                                    
+
 
                                     <div class="image-input image-input-outline image-input-empty" data-kt-image-input="true" style="background-image: url('{{asset('assets/media/svg/avatars/blank.svg')}}')">
                                         <!--begin::Preview existing avatar-->
@@ -150,7 +161,7 @@
                                         <!--end::Remove-->
                                     </div>
 
-                                     
+
                                 </div>
                             </div>
                             <div class="form-group row mb-10">
@@ -169,7 +180,7 @@
                             <div class="form-group row mb-10">
                                 <div class="col-lg-4">
                                     <label>City <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" name="city" value="{{ old('city')}}" 
+                                    <input type="text" class="form-control" name="city" value="{{ old('city')}}"
                                         placeholder="City*" required>
                                 </div>
 
@@ -187,14 +198,14 @@
                             </div>
 
                             <div class="notice   bg-light-primary rounded border-primary border border-dashed p-6 text-center mb-12">
-                                
+
                                 <b class="text-black"> Consent to Electronic Delivery </b>
                                 <p class="mt-3">
                                     I consent to the electronic delivery of all communications and materials.
                                 </p>
                             </div>
 
-                            
+
                             <div class="row">
                                 <div class="col-lg-6 text-left ">
                                     <label class="form-check form-check-custom form-check-solid">
@@ -221,7 +232,7 @@
 
                                 <div class="col-lg-3 mt-10 offset-md-4 d-none" id="user_password_field">
                                     <input type="password" class="password_filed form-control" name="password" placeholder="Enter User Password*" autocomplete="off"  >
-                                </div>                       
+                                </div>
                             </div>
 
                         </div>
@@ -230,20 +241,20 @@
                                 <div class="col-lg-12">
                                     <a  href="{{ route('user.index')}}" class="btn-sm btn btn-default mr-2">Cancel</a>
                                     <button type="submit" class="btn-sm btn btn-primary mr-2">Save Account</button>
-                                   
+
                                 </div>
 
                             </div>
                         </div>
                     </form>
                 </div>
-                
+
             </div>
         </div>
         <!--end::Content container-->
     </div>
 </div>
- 
+
 @endsection
 @section('page_js')
 
@@ -251,7 +262,7 @@
         $('#electronic_delivery_check_box').click(function() {
             if ($("#electronic_delivery_check_box").is(':checked')) {
                 toastr.info("Thank you for agreeing to the Consent to Electronic Delivery");
-            } 
+            }
         });
         $('#set_password').click(function() {
             if ($("#set_password").is(':checked')) {
