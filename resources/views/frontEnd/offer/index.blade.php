@@ -22,7 +22,7 @@
         <div class="row">
             @foreach($offers as $offer)
                 <div class="col-lg-4 col-md-6 col-sm-12 p-3">
-                    <a href="{{ route('offer.details',$offer->id) }}">
+                    <a href="{{ route('offer.details',$offer->slug) }}">
                         <figure class="figure">
                             <img src="{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}" class="figure-img img-fluid rounded" alt="..." style="">
                         </figure>

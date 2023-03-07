@@ -13,9 +13,9 @@ class FrontendController extends Controller
         return view('frontEnd.offer.index',compact('offers'));
     }
 
-    public function detail($id)
+    public function detail($slug)
     {   
-        $offer = Offer::with('user','user.userDetail','investmentRestrictions','offerDetail')->find($id);
+        $offer = Offer::with('user','user.userDetail','investmentRestrictions','offerDetail')->where('slug',$slug)->first();
         return view('frontEnd.offer.detail',compact('offer'));
     }
 

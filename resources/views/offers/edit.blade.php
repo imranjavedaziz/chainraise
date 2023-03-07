@@ -212,7 +212,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
-                                                <button class="btn btn-sm btn-dark" data-bs-toggle="modal"
+                                                <button class="btn btn-sm btn-dark no-radius" data-bs-toggle="modal"
                                                     data-bs-target="#modal_contact_us"> Contact Us
                                                 </button>
                                             </div>
@@ -249,7 +249,7 @@
                                                         href="#kt_stats_widget_16_tab_2" aria-selected="false"
                                                         tabindex="-1" role="tab" style="width:140px;">
                                                         <!--begin::Icon-->
-                                                        <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">
+                                                        <span class="nav-text text-gray-800 fw-bold fs-6 lh-1 ">
                                                             VIDEO
                                                         </span>
                                                         <!--end::Title-->
@@ -265,7 +265,7 @@
                                                         id="kt_stats_widget_16_tab_link_3" data-bs-toggle="pill"
                                                         href="#kt_stats_widget_16_tab_3" aria-selected="false"
                                                         tabindex="-1" role="tab" style="width:140px;">
-                                                        <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">
+                                                        <span class="nav-text text-gray-800 fw-bold fs-6 lh-1 no-radius">
                                                             CONTACT US
                                                         </span>
                                                         <span
@@ -283,34 +283,43 @@
                                                     role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_1">
                                                     <div class="row" id="section_row">
                                                         <div class="col-lg-12 text-center">
-                                                            <button class="btn btn-default btn-sm btn-dark w-40"
+                                                            <button class="btn btn-default btn-sm btn-dark w-40 no-radius"
                                                                 type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_new_sections">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
+                                                            <button class="btn btn-default btn-sm btn-dark w-40 no-radius"
+                                                            type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#modal_feture_video">
+                                                            <i class="fa fa-video"></i>
+                                                            </button>
+                                                            <input type="hidden" name="feature_video_url"
+                                                            class="feture_video_url" value="{{  $offer->feature_video }}">
                                                         </div>
                                                         <div class="row mt-8">
+                                                            
                                                             @foreach ($offer->offerDetail as $offerDetail)
                                                                 @if ($offerDetail->input == 'summary')
                                                                     <input type="hidden" name="summary_id[]"
                                                                         class="form-control"
                                                                         value="{{ $offerDetail->id }}">
                                                                     <div class="col-lg-6 mt-4">
-                                                                        <input type="text" name="summary_heading[]"
+                                                                        <input type="text" name="summary_title[]"
                                                                             class="form-control"
                                                                             value="{{ $offerDetail->heading }}">
                                                                     </div>
                                                                     <div class="col-lg-6 mt-4">
-                                                                        <input type="text" name="summary_sub_heading[]"
+                                                                        <input type="text" name="summary_sub_title[]"
                                                                             class="form-control"
                                                                             value="{{ $offerDetail->sub_heading }}">
                                                                     </div>
                                                                     <div class="col-lg-11 mt-4">
-                                                                        <textarea type="text" name="summary_description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
+                                                                        <textarea type="text" name="summary_sub_description[]" 
+                                                                        class="summernote form-control">{{ $offerDetail->description }}</textarea>
                                                                     </div>
                                                                     <div class="col-lg-1 mt-4">
                                                                         <button type="button"
-                                                                            class="btn btn-sm btn-light-danger remove_filed"
+                                                                            class="no-radius btn btn-sm btn-light-danger remove_filed"
                                                                             data-method="summary"
                                                                             data-id="{{ $offerDetail->id }}">
                                                                             <i class="fa fa-trash"></i>
@@ -337,35 +346,28 @@
                                                                         <textarea type="text" name="text_description[]" class="summernote form-control">{{ $offerDetail->description }}</textarea>
                                                                     </div>
                                                                 @elseif($offerDetail->input == 'tiles')
-                                                                    @if ($offerDetail->offerTiles)
-                                                                        @foreach ($offerDetail->offerTiles as $tiles)
+                                                                        <input type="hidden" name="offer_detail_id_for_tiles" value="{{  $offerDetail->id }}"> 
+                                                                        @foreach ($offerDetail->getMedia('offer_tiles') as $tileImage) 
                                                                             <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper"
-                                                                                style="">
-                                                                                <div class="tiles_box text-center">
-                                                                                    <input type="hidden"
-                                                                                        name="offer_detail_id[]"
-                                                                                        class="form-control"
-                                                                                        value="{{ $tiles->offer_detail_tabs_id }}">
-                                                                                    <img src="{{ asset('files/' . $tiles->path) }}"
+                                                                                style="">  
+                                                                                <div class="tiles_box text-center">    
+                                                                                    <img src="{{$tileImage->getUrl() }}"
                                                                                         alt=""
                                                                                         class="mb-5 img img-thumbnail"
                                                                                         style="height: 100px;">
                                                                                     <br>
-                                                                                    <input type="file"
-                                                                                        class="form-control"
-                                                                                        name="tiles_source[]">
+                                                                                    <input type="file"  class="form-control"  name="tiles_source[{{ $tileImage->id }}]">
                                                                                     <hr>
                                                                                     <button
-                                                                                        class="btn badge py-3 px-4 fs-7 badge-light-danger deleteOffer"
+                                                                                        class="btn badge py-3 px-4 fs-7 badge-light-danger remove_tile"
                                                                                         type="button"
-                                                                                        data-id="{{ $offer->id }}">
+                                                                                        data-id="{{ $tileImage->id }}">
                                                                                         <i class="la la-trash"></i>
                                                                                     </button>
                                                                                 </div>
 
                                                                             </div>
-                                                                        @endforeach
-                                                                    @endif
+                                                                        @endforeach 
                                                                 @endif
                                                             @endforeach
                                                         </div>
@@ -374,8 +376,18 @@
                                                                 <div class="col-lg-4 p-10">
                                                                     <img src="{{ $photos->original_url }} "
                                                                         class="img img-thumbnail w-100 h-100"
-                                                                        alt="">
-
+                                                                        alt=""> 
+                                                                        <hr>
+                                                                        <input type="file"  class="form-control"  
+                                                                        title="Change This Image ?"
+                                                                        name="photo_old[{{ $photos->id }}]">
+                                                                    <button
+                                                                        class="mb-10 btn badge py-3 px-4 fs-7 badge-light-danger remove_tile"
+                                                                        type="button"
+                                                                        data-id="{{ $photos->id }}">
+                                                                        <i class="la la-trash"></i>
+                                                                    </button>
+                                                                    <br>
                                                                 </div>
                                                             @endforeach
                                                         </div>
@@ -392,6 +404,31 @@
                                                         </div>
                                                     </div>
                                                     <div class="row video_wrapper mt-5">
+                                                        
+                                                        @foreach ($offer->offerVideos as $video)
+                                                            <div class="video_column col-lg-4 mt-4 mb-4">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 text-center">
+                                                                        <iframe width="250" height="250" src="{{  $video->url }}"></iframe>
+                                                                    </div>
+                                                                    <div class="col-lg-12 text-center">
+                                                                        <p>{{  $video->description }}</p>
+                                                                        <input type="hidden" value="{{  $video->source }}" name="source[{{  $video->id }}]" required="">
+                                                                        <input type="hidden" value="{{  $video->url }}" name="url[{{  $video->id }}]" required="">
+                                                                        <input type="hidden" value="{{  $video->description }}" name="description[{{  $video->id }}]" required="">
+                                                                        <input type="hidden" value="{{  $video->visible }}" name="visible[{{  $video->id }}]" required="">
+                                                                    </div>
+                                                                    <div class="col-lg-12 text-center">
+                                                                        <button class="btn btn-sm delete_video" 
+                                                                        data-id="{{  $video->id }}"
+                                                                         type="button"> 
+                                                                            <i class="text-danger fa fa-trash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div> 
+                                                            </div>
+                                                        @endforeach
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="kt_stats_widget_16_tab_3" role="tabpanel"
@@ -562,13 +599,13 @@
                 <div class="appended_summary_box row section_` + no +
                 `">
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_title[]" value="Summary" required > 
+                        <input type="text" class="form-control" name="summary_title_new[]" value="Summary" required > 
                     </div>
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="summary_sub_title[]" placeholder="Sub-title" required > 
+                        <input type="text" class="form-control" name="summary_sub_title_new[]" placeholder="Sub-title" required > 
                     </div>
                     <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description[]" id="textarea_` + no + `" required ></textarea> 
+                        <textarea  class="form-control" cols="30" rows="10" name="summary_sub_description_new[]" id="textarea_` + no + `" required ></textarea> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
                         <button type="button" class="btn btn-sm btn-danger delete_section" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -585,19 +622,19 @@
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                         <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source_new[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source_new[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6 tiles_box_warpper">
                          <div class="tiles_box">
                             <label class="required"> Tiles Image </label>
-                            <input type="file" class="form-control" name="tiles_source[]" required> 
+                            <input type="file" class="form-control" name="tiles_source_new[]" required> 
                         </div>
                     </div>
                     <div class="col-lg-4 mt-6 mb-6">
@@ -606,22 +643,19 @@
                 </div>
             `);
         });
-
-
-
         $('#modal_new_sections').on('click', '.text_section', function() {
             no++;
             $('#section_row').append(`
                 <div class="appended_text_box no++;row section_` + no +
                 `">
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_title[]" value="Title" required > 
+                        <input type="text" class="form-control" name="text_title_new[]" value="Title" required > 
                     </div>
                     <div class="col-lg-6 mt-3 mb-4">
-                        <input type="text" class="form-control" name="text_sub_title[]" placeholder="Sub-title" required > 
+                        <input type="text" class="form-control" name="text_sub_title_new[]" placeholder="Sub-title" required > 
                     </div>
                     <div class="col-lg-11 mt-3 mb-4">
-                        <textarea  class="form-control" cols="30" rows="10" name="text_description[]" required id="textarea_` + no + `" ></textarea> 
+                        <textarea class="form-control" cols="30" rows="10" name="text_description_new[]" required id="textarea_` + no + `" ></textarea> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4">
                         <button type="button" class="btn btn-sm btn-danger delete_section_text" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -637,7 +671,7 @@
                 <div class="row  appended_images_box section_` + no + `">
                     <div class="col-lg-11 mt-3 mb-4">
                         <label class="required"> Image </label>
-                        <input type="file" class="form-control" name="image[]" value="Title"  required> 
+                        <input type="file" class="form-control" name="image_new[]" value="Title"  required> 
                     </div>
                     <div class="col-lg-1 mt-3 mb-4 pt-5">
                         <button type="button" class="btn btn-sm btn-danger delete_section_images" data-id="` + no + `"> <i class='fa fa-times'></i> </button>
@@ -646,12 +680,13 @@
             `);
             $('#textarea_' + no).summernote();
         });
+
         $('#modal_new_sections').on('click', '.videos_section', function() {
             $('#section_row').append(`
                     <div class="appended_video_box row section_` + no + `">
                         <div class="col-lg-4 mt-4 mb-4 form-group">
                             <label for="" class="required mb-2"> Video Source </label>
-                            <select name="offer_video_source[]" class="form-control" required>
+                            <select name="offer_video_source_new[]" class="form-control" required>
                                 <option value="youtube">  Youtube </option>
                                 <option value="facebook">  Facebook </option>
                                 <option value="vimo">  Vimo </option>
@@ -661,11 +696,11 @@
                         </div>
                         <div class="col-lg-4 mt-4 mb-4">
                             <label for="" class="required mb-2"> Embed URL </label>
-                            <input type="text" name="offer_video_url[]" class="form-control" placeholder="Embed URL" required>
+                            <input type="text" name="offer_video_url_new[]" class="form-control" placeholder="Embed URL" required>
                         </div>
                         <div class="col-lg-3 mt-4 mb-4">
                             <label for="" class="required mb-2"> Description </label>
-                            <input type="text" name="offer_video_description[]" class="form-control" placeholder="Description" required>
+                            <input type="text" name="offer_video_description_new[]" class="form-control" placeholder="Description" required>
                         </div>
                         <div class="col-lg-1 mt-4 mb-4 pt-9">
                              <button class='btn btn-sm btn-square btn-light-danger delete_section_video'  type="button">
@@ -675,6 +710,7 @@
                     </div>
                 `);
         });
+
         $('#modal_new_video').on('click', '#video_save', function(e) {
             e.preventDefault();
             var video_source = $('#video_source').val();
@@ -693,10 +729,10 @@
                             </div>
                             <div class="col-lg-12 text-center">
                                 <p>` + description + `</p>
-                                <input type="hidden"  value="` + video_source + `" name="src[]" required/>
-                                <input type="hidden"  value="` + embed_url + `"    name="url[]" required/>
-                                <input type="hidden"  value="` + description + `"  name="description[]" required/>
-                                <input type="hidden"  value="` + access + `"       name="access[]" required />
+                                <input type="hidden"  value="` + video_source + `" name="src_new[]" required/>
+                                <input type="hidden"  value="` + embed_url + `"    name="url_new[]" required/>
+                                <input type="hidden"  value="` + description + `"  name="description_new[]" required/>
+                                <input type="hidden"  value="` + access + `"       name="access_new[]" required />
                             </div>
                             <div class="col-lg-12 text-center">
                                 <button class='btn btn-sm delete_video_wrapper' type="button"> 
@@ -783,25 +819,12 @@
                 </div>
             `);
         });
-        $('#security_type').val({{ $offer->security_type }});
-        $('#base_currency').val({{ $offer->base_currency }});
-        $('#visiblity').val(
-            @if ($offer->access)
-                {{ $offer->access->visiblity }}
-            @endif );
-        $('#offer_status').val(
-            @if ($offer->access)
-                {{ $offer->access->offer_status }}
-            @endif );
-
-        $('#offer_status').val(
-            @if ($offer->access)
-                {{ $offer->access->offer_status }}
-            @endif );
-        $('#offer_status').val(
-            @if ($offer->access)
-                {{ $offer->access->offer_status }}
-            @endif );
+        $('#security_type').val('{{ $offer->security_type }}');
+        $('#base_currency').val('{{ $offer->base_currency }}');
+        $('#visiblity').val(@if($offer->access)'{{ $offer->access->visiblity }}'@endif);
+        $('#offer_status').val(@if($offer->access)'{{ $offer->access->offer_status }}'@endif);
+        $('#offer_status').val(@if ($offer->access)'{{ $offer->access->offer_status }}'@endif );
+        $('#offer_status').val(@if ($offer->access)'{{ $offer->access->offer_status }}'@endif );
     </script>
 
     <script>
@@ -841,6 +864,70 @@
             });
 
         });
+        $('.remove_tile').click(function(){
+            var id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure to delete this file?",
+                text: "This action can't undo are you sure to delete?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes Delete"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{ route('offers.tile.delete') }}",
+                        method: "GET",
+                        data: {
+                            id: id,
+                        },
+                        success: function(result) {
+                            if (result.status == true) {
+                                toastr.success(result.message, "Success");
+                                location.reload();
+                            } else {
+                                toastr.error(result.message, "Error");
+                            }
+                        }
+                    });
+
+                }
+            });
+        });
+        $('.delete_video').click(function(){
+            var id = $(this).data('id');
+            Swal.fire({
+                title: "Are you sure to delete this video?",
+                text: "This action can't undo are you sure to delete?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes Delete"
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajax({
+                        url: "{{ route('offers.video.delete') }}",
+                        method: "GET",
+                        data: {
+                            id: id,
+                        },
+                        success: function(result) {
+                            if (result.status == true) {
+                                toastr.success(result.message, "Success");
+                                location.reload();
+                            } else {
+                                toastr.error(result.message, "Error");
+                            }
+                        }
+                    });
+
+                }
+            });
+        });
+        $('.add_feature_video_btn').click(function() {
+            var videourl = $('.video_url').val();
+            $('.feture_video_url').val(videourl);
+        });
+
+        
     </script>
 
 

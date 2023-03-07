@@ -24,13 +24,13 @@ return [
     'google' => [
         'client_id' => '267275484890-dabde5ler61qd3lpa4k2t7ft2e0fga3d.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'https://beta.chainraise.info/login/google/callback',
+        'redirect' => 'https://investchainraise.io/login/google/callback',
     ], 
 
     'facebook' => [
         'client_id' => '1600777097062911',
         'client_secret' => '110fa51eadb59f8993d82c30a03a62cf',
-        'redirect' => 'https://beta.chainraise.info/login/facebook/callback',
+        'redirect' => 'https://investchainraise.io/login/facebook/callback',
     ], 
 
     'postmark' => [

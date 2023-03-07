@@ -30,6 +30,9 @@
                     <div class="col-lg-12">
                         <input type="text" class="form-control" name="offer_name" placeholder="Offer Name *" id="offer_name" required>
                     </div>
+                    <div class="col-lg-12">
+                        <input type="text" class="form-control" name="slug" placeholder="Slug" id="offer_slug"  readonly required>
+                    </div>
                 </div>
                 
                 <div class="row row-cols-2 row-cols-md-4 g-5 mb-8">

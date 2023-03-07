@@ -201,7 +201,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
-                                                <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="modal"
+                                                <button class="btn btn-sm btn-dark no-radius" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#modal_contact_us"> Contact Us
                                                 </button>
                                             </div>
@@ -272,13 +272,13 @@
                                                     role="tabpanel" aria-labelledby="#kt_stats_widget_16_tab_link_1">
                                                     <div class="row" id="section_row">
                                                         <div class="col-lg-12 text-center">
-                                                            <button class="btn btn-default btn-sm btn-dark w-40"
+                                                            <button class="btn btn-default btn-sm btn-dark w-40 no-radius"
                                                                 type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_new_sections">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
 
-                                                            <button class="btn btn-default btn-sm btn-dark w-40"
+                                                            <button class="btn btn-default btn-sm btn-dark w-40 no-radius"
                                                                 type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_feture_video">
                                                                 <i class="fa fa-video"></i>
@@ -674,7 +674,6 @@
     <script>
         $('.add_investment_button_section').click(function() {
             var content = $(this).data('content');
-            alert(content);
            if(content == 'Income Verification (Reg CF)'){
                 $('.investment_step_button_row').append(`
                     <div class="col-lg-12  text-center button_row_wrapper">
@@ -844,5 +843,24 @@
 
             });
     </script> 
+    <script>
+       
+        $(document).ready(function() {
+            $('#offer_name').on('keyup', function() {
+                var str = $('#offer_name').val();
+                str = str.toLowerCase();
+                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+                var to   = "aaaaeeeeiiiioooouuuunc------";
+                for (var i=0, l=from.length ; i<l ; i++) {
+                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                }
+                str = str.replace(/[^a-z0-9 -]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-+|-+$/g, ''); 
+                 $('#offer_slug').val(str);
+            });
+        });
+    </script>
 
 @endsection

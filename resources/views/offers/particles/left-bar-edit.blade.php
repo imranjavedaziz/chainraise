@@ -1,7 +1,7 @@
 <div class="col-lg-3 pt-4">
     <div class="row">
         <div class="col-lg-12 text-center">
-            <button type="submit" class="btn btn-sm btn-dark" id="submit_offer"> UPDATE CHANGES</button>
+            <button type="submit" class="btn btn-sm btn-dark no-radius" id="submit_offer"> UPDATE CHANGES</button>
         </div>
     </div>
     <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15 px-10">

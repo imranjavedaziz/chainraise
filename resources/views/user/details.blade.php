@@ -608,10 +608,20 @@
                                             </div>
 
                                             <div class="form-group mb-10 col-lg-4">
-                                                <label> Tax Entity Type <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" placeholder="Tax Entity Type"
-                                                    required name="tax_entity_type"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->tax_entity_type }}" @endif />
+                                                <label> Tax Entity Type <span class="text-danger">*</span></label> 
+                                                <select class="form-select tax_entity_type" required data-control="select2"
+                                                    name="tax_entity_type" data-placeholder="Select an option"
+                                                    data-live-search="true">
+                                                    <option value="IRA">IRA</option>
+                                                    <option value="Trust">Trust</option>
+                                                    <option value="Corporation">Corporation</option>
+                                                    <option value="LLC">LLC</option>
+                                                    <option value="Partnership">Partnership</option>
+                                                    <option value="Non-Profit">Non-Profit</option>
+                                                    <option value="Foregin Corporation">Foregin Corporation</option>
+                                                    <option value="Custodial">Custodial</option> 
+                                                </select>
+                                                  
                                             </div>
                                             <div class="form-group mb-10 col-lg-4">
                                                 <label> Tax Identification # <span class="text-danger">*</span> </label>
@@ -714,8 +724,11 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <label>Country of Residence <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="country_residence"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->country_residence }}" @endif>
+                                            <select class="form-select country_residence" required data-control="select2"
+                                            name="country_residence" data-placeholder="Select an option"
+                                            data-live-search="true">
+                                            @include('user.country')
+                                            </select> 
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -2328,6 +2341,12 @@
             $('.cc').val('{{  $user->cc }}')
         @endif
 
+        @if ($user->identityVerification) 
+                $('.tax_entity_type').val('{{  $user->identityVerification->tax_entity_type }}') 
+        @endif 
+        @if ($user->identityVerification) 
+            $('.country_residence').val('{{  $user->identityVerification->country_residence  }}') 
+        @endif
 
     </script>
 @endsection

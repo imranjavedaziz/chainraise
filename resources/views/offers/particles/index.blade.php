@@ -112,7 +112,7 @@
                             </div>
                         </div>
 
-
+{{-- 
                         <div class="col-lg-12 section_wrapper videos_section">
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3 mb-5">
                                 <!--begin::Title-->
@@ -120,7 +120,7 @@
                                  <br>
                                  <div class="text-muted me-2 fs-7">Enter YouTube or Vimeo Videos IDs</div>
                             </div>
-                        </div>
+                        </div> --}}
 
 
                         {{-- <div class="col-lg-12 section_wrapper">
@@ -307,33 +307,31 @@
 
 
 
-<div class="modal fade" id="modal_feture_video" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <!--begin::Modal content-->
+<div class="modal fade" id="modal_feture_video" tabindex="-1" aria-hidden="true"> 
+    <div class="modal-dialog modal-dialog-centered mw-650px"> 
         <div class="modal-content rounded">
             <!--begin::Modal header-->
-            <div class="modal-header pb-0 border-0 justify-content-end">
-              
+            <div class="modal-header pb-0 border-0 justify-content-end"> 
             </div> 
             <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15"> 
                     <div class="row mt-3">
-                        <div class="col-lg-12 form-group">
-                            <input type="text"  class="form-control video_url" placeholder="Enter Feature Video URL">
+                        <label for=""> Feature Video URL </label>
+                        <small class="text-info pt-3"> <b>Get Embaded URL From Youtube</b></small>
+                        <div class="col-lg-12 form-group mt-4">
+                            <input type="text"  class="form-control video_url no-radius" placeholder="Enter Feature Video URL">
                         </div> 
                     </div>
                     <div class="row mt-3">
                         <div class="col-lg-12 form-group">
-                            <button class="btn btn-sm btn-dark add_feature_video_btn" type="button" data-bs-dismiss="modal" > Add Feature Video </button>
+                            <button class="btn btn-sm btn-dark add_feature_video_btn no-radius" type="button" data-bs-dismiss="modal" > Add Feature Video </button>
                         </div> 
-                    </div>
-                   
-               
-                <!--end:Form-->
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
+                    </div>  
+            </div> 
+        </div> 
+    </div> 
 </div>
+@if(isset($offer))
+<script>
+    $('.video_url').val('{{  $offer->feature_video }}')
+</script>
+@endif

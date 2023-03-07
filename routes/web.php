@@ -52,7 +52,7 @@ Route::get('login/facebook', [App\Http\Controllers\SocialiteController::class, '
 Route::get('login/facebook/callback', [App\Http\Controllers\SocialiteController::class, 'handleFacebookCallback']);
 
 
-Route::get('offer/{id}/details', [FrontendController::class, 'detail'])->name('offer.details');
+Route::get('offer/{id}', [FrontendController::class, 'detail'])->name('offer.details');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -149,6 +149,8 @@ Route::group(['as'=> 'offers.','prefix'=>'offers','middleware' => ['auth','verif
     Route::get('list', ['as' => 'list','uses' => 'OfferController@list']);
     Route::post('save', ['as' => 'save','uses' => 'OfferController@save']);
     Route::post('delete', ['as' => 'delete','uses' => 'OfferController@delete']);
+    Route::get('tile/delete', ['as' => 'tile.delete','uses' => 'OfferController@deleteTile']);
+    Route::get('video/delete', ['as' => 'video.delete','uses' => 'OfferController@deleteVideo']);
     Route::get('edit/{id}', ['as' => 'edit','uses' => 'OfferController@edit']);
     Route::get('view/{id}', ['as' => 'view','uses' => 'OfferController@view']);
     Route::post('update', ['as' => 'update','uses' => 'OfferController@update']);
