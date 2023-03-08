@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('page_head')
     <style>
-        .fixed-div {
+        /* .fixed-div {
             position: fixed;
             overflow: scroll;
             top: 12%;
@@ -9,9 +9,9 @@
             width: 25%;
             height: 100%;
             margin-bottom: 20%;
-        }
+        } */
 
-        ::-webkit-scrollbar {
+        /* ::-webkit-scrollbar {
             width: 10px;
             //height: 10px;
         }
@@ -22,7 +22,7 @@
 
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
-        }
+        } */
     </style>
 @endsection
 @section('title', 'Details')
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 fixed-div "  >
+                <div class="col-lg-4   "  >
                     <div class="row ">
                         <div class="col-lg-12">
                             <button type="button" class="btn bg-change d-block">

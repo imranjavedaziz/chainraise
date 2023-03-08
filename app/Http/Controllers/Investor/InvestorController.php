@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class InvestorController extends Controller
 {
-    public function offerings()
+    public function dashbaord()
     {
-        dd(1);
-        return view('');
+        return view('frontEnd.offer.index');
     }
 }

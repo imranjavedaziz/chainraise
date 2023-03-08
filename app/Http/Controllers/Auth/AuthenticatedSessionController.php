@@ -32,6 +32,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         
+        if (Auth::user()->hasRole('investor')) {
+            return redirect()->intended(RouteServiceProvider::INVESTOR);
+        }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

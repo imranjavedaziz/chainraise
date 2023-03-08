@@ -36,8 +36,10 @@ Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
 Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
+Route::get('terms', [FrontendController::class, 'terms'])->name('terms');
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
+
 Route::get('login-social', [FrontendController::class, 'socialLogin'])->name('login.social');
 Route::get('otp', [GeneralController::class, 'otp'])->name('otp');
 
@@ -55,6 +57,12 @@ Route::get('login/facebook/callback', [App\Http\Controllers\SocialiteController:
 Route::get('offer/{id}', [FrontendController::class, 'detail'])->name('offer.details');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+// Investor Dashbaord
+
+Route::group(['as'=> 'invest.','prefix'=>'investor','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers\Investor'], function () {
+    Route::get('/dashboard', ['as' => 'make','uses' => 'InvestorController@dashbaord']);
+});
 
 Route::group(['as'=> 'invest.','prefix'=>'invest','middleware' => ['auth','verified'],'namespace'=>'App\Http\Controllers'], function () {
     Route::get('make', ['as' => 'make','uses' => 'MakeInvestmentController@make']);

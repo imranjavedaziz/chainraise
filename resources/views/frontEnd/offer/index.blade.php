@@ -47,7 +47,7 @@
                     </a>
                     <div class="row">
                         <div class="col-lg-12 mt-3">
-                                <a  href="{{ route('dashboard') }}" target="_blank" class="btn-sm btn btn-primary lernbtn" style="text-transform:uppercase;width:100%;border-radius: 0;background:#4B1DFF;border-color:#4B1DFF"> Learn More </a>
+                                <a  href="{{ route('offer.details',$offer->slug) }}" target="_blank" class="btn-sm btn btn-primary lernbtn" style="text-transform:uppercase;width:100%;border-radius: 0;background:#4B1DFF;border-color:#4B1DFF"> Learn More </a>
                         </div>
                     </div>
                 </div>

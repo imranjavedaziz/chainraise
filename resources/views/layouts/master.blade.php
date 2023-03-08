@@ -17,7 +17,6 @@
     .bg-image {
       background-image: url("{{ asset('media/portfolio/background-chainraise.jpg') }}");
     }
-
     #toastr-container {
       background: rgb(247, 84, 92) !important;
     }
@@ -31,16 +30,36 @@
   <!-- Header Start -->
   <div class="container-md py-3">
     <div class="row align-items-center">
-      <div class="col-lg-6 col-md-6 col-sm-5 h-mob">
+      <div class="col-lg-3 col-md-6 col-sm-5 h-mob">
         <a class="navbar-brand" href="{{ route('index') }}">
           <img src="{{asset('media/logo/logo.webp')}}" alt="Chain Rasied Logo" width="190" height="38">
         </a>
       </div>
-      <div class="col-lg-5 col-md-4 col-sm-5 d-flex justify-content-center align-items-center h-mob">
-        <a href="#" class="pe-4">RAISE CAPITAL</a>
-        <a href="#" class="pe-4" data-bs-toggle="modal" data-bs-target="#sign-in-popup">Sign in</a>
-        <a href="#" class="pe-4" data-bs-toggle="modal" data-bs-target="#sign-up-popup">Sign up</a>
-        <button type="button" class="btn btn-primary">INVEST</button>
+      <div class="col-lg-8 col-md-4 col-sm-5 d-flex justify-content-center align-items-center h-mob">
+        @if(Auth::user())
+          <a href="#" class="pe-4">Offering</a>
+          <a href="#" class="pe-4">Portfolio</a>
+          <a href="#" class="pe-4">My Account</a>
+          <a href="#" class="pe-4">My Documents</a>
+          <a href="#" class="pe-4">RAISE CAPITAL</a>
+          <a class="pe-4" href="{{ route('logout') }}" 
+            onclick="event.preventDefault();
+            document.getElementById('logout-form').submit();">
+            Sign Out
+            <form id="logout-form" action="{{ route('logout') }}"
+                method="POST" class="d-none">
+                @csrf
+            </form>
+          </a>
+
+           
+        @endif
+        @if(!Auth::user())
+          <a href="#" class="pe-4" data-bs-toggle="modal" data-bs-target="#sign-in-popup">Sign in</a>
+          <a href="#" class="pe-4" data-bs-toggle="modal" data-bs-target="#sign-up-popup">Sign up</a> 
+          <button type="button" class="btn btn-primary">INVEST</button>
+        @endif
+        
       </div>
       <div class="col-lg-1 col-md-2 col-sm-2 d-flex justify-content-center align-items-center h-mob">
         <!-- Facebook -->
@@ -224,7 +243,13 @@
                       </label>
                     </div>
                   </div>
-                  <div class="col-7 d-flex align-items-center justify-content-end m-0 p-0"> </div>
+                  <div class="col-12 d-flex align-items-center">
+                    <div class="form-group form-check">
+                      <input type="checkbox" name="terms"  class="form-check-input show_password" required>
+                      <a href="{{  route('terms') }}" class="form-check-label"  target="_blank"  style="padding: 0px; font-size: 14px; font-weight: 500;"> Agree terms & privacy policy
+                    </a>
+                    </div>  
+                  </div>
                 </div>
                 <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
                   <button class="btn btn-primary" type="submit">Sign in</button>

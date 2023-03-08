@@ -23,4 +23,8 @@ class FrontendController extends Controller
     {
         return view('frontEnd.login');
     }
+
+    function terms(){
+        return view('frontEnd.terms');
+    }
 }
