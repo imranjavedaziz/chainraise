@@ -56,8 +56,10 @@
                     @endhasrole
                     @foreach ($offers as $offer)
                         <div class="col-xl-4 col-lg-4">
+                           
                             <div class="card card-xl-stretch mb-xl-8 no-radius">
                                 <div class="card-body p-0">
+                                  
                                     <div class="px-9 pt-7 card-rounded h-275px w-100"
                                         @if ($offer->getFirstMediaUrl('offer_image', 'thumb') != null) 
                                             style="background-image: url('{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}');background-size:100%"
@@ -217,7 +219,7 @@
                                         </div>
                                         @hasrole('admin|issuer')
                                             <div class="row">
-                                                <div class="col-lg-6" style="text-align: right">
+                                                <div class="col-lg-6" style="text-align: right;">
                                                     <a href="{{ route('offers.edit',$offer->id) }}" class="btn-light-warning no-radius  btn badge py-3 px-4 fs-7 badge-light-warning">  <i class="la la-edit"></i> </a>
                                                 </div>
                                                 <div class="col-lg-6 text-left">
