@@ -188,47 +188,59 @@
 
                             </ul>
                         </div>
-                        <div class="row ">
-                            <div class="col-6">
-                                <div>
-                                    <h6 class="m-0 p-0">Investment</h6>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="m-0 p-0" style="font-size: 12px;">Minimum</p>
-                                        </div>
-                                        <div class="col">
-                                            <h6 class="m-0 p-0">
-                                                @if ($offer->base_currency == 'USD')
-                                                    $
-                                                @else
-                                                    {{ $offer->base_currency }}
-                                                @endif
-                                                {{ number_format($offer->investmentRestrictions->min_invesment) }}
-                                            </h6>
+                        <form action="{{ route('invest.submit') }}" method="get" id="investForm">
+                            @csrf
+                            <div class="row ">
+                                <div class="col-6">
+                                    <div>
+                                        <h6 class="m-0 p-0">Investment</h6>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="m-0 p-0" style="font-size: 12px;">Minimum</p>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class="m-0 p-0">
+                                                    @if ($offer->base_currency == 'USD')
+                                                        $
+                                                    @else
+                                                        {{ $offer->base_currency }}
+                                                    @endif
+                                                    {{ number_format($offer->investmentRestrictions->min_invesment) }}
+                                                </h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="input-group">
-                                    <div class="input-group-text" id="btnGroupAddon">$</div>
-                                    <input type="number" class="form-control" placeholder="0"
+                                <div class="col-6"> 
+                                        @csrf
+                                    <div class="input-group">
+                                        <input type="hidden" name="offer_id" value="{{ $offer->id }}"> 
+                                        <div class="input-group-text" id="btnGroupAddon">$</div>
+                                        <input type="number" class="form-control" name="investment_amount" required
+                                        placeholder="{{ number_format($offer->investmentRestrictions->min_invesment) }}" 
+                                        min="{{ $offer->investmentRestrictions->min_invesment }}" 
+                                        max="{{ $offer->investmentRestrictions->max_invesment }}"
                                         aria-label="Input group example" aria-describedby="btnGroupAddon">
+                                    </div>
+                                   
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="d-grid gap-2 mt-3">
-                                @if (Auth::user())
-                                    <a class="btn btn-primary" href="#"> Invest </a>
-                                @else
-                                    <button class="btn btn-primary" type="button">Learn More</button>
-                                @endif
+                            <div class="col-lg-12">
+                                <div class="d-grid gap-2 mt-3">
+                                    @if (Auth::user())
+                                        <button class="btn btn-primary" type="submit"> Invest </button>
+                                    @else
+                                        <button class="btn btn-primary" type="button">Learn More</button>
+                                    @endif
+                                </div>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button class="btn bg-change py-2" type="button">Add to Wishlist</button>
+                                </div>
                             </div>
-                            <div class="d-grid gap-2 mt-3">
-                                <button class="btn bg-change py-2" type="button">Add to Wishlist</button>
-                            </div>
-                        </div>
+                        </form>
+
+
+
                         <div class="d-grid gap-2 mt-3">
                             <button class="btn bg-change py-2" type="button">Add to Wishlist</button>
                         </div>

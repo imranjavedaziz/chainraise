@@ -37,9 +37,9 @@
       </div>
       <div class="col-lg-8 col-md-4 col-sm-5 d-flex justify-content-center align-items-center h-mob">
         @if(Auth::user())
-          <a href="#" class="pe-4">Offering</a>
+          <a href="/" class="pe-4">Offering</a>
           <a href="#" class="pe-4">Portfolio</a>
-          <a href="#" class="pe-4">My Account</a>
+          <a href="{{  route('user.account') }}" target="_blank" class="pe-4">My Account</a>
           <a href="#" class="pe-4">My Documents</a>
           <a href="#" class="pe-4">RAISE CAPITAL</a>
           <a class="pe-4" href="{{ route('logout') }}" 

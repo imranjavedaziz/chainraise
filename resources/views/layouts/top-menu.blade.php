@@ -10,25 +10,37 @@
         @hasrole('investor')
         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
             class="menu-item menu-lg-down-accordion me-0 me-lg-2">
-            <a href="{{ route('offers.active.index') }}">
+            <a href="/" target="_blank">
                 <span class="menu-link">
                     <span class="menu-title">Offerings</span>
                     <span class="menu-arrow d-lg-none"></span>
                 </span>
             </a>
-        </div>
-        @endhasrole
-        @hasrole('investor')
-        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
-            class="menu-item menu-lg-down-accordion me-0 me-lg-2">
-            <span class="menu-link">
-                <span class="menu-title">Portfolio</span>
-                <span class="menu-arrow d-lg-none"></span>
-            </span>
+            <a href="{{route('user.account')}}" target="_blank">
+                <span class="menu-link">
+                    <span class="menu-title">My Account</span>
+                    <span class="menu-arrow d-lg-none"></span>
+                </span>
+            </a>
+
+            <a href="{{route('user.account')}}" target="_blank">
+                <span class="menu-link">
+                    <span class="menu-title">My Documents</span>
+                    <span class="menu-arrow d-lg-none"></span>
+                </span>
+            </a>
+
+            <a href="{{route('user.account')}}" target="_blank">
+                <span class="menu-link">
+                    <span class="menu-title">Portfolio</span>
+                    <span class="menu-arrow d-lg-none"></span>
+                </span>
+            </a>
         </div>
         @endhasrole
         
-        @hasrole('admin|issuer|investor')
+        
+        @hasrole('admin|issuer')
         <div  class="menu-item menu-lg-down-accordion me-0 me-lg-2">
         <span class="menu-link">
             <span class="menu-title">

@@ -24,7 +24,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 p-3">
                     <a href="{{ route('offer.details',$offer->slug) }}">
                         <figure class="figure">
-                            <img src="{{ $offer->getFirstMediaUrl('offer_image', 'thumb') }}" class="figure-img img-fluid rounded" alt="..." style="">
+                            <img src="{{ $offer->getFirstMediaUrl('banner_image', 'thumb') }}" class="figure-img img-fluid rounded" alt="..." style="">
                         </figure>
                         <div class="row">
                             <div class="col-7">
