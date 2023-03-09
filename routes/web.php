@@ -131,7 +131,7 @@ Route::group(['as'=> 'user.','prefix'=>'users','middleware' => ['auth','verified
     Route::post('esign-template-save', ['as' => 'esign.template.save','uses' => 'UserController@templateSave']);
 
     //Front Listing Page
-
+    /// Added new roure
     Route::post('esign-template-save', ['as' => 'esign.template.save','uses' => 'UserController@templateSave']);
 
 });
