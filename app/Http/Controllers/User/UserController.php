@@ -365,8 +365,7 @@ class UserController extends Controller
     }
     public function issuerAccountUpdate(Request $request)
     {
-
-
+ 
 
         $request->validate([
             //Users Table
@@ -931,7 +930,42 @@ class UserController extends Controller
     }
 
 
-
+    public function basicDetailUpdate(Request $request){ 
+         $user = Auth::user();
+        try{
+            $user->name = $request->first_name;    
+            $user->user_type = $request->account_type;    
+            $user->accreditation_id = $request->accreditation;  
+            if($request->electronic_delivery  == 'true'){
+                $agree_consent_electronic = true;
+            }else{
+                $agree_consent_electronic =false;
+            }
+            $user->agree_consent_electronic = $agree_consent_electronic;   
+            $user->save();
+            UserDetail::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                 'last_name' => $request->last_name,
+                 'entity_name'=>  $request->entity_name,
+                ]
+            );
+            $user->profile_status = true;
+            $user->save();
+            
+            return response([
+                'status'=>true,
+                'message'=>'Data Updated Successfully'
+            ]); 
+        }catch(Exception $error){
+            return response([
+                'status'=>false,
+                'message'=>'Error While Updating Data'
+            ]); 
+        }
+       
+        
+    }
 
 
 }
