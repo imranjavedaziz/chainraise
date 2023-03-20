@@ -14,6 +14,8 @@
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script> 
     <title> Chain Rasied Portal | @yield('title') </title>
     <style>
         .bg-image {
@@ -97,6 +99,19 @@
             background: #fff;
             border: none;
         }
+        label.error {
+            color: red!important;
+            font-size: 15px;
+            font-style: italic;
+            margin-top:6px;
+        }
+        label.success {
+            color:#196e37;
+            font-size: 15px;
+            font-style: italic;
+            margin-top:6px;
+        }
+        
     </style>
     @section('page_head')
     @show
@@ -196,18 +211,20 @@
                             </div>
                         </div>
                         <div class="d-flex flex-column text-center">
-                            <form action="{{ route('login') }}" method="post" enctype="multipart/form-data">
-                                @csrf
+                            <label class="error error_message"></label>
+                            <label class="success success_message"></label>
+                            
+                            <form id="loginForm">
                                 <div class="my-3">
-                                    <input type="email" class="form-control" id="email1"
-                                        placeholder="Your email address..." required name="email">
+                                    <input type="email" class="form-control" id="email"
+                                        placeholder="Your email address..." name="email">
                                     @error('email')
                                         <span class="text-danger " style="font-size:13px"> {{ $message }} </span>
                                     @enderror
                                 </div>
                                 <div class="my-3 ">
-                                    <input type="password" class="form-control user_login_password" id="password1"
-                                        placeholder="Your password..." required name="password">
+                                    <input type="password" class="form-control user_login_password" id="password"
+                                        placeholder="Your password..." name="password">
                                 </div>
                                 <div class="row">
 
@@ -230,7 +247,7 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
-                                    <button class="btn btn-primary" type="submit">Sign in</button>
+                                    <button class="btn btn-primary submit_button" type="submit">Sign in</button>
                                 </div>
                             </form>
                         </div>
@@ -525,8 +542,8 @@
                                         Great! You're all set.
                                     </strong>
                                     <br><br>
-                                    <a href="/" class="btn btn-sm btn-primary no-radius"> 
-                                        ACCESS  PORTAL
+                                    <a href="/" class="btn btn-sm btn-primary no-radius">
+                                        ACCESS PORTAL
                                     </a>
                                 </div>
 
@@ -624,46 +641,7 @@
 
 
 
-
-
-    <!--Bootstrap Bundle with Popper -->
-
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/top-up-wallet.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-
-    @section('page_js')
-    @show
-</body>
-
-
-@if (Session::has('expire'))
-    @php
-        $message = session::get('expire');
-    @endphp
-    <script>
-        toastr.error('{{ $message }}', "Error");
-    </script>
-    @php
-        session()->forget('expire');
-        session()->forget('success');
-    @endphp
-@endif
-
-
+    
 <script>
     $(document).ready(function() {
         $('.show_password').change(function() {
@@ -710,15 +688,15 @@
         });
 
 
-        $('.goto-final').click(function(event) { 
+        $('.goto-final').click(function(event) {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            }); 
+            });
             $('#update_profile').submit(function(e) {
                 e.preventDefault();
-                var formData = new FormData(this); 
+                var formData = new FormData(this);
                 $.ajax({
                     url: "{{ route('user.basic.details.update') }}",
                     type: 'POST',
@@ -726,33 +704,110 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                       if(response.status == true){
+                        if (response.status == true) {
                             $('.row_accreditation').addClass('d-none')
-                            $('.row_final').removeClass('d-none');  
+                            $('.row_final').removeClass('d-none');
                             toastr.success(response.message, "Success");
-                       }else{
+                        } else {
                             toastr.error(response.message, "Error");
-                       }
+                        }
                     },
                     error: function(xhr) {
                         console.log(xhr.responseText);
                     }
                 });
             });
- 
 
-            
+
+
         });
 
 
 
 
     });
+
+
+    $(document).ready(function() {
+        $('#loginForm').validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                password: {
+                    required: "Please enter your password",
+                    minlength: "Username must be at least 3 characters long"
+                },
+                email: {
+                    required: "Please enter your email",
+                    email: "Please enter a valid email address"
+                }
+            },
+            submitHandler: function(form) {
+                var formData = $('#loginForm').serialize();
+                $('.submit_button').prop('disabled',true);
+                $('.submit_button').text('Loading ...');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "{{  route('login') }}",  
+                    data: formData,
+                    success: function(response) {  
+                        $('.success_message').text('Login Success Page Reloading  ....'); 
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000); 
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = JSON.parse(xhr.responseText);  
+                        $('.error_message').text(errorMessage.message);
+                        $('.submit_button').prop('disabled ',false); 
+                        $('.submit_button').text('Sign In'); 
+                    } 
+                });
+            }
+        });
+    });
 </script>
+ 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    @section('page_js')
+    @show
+</body>
+
+
+@if (Session::has('expire'))
+    @php
+        $message = session::get('expire');
+    @endphp
+    <script>
+        toastr.error('{{ $message }}', "Error");
+    </script>
+    @php
+        session()->forget('expire');
+        session()->forget('success');
+    @endphp
+@endif
+
+
 @if (Auth::user())
     @if (Auth::user()->profile_status == 0)
         <script>
-           
             $(window).on('load', function() {
                 $('#profile-complete').modal('show');
             });

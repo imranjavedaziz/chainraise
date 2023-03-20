@@ -237,7 +237,7 @@
                                          </th> 
                                          
                                          <th class="ps-9"> 
-                                            <a href="#" class="text-dark  text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))}} </a>
+                                            <a href="#" class="text-dark  text-hover-primary d-block mb-1 fs-6"> {{ ucfirst($user->roles->pluck('name')->implode(' '))  }} </a>
                                          </th> 
                                          <th class="ps-9"> 
                                             @if($user->kyc) {{ $user->kyc->kyc_level}} @else -- @endif
@@ -251,10 +251,17 @@
                                           </th> 
                                           <th class="ps-9"> 
                                             <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3 deleteUser"
-                                         @if(Auth::user()->id ==  $user->id ) disabled @endif
-                                          data-id="{{  $user->id  }}" >
-                                            <i class="la la-trash fs-3 text-danger"></i>
-                                        </a>
+                                             @if(Auth::user()->id ==  $user->id ) disabled @endif
+                                             data-id="{{  $user->id  }}" >
+                                             <i class="la la-trash fs-3 text-danger"></i>
+                                            </a>
+                                            @if($user->roles->pluck('name')->implode(' ') == 'issuer')
+                                                <a href="#" class="btn btn-icon btn-color-muted btn-bg-light btn-active-color-primary btn-sm me-3" title="Update KYC/AML Status" >
+                                                    <input type="checkbox" 
+                                                    @if($user->check_kyc == true) @checked(true)  @else @checked(false) @endif
+                                                    class="update_aml_status" data-id="{{  $user->id }}">  
+                                                </a>
+                                            @endif
                                            </th> 
                                 </tr>
                                     @endforeach
@@ -579,6 +586,29 @@
             $('#sendEmailBtn').html('Send Email');
             
         });
+
+        $('body').on('click','.update_aml_status', function(){ 
+            var userId = $(this).data('id');
+            var url = "{{ route('user.update.kyc.check', ['id' => ':userId']) }}";
+            url = url.replace(':userId', userId); 
+            $.ajax({
+                url: url,
+                method: 'GET', 
+                success: function(response) {
+                     if(response.status == true){ 
+                        toastr.success('KYC / AML Status Has Been Updated',  "Success");
+                        if(response.data == 'Disabled'){
+                            $('.update_aml_status').prop('checked',false);
+                        } else{
+                            $('.update_aml_status').prop('checked',true);
+                        }
+                       
+                        
+                     }
+                }
+            });
+        });
+        
     </script>
 
 @endsection

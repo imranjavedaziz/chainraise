@@ -321,7 +321,11 @@ class MakeInvestmentController extends Controller
             'templates'=> 'required',
             'investment_amount'=>'required',
         ]);
-        
+        $custodial_account = Custodial::where('offer_id', $request->offer_id)->first();
+        if(!$custodial_account){
+            Session::put('error','Custodial Account Id Not Found for Selected Offer');  
+            return redirect()->route('dashboard');
+        }
         $member_id = explode(',',$request->user_guid);
         $filteredArray = array_filter($member_id, function ($value) {
             return $value !== '';
@@ -345,9 +349,8 @@ class MakeInvestmentController extends Controller
             ]); 
             $token_json =  json_decode((string) $get_token->getBody(), true); 
             // dd($token_json['access_token']);
-        }catch(Exception $error){
-            dd($error);
-            Session::put('error','Internal Server Error');  
+        }catch(Exception $error){ 
+           Session::put('error','Internal Server Error');  
            return redirect()->route('dashboard');
         }
         
@@ -386,9 +389,9 @@ class MakeInvestmentController extends Controller
             return redirect()->route('dashboard');
         }
        
-       // dd($token_json['access_token']);
-     //   dd($identityId);
-      //  dd($member_id);
+        
+       
+       
         try{
             $accounts_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/accounts/".$identityId.'/'.$member_id;
             $accounts = Http::withToken($token_json['access_token'])->get($accounts_url);
@@ -415,17 +418,28 @@ class MakeInvestmentController extends Controller
                 'identityId' => $identityId,
                 'financialAccountId' => $accountGuid,
             ]);
+            
             $externalAccountJson =  json_decode((string) $externalAccounts->getBody(), true);
+            
         }catch(Exception $error){
             dd($error);
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
+
        
-       
+        if($externalAccounts->status() == 409){
+            
+           
+            $externalAccountId = explode('Account is already linked ', $externalAccountJson['title']);
+            $externalAccountId = $externalAccountId[1];
+        }else{
+            $externalAccountId = $externalAccountJson['id'];
+        }
+      
         try{
             DB::beginTransaction();
-            $custodial_account = Custodial::where('offer_id', $request->offer_id)->first(); 
+         
             $curl = curl_init();
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'https://api.sandbox.fortressapi.com/api/trust/v1/payments',
@@ -438,7 +452,7 @@ class MakeInvestmentController extends Controller
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => '{
                 "source": {
-                    "externalAccountId": "'.$externalAccountJson['id'].'"
+                    "externalAccountId": "'.$externalAccountId.'"
                 },
                 "destination": {
                     "custodialAccountId": "'.$custodial_account->custodial_id.'"
@@ -596,8 +610,9 @@ class MakeInvestmentController extends Controller
             Session::put('success','Your Investment Has Been Completed'); 
             return redirect()->route('dashboard');
         }catch(Exception $error){ 
-            dd($error);
+           
             DB::rollBack();
+            dd($error);
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard')->with('error','Internal Server Error');
         }

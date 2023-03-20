@@ -108,10 +108,7 @@ class OfferController extends Controller
             'size' => 'required',
             //'min_invesment'=>'required',
             //'max_invesment'=>'required'
-        ]);
-
-    
-        
+        ]); 
         //dd($request);
         $get_token = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -127,81 +124,91 @@ class OfferController extends Controller
         if($get_token->failed()){ 
             return redirect()->back()->with('error','Internal Server Error');
         }
+
         $user = User::find($request->issuer);
-        $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
-        withHeaders(['Content-Type' => 'application/json'])->
-        get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
-        $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
-        if($upgrade_existing_l0->failed()){
-            dd('Api Erroe 1');
-            return redirect()->back()->with('error','Internal Server Error');
-        }else{
-            if($json_upgrade_existing_l0['kycLevel'] == 'L0'){
-                dd('Api Erroe 1');
-                return redirect()->back()->with('error','KYC Level Must Be Greater Then L0');
+        
+        if($user->check_kyc == true ){ 
+            $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
+            withHeaders(['Content-Type' => 'application/json'])->
+            get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
+            $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
+            if($upgrade_existing_l0->failed()){ 
+                return redirect()->back()->with('error','Internal Server Error');
+            }else{
+                if($json_upgrade_existing_l0['kycLevel'] == 'L0'){ 
+                    return redirect()->back()->with('error','KYC Level Must Be Greater Then L0');
+                }
             }
         }
+        
+      
         try{
             
-            $Offer = new Offer;
-            $Offer->feature_video  = $request->feature_video_url;
-            $Offer->issuer_id =  $request->issuer;
-            $Offer->name =              $request->offer_name;
-            $Offer->slug =            Str::slug($request->offer_name, '-');
-            $Offer->short_description =  $request->short_description;
-            $Offer->security_type =    $request->security_type;
-            $Offer->symbol =      $request->symbol;
-            $Offer->size =        $request->size;
-            $Offer->size_label =    $request->size_label;
-            $Offer->base_currency =   $request->base_currency;
-            $Offer->price_per_unit =   $request->price_per_unit;
-            $Offer->share_unit_label =    $request->share_unit_label;
-            $Offer->total_valuation =     $request->total_valuation;
-            $Offer->commencement_date =   $request->commencement_date;
-            $Offer->funding_end_date =   $request->funding_end_date;
-            $Offer->status =              'active' ;
-            if($Offer->save()) {
+            $offer = new Offer;
+            $offer->feature_video  = $request->feature_video_url;
+            $offer->issuer_id =  $request->issuer;
+            $offer->name =              $request->offer_name;
+            $offer->slug =            Str::slug($request->offer_name, '-');
+            $offer->short_description =  $request->short_description;
+            $offer->security_type =    $request->security_type;
+            $offer->symbol =      $request->symbol;
+            $offer->size =        $request->size;
+            $offer->size_label =    $request->size_label;
+            $offer->base_currency =   $request->base_currency;
+            $offer->price_per_unit =   $request->price_per_unit;
+            $offer->share_unit_label =    $request->share_unit_label;
+            $offer->total_valuation =     $request->total_valuation;
+            $offer->commencement_date =   $request->commencement_date;
+            $offer->funding_end_date =   $request->funding_end_date;
+            $offer->status =              'active' ;
+            if($offer->save()) {
                 $priority = 0;
                 foreach($request->investment_setups as $setup ){
                     if ($setup == 'E-Sign Document') {
                         $offer_esign_template = new OfferEsignTemplate;
-                        $offer_esign_template->offer_id = $Offer->id;
+                        $offer_esign_template->offer_id = $offer->id;
                         $offer_esign_template->template_id = $request->e_sign_template;
                         $offer_esign_template->save();
                     }
                     $priority ++;
                     $investmentStep = new InvestmentStep;
-                    $investmentStep->offer_id = $Offer->id;
+                    $investmentStep->offer_id = $offer->id;
                     $investmentStep->title = $setup;
                     $investmentStep->priority = $priority;
                     $investmentStep->save();
                 }
-                $user = User::find($request->issuer);
-                $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
-                    'Content-Type' => 'application/json',
-                ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
-                    'type' => 'personal',
-                    'personalIdentityId' => $user->fortress_personal_identity,
-                ]);
-                $json_custodial_account =  json_decode((string) $custodial_account->getBody(), true);
-                if($custodial_account->failed()){
-                  DB::rollBack();
-                }else{
-                    $custodial = new Custodial;
-                    $custodial->user_id = $request->issuer;
-                    $custodial->offer_id = $Offer->id;
-                    $custodial->custodial_id = $json_custodial_account['id'];
-                    $custodial->ownerIdentityId = $json_custodial_account['ownerIdentityId'];
-                    $custodial->accountStatus = $json_custodial_account['accountStatus'];
-                    $custodial->accountType = $json_custodial_account['accountType'];
-                    $custodial->accountNumber = $json_custodial_account['accountNumber'];
-                    $custodial->save();
+
+                
+                if($user->check_kyc == true ){ 
+                    // Creating Custodial Accounts
+                    $user = User::find($request->issuer);
+                    $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
+                        'Content-Type' => 'application/json',
+                    ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
+                        'type' => 'personal',
+                        'personalIdentityId' => $user->fortress_personal_identity,
+                    ]);
+                    $json_custodial_account =  json_decode((string) $custodial_account->getBody(), true);
+                    if($custodial_account->failed()){
+                    DB::rollBack();
+                    }else{
+                        $custodial = new Custodial;
+                        $custodial->user_id = $request->issuer;
+                        $custodial->offer_id = $offer->id;
+                        $custodial->custodial_id = $json_custodial_account['id'];
+                        $custodial->ownerIdentityId = $json_custodial_account['ownerIdentityId'];
+                        $custodial->accountStatus = $json_custodial_account['accountStatus'];
+                        $custodial->accountType = $json_custodial_account['accountType'];
+                        $custodial->accountNumber = $json_custodial_account['accountNumber'];
+                        $custodial->save();
+                    }
                 }
+
                 if($request->hasFile('offer_image')) {
-                    $Offer->addMediaFromRequest('offer_image')->toMediaCollection('offer_image');
+                    $offer->addMediaFromRequest('offer_image')->toMediaCollection('offer_image');
                 }
                 if($request->hasFile('banner_image')) {
-                    $Offer->addMediaFromRequest('banner_image')->toMediaCollection('banner_image');
+                    $offer->addMediaFromRequest('banner_image')->toMediaCollection('banner_image');
                 }
                 $invesment_restriction = new InvestmentRestrication;
                 if($request->min_invesment){
@@ -227,10 +234,10 @@ class OfferController extends Controller
                     $require_investing_units = true;
                 };
                 $invesment_restriction->require_investing_units = $require_investing_units;
-                $invesment_restriction->offer_id = $Offer->id;
+                $invesment_restriction->offer_id = $offer->id;
                 if($invesment_restriction->save()){
                     $call_to_action  = new CallToAction;
-                    $call_to_action->offer_id = $Offer->id;
+                    $call_to_action->offer_id = $offer->id;
                     $call_to_action->review_documents = $request->review_documents;
                     $call_to_action->invest_button_text = $request->invest_button_text;
                     $call_to_action->contact_us_button_text = $request->contact_us_button_text;
@@ -265,7 +272,7 @@ class OfferController extends Controller
                     $call_to_action->external_url = $request->external_url;
                     if($call_to_action->save()){
                         $access  = new Access;
-                        $access->offer_id =  $Offer->id;
+                        $access->offer_id =  $offer->id;
                         $access->offer_status = $request->offer_status;
                         $access->allow_list = $request->allow_list;
                         $access->deny_list = $request->deny_list;
@@ -291,7 +298,7 @@ class OfferController extends Controller
                        
                         if($access->save()){
                                $offer_display = new Display;
-                               $offer_display->offer_id = $Offer->id;
+                               $offer_display->offer_id = $offer->id;
                                if($request->has('enable_questions')){
                                     $offer_display->enable_questions = true;
                                }
@@ -331,7 +338,7 @@ class OfferController extends Controller
                                $offer_display->save();
                                
                                $offerContact = new OfferContact;
-                               $offerContact->offer_id = $Offer->id;
+                               $offerContact->offer_id = $offer->id;
                                $offerContact->address = $request->offer_address;
                                $offerContact->phone = $request->phone; 
                                $offerContact->contact_us = $request->contact_us; 
@@ -343,7 +350,7 @@ class OfferController extends Controller
                     if($request->has('src')){
                        for($i=0;$i<count($request->src);$i++){
                             $offer_videos = new OfferVideos();
-                            $offer_videos->offer_id = $Offer->id;
+                            $offer_videos->offer_id = $offer->id;
                             $offer_videos->source = $request['src'][$i];
                             $offer_videos->url = $request['url'][$i];
                             $offer_videos->description = $request['description'][$i];
@@ -355,7 +362,7 @@ class OfferController extends Controller
                         
                         for($j=0;$j<count($request->summary_title);$j++){
                             $offer_detail_tab = new OfferDetailTab();
-                            $offer_detail_tab->offer_id = $Offer->id;
+                            $offer_detail_tab->offer_id = $offer->id;
                             $offer_detail_tab->input = 'summary';
                             $offer_detail_tab->heading = $request['summary_title'][$j];
                             $offer_detail_tab->sub_heading = $request['summary_sub_title'][$j];
@@ -365,7 +372,7 @@ class OfferController extends Controller
                     }
                     if($request->has('tiles_source')){
                             $offer_detail_tab = new OfferDetailTab();
-                            $offer_detail_tab->offer_id = $Offer->id; 
+                            $offer_detail_tab->offer_id = $offer->id; 
                             $offer_detail_tab->input = 'tiles';
                             $offer_detail_tab->save();  
                             $offer_detail_tab->addMultipleMediaFromRequest(['tiles_source'])
@@ -377,7 +384,7 @@ class OfferController extends Controller
                     if($request->has('text_title')){ 
                         for($l=0;$l<count($request->text_title);$l++){
                             $offer_detail_tab = new OfferDetailTab();
-                            $offer_detail_tab->offer_id = $Offer->id;
+                            $offer_detail_tab->offer_id = $offer->id;
                             $offer_detail_tab->input = 'text';
                             $offer_detail_tab->heading = $request['text_title'][$l];
                             $offer_detail_tab->sub_heading = $request['text_sub_title'][$l];
@@ -386,17 +393,13 @@ class OfferController extends Controller
                        }
                     }
                     if($request->hasFile('image')) { 
-                        $Offer->addMultipleMediaFromRequest(['image'])
+                        $offer->addMultipleMediaFromRequest(['image'])
                         ->each(function ($fileAdder) {
                             $fileAdder->toMediaCollection('offer_detail_images');
                         });
-                    }
-
-                  
-
-                    
+                    } 
                     $data = [
-                        'offer_id' => $Offer->id,
+                        'offer_id' => $offer->id,
                         'url_educational_materials' => 'url_educational_materials',
                         'url_issuer_form_c' => 'url_issuer_form_c',
                         'status' => 'active',
@@ -722,21 +725,29 @@ class OfferController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
-        $kyc = KYC::where('user_id',$request->id)->first();
-        if($kyc){
-            $check_level = $kyc->kyc_level;
-            if($check_level == 'L0'){
+        $user = User::find($request->id);
+        if($user->check_kyc == true){
+            $kyc = KYC::where('user_id',$request->id)->first(); 
+            if($kyc){
+                $check_level = $kyc->kyc_level;
+                if($check_level == 'L0'){
+                    return response([
+                        'status'=>false,
+                        'message'=>'KYC Status Must Be Greater Then LO'
+                    ]);
+                }
+            }else{
                 return response([
                     'status'=>false,
-                    'message'=>'KYC Status Must Be Greater Then LO'
+                    'message'=>'Issuer KYC not yet completed'
                 ]);
             }
         }else{
             return response([
-                'status'=>false,
-                'message'=>'Issuer KYC not yet completed'
+                'status'=>true
             ]);
         }
+       
     }
 
     public function policy(){

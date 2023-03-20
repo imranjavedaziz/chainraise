@@ -1,3 +1,4 @@
+ 
 @extends('layouts.app')
 @section('title', 'Dashboard')
 @section('page_name', 'Dashboard')
@@ -823,6 +824,7 @@
                                                 </div>
                                             </div>
                                         @elseif($investmentStep->title == 'E-Sign Document')
+                                         
                                             <div class="content_{{ $investmentStep->priority }}"
                                                 data-kt-stepper-element="content">
                                                 <div class="w-100">
@@ -835,6 +837,7 @@
                                                     </h5>
                                                     <div class="row row-cols-1 row-cols-md-2 g-5">
                                                         <div class="col-lg-12">  
+                                                            <input type="hidden" name="templates" value="{{  $offer->offerEsing->template_id}}"/>
                                                             <button type="button" class="no-radius btn btn-sm btn-dark view_template" 
                                                             data-template="{{  $offer->offerEsing->template_id}}"
                                                             data-bs-toggle="modal"
@@ -895,7 +898,7 @@
                                                 </div>
                                                 <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
                                                     <div id="load_widget"></div>
-                                                        <input type="hidden" name="user_guid" id="user_guid" required>
+                                                        <input type=" " name="user_guid" id="user_guid" required>
                                                         <script src="https://atrium.mx.com/connect.js"></script>
                                                         <script>
                                                             var arr = [];

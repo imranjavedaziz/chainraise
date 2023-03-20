@@ -139,6 +139,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->password =  Hash::make($request->password);
             $user->status = 'active';
+            $user->email_verified_at  = Carbon::now();
 
             if ($user->save()) {
                 return redirect()->back()->with('success', 'User has been created successfully');
@@ -265,6 +266,7 @@ class UserController extends Controller
             $user = new User;
             $user->name  = $request->first_name;
             $user->email  = $request->email;
+            $user->email_verified_at  = Carbon::now();
             if($request->has('password') && $request->password != null){
                 $user->password  =  Hash::make($request->password);
             }
@@ -340,6 +342,7 @@ class UserController extends Controller
             $user->email  = $request->email;
             $user->password  =  Hash::make($request->password);
             $user->phone  = $request->phone;
+            $user->email_verified_at  = Carbon::now();
             $user->user_type  = $request->user_type;
             $user->agree_consent_electronic  = $request->agree_consent_electronic;
             $user->status  = 'active';
@@ -621,7 +624,7 @@ class UserController extends Controller
             $user->name  = $request->first_name;
             $user->email  = $request->email;
             $user->phone  = $request->phone_number;
-            $user->phone  = Carbon::now();
+            $user->email_verified_at  = Carbon::now();
             if($request->has('password') && $request->password != null){
                 $user->password  =  Hash::make($request->password);
             }
@@ -927,9 +930,7 @@ class UserController extends Controller
         }
         //echo $response;
 
-    }
-
-
+    } 
     public function basicDetailUpdate(Request $request){ 
          $user = Auth::user();
         try{

@@ -11,11 +11,32 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class KycController extends Controller
 {
+
+    public function updateKycCheck($id){ 
+        $user = User::find($id);  
+        if($user->check_kyc == true){
+            $kyc = false;
+        }elseif($user->check_kyc == false){
+            $kyc = true;
+        } 
+        $user->check_kyc = $kyc;
+        $user->save();
+        if($user->check_kyc == true){
+            $data = 'Enabled';
+        }else{
+            $data = 'Disabled';
+        }
+        return response([
+            'data'=>$data,
+            'status'=>true
+        ]);
+    }
     public function checkKyc(Request $request)
     {
         $request->validate([
@@ -44,7 +65,9 @@ class KycController extends Controller
                     'status' => 'document',
                 ]);
             }
-            $dob = Carbon::parse($user->userDetail->dob)->format('Y-m-d');
+           
+            $dob = Carbon::parse($user->userDetail->dob)->format('Y-d-m');
+             
             $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
                 'Content-Type' => 'application/json',
             ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/identity-containers', [
@@ -54,7 +77,7 @@ class KycController extends Controller
                 'phone' =>  '+'.$user->cc.$user->phone,
                 'email' => $user->email,
                 'ssn' => $user->identityVerification->primary_contact_social_security,
-                'dateOfBirth' => "1990-09-02",
+                'dateOfBirth' => '1994-08-28',
                 'address.street1' => $user->userDetail->address,
                 'address.street2' => '-',
                 'address.postalCode' => $user->userDetail->zip,
@@ -111,10 +134,10 @@ class KycController extends Controller
                 ]);
             }
 
-        } catch (Exception $error) {
-            dd($error);
+        } catch (Exception $error) { 
             return response([
                 'status' => false,
+                'error' => $error,
             ]);
         }
 

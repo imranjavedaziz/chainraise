@@ -107,7 +107,7 @@
                             <div class="d-flex flex-column m-lg-8">
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center mb-2">
-                                    <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}
+                                    <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}  | {{ $user->email }}
                                         @if($user->userDetail){{ $user->userDetail->last_name }}@endif
                                         - <small class="text-info">
                                             {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
@@ -119,6 +119,14 @@
                                     <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
                                         <!--end::Svg Icon--> {{ $user->phone }} <br>  {{ $user->user_type }}
+                                    </span>
+                                </div>
+
+                                <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                                    <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2"> 
+                                        <button type="button" class="btn btn-sm btn-dark no-radius update_aml_status" data-id="{{  $user->id }}"> 
+                                            KYC / AML Check @if($user->check_kyc == true) Enabled  @else Disabled @endif
+                                        </button>
                                     </span>
                                 </div>
                                 <!--end::Info-->
@@ -2232,12 +2240,13 @@
                         },
                         success: function(response) {
                             if (response.status) {
+                                $('.kyc_wrapper').load(' .kyc_wrapper');
                                 if (response.status == 200) {
                                     toastr.success(
-                                        'Verification has been competed checking Updating KYC Level',  "Success");
+                                        'Verification has been competed ',  "Success");
                                 } else if (response.status == 201) {
                                     toastr.success(
-                                        'Verification has been competed checking Updating KYC Level',
+                                        'Verification has been competed ',
                                         "Success");
                                 } else if (response.status == 400) {
                                     jQuery.each(response.data.errors, function(index, item) {
@@ -2348,5 +2357,20 @@
             $('.country_residence').val('{{  $user->identityVerification->country_residence  }}') 
         @endif
 
+        $('body').on('click','.update_aml_status', function(){ 
+            var userId = $(this).data('id');
+            var url = "{{ route('user.update.kyc.check', ['id' => ':userId']) }}";
+            url = url.replace(':userId', userId); 
+            $.ajax({
+                url: url,
+                method: 'GET', 
+                success: function(response) {
+                     if(response.status == true){
+                        $('.update_aml_status').html('KYC / AML Check '+response.data);
+                        toastr.success('KYC / AML Status Has Been Updated',  "Success");
+                     }
+                }
+            });
+        });
     </script>
 @endsection
