@@ -24,11 +24,16 @@
         .no-radius{
             border-radius: 0!important;
         }
-        [data-kt-app-header-fixed=true] .app-header{
-            position: none!important;
-            width: 100%!important;
-        }
     </style>
+    @hasrole('investor')  
+        <style> 
+                [data-kt-app-header-fixed=true] .app-header{
+                    position: none!important;
+                    width: 100%!important;
+                }
+           
+        </style>
+     @endhasrole
     @section('page_head')
     @show
 </head>
