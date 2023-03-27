@@ -222,45 +222,7 @@ class UserController extends Controller
         }else{
             $agree_consent_electronic =false;
         }
-        $response = Http::put('https://api-sandboxdash.norcapsecurities.com/tapiv3/index.php/v3/createAccount', [
-            'clientID' => 'utOkV0rfA2mjtF9',
-            'developerAPIKey'=>'nPNTvQSmFCRGsudYWxAe9G7bqT0iAzhSGWa',
-            'accountRegistration'=>$request->first_name,
-            'type'=>'Individual',
-            'entityType' =>'LLC',
-            'domesticYN' =>'domestic_account',
-            'streetAddress1'=>$request->address,
-            'streetAddress2'=>'Account Street Address Line 2',
-            'city'=>$request->city,
-            'state'=>'Punjab',
-            'zip'=>'44000',
-            'country'=>'Pakitan',
-            'email'=>'tayyabshahzad1@outlook.com',
-            'phone'=>9794881,
-            'taxID'=>4881,
-            'KYCstatus'=>'Pending',
-            'AMLstatus'=>'Manually Approved',
-            'AMLdate'=>'02-18-2016',
-            'suitabilityScore'=>2,
-            'suitabilityDate'=>'02-18-2016',
-            'suitabilityApprover'=>'The name of the Registered Representative',
-            'AccreditedStatus'=>'Pending',
-            'Allow'=>'How the account was accredited',
-            'AIdate'=>'02-18-2016',
-            '506cLimit'=>500,
-            'accountTotalLimit'=>200000,
-            'singleInvestmentLimit'=>100,
-            'associatedAC'=>'yes',
-            'syndicate'=>'no',
-            'tags'=>'terms',
-            'notes'=>'Personal Account',
-            'approvalPrincipal'=>'Charles',
-            'approvalStatus'=>'pending',
-            'approvalLastReview'=>'02-15-2016',
-            'field1'=>'some text',
-            'field2'=>'some text',
-            'field3'=>'some text'
-        ]);
+        
         DB::beginTransaction();
         try{
             $user = new User;
@@ -300,9 +262,10 @@ class UserController extends Controller
                 $user->assignRole('issuer');
             }
 
-            DB::commit();
-             event(new Registered($user));
-             Mail::to($user)->send(new WelcomeEmail($user));
+             
+             //event(new Registered($user));
+             //Mail::to($user)->send(new WelcomeEmail($user));
+             DB::commit();
             return redirect()->route('user.index')->with('success','New investor user has been created');
         }catch(Exception $error){
             return $error;
@@ -367,9 +330,8 @@ class UserController extends Controller
         }
     }
     public function issuerAccountUpdate(Request $request)
-    {
- 
-
+    {   
+        dd('issuer Updata');
         $request->validate([
             //Users Table
             'id' => 'required',
@@ -467,7 +429,7 @@ class UserController extends Controller
         // $userDetails->zip = $request->zip;
         // $userDetails->save();
 
-        Mail::to($user)->send(new InvesterUpdate($user));
+        //Mail::to($user)->send(new InvesterUpdate($user));
 
         $trustSetting = TrustSetting::where('user_id',$request->id)->first();
         if($trustSetting){
@@ -502,6 +464,18 @@ class UserController extends Controller
             }else{
                 $trustSetting->allow_manual_ach_bank_input = false;
             }
+
+            if($request->e_sign_agreement){
+                $trustSetting->e_sign_agreement = true;
+            }else{
+                $trustSetting->e_sign_agreement = false;
+            }
+
+            if($request->disclosures){
+                $trustSetting->disclosures = true;
+            }else{
+                $trustSetting->disclosures = false;
+            } 
             $trustSetting->save();
 
         }else{
@@ -538,6 +512,20 @@ class UserController extends Controller
             }else{
                 $trustSetting->allow_manual_ach_bank_input = false;
             }
+
+            if($request->e_sign_agreement){
+                $trustSetting->e_sign_agreement = true;
+            }else{
+                $trustSetting->e_sign_agreement = false;
+            }
+
+            if($request->disclosures){
+                $trustSetting->disclosures = true;
+            }else{
+                $trustSetting->disclosures = false;
+            } 
+
+
 
         }
         $trustSetting->save();

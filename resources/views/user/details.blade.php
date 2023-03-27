@@ -675,42 +675,27 @@
 
                                                     <div class="col-lg-6 ">
                                                         <div class="row">
-                                                            <div class="col-lg-4 check_kyc_wrapper text-center">
-                                                                @if($user->fortress_id == null)
-                                                                    <button type="button" style="width: 100%"
-                                                                    class="btn btn-sm no-radius -square btn-dark check_kyc"
-                                                                    data-id="{{ $user->id }}">
-                                                                    Check User KYC
-                                                                    </button>
+                                                            <div class="col-lg-4 check_kyc_wrapper text-center"> 
+                                                                @if($user->fortress_id == null) 
                                                                     <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                     class="img img-thumbnail d-none loader_img"
                                                                     style="width: 40px;"
                                                                     alt="">
+                                                                @else
+                                                                    <button type="button" style="width: 100%"
+                                                                    id="check_kyc_leavel"
+                                                                    class="btn btn-sm no-radius -square btn-dark re_run_kyc"
+                                                                    data-id="{{ $user->id }}">
+                                                                    Re Run KYC
+                                                                    </button>
+                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                    class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                    style="width: 40px;"
+                                                                    alt="">
+                                                                   
                                                                 @endif
                                                             </div>
-                                                            <div class="col-lg-4 text-center">
-                                                                <button type="button" style="width: 100%"
-                                                                id="check_kyc_leavel"
-                                                                class="btn btn-sm no-radius -square btn-dark re_run_kyc"
-                                                                data-id="{{ $user->id }}">
-                                                                 Re Run KYC
-                                                                </button>
-                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                class="img img-thumbnail d-none loader_img_for_re_run_kyc"
-                                                                style="width: 40px;"
-                                                                alt="">
-                                                            </div>
-                                                            <div class="col-lg-4 text-center">
-                                                                <button type="button" style="width: 100%"
-                                                                class="btn btn-sm no-radius -square btn-dark update_document"
-                                                                data-id="{{ $user->id }}">
-                                                                Upload New Document
-                                                                </button>
-                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                class="img img-thumbnail d-none loader_img_for_document_upload"
-                                                                style="width: 40px;"
-                                                                alt="">
-                                                            </div>
+                                                             
                                                         </div>
 
                                                     </div>
@@ -764,15 +749,58 @@
                                         </div>
 
                                     </div>
+                                  
+                                    @if($user->hasRole('investor'))
+                                    <div class="card-body" style=" background: #ff003b2e;color:#fff!important;border-radius:5px  ">
+                                        <div class="card-title mt-6 mb-3">
+                                            <h2>Important Note </h2>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                        name="e_sign_agreement"
+                                                        @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
+                                                        <span class="form-check-label fw-semibold" style="color:#ffffff">I have read the E-Sign Agreement and understand I will not receive documents in the mail. </span>
+                                                </label>  
+                                            </div>
 
+                                            <div class="d-flex align-items-center">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                        name="disclosures"
+                                                        @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
+                                                        <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
+                                                </label>  
+                                                
+                                            </div>
+                                            <div class="d-flex align-items-center mt-4">
+                                                <ul>
+                                                    <li>
+                                                        <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b>
+                                                    </li>
+                                                    <li>
+                                                        <b>Fortress Trust Consumer Disclosures</b>
+                                                    </li>
+                                                    <li>
+                                                        <b> Fortress <a href="">  Trust Privacy Policy and Terms and Conditions </a></b>
+                                                    </li>
+                                                    <li>
+                                                        <b>Fortress Trust Account Agreement</b>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                           
+                                        </div> 
 
+                                    </div>
+                                    @endif
                                     <div class="card-title mt-6">
                                         <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
                                                 data-bs-toggle="tooltip" aria-label="Specify a target priorty"
                                                 data-kt-initialized="1"></i></h2>
                                     </div>
                                     <div class="card-body">
-
                                         <div class="form-group row">
                                             <div class="d-flex align-items-center">
                                                 <label class="form-check form-check-custom form-check-solid me-10">
@@ -868,11 +896,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <a href="{{ route('user.index') }}"
-                                                class="btn-sm btn btn-default mr-2">Cancel</a>
-                                            <button type="submit" class="btn-sm btn btn-primary mr-2"> Update Account
-                                            </button>
+                                        <div class="col-lg-12"> 
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2 no-radius btn-dark"> Update Account  </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1127,10 +1152,7 @@
                         <!--end::Card body-->
                     </div>
                     <!--end::Card-->
-                </div>
-                <!--end:::Profile Tab pane-->
-
-                <!--begin:::Users Tab pane-->
+                </div> 
                 <div class="tab-pane fade" id="kt_users_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card pt-4 mb-6 mb-xl-9">
@@ -1283,10 +1305,7 @@
                     </div>
 
                     <!--end::Card-->
-                </div>
-                <!--end:::Tab pane-->
-
-                <!--begin:::Accreditation Tab pane-->
+                </div> 
                 <div class="tab-pane fade" id="kt_accreditation_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card pt-4 mb-6 mb-xl-9">
@@ -2216,8 +2235,7 @@
             var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
             imgBtnWrapper.find('.change_photo').click();
         });
-        $('.check_kyc').click(function() {
-
+        $('.check_kyc').click(function() { 
             var id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure to to check KYC status ?",
@@ -2239,39 +2257,38 @@
                             id: id
                         },
                         success: function(response) {
-                            if (response.status) {
-                                $('.kyc_wrapper').load(' .kyc_wrapper');
-                                if (response.status == 200) {
-                                    toastr.success(
-                                        'Verification has been competed ',  "Success");
-                                } else if (response.status == 201) {
-                                    toastr.success(
-                                        'Verification has been competed ',
-                                        "Success");
-                                } else if (response.status == 400) {
-                                    jQuery.each(response.data.errors, function(index, item) {
-                                        console.log(item);
-                                        toastr.error(item, "Error");
-                                    });
-                                    // toastr.error(response.data.title, "Error");
-                                } else if (response.status == 401) {
-                                    toastr.error('Unauthorized Access Denied', "Error");
-                                } else if (response.status == 404) {
-                                    toastr.error(response.data.title, "Error");
+                            $('.kyc_wrapper').load(' .kyc_wrapper');
+                            console.log(response);
+                            if(response.success == false){
+                                if(response.status == 400){ 
+                                        jQuery.each(response.errors.errors, function(index, item) { 
+                                                toastr.error(item, "Error");
+                                                alert('loop')
+                                               
+                                        });
+                                    }
+                                    if(typeof response.errors !== 'undefined' && response.errors !== null) {
+                                        jQuery.each(response.errors, function(index, item) { 
+                                            toastr.error(item, "Error");
+                                        });
+                                }else{
+                                        alert();
                                 }
-                                if (response.status == 409) {
-                                    toastr.error(response.data.title, "Error");
-                                }
-                                if (response.status == 'document') {
-                                    toastr.error('Please Upload Document First', "Error");
-                                }
-                                if (response.status == false) {
-                                    toastr.error('Internal Server Error', "Error");
-                                }
-                                $('.loader_img').addClass('d-none');
-                                $('.check_kyc').removeClass('d-none');
                             }
+                            if(response.success == true){
+                                toastr.success('Verification Has Been Completed',  "Success");
+                                $('.kyc_buttons').load(' .kyc_buttons');
+                            } 
+
+                            $('.loader_img').addClass('d-none');
+                            $('.check_kyc').removeClass('d-none');
+                        },
+                        error:function(xhr, status, error){
+                            toastr.error(error, "Error");
+                            $('.loader_img').addClass('d-none');
+                            $('.check_kyc').removeClass('d-none');
                         }
+                    
                     });
                 }
             });

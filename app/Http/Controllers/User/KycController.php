@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class KycController extends Controller
 {
@@ -39,9 +40,21 @@ class KycController extends Controller
     }
     public function checkKyc(Request $request)
     {
+        $access_url = "https://api.sandbox.fortressapi.com/api/trust/v1/";
         $request->validate([
             'id' => 'required',
         ]);
+        $errors = []; 
+        $user = User::with('userDetail')->find($request->id); 
+        if (!$user->getFirstMediaUrl('kyc_document_collection')) {
+            $errors[] = 'Please Upload Document First';
+            return response([
+                'status' => 'document',
+                'success' => false,
+                'errors' => $errors,
+            ]);
+        } 
+        // Token Request
         try {
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -53,31 +66,31 @@ class KycController extends Controller
                 'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
-
             if ($get_token->failed()) {
+                $errors[] = 'Error While Creating Token';
                 return response([
                     'status' => $get_token->status(),
+                    'errors' => $errors[] = 'Error',
                 ]);
             }
-            $user = User::with('userDetail')->find($request->id);
-            if (!$user->getFirstMediaUrl('kyc_document_collection')) {
+        }catch(Exception $token_error){
+                $errors[] = 'Error While Creating Token';
+                $errors[] = $token_error;
                 return response([
-                    'status' => 'document',
+                    'success'  => false,
+                    'errors' => $errors,
                 ]);
-            }
-           
-            $dob = Carbon::parse($user->userDetail->dob)->format('Y-d-m');
-             
+        } 
+         // Identity Containers Request
+         try{ 
             $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/identity-containers', [
+            ])->post($access_url.'identity-containers', [
                 'firstName' => $user->name,
                 'middleName' => $user->userDetail->middle_name,
                 'lastName' => $user->userDetail->last_name,
                 'phone' =>  '+'.$user->cc.$user->phone,
                 'email' => $user->email,
-                'ssn' => $user->identityVerification->primary_contact_social_security,
-                'dateOfBirth' => '1994-08-28',
                 'address.street1' => $user->userDetail->address,
                 'address.street2' => '-',
                 'address.postalCode' => $user->userDetail->zip,
@@ -85,61 +98,110 @@ class KycController extends Controller
                 'address.state' => $user->userDetail->state,
                 'address.country' => $user->identityVerification->nationality,
             ]);
-            $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);
-            if ($identity_containers->successful()) {
-                $user->fortress_id =  $json_identity_containers['id'];
-                $user->fortress_personal_identity =  $json_identity_containers['personalIdentity'];
-                $user->save();
-                $document_path = fopen('https://i.brecorder.com/primary/2022/05/626e8e55ac3c3.jpg', 'r');
-                $document_path_back = fopen('https://st2.depositphotos.com/1063296/8337/i/950/depositphotos_83370180-stock-photo-luxury-dark-red-car-back.jpg', 'r');
-                $url = "https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/".$user->fortress_personal_identity."/documents";
-                $upload_document = Http::attach('DocumentType', 'passport')->
-                                         attach('DocumentFront', $document_path)->
-                                         attach('DocumentBack', $document_path_back)
-                ->withToken($token_json['access_token'])
-                ->post($url);
-                $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
-                if($upload_document->failed()) {
-                    return response([
-                        'status' => $upload_document->status(),
-                        'data'   => $json_upload_document,
-                    ]);
+            $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);  
+            if ($identity_containers->failed()) { 
+                $status = $identity_containers->status(); 
+                if($status == 409){
+                    $errors[] = $identity_containers['title'];   
                 }
-                // Checking Level Of New User
-                $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
-                withHeaders(['Content-Type' => 'application/json'])->
-                get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
-                $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
-                if($upgrade_existing_l0->failed()) {
+                if($status == 400){  
+                    $errors = $json_identity_containers['errors'];
                     return response([
-                        'status' => $upgrade_existing_l0->status(),
-                        'data'   => $json_upgrade_existing_l0,
+                        'status' => $identity_containers->status(),
+                        'success'  => false,
+                        'errors' => $errors,
                     ]);
-                }else{
-                    KYC::updateOrCreate(
-                        ['user_id' => $user->id],
-                        ['kyc_level' => $json_upgrade_existing_l0['kycLevel'],'doc_status'=>$json_upgrade_existing_l0['documents'][0]['documentCheckStatus']]
-                    );
-                }
-                $identityId = $json_identity_containers['personalIdentity'];
+                } 
                 return response([
                     'status' => $identity_containers->status(),
-                    'data'   => $json_identity_containers,
+                    'success'  => false,
+                    'errors' => $errors,
                 ]);
-
-            } else {
-                return response([
-                    'status' => $identity_containers->status(),
-                    'data'   => $json_identity_containers,
-                ]);
-            }
-
-        } catch (Exception $error) { 
-            return response([
-                'status' => false,
-                'error' => $error,
+               
+            }else{
+                if ($identity_containers->successful()) {
+                    $user->fortress_id =  $json_identity_containers['id'];
+                    $user->fortress_personal_identity =  $json_identity_containers['personalIdentity'];
+                    $user->save();
+                }
+            }   
+        }catch(Exception $identity_containers_error){ 
+            $errors[] = 'Error While Creating Identity Containers';
+            $errors[] = $identity_containers_error;
+            return response([ 
+                'errors' => $errors,
+                'success'  => false,
             ]);
         }
+
+        try{ 
+            $doc_front =  $user->getFirstMediaUrl('kyc_document_collection', 'thumb');  
+            $doc_front = fopen("https://previews.123rf.com/images/nongpimmy/nongpimmy1404/nongpimmy140400005/27535847-illustration-of-front-and-back-id-card.jpg", 'r');
+            $doc_back =  fopen("https://previews.123rf.com/images/nongpimmy/nongpimmy1404/nongpimmy140400005/27535847-illustration-of-front-and-back-id-card.jpg", 'r'); 
+            $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
+            $upload_document = Http::attach('DocumentType', 'passport')->
+            attach('DocumentFront', $doc_front)->
+            attach('DocumentBack', $doc_back)->
+            withToken($token_json['access_token'])->
+            post($url);
+            $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
+            if ($upload_document->failed()) {
+                $status = $upload_document->status();
+                if($status == 400){  
+                    $errors[] = $json_upload_document['errors'];
+                    $errors[] = $json_upload_document['title'];  
+                    $errors[] = 'Personal Identity Has Been Created But Error While Uploding Documents';
+                    return response([
+                        'status' => $upload_document->status(),
+                        'success'  => false,
+                        'errors' => $errors,
+                    ]);
+                }    
+                return response([
+                    'status' => $upload_document->status(),
+                    'data'   => $json_upload_document,
+                    'errors' => $errors,
+                    'success'  => false,
+                ]); 
+            } 
+        }catch(Exception $upload_document_error){ 
+            $errors[] = 'Error While uploading Documents';
+            $errors[] = $upload_document_error;
+            return response([ 
+                'data'   => $json_upload_document,
+                'success'  => false,
+                'errors' => $errors,
+            ]);
+        }
+       
+        try{ 
+            
+            $check_user_kyc_level = Http::withToken($token_json['access_token'])->
+            withHeaders(['Content-Type' => 'application/json'])->
+            get($access_url.'personal-identities/'.$user->fortress_personal_identity);
+            $json_check_user_kyc_level = json_decode((string) $check_user_kyc_level->getBody(), true); 
+            
+            KYC::updateOrCreate(
+                ['user_id' => $user->id],
+                ['kyc_level' => $json_check_user_kyc_level['kycLevel'],'doc_status'=>$json_check_user_kyc_level['documents'][0]['documentCheckStatus']]
+            );
+            
+            return response([
+                'status' => $check_user_kyc_level->status(),
+                'data'   => $json_upload_document,    
+                'errors' => $errors,
+                'success'  => true,
+            ]); 
+
+        }catch(Exception $upload_document_error){
+            return response([ 
+                'success'  => false,
+                'data'   => $json_check_user_kyc_level,
+            ]);
+        } 
+        
+
+        
 
 
     }
@@ -178,6 +240,7 @@ class KycController extends Controller
             withHeaders(['Content-Type' => 'application/json'])->
             get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
             $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
+             
             if ($upgrade_existing_l0->failed()) {
                 return response([
                     'status' => $upgrade_existing_l0->status(),
@@ -195,7 +258,7 @@ class KycController extends Controller
             ]);
             }
         }catch(Exception $error){
-            dd($error);
+            
             return response([
                 'status' => false,
                 'error'=>$error,
@@ -220,8 +283,7 @@ class KycController extends Controller
                 'audience'   => 'https://fortressapi.com/api',
                 'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
             ]);
-            $token_json =  json_decode((string) $get_token->getBody(), true);
-            dd($token_json);
+            $token_json =  json_decode((string) $get_token->getBody(), true); 
             if($get_token->failed()) {
                 return response([
                     'status' => $get_token->status(),

@@ -427,11 +427,7 @@
                                                 <input type="number" class="form-control"
                                                     placeholder="Tax Identification" required name="tax_identification"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
-                                            </div>
-
-
-
-
+                                            </div> 
                                         <div class="row">
 
                                         </div>
@@ -486,6 +482,53 @@
                                         </div>
 
                                     </div>
+                                    @if($user->hasRole('investor'))
+                                    <div class="col-lg-12">
+                                        <div class="card-body" style=" background: #ff003b2e;color:#fff!important;border-radius:5px  ">
+                                            <div class="card-title mt-6 mb-3">
+                                                <h2>Important Note </h2>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                            name="e_sign_agreement"
+                                                            @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
+                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">I have read the E-Sign Agreement and understand I will not receive documents in the mail. </span>
+                                                    </label>  
+                                                </div>
+    
+                                                <div class="d-flex align-items-center">
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                            name="disclosures"
+                                                            @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
+                                                            <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
+                                                    </label>  
+                                                    
+                                                </div>
+                                                <div class="d-flex align-items-center mt-4">
+                                                    <ul>
+                                                        <li>
+                                                            <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b>
+                                                        </li>
+                                                        <li>
+                                                            <b>Fortress Trust Consumer Disclosures</b>
+                                                        </li>
+                                                        <li>
+                                                            <b> Fortress <a href="">  Trust Privacy Policy and Terms and Conditions </a></b>
+                                                        </li>
+                                                        <li>
+                                                            <b>Fortress Trust Account Agreement</b>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                               
+                                            </div> 
+    
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
