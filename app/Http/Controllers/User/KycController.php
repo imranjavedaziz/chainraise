@@ -84,60 +84,9 @@ class KycController extends Controller
         } 
        
 
-        try{
-          dump('Calling DOC');
-            $appUrl = env('APP_URL');
-            $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
-            $path =  $mediaCollection->getFullUrl();
-            $doc_front = fopen($path, 'r');
-             
-            // Calling API
+       
 
-          dd($doc_front);
-
-
-            
-            $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
-            $upload_document = Http::attach('DocumentType', 'passport')->
-            attach('DocumentFront', $doc_front)->
-            attach('DocumentBack', $doc_back)->
-            withToken($token_json['access_token'])->
-            post($url);
-            $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
-            if ($upload_document->failed()) {
-                $status = $upload_document->status();
-                if($status == 400){  
-                    $errors[] = $json_upload_document['errors'];
-                    $errors[] = $json_upload_document['title'];  
-                    $errors[] = 'Personal Identity Has Been Created But Error While Uploding Documents';
-                    return response([
-                        'status' => $upload_document->status(),
-                        'success'  => false,
-                        'errors' => $errors,
-                    ]);
-                }    
-                return response([
-                    'status' => $upload_document->status(),
-                    'data'   => $json_upload_document,
-                    'errors' => $errors,
-                    'success'  => false,
-                ]); 
-            }
-            if($upload_document->requestTimeout()){
-                dd('Time OUT');
-            } 
-        }catch(Exception $upload_document_error){ 
-            $errors[] = 'Error While uploading Documents';
-            $errors[] = $upload_document_error;
-            dd($upload_document_error);
-            return response([ 
-                'data'   => $upload_document_error,
-                'success'  => false,
-                'errors' => $errors,
-            ]);
-        }
-
-        dd(1);
+        
          // Identity Containers Request
          try{ 
             $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
@@ -192,13 +141,13 @@ class KycController extends Controller
         }
 
         try{ 
-            //$doc_front =  $user->getFirstMediaUrl('kyc_document_collection');  
-            $doc_front = fopen('http://127.0.0.1:8000/storage/41/2.jpg', 'r');
-            $doc_back =  fopen('http://127.0.0.1:8000/storage/41/2.jpg', 'r'); 
+            $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
+            $path =  $mediaCollection->getFullUrl();
+            $doc_front = fopen($path, 'r');  
             $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
             $upload_document = Http::attach('DocumentType', 'passport')->
             attach('DocumentFront', $doc_front)->
-            attach('DocumentBack', $doc_back)->
+            attach('DocumentBack', $doc_front)->
             withToken($token_json['access_token'])->
             post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
@@ -227,8 +176,9 @@ class KycController extends Controller
         }catch(Exception $upload_document_error){ 
             $errors[] = 'Error While uploading Documents';
             $errors[] = $upload_document_error;
+            dd($upload_document_error);
             return response([ 
-                'data'   => $json_upload_document,
+                'data'   => $upload_document_error,
                 'success'  => false,
                 'errors' => $errors,
             ]);
