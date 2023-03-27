@@ -171,12 +171,17 @@ class KycController extends Controller
                 ]); 
             }
             if($upload_document->requestTimeout()){
-                dd('Time OUT');
+                $errors[] = 'Request Time OUT';
+                return response([
+                    'status' => $upload_document->status(),
+                    'data'   => $json_upload_document,
+                    'errors' => $errors,
+                    'success'  => false,
+                ]); 
             } 
         }catch(Exception $upload_document_error){ 
             $errors[] = 'Error While uploading Documents';
             $errors[] = $upload_document_error;
-            dd($upload_document_error);
             return response([ 
                 'data'   => $upload_document_error,
                 'success'  => false,
@@ -189,8 +194,7 @@ class KycController extends Controller
             $check_user_kyc_level = Http::withToken($token_json['access_token'])->
             withHeaders(['Content-Type' => 'application/json'])->
             get($access_url.'personal-identities/'.$user->fortress_personal_identity);
-            $json_check_user_kyc_level = json_decode((string) $check_user_kyc_level->getBody(), true); 
-            
+            $json_check_user_kyc_level = json_decode((string) $check_user_kyc_level->getBody(), true);  
             KYC::updateOrCreate(
                 ['user_id' => $user->id],
                 ['kyc_level' => $json_check_user_kyc_level['kycLevel'],'doc_status'=>$json_check_user_kyc_level['documents'][0]['documentCheckStatus']]
