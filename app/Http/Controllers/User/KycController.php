@@ -135,7 +135,7 @@ class KycController extends Controller
         }
 
         try{ 
-            $doc_front =  $user->getFirstMediaUrl('kyc_document_collection', 'thumb');  
+            $doc_front =  $user->getFirstMediaUrl('kyc_document_collection');  
             $doc_front = fopen($doc_front, 'r');
             $doc_back =  fopen($doc_front, 'r'); 
             $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
