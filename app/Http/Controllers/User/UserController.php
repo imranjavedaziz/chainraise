@@ -331,7 +331,7 @@ class UserController extends Controller
     }
     public function issuerAccountUpdate(Request $request)
     {   
-        dd('issuer Updata');
+         
         $request->validate([
             //Users Table
             'id' => 'required',
