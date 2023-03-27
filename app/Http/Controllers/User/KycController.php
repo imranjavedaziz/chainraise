@@ -85,16 +85,15 @@ class KycController extends Controller
        
 
         try{
-          
+          dump('Calling DOC');
             $appUrl = env('APP_URL');
             $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
             $path =  $mediaCollection->getFullUrl();
-            
+            $doc_front = fopen($path, 'r');
              
             // Calling API
 
-            $identity_containers = Http::get($path);
-            dd($identity_containers->body());
+          dd($doc_front);
 
 
             
