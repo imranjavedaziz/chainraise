@@ -136,8 +136,8 @@ class KycController extends Controller
 
         try{ 
             $doc_front =  $user->getFirstMediaUrl('kyc_document_collection', 'thumb');  
-            $doc_front = fopen("https://previews.123rf.com/images/nongpimmy/nongpimmy1404/nongpimmy140400005/27535847-illustration-of-front-and-back-id-card.jpg", 'r');
-            $doc_back =  fopen("https://previews.123rf.com/images/nongpimmy/nongpimmy1404/nongpimmy140400005/27535847-illustration-of-front-and-back-id-card.jpg", 'r'); 
+            $doc_front = fopen($doc_front, 'r');
+            $doc_back =  fopen($doc_front, 'r'); 
             $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
             $upload_document = Http::attach('DocumentType', 'passport')->
             attach('DocumentFront', $doc_front)->

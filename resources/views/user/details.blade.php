@@ -675,31 +675,33 @@
 
                                                     <div class="col-lg-6 ">
                                                         <div class="row">
-                                                            <div class="col-lg-4 check_kyc_wrapper text-center"> 
-                                                                @if($user->fortress_id == null) 
+                                                            <div class="col-lg-4 check_kyc_wrapper text-center">
+                                                                
+                                                                @if($user->fortress_id == null)
+                                                                    <button type="button" style="width: 100%"
+                                                                    class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                    data-id="{{ $user->id }}">
+                                                                    Check User KYC
+                                                                    </button>
                                                                     <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                     class="img img-thumbnail d-none loader_img"
                                                                     style="width: 40px;"
                                                                     alt="">
                                                                 @else
-                                                                    <button type="button" style="width: 100%"
-                                                                    id="check_kyc_leavel"
-                                                                    class="btn btn-sm no-radius -square btn-dark re_run_kyc"
-                                                                    data-id="{{ $user->id }}">
-                                                                    Re Run KYC
-                                                                    </button>
+                                                                <button type="button" style="width: 100%"
+                                                                id="check_kyc_leavel"
+                                                                class="btn btn-sm no-radius -square btn-dark re_run_kyc"
+                                                                data-id="{{ $user->id }}">
+                                                                Re Run KYC
+                                                                </button>
                                                                     <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
                                                                     class="img img-thumbnail d-none loader_img_for_re_run_kyc"
                                                                     style="width: 40px;"
-                                                                    alt="">
-                                                                   
+                                                                    alt=""> 
                                                                 @endif
-                                                            </div>
-                                                             
-                                                        </div>
-
-                                                    </div>
-
+                                                            </div> 
+                                                        </div> 
+                                                    </div> 
                                                 </div>
                                     </div>
                                         </div>
@@ -725,8 +727,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div
-                                            class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
+                                        <div  class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
                                             <div
                                                 class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
                                                 <div class="col-lg-12 mb-5">
@@ -749,51 +750,52 @@
                                         </div>
 
                                     </div>
-                                  
+                                   
+
                                     @if($user->hasRole('investor'))
-                                    <div class="card-body" style=" background: #ff003b2e;color:#fff!important;border-radius:5px  ">
-                                        <div class="card-title mt-6 mb-3">
-                                            <h2>Important Note </h2>
+                                        <div class="card-body" style=" background: #ff003b2e;color:#fff!important;border-radius:5px  ">
+                                            <div class="card-title mt-6 mb-3">
+                                                <h2>Important Note </h2>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                            name="e_sign_agreement"
+                                                            @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
+                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">I have read the E-Sign Agreement and understand I will not receive documents in the mail. </span>
+                                                    </label>  
+                                                </div>
+
+                                                <div class="d-flex align-items-center">
+                                                    <label class="form-check form-check-custom form-check-solid me-10">
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
+                                                            name="disclosures"
+                                                            @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
+                                                            <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
+                                                    </label>  
+                                                    
+                                                </div>
+                                                <div class="d-flex align-items-center mt-4">
+                                                    <ul>
+                                                        <li>
+                                                            <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b>
+                                                        </li>
+                                                        <li>
+                                                            <b>Fortress Trust Consumer Disclosures</b>
+                                                        </li>
+                                                        <li>
+                                                            <b> Fortress <a href="">  Trust Privacy Policy and Terms and Conditions </a></b>
+                                                        </li>
+                                                        <li>
+                                                            <b>Fortress Trust Account Agreement</b>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            
+                                            </div> 
+
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <label class="form-check form-check-custom form-check-solid me-10">
-                                                    <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                        name="e_sign_agreement"
-                                                        @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
-                                                        <span class="form-check-label fw-semibold" style="color:#ffffff">I have read the E-Sign Agreement and understand I will not receive documents in the mail. </span>
-                                                </label>  
-                                            </div>
-
-                                            <div class="d-flex align-items-center">
-                                                <label class="form-check form-check-custom form-check-solid me-10">
-                                                    <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                        name="disclosures"
-                                                        @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
-                                                        <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
-                                                </label>  
-                                                
-                                            </div>
-                                            <div class="d-flex align-items-center mt-4">
-                                                <ul>
-                                                    <li>
-                                                        <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b>
-                                                    </li>
-                                                    <li>
-                                                        <b>Fortress Trust Consumer Disclosures</b>
-                                                    </li>
-                                                    <li>
-                                                        <b> Fortress <a href="">  Trust Privacy Policy and Terms and Conditions </a></b>
-                                                    </li>
-                                                    <li>
-                                                        <b>Fortress Trust Account Agreement</b>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                           
-                                        </div> 
-
-                                    </div>
                                     @endif
                                     <div class="card-title mt-6">
                                         <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
