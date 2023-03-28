@@ -610,9 +610,9 @@
                                                     Primary Contact Social Security # <small>(US Investors Only)</small>
                                                     <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control"
-                                                    placeholder="Primary Contact Social Security" required
-                                                    name="primary_contact_social_security"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                                placeholder="Primary Contact Social Security" required
+                                                name="primary_contact_social_security" id="primary_contact_social_security"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />          
                                             </div>
 
                                             <div class="form-group mb-10 col-lg-4">
@@ -643,7 +643,7 @@
                                                     <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control"
                                                     placeholder="Primary Contact Social Security" required
-                                                    name="primary_contact_social_security"
+                                                    name="primary_contact_social_security" id="primary_contact_social_security"
                                                     @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
                                             </div>
 
@@ -675,8 +675,7 @@
 
                                                     <div class="col-lg-6 ">
                                                         <div class="row">
-                                                            <div class="col-lg-4 check_kyc_wrapper text-center">
-                                                                
+                                                            <div class="col-lg-4 check_kyc_wrapper text-center"> 
                                                                 @if($user->fortress_id == null)
                                                                     <button type="button" style="width: 100%"
                                                                     class="btn btn-sm no-radius -square btn-dark check_kyc"
@@ -2391,5 +2390,12 @@
                 }
             });
         });
+        Inputmask({
+             "mask" : "999-99-9999"
+        }).mask("#primary_contact_social_security");
+
+        Inputmask({
+            "mask" : "999-99-9999"
+        }).mask("#primary_contact_social_security");
     </script>
 @endsection
