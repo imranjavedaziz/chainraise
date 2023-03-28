@@ -147,7 +147,7 @@ class KycController extends Controller
             $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
             $upload_document = Http::attach('DocumentType', 'passport')->
             attach('DocumentFront', $doc_front)->
-            attach('DocumentBack', $doc_front)->
+            //attach('DocumentBack', $doc_front)->
             withToken($token_json['access_token'])->
             post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
