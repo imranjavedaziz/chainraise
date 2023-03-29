@@ -99,6 +99,7 @@ class KycController extends Controller
                 'lastName' => $user->userDetail->last_name,
                 'phone' =>  '+'.$user->cc.$user->phone,
                 'email' => $user->email,
+                'ssn' => $user->identityVerification->primary_contact_social_security,
                 'address' => [
                     'street1' => $user->userDetail->address, 
                     'postalCode' => $user->userDetail->zip,
