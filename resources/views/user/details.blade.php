@@ -374,8 +374,8 @@
                                                         </div>
                                                         <div class="col-lg-8">
                                                             <div class="input-group">
-                                                                <input type="number" class="form-control"
-                                                                    placeholder="(201) 555-0123" name="phone"
+                                                                <input type="text" class="form-control"
+                                                                    name="phone" id="phone_number"
                                                                     value="{{ $user->phone }}" />
                                                             </div>
                                                         </div>
@@ -778,16 +778,16 @@
                                                 <div class="d-flex align-items-center mt-4">
                                                     <ul>
                                                         <li>
-                                                            <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b>
+                                                            <a href="" target="_blank"> <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b> </a> 
                                                         </li>
                                                         <li>
-                                                            <b>Fortress Trust Consumer Disclosures</b>
+                                                            <a href="https://fortresstrustcompany.com/disclosures-consumer" target="_blank">  <b>Fortress Trust Consumer Disclosures</b> </a> 
                                                         </li>
                                                         <li>
-                                                            <b> Fortress <a href="">  Trust Privacy Policy and Terms and Conditions </a></b>
+                                                            <a href="https://fortress.xyz/terms-of-use" target="_blank">  <b> Fortress  Trust Privacy Policy and Terms and Conditions </b> </a>
                                                         </li>
                                                         <li>
-                                                            <b>Fortress Trust Account Agreement</b>
+                                                            <a href="" target="_blank">  <b>Fortress Trust Account Agreement</b> </a> 
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -2397,5 +2397,10 @@
         Inputmask({
             "mask" : "999-99-9999"
         }).mask("#primary_contact_social_security");
+
+        Inputmask({
+            "mask" : "999-999-9999"
+        }).mask("#phone_number");
+
     </script>
 @endsection

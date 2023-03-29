@@ -101,28 +101,31 @@
 
 
                             <div class="form-group row mb-10">
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <label>Title:</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title') }}" />
 
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+
+                                <div class="col-lg-5">
                                     <label>Phone Number: <span class="text-danger">*</span> </label>
                                     <div class="row">
                                         <div class="col-lg-4">
-
+                                            <select class="form-control cc" name="cc" data-control="select2">
+                                                @include('user.partials.cc')
+                                            </select>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="(201) 555-0123" name="phone" value="{{ old('phone') }}" />
-                                            </div>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" placeholder="-000-000-0000"  name="phone" 
+                                            id="phone_number" 
+                                            value="{{ old('phone')}}"/> 
                                         </div>
-                                    </div>
-
-
+                                    </div> 
                                 </div>
+
+                               
                                 <div class="col-lg-3">
                                     <label>Date of Birth <span class="text-danger">*</span> </label>
                                     <div class="input-group" id="">
@@ -132,7 +135,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 ">
+                                <div class="col-lg-2">
 
                                     <div class="image-input image-input-outline image-input-empty" data-kt-image-input="true" style="background-image: url('{{asset('assets/media/svg/avatars/blank.svg')}}')">
                                         <!--begin::Preview existing avatar-->

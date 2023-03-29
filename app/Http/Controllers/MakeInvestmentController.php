@@ -321,6 +321,7 @@ class MakeInvestmentController extends Controller
             'templates'=> 'required',
             'investment_amount'=>'required',
         ]);
+        $AP = "https://api.sandbox.fortressapi.com/api/trust/v1/";
         $custodial_account = Custodial::where('offer_id', $request->offer_id)->first();
         if(!$custodial_account){
             Session::put('error','Custodial Account Id Not Found for Selected Offer');  
@@ -356,25 +357,25 @@ class MakeInvestmentController extends Controller
         
        
         //verify the end user's identity
-        try{
-            $verify_identity_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/verify";
-            $verify_identity = Http::withToken($token_json['access_token'])->post(
-            $verify_identity_url,
-            [
-                'identityId' => $identityId,
-                'memberGuid' => $member_id,
-            ]);
-            $token_identity =  json_decode((string) $verify_identity->getBody(), true);
+        // try{
+        //     $verify_identity_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/verify";
+        //     $verify_identity = Http::withToken($token_json['access_token'])->post(
+        //     $verify_identity_url,
+        //     [
+        //         'identityId' => $identityId,
+        //         'memberGuid' => $member_id,
+        //     ]);
+        //     $token_identity =  json_decode((string) $verify_identity->getBody(), true);
          
-        }catch(Exception $error){
-            dd($error);
-            Session::put('error','Internal Server Error');  
-            return redirect()->route('dashboard');
-        }
+        // }catch(Exception $error){
+        //     dd($error);
+        //     Session::put('error','Internal Server Error');  
+        //     return redirect()->route('dashboard');
+        // }
       
        
         try{
-            $member_identity_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/members";
+            $member_identity_url = $AP."financial-institutions/members";
             $member_identity = Http::withToken($token_json['access_token'])->post(
             $member_identity_url,
             [
@@ -391,9 +392,9 @@ class MakeInvestmentController extends Controller
        
         
        
-       
+       //Retrieve any bank accounts that are connected
         try{
-            $accounts_url = "https://api.sandbox.fortressapi.com/api/trust/v1/financial-institutions/accounts/".$identityId.'/'.$member_id;
+            $accounts_url =  $AP."financial-institutions/accounts/".$identityId.'/'.$member_id;
             $accounts = Http::withToken($token_json['access_token'])->get($accounts_url);
             $accounts_Json =  json_decode((string) $accounts->getBody(), true);
             $accountGuid  = '';
@@ -408,10 +409,10 @@ class MakeInvestmentController extends Controller
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
-        
+        //Now that you have the accountGuid, you will follow up with one last call to create a persistent object referencing the linked bank.
         try{
 
-            $externalAccountsURL = "https://api.sandbox.fortressapi.com/api/trust/v1/external-accounts/financial";
+            $externalAccountsURL =  $AP."external-accounts/financial";
             $externalAccounts = Http::withToken($token_json['access_token'])->post(
             $externalAccountsURL,
             [
@@ -425,12 +426,8 @@ class MakeInvestmentController extends Controller
             dd($error);
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
-        }
-
-       
-        if($externalAccounts->status() == 409){
-            
-           
+        }       
+        if($externalAccounts->status() == 409){ 
             $externalAccountId = explode('Account is already linked ', $externalAccountJson['title']);
             $externalAccountId = $externalAccountId[1];
         }else{
@@ -438,11 +435,10 @@ class MakeInvestmentController extends Controller
         }
       
         try{
-            DB::beginTransaction();
-         
+            DB::beginTransaction(); 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.sandbox.fortressapi.com/api/trust/v1/payments',
+                CURLOPT_URL =>  $AP.'payments',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,

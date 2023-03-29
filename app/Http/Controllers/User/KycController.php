@@ -47,6 +47,8 @@ class KycController extends Controller
        
         $errors = []; 
         $user = User::with('userDetail')->find($request->id); 
+        
+       
         if (!$user->getFirstMediaUrl('kyc_document_collection')) {
             $errors[] = 'Please Upload Document First';
             return response([
@@ -83,7 +85,7 @@ class KycController extends Controller
                 ]);
         } 
        
-
+        
        
 
         
@@ -97,13 +99,14 @@ class KycController extends Controller
                 'lastName' => $user->userDetail->last_name,
                 'phone' =>  '+'.$user->cc.$user->phone,
                 'email' => $user->email,
-                'ssn' => $user->identityVerification->primary_contact_social_security,
-                'address.street1' => $user->userDetail->address,
-                'address.street2' => '-',
-                'address.postalCode' => $user->userDetail->zip,
-                'address.city' => $user->userDetail->city,
-                'address.state' => $user->userDetail->state,
-                'address.country' => $user->identityVerification->nationality,
+                'address' => [
+                    'street1' => $user->userDetail->address, 
+                    'postalCode' => $user->userDetail->zip,
+                    'city' => $user->userDetail->city,
+                    'state' => $user->userDetail->state,
+                    'country' => $user->identityVerification->nationality,
+                ]
+        
             ]);
             $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);  
             if ($identity_containers->failed()) { 
@@ -140,11 +143,13 @@ class KycController extends Controller
                 'success'  => false,
             ]);
         }
+        
 
         try{ 
             $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
             $path =  $mediaCollection->getFullUrl();
             $doc_front = fopen($path, 'r');  
+           // $doc_front = "https://mgmotors.com.pk/storage/img/details_4/homepage_models-mg-zs-ev-new.jpg";
             $url = $access_url.'personal-identities/'.$user->fortress_personal_identity.'/documents';
             $upload_document = Http::attach('DocumentType', 'passport')->
             attach('DocumentFront', $doc_front)->
