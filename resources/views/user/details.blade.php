@@ -752,7 +752,7 @@
                                    
 
                                     @if($user->hasRole('investor'))
-                                        <div class="card-body" style=" background: #ff003b2e;color:#fff!important;border-radius:5px  ">
+                                        <div class="card-body bg-danger" style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
                                             <div class="card-title mt-6 mb-3">
                                                 <h2>Important Note </h2>
                                             </div>
@@ -762,7 +762,10 @@
                                                         <input class="form-check-input h-15px w-15px" type="checkbox" required
                                                             name="e_sign_agreement"
                                                             @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
-                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">I have read the E-Sign Agreement and understand I will not receive documents in the mail. </span>
+                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">
+                                                                I have read the <a href="https://fortresstrustcompany.com/disclosures-e-sign
+                                                                " target="_blank">  E-Sign Agreement </a> and understand I will not receive documents in the mail.
+                                                            </span>
                                                     </label>  
                                                 </div>
 
@@ -787,9 +790,21 @@
                                                             <a href="https://fortress.xyz/terms-of-use" target="_blank">  <b> Fortress  Trust Privacy Policy and Terms and Conditions </b> </a>
                                                         </li>
                                                         <li>
-                                                            <a href="" target="_blank">  <b>Fortress Trust Account Agreement</b> </a> 
+                                                            <a href="{{ asset('assets/documents/forme-fortress-fevocable-trust.docx') }}" download="Forme-Fortress-Revocable-Trust.docx">  <b>Fortress Trust Account Agreement</b> </a> 
                                                         </li>
                                                     </ul>
+                                                </div>
+                                                <div class="align-items-center mt-4">
+                                                    <p>
+                                                        <b>
+                                                            USA Patriot Act Disclosure - The below disclosure should be displayed before CIP information is collected. In our case, name and phone number.
+                                                        </b>
+                                                    </p>
+                                                    <p>
+                                                        <b>
+                                                        "IMPORTANT INFORMATION ABOUT PROCEDURES FOR OPENING A NEW ACCOUNT: To help the government fight the funding of terrorism and money laundering activities, federal law requires all financial institutions to obtain, verify, and record information that identifies each person who opens an Account. What this means for you: When you open an Account, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see a copy of your driver's license or other identifying documents."
+                                                        </b>
+                                                    </p>
                                                 </div>
                                             
                                             </div> 
