@@ -17,6 +17,12 @@ class TestController extends Controller
         return view('email.message');
     }
 
+    public function flow_chart()
+    {
+
+        return view('flow_chart');
+    }
+
     public function mailTrap()
     {
         

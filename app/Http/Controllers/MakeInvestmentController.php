@@ -389,9 +389,6 @@ class MakeInvestmentController extends Controller
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
-       
-        
-       
        //Retrieve any bank accounts that are connected
         try{
             $accounts_url =  $AP."financial-institutions/accounts/".$identityId.'/'.$member_id;

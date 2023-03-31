@@ -26,6 +26,7 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('ki', [TestController::class, 'mailTrap'])->name('king2');
 
 
+Route::get('flow-chart', [TestController::class, 'flow_chart'])->name('flow_chart');
 Route::get('mailTrap', [TestController::class, 'mailTrap'])->name('mailTrap');
 Route::get('message', [TestController::class, 'message'])->name('messss');
 Route::post('message-sent', [TestController::class, 'message_send']);
