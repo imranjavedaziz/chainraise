@@ -9,26 +9,36 @@ class FrontendController extends Controller
 {
     public function index()
     {   
-        $accreditations = Accreditation::get();
+       
         $offers = Offer::get();
-        return view('frontEnd.offer.index',compact('offers','accreditations'));
+        return view('frontEnd.offer.index',compact('offers'));
     }
 
     public function detail($slug)
     {   
-        $accreditations = Accreditation::get();
+       
         $offer = Offer::with('user','user.userDetail','investmentRestrictions','offerDetail')->where('slug',$slug)->first();
-        return view('frontEnd.offer.detail',compact('offer','accreditations'));
+        return view('frontEnd.offer.detail',compact('offer'));
     }
 
     public function socialLogin()
     {
-        $accreditations = Accreditation::get();
-        return view('frontEnd.login',compact('accreditations'));
+       
+        return view('frontEnd.login');
     }
 
-    function terms(){
-        $accreditations = Accreditation::get();
-        return view('frontEnd.terms',compact('accreditations'));
+    function privacy_policy(){
+       
+        return view('frontEnd.privacy_policy');
     }
+
+    function faq(){ 
+        return view('frontEnd.faq');
+    }
+
+    function contact(){ 
+        return view('frontEnd.contact');
+    }
+
+    
 }

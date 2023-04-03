@@ -37,8 +37,11 @@ Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
 Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
-Route::get('terms', [FrontendController::class, 'terms'])->name('terms');
-
+Route::get('privacy-policy', [FrontendController::class, 'privacy_policy'])->name('privacy.policy');
+Route::get('privacy-policy', [FrontendController::class, 'privacy_policy'])->name('terms');
+Route::get('faq', [FrontendController::class, 'faq'])->name('faq');
+Route::get('privacy/policy', [FrontendController::class, 'privacy_policy'])->name('privacy.policy');
+Route::get('contact', [FrontendController::class, 'contact'])->name('contact');
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 
 Route::get('login-social', [FrontendController::class, 'socialLogin'])->name('login.social');

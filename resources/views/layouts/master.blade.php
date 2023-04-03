@@ -569,7 +569,7 @@
 
                     <ul class="list-unstyled mb-4">
                         <li>
-                            <a href="#!" class="text-white">Offerings</a>
+                            <a href="#" class="text-white">Offerings</a>
                         </li>
                         <li>
                             <a href="#!" class="text-white">Organizations</a>
@@ -584,13 +584,13 @@
 
                     <ul class="list-unstyled">
                         <li>
-                            <a href="#!" class="text-white">Who we are</a>
+                            <a href="#" class="text-white">Who we are</a>
                         </li>
                         <li>
-                            <a href="#!" class="text-white">Terms & Conditions</a>
+                            <a href="#" class="text-white">Terms & Conditions</a>
                         </li>
                         <li>
-                            <a href="#!" class="text-white">Privacy Policy</a>
+                            <a href="{{ route('privacy.policy') }}" class="text-white">Privacy Policy</a>
                         </li>
                     </ul>
                 </div>
@@ -602,10 +602,10 @@
 
                     <ul class="list-unstyled">
                         <li>
-                            <a href="#!" class="text-white">Contact</a>
+                            <a href="{{  route('contact')  }}" class="text-white">Contact</a>
                         </li>
                         <li>
-                            <a href="#!" class="text-white">FAQ</a>
+                            <a href="{{  route('faq')  }}" class="text-white">FAQ</a>
                         </li>
                     </ul>
                 </div>

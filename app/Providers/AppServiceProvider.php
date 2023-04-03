@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Accreditation;
 use App\Repositories\Interfaces\OfferRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Interfaces\RegCFRepositoryInterface;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $accreditations = Accreditation::get();
+        view()->share('accreditations', $accreditations);
     }
 }
