@@ -408,8 +408,9 @@ class MakeInvestmentController extends Controller
         }
         //Now that you have the accountGuid, you will follow up with one last call to create a persistent object referencing the linked bank.
         if(Auth::user()->external_account == null){
+            
             try{
-                
+                $acc_user = User::find(Auth::user()->id);
                 $externalAccountsURL =  $AP."external-accounts/financial";
                 $externalAccounts = Http::withToken($token_json['access_token'])->post(
                 $externalAccountsURL,
@@ -419,8 +420,10 @@ class MakeInvestmentController extends Controller
                 ]); 
                 $externalAccountJson =  json_decode((string) $externalAccounts->getBody(), true);
                 $externalAccountId = $externalAccountJson['id'];
-                $external_acc = Auth::user()->external_account = $externalAccountId;
-                $external_acc->save();
+                
+                $acc_user->external_account = $externalAccountId;
+                $acc_user->save();
+            
             }catch(Exception $error){  
                 Session::put('error','Internal Server Error'.$error );  
                 return redirect()->route('dashboard');

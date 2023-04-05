@@ -781,7 +781,7 @@
                                                 <div class="d-flex align-items-center mt-4">
                                                     <ul>
                                                         <li>
-                                                            <a href="" target="_blank"> <b>“INSERT INTEGRATOR NAME” Terms of Service and Privacy Policy</b> </a> 
+                                                            <a href="" target="_blank"> <b>“Chainraise” Terms of Service and Privacy Policy</b> </a> 
                                                         </li>
                                                         <li>
                                                             <a href="https://fortresstrustcompany.com/disclosures-consumer" target="_blank">  <b>Fortress Trust Consumer Disclosures</b> </a> 
