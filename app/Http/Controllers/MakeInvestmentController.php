@@ -407,30 +407,27 @@ class MakeInvestmentController extends Controller
             return redirect()->route('dashboard');
         }
         //Now that you have the accountGuid, you will follow up with one last call to create a persistent object referencing the linked bank.
-        try{
-
-            $externalAccountsURL =  $AP."external-accounts/financial";
-            $externalAccounts = Http::withToken($token_json['access_token'])->post(
-            $externalAccountsURL,
-            [
-                'identityId' => $identityId,
-                'financialAccountId' => $accountGuid,
-            ]);
-            
-            $externalAccountJson =  json_decode((string) $externalAccounts->getBody(), true);
-            
-        }catch(Exception $error){
-            dd($error);
-            Session::put('error','Internal Server Error');  
-            return redirect()->route('dashboard');
-        }       
-        if($externalAccounts->status() == 409){ 
-            $externalAccountId = explode('Account is already linked ', $externalAccountJson['title']);
-            $externalAccountId = $externalAccountId[1];
+        if(Auth::user()->external_account == null){
+            try{
+                
+                $externalAccountsURL =  $AP."external-accounts/financial";
+                $externalAccounts = Http::withToken($token_json['access_token'])->post(
+                $externalAccountsURL,
+                [
+                    'identityId' => $identityId,
+                    'financialAccountId' => $accountGuid,
+                ]); 
+                $externalAccountJson =  json_decode((string) $externalAccounts->getBody(), true);
+                $externalAccountId = $externalAccountJson['id'];
+                $external_acc = Auth::user()->external_account = $externalAccountId;
+                $external_acc->save();
+            }catch(Exception $error){  
+                Session::put('error','Internal Server Error'.$error );  
+                return redirect()->route('dashboard');
+            }  
         }else{
-            $externalAccountId = $externalAccountJson['id'];
-        }
-      
+            $externalAccountId = Auth::user()->external_account;
+        } 
         try{
             DB::beginTransaction(); 
             $curl = curl_init();

@@ -36,11 +36,12 @@ Route::get('upload-doc', [TestController::class, 'upload_doc']);
 Route::get('dummer', [UserController::class, 'dummy'])->name('dummer');
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index'])->name('error.logs');
 Route::get('custom_login/{email}/{password}', [UserController::class, 'custom_login']);
-Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']);
-Route::get('privacy-policy', [FrontendController::class, 'privacy_policy'])->name('privacy.policy');
-Route::get('privacy-policy', [FrontendController::class, 'privacy_policy'])->name('terms');
-Route::get('faq', [FrontendController::class, 'faq'])->name('faq');
-Route::get('privacy/policy', [FrontendController::class, 'privacy_policy'])->name('privacy.policy');
+Route::get('redirect-user/{email}/{password}', [UserController::class, 'redirection']); 
+Route::get('privacy-policy', [FrontendController::class, 'privacy_policy'])->name('privacy.policy'); 
+Route::get('investors', [FrontendController::class, 'investors'])->name('investors');
+Route::get('businesses', [FrontendController::class, 'businesses'])->name('businesses');
+
+Route::get('faq', [FrontendController::class, 'faq'])->name('faq'); 
 Route::get('contact', [FrontendController::class, 'contact'])->name('contact');
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 

@@ -351,7 +351,7 @@
                                         <div class="form-group form-check">
                                             <input type="checkbox" name="terms"
                                                 class="form-check-input show_password" required>
-                                            <a href="{{ route('terms') }}" class="form-check-label" target="_blank"
+                                            <a href="{{ route('privacy.policy') }}" class="form-check-label" target="_blank"
                                                 style="padding: 0px; font-size: 14px; font-weight: 500;"> Agree terms &
                                                 privacy policy
                                             </a>
@@ -569,10 +569,13 @@
 
                     <ul class="list-unstyled mb-4">
                         <li>
-                            <a href="#" class="text-white">Offerings</a>
+                            <a href="{{  route('index') }}" class="text-white">Offerings</a>
                         </li>
                         <li>
-                            <a href="#!" class="text-white">Organizations</a>
+                            <a href="{{  route('investors') }}" class="text-white">Investors</a>
+                        </li>
+                        <li>
+                            <a href="{{  route('businesses') }}" class="text-white">Businesses</a>
                         </li>
                     </ul>
                 </div>
@@ -583,11 +586,9 @@
                     <h5 class="text-uppercase mb-4 cc">Company</h5>
 
                     <ul class="list-unstyled">
+                        
                         <li>
-                            <a href="#" class="text-white">Who we are</a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white">Terms & Conditions</a>
+                            <a href="{{ asset('assets/documents/terms-of-Use-ChainRaise.pdf') }}" download="Terms-of-Use-ChainRaise.pdf" class="text-white">Terms & Conditions</a>
                         </li>
                         <li>
                             <a href="{{ route('privacy.policy') }}" class="text-white">Privacy Policy</a>
@@ -627,15 +628,33 @@
                 </div>
                 <!--Grid column-->
             </div>
+            <div class="text-center m-0 py-3">
+                <p class="m-0 py-3">© 2022 ChainRaise Technologies. All rights reserved. <p>
+            </div>
+            <div class="row pt-5">
+                <div class="col-lg-12 col-md-6 mb-4 mb-lg-0">
+                    <div class="ast-builder-html-element"><p>This website, which we refer to as the “Site,” is used by two different companies:</p>
+                        <p>ChainRaise Portal LLC and ChainRaise Fund LLC.</p>
+                        <p>ChainRaise Fund LLC offers investments under Rule 506(c) issued by the Securities and Exchange Commission (SEC). These investments are offered to accredited investors only.</p>
+                        <p>ChainRaise Portal LLC is a “funding portal” as defined in section 3(a)(80) of the Securities Exchange Act of 1934. Here, you can review investment opportunities of companies offering securities under section 4(a)(6) of the Securities Act of 1933, also known as Regulation Crowdfunding or Reg CF. These investments are offered to everyone, not just to accredited investors.</p>
+                        <p>By using this Site, you are subject to our Terms of Use and our Privacy Policy. Please read these carefully before using the Site.</p>
+                        <p>Although our website offers investors the opportunity to invest in a variety of companies, we do not make recommendations regarding the appropriateness of a particular investment opportunity for any particular investor. We are not investment advisers. Investors must make their own investment decisions, either alone or with their personal advisors.</p>
+                        <p>You should view all of the investment opportunities on our website as risky. You should consider investing only if you can afford to lose your entire investment.</p>
+                        <p>We provide financial projections for some of the investment opportunities listed on the Site. All such financial projections are only estimates based on current conditions and current assumptions. The actual result of any investment is likely to be different than the original projection, often by a large amount.</p>
+                        <p>Neither the Securities and Exchange Commission nor any state agency has reviewed the investment opportunities listed on the Site.</p>
+                        <p>Thank you for using the Site. If you have questions, please contact us at&nbsp;<a href="mailto:info@chainraise.io">info@chainraise.io</a></p>
+                        </div>
+
+                     
+                </div>
+            </div>
             <!--Grid row-->
         </div>
         <!-- Grid container -->
 
         <!-- Copyright -->
-        <div class="text-center m-0 py-3">
-            <p class="m-0 py-3">© 2022 ChainRaise Technologies. All rights reserved.
-            <p>
-        </div>
+      
+        
         <!-- Copyright -->
     </footer>
 

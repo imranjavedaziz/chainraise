@@ -32,6 +32,11 @@ class FrontendController extends Controller
         return view('frontEnd.privacy_policy');
     }
 
+    function terms(){
+       
+        return view('frontEnd.terms');
+    }
+
     function faq(){ 
         return view('frontEnd.faq');
     }
@@ -40,5 +45,14 @@ class FrontendController extends Controller
         return view('frontEnd.contact');
     }
 
+
+    function investors(){ 
+        return view('frontEnd.investors');
+    }
+    function businesses(){ 
+        return view('frontEnd.businesses');
+    }
+
+    
     
 }
