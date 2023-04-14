@@ -449,7 +449,7 @@
                                     <div class="form-group row">
                                             <div class="col-lg-12 mb-5">
                                                     <label>User Type: <span class="text-danger">*</span> </label>
-                                                    <select class="form-control"  data-control="select2">
+                                                    <select class="form-control user_type"  data-control="select2" name="user_type">
                                                         <option value="individual" @if($user->user_type == 'individual') selected @endif>
                                                             Individual
                                                         </option>
@@ -474,6 +474,39 @@
                                                     placeholder="Entity Name"
                                                     @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
                                             </div>
+
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Ein <span class="text-danger">*</span> </label>
+                                                <input type="text" class="form-control" name="ein" id="ein_number"
+                                                    placeholder="Ein"
+                                                    @if($user->userDetail) value="{{ $user->userDetail->ein }}" @endif required>
+                                            </div>
+
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Naics <span class="text-danger">*</span> </label>
+                                                <input type="text" class="form-control" name="naics" id="naics"
+                                                    placeholder="Naics"
+                                                    @if($user->userDetail) value="{{ $user->userDetail->naics }}" @endif required>
+                                            </div>
+
+
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Naics Description <span class="text-danger">*</span> </label>
+                                                <input type="text" class="form-control" name="naics_description" id="naics_description"
+                                                    placeholder="Naics Description"
+                                                    @if($user->userDetail) value="{{ $user->userDetail->naics_description }}" @endif required>
+                                            </div>
+
+
+
+                                            <div class="col-lg-6 mb-10">
+                                                <label>Website <span class="text-danger">*</span> </label>
+                                                <input type="url" class="form-control" name="website" id="website_address"
+                                                    placeholder="Website Address"
+                                                    @if($user->userDetail) value="{{ $user->userDetail->website }}" @endif required>
+                                            </div>
+
+
                                             <div class="clear-fix"></div>
                                         @endif
                                         <div class="col-lg-12 mb-3">
@@ -674,30 +707,74 @@
                                                     </div>
 
                                                     <div class="col-lg-6 ">
+                                                         
                                                         <div class="row">
-                                                            <div class="col-lg-4 check_kyc_wrapper text-center"> 
-                                                                @if($user->fortress_id == null)
-                                                                    <button type="button" style="width: 100%"
-                                                                    class="btn btn-sm no-radius -square btn-dark check_kyc"
-                                                                    data-id="{{ $user->id }}">
-                                                                    Check User KYC
-                                                                    </button>
-                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                    class="img img-thumbnail d-none loader_img"
-                                                                    style="width: 40px;"
-                                                                    alt="">
+                                                            <div class="col-lg-6 check_kyc_wrapper text-center"> 
+                                                                @if($user->user_type =='individual')
+                                                                    @if($user->fortress_id == null)
+                                                                        <button type="button" style="width: 100%"
+                                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                        data-id="{{ $user->id }}">
+                                                                        Check User KYC
+                                                                        </button>
+                                                                        <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                        class="img img-thumbnail d-none loader_img"
+                                                                        style="width: 40px;"
+                                                                        alt="">
+                                                                    @else 
+                                                                    
+                                                                        <button type="button" style="width: 50%"
+                                                                        id="check_kyc_leavel"
+                                                                        class="btn btn-sm no-radius btn-square btn-dark re_run_kyc"
+                                                                        data-id="{{ $user->id }}">
+                                                                        Re Run KYC
+                                                                        </button>
+                                                                        <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                        class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                        style="width: 40px;"
+                                                                        alt="">
+                                                                        @if ($user->kyc) 
+                                                                            @if($user->kyc->doc_status == null || $user->kyc->doc_status == 'Not Uploaded' )
+                                                                                <button type="button" style="width: 50%"
+                                                                                id="check_kyc_leavel"
+                                                                                class="btn btn-sm no-radius -square btn-dark update_document"
+                                                                                data-id="{{ $user->id }}">
+                                                                                Upload Documents
+                                                                                </button>
+                                                                                <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                                class="img img-thumbnail d-none loader_img_for_update_document"
+                                                                                style="width: 40px;"
+                                                                                alt="">  
+                                                                            @endif
+                                                                        @endif
+                                                                       
+                                                                    @endif
                                                                 @else
-                                                                <button type="button" style="width: 100%"
-                                                                id="check_kyc_leavel"
-                                                                class="btn btn-sm no-radius -square btn-dark re_run_kyc"
-                                                                data-id="{{ $user->id }}">
-                                                                Re Run KYC
-                                                                </button>
-                                                                    <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                    class="img img-thumbnail d-none loader_img_for_re_run_kyc"
-                                                                    style="width: 40px;"
-                                                                    alt=""> 
-                                                                @endif
+                                                                    @if($user->identity_container_id == null || $user->business_id == null)
+                                                                        <button type="button" style="width: 100%"
+                                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                        data-id="{{ $user->id }}">
+                                                                        Check User KYC Entity
+                                                                        </button>
+                                                                        <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                        class="img img-thumbnail d-none loader_img"
+                                                                        style="width: 40px;"
+                                                                        alt="">
+                                                                    @else
+                                                                        <button type="button" style="width: 100%"
+                                                                        id="check_kyc_leavel"
+                                                                        class="btn btn-sm no-radius -square btn-dark re_run_kyc"
+                                                                        data-id="{{ $user->id }}">
+                                                                        Re Run KYC
+                                                                        </button>
+                                                                        <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                        class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                        style="width: 40px;"
+                                                                        alt=""> 
+                                                                        
+                                                                    @endif    
+                                                                @endif  
+                                                                
                                                             </div> 
                                                         </div> 
                                                     </div> 
@@ -724,6 +801,20 @@
                                             @include('user.country')
                                             </select> 
                                         </div>
+                                        <div class="col-lg-3">
+                                            <label class="fw-semibold"> Document Type</label>
+                                            <select class="form-select" data-control="select2"   data-placeholder="Select Document Type" required name="doc_type"> 
+                                                @if($user->hasRole('issuer'))
+                                                    <option value="other">Other</option>
+                                                    <option value="proofOfAddress">Proof Of Address</option>
+                                                    <option value="proofOfCompanyFormation"> Proof Of Company Formation </option>
+                                                @else
+                                                    <option value="license">License</option>
+                                                    <option value="identificationCard"> Identification Card </option>
+                                                    <option value="passport"> Passport </option>
+                                                @endif
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div  class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
@@ -734,8 +825,7 @@
                                                         download title="Download Document File">
                                                         <i class="la la-download"></i>
                                                     </a>
-                                                </div>
-
+                                                </div> 
                                                 <button type="button"
                                                     class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1">
                                                     <i class="fa fa-upload"></i>
@@ -2322,13 +2412,13 @@
                 },
                 success: function(response) {
                     $('.loader_img_for_re_run_kyc').addClass('d-none');
-                     $('.re_run_kyc').removeClass('d-none');
+                    $('.re_run_kyc').removeClass('d-none');
                     $('.kyc_wrapper').load(' .kyc_wrapper');
                     $('.kyc_doc_wrapper').load(' .kyc_doc_wrapper');
                     $('.check_kyc_leavel').load(' .check_kyc_leavel');
                     $('.kyc_level_wrapper').load(' .kyc_level_wrapper');
                     if (response.status == 200) {
-                        toastr.success('KYC Level Has Been Updated',  "Success");
+                        toastr.success('KYC Status Has Been Updated',  "Success");
                     }
                     if(response.status == false){
                         toastr.error(response.message,  "Error");
@@ -2382,6 +2472,9 @@
         @if($user->cc)
             $('.cc').val('{{  $user->cc }}')
         @endif
+        @if($user->user_type)
+            $('.user_type').val('{{  $user->user_type }}')
+        @endif
 
         @if ($user->identityVerification) 
                 $('.tax_entity_type').val('{{  $user->identityVerification->tax_entity_type }}') 
@@ -2414,8 +2507,16 @@
         }).mask("#primary_contact_social_security");
 
         Inputmask({
-            "mask" : "999-999-9999"
+            "mask" : "-999-999-9999"
         }).mask("#phone_number");
+
+
+
+
+
+        Inputmask({
+            "mask" : "99-9999999"
+        }).mask("#ein_number");
 
     </script>
 @endsection

@@ -15,6 +15,7 @@ class IdentityVerification extends Model
         'tax_entity_type',
         'tax_identification',
         'nationality',
-        'country_residence'
+        'country_residence',
+        'doc_type'
     ];
 }

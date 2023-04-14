@@ -22,10 +22,14 @@ class UserDetail extends Model
         'entity_name',
         'legal_formation',
         'date_incorporation',
-        'user_id'
+        'user_id',
+        'ein',
+        'naics',
+        'naics_description', 
+        'website'
     ];
 
 
-   
+    
 
 }

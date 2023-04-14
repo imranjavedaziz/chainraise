@@ -33,8 +33,8 @@ class TestController extends Controller
 
     public function message_send(Request $request)
     {
-        
-        return redirect('mailTrap')->with('xx','manan');
+         
+        return back()->with(['status'=>'Profile updated!']);
       
          
     }

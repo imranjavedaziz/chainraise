@@ -321,6 +321,7 @@ class MakeInvestmentController extends Controller
             'templates'=> 'required',
             'investment_amount'=>'required',
         ]);
+       
         $AP = "https://api.sandbox.fortressapi.com/api/trust/v1/";
         $custodial_account = Custodial::where('offer_id', $request->offer_id)->first();
         if(!$custodial_account){
@@ -337,7 +338,7 @@ class MakeInvestmentController extends Controller
         }
         $identityId = Auth::user()->fortress_personal_identity;
         $offer = Offer::with('user')->findOrFail($request->offer_id);  
-       
+        dd(1);
         try{
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',

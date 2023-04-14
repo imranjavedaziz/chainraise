@@ -169,7 +169,7 @@
                                     <label>Entity Type: <span class="text-danger">*</span></label>
                                     <select name="user_type" id="" class="form-control">
                                         <option value="individual"> Individual  </option>
-                                        <option value="entity"> Entity  </option>
+                                        <option value="entity" selected> Entity  </option>
                                     </select>
                                 </div>
                             </div>
@@ -263,8 +263,11 @@
 
 @endsection
 @section('page_js')
-
+    
     <script>
+          Inputmask({
+            "mask" : "-999-999-9999"
+        }).mask("#phone_number");
         $('#electronic_delivery_check_box').click(function() {
             if ($("#electronic_delivery_check_box").is(':checked')) {
                 toastr.info("Thank you for agreeing to the Consent to Electronic Delivery");

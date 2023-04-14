@@ -197,7 +197,7 @@ class UserController extends Controller
     }
     public function save(Request $request)
     {
-
+       
         $request->validate([
             'email' => 'required|unique:users',
             'first_name' => 'required',
@@ -245,7 +245,7 @@ class UserController extends Controller
             $user_detail->title = $request->title;
             $user_detail->dob = $request->dob;
             $user_detail->address = $request->address;
-            $user_detail->suit = $request->suit;
+            $user_detail->suit = $request->suite;
             $user_detail->city = $request->city;
             $user_detail->state = $request->state;
             $user->agree_consent_electronic  = $agree_consent_electronic;
@@ -269,8 +269,7 @@ class UserController extends Controller
             return redirect()->route('user.index')->with('success','New investor user has been created');
         }catch(Exception $error){
             return $error;
-            DB::rollBack();
-
+            DB::rollBack(); 
             return redirect()->back()->with('error','Error while creating investor user');
         }
     }
@@ -280,7 +279,7 @@ class UserController extends Controller
     }
     public function issuerSave(Request $request)
     {
-
+     
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',
@@ -317,10 +316,11 @@ class UserController extends Controller
             $user_detail->title = $request->title;
             $user_detail->dob = $request->dob;
             $user_detail->address = $request->address;
-            $user_detail->suit = $request->suit;
+            $user_detail->suit = $request->suite;
             $user_detail->city = $request->city;
             $user_detail->state = $request->state;
             $user_detail->zip = $request->zip_code;
+            $user->user_type = $request->user_type;
             $user_detail->save();
             DB::commit();
             return redirect()->route('user.index')->with('success','New investor user has been created');
@@ -331,7 +331,7 @@ class UserController extends Controller
     }
     public function issuerAccountUpdate(Request $request)
     {   
-         
+        
         $request->validate([
             //Users Table
             'id' => 'required',
@@ -373,6 +373,7 @@ class UserController extends Controller
         $user->name = $request->first_name;
         $user->phone = $request->phone;
         $user->cc = $request->cc;
+        $user->user_type = $request->user_type;
         $user->save();
 
         if($request->has('profile_avatar')){
@@ -392,12 +393,16 @@ class UserController extends Controller
              'title' => $request->title,
              'dob' => $request->dob,
              'city' => $request->city,
+             'ein' => $request->ein,
+             'naics' => $request->naics,
+             'naics_description' => $request->naics_description,
+             'website' => $request->website,
              'address' => $request->address, 'suit' => $request->suit,'legal_formation'=>$request->legal_formation,
              'date_incorporation'=>$request->date_incorporation,
              'state'=> $request->state,'zip'=> $request->zip,'entity_name'=>$request->entity_name
             ]
         );
-
+        
         $identityVerification = IdentityVerification::updateOrCreate(
             ['user_id' => $request->id],
             [
@@ -405,11 +410,12 @@ class UserController extends Controller
              'tax_entity_type' => $request->tax_entity_type,
              'tax_identification' => $request->tax_identification,
              'nationality' => $request->nationality,
+             'doc_type' => $request->doc_type,
              'country_residence' => $request->country_residence
             ]
         );
 
-
+         
 
 
 
