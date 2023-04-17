@@ -245,7 +245,7 @@ class UserController extends Controller
             $user_detail->title = $request->title;
             $user_detail->dob = $request->dob;
             $user_detail->address = $request->address;
-            $user_detail->suit = $request->suite;
+            $user_detail->suit = $request->suit;
             $user_detail->city = $request->city;
             $user_detail->state = $request->state;
             $user->agree_consent_electronic  = $agree_consent_electronic;

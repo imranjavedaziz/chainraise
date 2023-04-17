@@ -40,7 +40,9 @@ class KycController extends Controller
     }
     public function checkKyc(Request $request)
     {
-        $access_url = "https://api.fortressapi.com";
+
+        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
+        $fortress_base_url = 'https://api.fortressapi.com/api/trust/v1/'; 
         $request->validate([
             'id' => 'required',
         ]); 
@@ -54,18 +56,19 @@ class KycController extends Controller
                 'errors' => $errors,
             ]);
         }
+        
         // Token Request
         try {
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://fortress-prod.us.auth0.com/oauth/token', [
+            ])->post($production_auth, [
                 'grant_type' => 'password',
                 'username'   => 'Portal@chainraise.io',
                 'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
-            $token_json =  json_decode((string) $get_token->getBody(), true);
+            $token_json =  json_decode((string) $get_token->getBody(), true);  
             if ($get_token->failed()) {
                 $errors[] = 'Error While Creating Token';
                 return response([
@@ -75,20 +78,20 @@ class KycController extends Controller
             }
         }catch(Exception $token_error){
                 $errors[] = 'Error While Creating Token';
-                $errors[] = $token_error;
+                $errors[] = $token_error; 
                 return response([
                     'success'  => false,
                     'errors' => $errors,
                 ]);
-        } 
-       
+        }  
+      
         if($user->user_type  == 'individual'){    
-                
-            if($user->fortress_id == null){   
+           
+            if($user->fortress_id == null){  
                 try{ 
                     $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
                         'Content-Type' => 'application/json',
-                    ])->post($access_url.'identity-containers', [
+                    ])->post($fortress_base_url.'identity-containers', [
                         'firstName' => $user->name,
                         'middleName' => $user->userDetail->middle_name,
                         'lastName' => $user->userDetail->last_name,
@@ -103,10 +106,8 @@ class KycController extends Controller
                             'country' => $user->identityVerification->nationality,
                         ] 
                     ]);
-                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);  
-                    dd($identity_containers);
+                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);    
                     if ($identity_containers->failed()) { 
-                        dd(111);
                         $status = $identity_containers->status(); 
                         if($status == 409){
                             $errors[] = $identity_containers['title'];   
@@ -137,7 +138,6 @@ class KycController extends Controller
                 }catch(Exception $identity_containers_error){  
                     $errors[] = 'Error While Creating Identity Containers';
                     $errors[] = $identity_containers_error;
-                    dd($identity_containers_error);
                     return response([ 
                         'errors' => $errors,
                         'success'  => false,
@@ -148,10 +148,11 @@ class KycController extends Controller
         }elseif($user->user_type  == 'entity'){   
             // creating container for business 
             if($user->identity_container_id == null){ 
+             
                 try{  
                     $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
                         'Content-Type' => 'application/json',
-                    ])->post('https://api.sandbox.fortressapi.com/api/compliance/v1/identity-containers', [
+                    ])->post('https://api.fortressapi.com/api/compliance/v1/identity-containers', [
                         'firstName' => $user->name,
                         'middleName' => $user->userDetail->middle_name,
                         'lastName' => $user->userDetail->last_name,
@@ -166,8 +167,16 @@ class KycController extends Controller
                             'country' => $user->identityVerification->nationality,
                         ] 
                     ]);
-                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);    
+                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);     
                     $status = $identity_containers->status(); 
+                    if($status == 400){
+                        $errors[] = $json_identity_containers['title'];
+                        return response([
+                            'status' => $status, 
+                            'errors' => $errors,
+                            'success'  => false,
+                        ]);
+                    } 
                     if($status == 409){
                         $errors[] = $json_identity_containers['title'];
                         return response([
@@ -264,7 +273,7 @@ class KycController extends Controller
             $endPoint = 'https://api.sandbox.fortressapi.com/api/compliance/v1/business-identities/'.$id.'/documents';
         }  else{
             $id =  $user->fortress_personal_identity;
-            $endPoint = $access_url.'personal-identities/'.$id.'/documents';
+            $endPoint = $fortress_base_url.'personal-identities/'.$id.'/documents';
         } 
 
         
@@ -338,10 +347,11 @@ class KycController extends Controller
         
 
         if($user->user_type  == 'entity'){
-            $url_check_kyc = 'https://api.sandbox.fortressapi.com/api/compliance/v1/business-identities/'.$user->business_id ;
+            $url_check_kyc = $fortress_base_url.'business-identities/'.$user->business_id ;
         }else{
-            $url_check_kyc = $access_url.'personal-identities/'.$user->fortress_personal_identity ;
+            $url_check_kyc = $fortress_base_url.'personal-identities/'.$user->fortress_personal_identity ;
         }
+        
         try{ 
             
             $check_user_kyc_level = Http::withToken($token_json['access_token'])->
@@ -377,9 +387,8 @@ class KycController extends Controller
                 
 
         
-
-
     }
+
 
 
     public function re_run_kyc(Request $request)
