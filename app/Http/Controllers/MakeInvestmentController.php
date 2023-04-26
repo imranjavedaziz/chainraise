@@ -200,7 +200,7 @@ class MakeInvestmentController extends Controller
             return view('investment.step-1-account-type', compact('top_nav','offer', 'user','external_account','investment_amount'));
         }
 
-        
+        // testying
        
     }
     public function step_two(Request $request)
