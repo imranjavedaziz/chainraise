@@ -294,9 +294,9 @@ class KycController extends Controller
         
         try{ 
             $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
-            //$path =  $mediaCollection->getFullUrl();
-            $path = "https://mgmotors.com.pk/storage/img/details_4/homepage_models-mg-zs-ev-new.jpg";
-            $document_path = fopen('https://i.brecorder.com/primary/2022/05/626e8e55ac3c3.jpg', 'r');   
+            $path =  $mediaCollection->getFullUrl();
+            //$path = "https://mgmotors.com.pk/storage/img/details_4/homepage_models-mg-zs-ev-new.jpg";
+            $document_path = fopen($path, 'r');   
             $url = $endPoint;
             $upload_document = Http::attach('DocumentType', $user->identityVerification->doc_type)->
             attach('DocumentFront', $document_path)->
