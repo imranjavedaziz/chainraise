@@ -112,12 +112,12 @@ class OfferController extends Controller
         //dd($request);
         $get_token = Http::withHeaders([
             'Content-Type' => 'application/json',
-        ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+        ])->post($production_auth, [
             'grant_type' => 'password',
-            'username'   => 'tayyabshahzad@sublimesolutions.org',
-            'password'   => 'x0A1PGhevtkJu4qeXBXF',
+            'username'   => 'Portal@chainraise.io',
+            'password'   => '?dm3JeXgkgQNA?ue8sHI',
             'audience'   => 'https://fortressapi.com/api',
-            'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+            'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
         ]);
         $token_json =  json_decode((string) $get_token->getBody(), true);
         //dd($token_json);
@@ -130,7 +130,7 @@ class OfferController extends Controller
         if($user->check_kyc == true ){ 
             $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
             withHeaders(['Content-Type' => 'application/json'])->
-            get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
+            get('https://api.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
             $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
             if($upgrade_existing_l0->failed()){ 
                 return redirect()->back()->with('error','Internal Server Error');
@@ -184,7 +184,7 @@ class OfferController extends Controller
                     $user = User::find($request->issuer);
                     $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
                         'Content-Type' => 'application/json',
-                    ])->post('https://api.sandbox.fortressapi.com/api/trust/v1/custodial-accounts', [
+                    ])->post('https://api.fortressapi.com/api/trust/v1/custodial-accounts', [
                         'type' => 'personal',
                         'personalIdentityId' => $user->fortress_personal_identity,
                     ]);

@@ -25,7 +25,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
-
+use Illuminate\Support\Facades\Session;
 class UserController extends Controller
 {
     public function custom_login($email,$password)
@@ -197,7 +197,7 @@ class UserController extends Controller
     }
     public function save(Request $request)
     {
-       
+        
         $request->validate([
             'email' => 'required|unique:users',
             'first_name' => 'required',
@@ -229,6 +229,7 @@ class UserController extends Controller
             $user->name  = $request->first_name;
             $user->email  = $request->email;
             $user->email_verified_at  = Carbon::now();
+            $user->user_type  = $request->user_type;
             if($request->has('password') && $request->password != null){
                 $user->password  =  Hash::make($request->password);
             }
@@ -266,10 +267,11 @@ class UserController extends Controller
              //event(new Registered($user));
              //Mail::to($user)->send(new WelcomeEmail($user));
              DB::commit();
-            return redirect()->route('user.index')->with('success','New investor user has been created');
-        }catch(Exception $error){
-            return $error;
-            DB::rollBack(); 
+             Session::put('success','Your Investment Has Been Completed'); 
+             return redirect()->route('user.index')->with('success','New investor user has been created');
+        }catch(Exception $error){ 
+            DB::rollBack();
+            Session::put('error','Error While Creating ');  
             return redirect()->back()->with('error','Error while creating investor user');
         }
     }
@@ -279,7 +281,7 @@ class UserController extends Controller
     }
     public function issuerSave(Request $request)
     {
-     
+      
         $request->validate([
             'email' => 'required',
             'first_name' => 'required',

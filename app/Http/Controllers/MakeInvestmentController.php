@@ -68,7 +68,7 @@ class MakeInvestmentController extends Controller
         try{
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post($this->productionAuth, [
+            ])->post($production_auth, [
                 'grant_type' => 'password',
                 'username'   => 'Portal@chainraise.io',
                 'password'   => '?dm3JeXgkgQNA?ue8sHI',
@@ -283,22 +283,26 @@ class MakeInvestmentController extends Controller
     public function kyc_checking(Request $request)
     {
         
+
+       
+
+
         try{
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+            ])->post($this->productionAuth, [
                 'grant_type' => 'password',
-                'username'   => 'tayyabshahzad@sublimesolutions.org',
-                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+                'username'   => 'Portal@chainraise.io',
+                'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
-                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+                'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
             $response_json =  json_decode((string) $response->getBody(), true);
             if($response->successful()){ 
                  
                 $upgrade_existing_l0 = Http::withToken($response_json['access_token'])->
                 withHeaders(['Content-Type' => 'application/json'])->
-                get('https://api.sandbox.fortressapi.com/api/trust/v1/personal-identities/'.Auth::user()->fortress_personal_identity);
+                get($this->fortressBaseUrl.'personal-identities/'.Auth::user()->fortress_personal_identity);
                 $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
                 if($upgrade_existing_l0->successful()){
                    //dd($upgrade_existing_l0->status());
@@ -332,7 +336,7 @@ class MakeInvestmentController extends Controller
             'investment_amount'=>'required',
         ]);
        
-        $AP = "https://api.sandbox.fortressapi.com/api/trust/v1/";
+      
         $custodial_account = Custodial::where('offer_id', $request->offer_id)->first();
         if(!$custodial_account){
             Session::put('error','Custodial Account Id Not Found for Selected Offer');  
@@ -348,7 +352,7 @@ class MakeInvestmentController extends Controller
         }
         $identityId = Auth::user()->fortress_personal_identity;
         $offer = Offer::with('user')->findOrFail($request->offer_id);  
-        dd(1);
+        
         try{
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -386,7 +390,7 @@ class MakeInvestmentController extends Controller
       
        
         try{
-            $member_identity_url = $AP."financial-institutions/members";
+            $member_identity_url = $this->fortressBaseUrl."financial-institutions/members";
             $member_identity = Http::withToken($token_json['access_token'])->post(
             $member_identity_url,
             [
@@ -402,7 +406,7 @@ class MakeInvestmentController extends Controller
         }
        //Retrieve any bank accounts that are connected
         try{
-            $accounts_url =  $AP."financial-institutions/accounts/".$identityId.'/'.$member_id;
+            $accounts_url =  $this->fortressBaseUrl."financial-institutions/accounts/".$identityId.'/'.$member_id;
             $accounts = Http::withToken($token_json['access_token'])->get($accounts_url);
             $accounts_Json =  json_decode((string) $accounts->getBody(), true);
             $accountGuid  = '';
@@ -422,7 +426,7 @@ class MakeInvestmentController extends Controller
             
             try{
                 $acc_user = User::find(Auth::user()->id);
-                $externalAccountsURL =  $AP."external-accounts/financial";
+                $externalAccountsURL =  $this->fortressBaseUrl."external-accounts/financial";
                 $externalAccounts = Http::withToken($token_json['access_token'])->post(
                 $externalAccountsURL,
                 [
@@ -446,7 +450,7 @@ class MakeInvestmentController extends Controller
             DB::beginTransaction(); 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL =>  $AP.'payments',
+                CURLOPT_URL =>  $this->fortressBaseUrl.'payments',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,

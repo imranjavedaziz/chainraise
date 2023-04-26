@@ -107,8 +107,11 @@
                             <div class="d-flex flex-column m-lg-8">
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center mb-2">
-                                    <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }}  | {{ $user->email }}
-                                        @if($user->userDetail){{ $user->userDetail->last_name }}@endif
+                                    <span class="text-gray-900 text-hover-primary fs-2 fw-bold"> {{ $user->name }} |
+                                        {{ $user->email }}
+                                        @if ($user->userDetail)
+                                            {{ $user->userDetail->last_name }}
+                                        @endif
                                         - <small class="text-info">
                                             {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
                                     </span>
@@ -118,14 +121,19 @@
                                 <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
                                     <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
                                         <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-                                        <!--end::Svg Icon--> {{ $user->phone }} <br>  {{ $user->user_type }}
+                                        <!--end::Svg Icon--> {{ $user->phone }} <br> {{ $user->user_type }}
                                     </span>
                                 </div>
 
                                 <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-                                    <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2"> 
-                                        <button type="button" class="btn btn-sm btn-dark no-radius update_aml_status" data-id="{{  $user->id }}"> 
-                                            KYC / AML Check @if($user->check_kyc == true) Enabled  @else Disabled @endif
+                                    <span class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                                        <button type="button" class="btn btn-sm btn-dark no-radius update_aml_status"
+                                            data-id="{{ $user->id }}">
+                                            KYC / AML Check @if ($user->check_kyc == true)
+                                                Enabled
+                                            @else
+                                                Disabled
+                                            @endif
                                         </button>
                                     </span>
                                 </div>
@@ -345,13 +353,13 @@
                                                         <label>Middle Name: <span class="text-danger"></span></label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Middle Name" name="middle_name"
-                                                            @if($user->userDetail) value="{{ $user->userDetail->middle_name }}" @endif />
+                                                            @if ($user->userDetail) value="{{ $user->userDetail->middle_name }}" @endif />
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <label>Last Name: <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Last Name" name="last_name"
-                                                            @if($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif/>
+                                                            @if ($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif />
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -360,23 +368,23 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                 placeholder="Title" name="title"
-                                                                @if($user->userDetail) value="{{ $user->userDetail->title }}" @endif/>
+                                                                @if ($user->userDetail) value="{{ $user->userDetail->title }}" @endif />
 
                                                         </div>
                                                     </div>
-                                                   <div class="col-lg-7 row">
+                                                    <div class="col-lg-7 row">
                                                         <label>Phone Number: <span class="text-danger">*</span> </label>
                                                         <div class="col-lg-4">
-                                                            <select class="form-control cc" name="cc" data-control="select2">
+                                                            <select class="form-control cc" name="cc"
+                                                                data-control="select2">
                                                                 @include('user.partials.cc')
                                                             </select>
 
                                                         </div>
                                                         <div class="col-lg-8">
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                    name="phone" id="phone_number"
-                                                                    value="{{ $user->phone }}" />
+                                                                <input type="text" class="form-control" name="phone"
+                                                                    id="phone_number" value="{{ $user->phone }}" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -385,7 +393,7 @@
                                                         <div class="input-group" id="">
                                                             <input type="date" class="form-control"
                                                                 placeholder="Date of Birth*" required name="dob"
-                                                                @if($user->userDetail) value="{{ $user->userDetail->dob }}" @endif>
+                                                                @if ($user->userDetail) value="{{ $user->userDetail->dob }}" @endif>
 
                                                         </div>
 
@@ -447,17 +455,16 @@
 
                                     </div>
                                     <div class="form-group row">
-                                            <div class="col-lg-12 mb-5">
-                                                    <label>User Type: <span class="text-danger">*</span> </label>
-                                                    <select class="form-control user_type"  data-control="select2" name="user_type">
-                                                        <option value="individual" @if($user->user_type == 'individual') selected @endif>
-                                                            Individual
-                                                        </option>
-                                                        <option value="entity" @if($user->user_type == 'entity') selected @endif>
-                                                            Entity
-                                                        </option>
-                                                    </select>
-                                            </div>
+                                        <div class="col-lg-12 mb-5">
+                                            <label>User Type: <span class="text-danger">*</span> </label>
+                                            <select class="form-control user_type" data-control="select2"
+                                                name="user_type">
+                                                <option value="individual"
+                                                    @if ($user->user_type == 'individual') selected @endif> Individual </option>
+                                                <option value="entity" @if ($user->user_type == 'entity') selected @endif>
+                                                    Entity </option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="form-group row mb-10">
@@ -472,38 +479,43 @@
                                                 <label>Entity Name <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="entity_name"
                                                     placeholder="Entity Name"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif
+                                                    required>
                                             </div>
 
                                             <div class="col-lg-6 mb-10">
                                                 <label>Ein <span class="text-danger">*</span> </label>
-                                                <input type="text" class="form-control" name="ein" id="ein_number"
-                                                    placeholder="Ein"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->ein }}" @endif required>
+                                                <input type="text" class="form-control" name="ein"
+                                                    id="ein_number" placeholder="Ein"
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->ein }}" @endif
+                                                    required>
                                             </div>
 
                                             <div class="col-lg-6 mb-10">
                                                 <label>Naics <span class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="naics" id="naics"
                                                     placeholder="Naics"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->naics }}" @endif required>
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->naics }}" @endif
+                                                    required>
                                             </div>
 
 
                                             <div class="col-lg-6 mb-10">
                                                 <label>Naics Description <span class="text-danger">*</span> </label>
-                                                <input type="text" class="form-control" name="naics_description" id="naics_description"
-                                                    placeholder="Naics Description"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->naics_description }}" @endif required>
+                                                <input type="text" class="form-control" name="naics_description"
+                                                    id="naics_description" placeholder="Naics Description"
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->naics_description }}" @endif
+                                                    required>
                                             </div>
 
 
 
                                             <div class="col-lg-6 mb-10">
                                                 <label>Website <span class="text-danger">*</span> </label>
-                                                <input type="url" class="form-control" name="website" id="website_address"
-                                                    placeholder="Website Address"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->website }}" @endif required>
+                                                <input type="url" class="form-control" name="website"
+                                                    id="website_address" placeholder="Website Address"
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->website }}" @endif
+                                                    required>
                                             </div>
 
 
@@ -522,14 +534,15 @@
                                         <div class="col-lg-6">
                                             <label>Address <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="address"
-                                            @if($user->userDetail) value="{{ $user->userDetail->address }}" @endif  placeholder="Street Address*"
-                                                required>
+                                                @if ($user->userDetail) value="{{ $user->userDetail->address }}" @endif
+                                                placeholder="Street Address*" required>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <label> Suit / Unit </label>
                                             <input type="text" class="form-control" name="suit"
-                                            @if($user->userDetail)   value="{{ $user->userDetail->suit }}" @endif placeholder="Suit / Unit">
+                                                @if ($user->userDetail) value="{{ $user->userDetail->suit }}" @endif
+                                                placeholder="Suit / Unit">
                                         </div>
                                     </div>
 
@@ -540,21 +553,22 @@
                                         <div class="col-lg-4">
                                             <label>City <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="city"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->city }}" @endif placeholder="City*" required>
+                                                @if ($user->userDetail) value="{{ $user->userDetail->city }}" @endif
+                                                placeholder="City*" required>
                                         </div>
 
                                         <div class="col-lg-4">
                                             <label>State / Region <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="state"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->state }}" @endif placeholder="State / Region*"
-                                                required>
+                                                @if ($user->userDetail) value="{{ $user->userDetail->state }}" @endif
+                                                placeholder="State / Region*" required>
                                         </div>
 
                                         <div class="col-lg-4">
                                             <label>Zip / Postal Code <span class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" name="zip" id="zip_code"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->zip }}" @endif placeholder="Zip / Postal Code*"
-                                                required>
+                                                @if ($user->userDetail) value="{{ $user->userDetail->zip }}" @endif
+                                                placeholder="Zip / Postal Code*" required>
                                         </div>
                                     </div>
 
@@ -565,14 +579,16 @@
                                                 </label>
                                                 <input type="text" class="form-control" name="legal_formation"
                                                     placeholder="State/Region of Legal Formation*"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->legal_formation }}" @endif required>
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->legal_formation }}" @endif
+                                                    required>
                                             </div>
 
                                             <div class="col-lg-6">
                                                 <label>Date of Incorporation <span class="text-danger">*</span> </label>
                                                 <input type="date" class="form-control" name="date_incorporation"
                                                     placeholder="Date of Incorporation*"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif required>
+                                                    @if ($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif
+                                                    required>
                                             </div>
                                         </div>
                                     @endif
@@ -642,17 +658,23 @@
                                                 <label>
                                                     Primary Contact Social Security # <small>(US Investors Only)</small>
                                                     <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control"
-                                                placeholder="Primary Contact Social Security" required
-                                                name="primary_contact_social_security" id="primary_contact_social_security"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />          
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Primary Contact Social Security" required readonly
+                                                        name="primary_contact_social_security"
+                                                        id="primary_contact_social_security"
+                                                        @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-secondary  no-radius" id="show_ssn_field"
+                                                            type="button">x</button>
+                                                    </div>
+                                                </div>
                                             </div>
-
                                             <div class="form-group mb-10 col-lg-4">
-                                                <label> Tax Entity Type <span class="text-danger">*</span></label> 
-                                                <select class="form-select tax_entity_type" required data-control="select2"
-                                                    name="tax_entity_type" data-placeholder="Select an option"
-                                                    data-live-search="true">
+                                                <label> Tax Entity Type <span class="text-danger">*</span></label>
+                                                <select class="form-select tax_entity_type" required
+                                                    data-control="select2" name="tax_entity_type"
+                                                    data-placeholder="Select an option" data-live-search="true">
                                                     <option value="IRA">IRA</option>
                                                     <option value="Trust">Trust</option>
                                                     <option value="Corporation">Corporation</option>
@@ -660,9 +682,8 @@
                                                     <option value="Partnership">Partnership</option>
                                                     <option value="Non-Profit">Non-Profit</option>
                                                     <option value="Foregin Corporation">Foregin Corporation</option>
-                                                    <option value="Custodial">Custodial</option> 
+                                                    <option value="Custodial">Custodial</option>
                                                 </select>
-                                                  
                                             </div>
                                             <div class="form-group mb-10 col-lg-4">
                                                 <label> Tax Identification # <span class="text-danger">*</span> </label>
@@ -672,14 +693,22 @@
                                             </div>
                                         @else
                                             <div class="form-group mb-10 col-lg-6">
-                                                <label> Social Security # <small>(US Investors Only)</small>
-                                                    <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Primary Contact Social Security" required
-                                                    name="primary_contact_social_security" id="primary_contact_social_security"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
-                                            </div>
+                                                <label> Social Security # <small>(US Investors Only) * </small>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control"
+                                                            placeholder="Primary Contact Social Security" required readonly
+                                                            name="primary_contact_social_security"
+                                                            id="primary_contact_social_security"
+                                                            @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-secondary  no-radius"
+                                                                id="show_ssn_field" type="button">x</button>
+                                                        </div>
+                                                    </div>
 
+
+
+                                            </div>
                                         @endif
                                         <div class="row">
                                             <div class="form-group mb-10 col-lg-12 text-right kyc_buttons">
@@ -687,99 +716,104 @@
                                                     <div class="col-lg-3">
                                                         <strong>
                                                             KYC STATUS :
-                                                                    <span class="text-success kyc_level_wrapper">
-                                                                        @if ($user->kyc)
-                                                                            {{ ucfirst($user->kyc->kyc_level) }}
-                                                                        @endif
-                                                                    </span>
-                                                         </strong>
+                                                            <span class="text-success kyc_level_wrapper">
+                                                                @if ($user->kyc)
+                                                                    {{ ucfirst($user->kyc->kyc_level) }}
+                                                                @endif
+                                                            </span>
+                                                        </strong>
                                                     </div>
 
                                                     <div class="col-lg-3">
                                                         <strong>
                                                             DOCUMENT STATUS :
-                                                                <span class="text-success kyc_doc_wrapper">
-                                                                    @if ($user->kyc)
-                                                                        {{ ucfirst($user->kyc->doc_status) }}
-                                                                    @endif
-                                                                </span>
-                                                         </strong>
+                                                            <span class="text-success kyc_doc_wrapper">
+                                                                @if ($user->kyc)
+                                                                    {{ ucfirst($user->kyc->doc_status) }}
+                                                                @endif
+                                                            </span>
+                                                        </strong>
                                                     </div>
 
                                                     <div class="col-lg-6 ">
-                                                         
                                                         <div class="row">
-                                                            <div class="col-lg-6 check_kyc_wrapper text-center"> 
-                                                                @if($user->user_type =='individual')
-                                                                    @if($user->fortress_id == null)
+                                                            <div class="col-lg-6 check_kyc_wrapper text-center">
+                                                                @if ($user->user_type == 'individual')
+                                                                    @if ($user->fortress_id == null)
                                                                         <button type="button" style="width: 100%"
-                                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
-                                                                        data-id="{{ $user->id }}">
-                                                                        Check User KYC
+                                                                            class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                            data-id="{{ $user->id }}">
+                                                                            Check User KYC
                                                                         </button>
                                                                         <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                        class="img img-thumbnail d-none loader_img"
-                                                                        style="width: 40px;"
-                                                                        alt="">
-                                                                    @else 
-                                                                    
+                                                                            class="img img-thumbnail d-none loader_img"
+                                                                            style="width: 40px;" alt="">
+                                                                    @else
                                                                         <button type="button" style="width: 50%"
-                                                                        id="check_kyc_leavel"
-                                                                        class="btn btn-sm no-radius btn-square btn-dark re_run_kyc"
-                                                                        data-id="{{ $user->id }}">
-                                                                        Re Run KYC
+                                                                            id="check_kyc_leavel"
+                                                                            class="btn btn-sm no-radius btn-square btn-dark re_run_kyc"
+                                                                            data-id="{{ $user->id }}">
+                                                                            Re Run KYC
                                                                         </button>
                                                                         <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                        class="img img-thumbnail d-none loader_img_for_re_run_kyc"
-                                                                        style="width: 40px;"
-                                                                        alt="">
-                                                                        @if ($user->kyc) 
-                                                                            @if($user->kyc->doc_status == null || $user->kyc->doc_status == 'Not Uploaded' )
-                                                                                <button type="button" style="width: 50%"
-                                                                                id="check_kyc_leavel"
-                                                                                class="btn btn-sm no-radius -square btn-dark update_document"
-                                                                                data-id="{{ $user->id }}">
-                                                                                Upload Documents
+                                                                            class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                            style="width: 40px;" alt="">
+                                                                        @if ($user->kyc)
+                                                                            @if ($user->kyc->doc_status == null or $user->kyc->doc_status == 'Not Uploaded')
+                                                                                <button type="button" style="width: 100%"
+                                                                                    id="check_kyc_leavel"
+                                                                                    class="btn btn-sm no-radius -square btn-dark update_document mt-4"
+                                                                                    data-id="{{ $user->id }}">
+                                                                                    Upload Documents
                                                                                 </button>
                                                                                 <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                                class="img img-thumbnail d-none loader_img_for_update_document"
-                                                                                style="width: 40px;"
-                                                                                alt="">  
+                                                                                    class="img img-thumbnail d-none loader_img_for_update_document"
+                                                                                    style="width: 40px;" alt="">
                                                                             @endif
                                                                         @endif
-                                                                       
+
                                                                     @endif
                                                                 @else
-                                                                    @if($user->identity_container_id == null || $user->business_id == null)
+                                                                    @if ($user->identity_container_id == null || $user->business_id == null  )
                                                                         <button type="button" style="width: 100%"
-                                                                        class="btn btn-sm no-radius -square btn-dark check_kyc"
-                                                                        data-id="{{ $user->id }}">
-                                                                        Check User KYC Entity
+                                                                            class="btn btn-sm no-radius -square btn-dark check_kyc"
+                                                                            data-id="{{ $user->id }}">
+                                                                            Check User KYC Entity
                                                                         </button>
                                                                         <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                        class="img img-thumbnail d-none loader_img"
-                                                                        style="width: 40px;"
-                                                                        alt="">
+                                                                            class="img img-thumbnail d-none loader_img"
+                                                                            style="width: 40px;" alt="">
                                                                     @else
                                                                         <button type="button" style="width: 100%"
-                                                                        id="check_kyc_leavel"
-                                                                        class="btn btn-sm no-radius -square btn-dark re_run_kyc"
-                                                                        data-id="{{ $user->id }}">
-                                                                        Re Run KYC
+                                                                            id="check_kyc_leavel"
+                                                                            class="btn btn-sm no-radius -square btn-dark re_run_kyc"
+                                                                            data-id="{{ $user->id }}">
+                                                                            Re Run KYC
                                                                         </button>
                                                                         <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
-                                                                        class="img img-thumbnail d-none loader_img_for_re_run_kyc"
-                                                                        style="width: 40px;"
-                                                                        alt=""> 
-                                                                        
-                                                                    @endif    
-                                                                @endif  
-                                                                
-                                                            </div> 
-                                                        </div> 
-                                                    </div> 
+                                                                            class="img img-thumbnail d-none loader_img_for_re_run_kyc"
+                                                                            style="width: 40px;" alt="">
+                                                                    @endif
+                                                                    @if ($user->kyc)
+                                                                        @if ($user->kyc->doc_status == null or $user->kyc->doc_status == 'Not Uploaded')
+                                                                            <button type="button" style="width: 100%"
+                                                                                id="check_kyc_leavel"
+                                                                                class="btn btn-sm no-radius -square btn-dark update_document mt-4"
+                                                                                data-id="{{ $user->id }}">
+                                                                                Upload Documents
+                                                                            </button>
+                                                                            <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif"
+                                                                                class="img img-thumbnail d-none loader_img_for_update_document"
+                                                                                style="width: 40px;" alt="">
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                    </div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -796,18 +830,20 @@
                                         <div class="col-lg-3">
                                             <label>Country of Residence <span class="text-danger">*</span></label>
                                             <select class="form-select country_residence" required data-control="select2"
-                                            name="country_residence" data-placeholder="Select an option"
-                                            data-live-search="true">
-                                            @include('user.country')
-                                            </select> 
+                                                name="country_residence" data-placeholder="Select an option"
+                                                data-live-search="true">
+                                                @include('user.country')
+                                            </select>
                                         </div>
                                         <div class="col-lg-3">
                                             <label class="fw-semibold"> Document Type</label>
-                                            <select class="form-select" data-control="select2"   data-placeholder="Select Document Type" required name="doc_type"> 
-                                                @if($user->hasRole('issuer'))
+                                            <select class="form-select doc_type" data-control="select2"
+                                                data-placeholder="Select Document Type" required name="doc_type">
+                                                @if ($user->hasRole('issuer'))
                                                     <option value="other">Other</option>
                                                     <option value="proofOfAddress">Proof Of Address</option>
-                                                    <option value="proofOfCompanyFormation"> Proof Of Company Formation </option>
+                                                    <option value="proofOfCompanyFormation"> Proof Of Company Formation
+                                                    </option>
                                                 @else
                                                     <option value="license">License</option>
                                                     <option value="identificationCard"> Identification Card </option>
@@ -817,7 +853,8 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div  class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
+                                        <div
+                                            class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
                                             <div
                                                 class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
                                                 <div class="col-lg-12 mb-5">
@@ -825,7 +862,7 @@
                                                         download title="Download Document File">
                                                         <i class="la la-download"></i>
                                                     </a>
-                                                </div> 
+                                                </div>
                                                 <button type="button"
                                                     class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1">
                                                     <i class="fa fa-upload"></i>
@@ -839,65 +876,87 @@
                                         </div>
 
                                     </div>
-                                   
 
-                                    @if($user->hasRole('investor'))
-                                        <div class="card-body bg-danger" style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
+
+                                    @if ($user->hasRole('investor'))
+                                        <div class="card-body bg-danger"
+                                            style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
                                             <div class="card-title mt-6 mb-3">
                                                 <h2>Important Note </h2>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                            name="e_sign_agreement"
-                                                            @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
-                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">
-                                                                I have read the <a href="https://fortresstrustcompany.com/disclosures-e-sign
-                                                                " target="_blank">  E-Sign Agreement </a> and understand I will not receive documents in the mail.
-                                                            </span>
-                                                    </label>  
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                            required name="e_sign_agreement"
+                                                            @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif>
+                                                        <span class="form-check-label fw-semibold" style="color:#ffffff">
+                                                            I have read the <a
+                                                                href="https://fortresstrustcompany.com/disclosures-e-sign
+                                                                "
+                                                                target="_blank"> E-Sign Agreement </a> and understand I
+                                                            will not receive documents in the mail.
+                                                        </span>
+                                                    </label>
                                                 </div>
 
                                                 <div class="d-flex align-items-center">
                                                     <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                            name="disclosures"
-                                                            @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
-                                                            <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
-                                                    </label>  
-                                                    
+                                                        <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                            required name="disclosures"
+                                                            @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif>
+                                                        <span class="form-check-label fw-semibold" style="color:#ffffff">
+                                                            I have read and agree to the following: </span>
+                                                    </label>
+
                                                 </div>
                                                 <div class="d-flex align-items-center mt-4">
                                                     <ul>
                                                         <li>
-                                                            <a href="" target="_blank"> <b>“Chainraise” Terms of Service and Privacy Policy</b> </a> 
+                                                            <a href="" target="_blank"> <b>“Chainraise” Terms of
+                                                                    Service and Privacy Policy</b> </a>
                                                         </li>
                                                         <li>
-                                                            <a href="https://fortresstrustcompany.com/disclosures-consumer" target="_blank">  <b>Fortress Trust Consumer Disclosures</b> </a> 
+                                                            <a href="https://fortresstrustcompany.com/disclosures-consumer"
+                                                                target="_blank"> <b>Fortress Trust Consumer Disclosures</b>
+                                                            </a>
                                                         </li>
                                                         <li>
-                                                            <a href="https://fortress.xyz/terms-of-use" target="_blank">  <b> Fortress  Trust Privacy Policy and Terms and Conditions </b> </a>
+                                                            <a href="https://fortress.xyz/terms-of-use" target="_blank">
+                                                                <b> Fortress Trust Privacy Policy and Terms and Conditions
+                                                                </b> </a>
                                                         </li>
                                                         <li>
-                                                            <a href="{{ asset('assets/documents/forme-fortress-fevocable-trust.docx') }}" download="Forme-Fortress-Revocable-Trust.docx">  <b>Fortress Trust Account Agreement</b> </a> 
+                                                            <a href="{{ asset('assets/documents/forme-fortress-fevocable-trust.docx') }}"
+                                                                download="Forme-Fortress-Revocable-Trust.docx"> <b>Fortress
+                                                                    Trust Account Agreement</b> </a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div class="align-items-center mt-4">
                                                     <p>
                                                         <b>
-                                                            USA Patriot Act Disclosure - The below disclosure should be displayed before CIP information is collected. In our case, name and phone number.
+                                                            USA Patriot Act Disclosure - The below disclosure should be
+                                                            displayed before CIP information is collected. In our case, name
+                                                            and phone number.
                                                         </b>
                                                     </p>
                                                     <p>
                                                         <b>
-                                                        "IMPORTANT INFORMATION ABOUT PROCEDURES FOR OPENING A NEW ACCOUNT: To help the government fight the funding of terrorism and money laundering activities, federal law requires all financial institutions to obtain, verify, and record information that identifies each person who opens an Account. What this means for you: When you open an Account, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see a copy of your driver's license or other identifying documents."
+                                                            "IMPORTANT INFORMATION ABOUT PROCEDURES FOR OPENING A NEW
+                                                            ACCOUNT: To help the government fight the funding of terrorism
+                                                            and money laundering activities, federal law requires all
+                                                            financial institutions to obtain, verify, and record information
+                                                            that identifies each person who opens an Account. What this
+                                                            means for you: When you open an Account, we will ask for your
+                                                            name, address, date of birth, and other information that will
+                                                            allow us to identify you. We may also ask to see a copy of your
+                                                            driver's license or other identifying documents."
                                                         </b>
                                                     </p>
                                                 </div>
-                                            
-                                            </div> 
+
+                                            </div>
 
                                         </div>
                                     @endif
@@ -1002,8 +1061,9 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
-                                        <div class="col-lg-12"> 
-                                            <button type="submit" class="btn-sm btn btn-primary mr-2 no-radius btn-dark"> Update Account  </button>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn-sm btn btn-primary mr-2 no-radius btn-dark">
+                                                Update Account </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1258,7 +1318,7 @@
                         <!--end::Card body-->
                     </div>
                     <!--end::Card-->
-                </div> 
+                </div>
                 <div class="tab-pane fade" id="kt_users_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card pt-4 mb-6 mb-xl-9">
@@ -1411,7 +1471,7 @@
                     </div>
 
                     <!--end::Card-->
-                </div> 
+                </div>
                 <div class="tab-pane fade" id="kt_accreditation_tab" role="tabpanel">
                     <!--begin::Card-->
                     <div class="card pt-4 mb-6 mb-xl-9">
@@ -1665,12 +1725,11 @@
 
                                     <!--begin::Add customer-->
                                     @if ($user->hasRole('investor'))
-                                    <button type="button" class="btn btn-dark btn-sm no-radius e_sign"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modal_e_sign">
-                                        <i class="fas fa-pen"></i>
-                                        Request E-Sign
-                                    </button>
+                                        <button type="button" class="btn btn-dark btn-sm no-radius e_sign"
+                                            data-bs-toggle="modal" data-bs-target="#modal_e_sign">
+                                            <i class="fas fa-pen"></i>
+                                            Request E-Sign
+                                        </button>
                                     @endif
                                     <!--end::Add customer-->
                                 </div>
@@ -2341,7 +2400,7 @@
             var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
             imgBtnWrapper.find('.change_photo').click();
         });
-        $('.check_kyc').click(function() { 
+        $('.check_kyc').click(function() {
             var id = $(this).data('id');
             Swal.fire({
                 title: "Are you sure to to check KYC status ?",
@@ -2364,43 +2423,64 @@
                         },
                         success: function(response) {
                             $('.kyc_wrapper').load(' .kyc_wrapper');
-                            console.log(response);
-                            if(response.success == false){
-                                if(response.status == 400){ 
-                                        jQuery.each(response.errors.errors, function(index, item) { 
-                                                toastr.error(item, "Error");
-                                                alert('loop')
-                                               
-                                        });
-                                    }
-                                    if(typeof response.errors !== 'undefined' && response.errors !== null) {
-                                        jQuery.each(response.errors, function(index, item) { 
-                                            toastr.error(item, "Error");
-                                        });
-                                }else{
-                                        alert();
+
+                            if (response.success == false) {
+
+                                if (response.status == 400) {
+    if (response.errors && response.errors.length > 0) {
+        // Check for specific validation errors
+        if (response.errors[1] && response.errors[1].Phone) {
+            // Display validation error for Phone field
+            console.log(response.errors[1].Phone[0]);
+            toastr.error(response.errors[1].Phone[0], "Validation Error");
+        } else {
+            // Display other validation errors
+            jQuery.each(response.errors, function(index, item) {
+                if (typeof item === 'object') {
+                    jQuery.each(item, function(key, value) {
+                        console.log(key + ": " + value);
+                        toastr.error(value, "Validation Error");
+                    });
+                }
+            });
+        }
+    } else {
+        // Display generic error message
+        console.log(response.errors[0]);
+        toastr.error(response.errors[0], "Error");
+    }
+}
+
+
+
+
+                                if (typeof response.errors !== 'undefined' && response
+                                    .errors !== null) {
+                                    jQuery.each(response.errors, function(index, item) {
+                                        toastr.error(item, "Error");
+                                    });
                                 }
                             }
-                            if(response.success == true){
-                                toastr.success('Verification Has Been Completed',  "Success");
+                            if (response.success == true) {
+                                toastr.success('Verification Has Been Completed', "Success");
                                 $('.kyc_buttons').load(' .kyc_buttons');
-                            } 
+                            }
 
                             $('.loader_img').addClass('d-none');
                             $('.check_kyc').removeClass('d-none');
                         },
-                        error:function(xhr, status, error){
+                        error: function(xhr, status, error) {
                             toastr.error(error, "Error");
                             $('.loader_img').addClass('d-none');
                             $('.check_kyc').removeClass('d-none');
                         }
-                    
+
                     });
                 }
             });
         });
 
-        $('body').on('click','.re_run_kyc' , function() {
+        $('body').on('click', '.re_run_kyc', function() {
             $('.loader_img_for_re_run_kyc').removeClass('d-none');
             $('.re_run_kyc').addClass('d-none');
             var id = $(this).data('id');
@@ -2418,10 +2498,10 @@
                     $('.check_kyc_leavel').load(' .check_kyc_leavel');
                     $('.kyc_level_wrapper').load(' .kyc_level_wrapper');
                     if (response.status == 200) {
-                        toastr.success('KYC Status Has Been Updated',  "Success");
+                        toastr.success('KYC Status Has Been Updated', "Success");
                     }
-                    if(response.status == false){
-                        toastr.error(response.message,  "Error");
+                    if (response.status == false) {
+                        toastr.error(response.message, "Error");
                     }
 
                 }
@@ -2429,10 +2509,10 @@
         });
 
 
-        $('body').on('click','.update_document', function() {
+        $('body').on('click', '.update_document', function() {
             var id = $(this).data('id');
-            $('.loader_img_for_document_upload').removeClass('d-none');
-            $('.update_document').addClass('d-none');
+            //$('.loader_img_for_document_upload').removeClass('d-none');
+            //$('.update_document').addClass('d-none');
             $.ajax({
                 url: "{{ route('user.kyc.document.update') }}",
                 method: 'POST',
@@ -2441,19 +2521,19 @@
                 },
                 success: function(response) {
 
-                    $('.loader_img_for_document_upload').addClass('d-none');
-                    $('.update_document').removeClass('d-none');
+                    //$('.loader_img_for_document_upload').addClass('d-none');
+                    //$('.update_document').removeClass('d-none');
 
                     $('.update_document_wrapper').load(' .update_document_wrapper');
                     if (response.status == 201) {
-                        toastr.success('Document Has Been Updated',  "Success");
-                    }else{
-                        toastr.error('Error while updating status',  "Error");
+                        toastr.success('Document Has Been Updated', "Success");
+                    } else {
+                        toastr.error('Error while updating status', "Error");
                     }
                 }
             });
         });
-        $('body').on('click','.e_sign', function() {
+        $('body').on('click', '.e_sign', function() {
             var id = 1;
             $.ajax({
                 url: "{{ route('user.esign.template') }}",
@@ -2464,50 +2544,73 @@
                 success: function(response) {
                     $('select[name="template"]').html('');
                     jQuery.each(response.data.data, function(index, item) {
-                        $('select[name="template"]').append(` <option value="`+item.template_id+`"> `+item.template_name+` </option>`);
+                        $('select[name="template"]').append(` <option value="` + item
+                            .template_id + `"> ` + item.template_name + ` </option>`);
                     });
                 }
             });
         });
-        @if($user->cc)
-            $('.cc').val('{{  $user->cc }}')
+
+
+
+        const passwordInput = document.getElementById("primary_contact_social_security");
+        const toggleButton = document.getElementById("show_ssn_field");
+
+        if (toggleButton && passwordInput) {
+            toggleButton.addEventListener("click", () => {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    passwordInput.removeAttribute('readonly');
+                    Inputmask({
+                        "mask": "999-99-9999"
+                    }).mask("#primary_contact_social_security");
+
+                } else {
+                    passwordInput.type = "password";
+                    passwordInput.removeAttribute("data-masking");
+                }
+            });
+        }
+
+        @if ($user->cc)
+            $('.cc').val('{{ $user->cc }}')
         @endif
-        @if($user->user_type)
-            $('.user_type').val('{{  $user->user_type }}')
+        @if ($user->user_type)
+            $('.user_type').val('{{ $user->user_type }}')
         @endif
 
-        @if ($user->identityVerification) 
-                $('.tax_entity_type').val('{{  $user->identityVerification->tax_entity_type }}') 
-        @endif 
-        @if ($user->identityVerification) 
-            $('.country_residence').val('{{  $user->identityVerification->country_residence  }}') 
+        @if ($user->identityVerification)
+            $('.tax_entity_type').val('{{ $user->identityVerification->tax_entity_type }}')
+        @endif
+        @if ($user->identityVerification)
+            $('.country_residence').val('{{ $user->identityVerification->country_residence }}')
         @endif
 
-        $('body').on('click','.update_aml_status', function(){ 
+        @if ($user->identityVerification)
+            $('.doc_type').val('{{ $user->identityVerification->doc_type }}')
+        @endif
+
+        $('body').on('click', '.update_aml_status', function() {
             var userId = $(this).data('id');
             var url = "{{ route('user.update.kyc.check', ['id' => ':userId']) }}";
-            url = url.replace(':userId', userId); 
+            url = url.replace(':userId', userId);
             $.ajax({
                 url: url,
-                method: 'GET', 
+                method: 'GET',
                 success: function(response) {
-                     if(response.status == true){
-                        $('.update_aml_status').html('KYC / AML Check '+response.data);
-                        toastr.success('KYC / AML Status Has Been Updated',  "Success");
-                     }
+                    if (response.status == true) {
+                        $('.update_aml_status').html('KYC / AML Check ' + response.data);
+                        toastr.success('KYC / AML Status Has Been Updated', "Success");
+                    }
                 }
             });
         });
-        Inputmask({
-             "mask" : "999-99-9999"
-        }).mask("#primary_contact_social_security");
+
+
+
 
         Inputmask({
-            "mask" : "999-99-9999"
-        }).mask("#primary_contact_social_security");
-
-        Inputmask({
-            "mask" : "-999-999-9999"
+            "mask": "-999-999-9999"
         }).mask("#phone_number");
 
 
@@ -2515,8 +2618,7 @@
 
 
         Inputmask({
-            "mask" : "99-9999999"
+            "mask": "99-9999999"
         }).mask("#ein_number");
-
     </script>
 @endsection
