@@ -471,7 +471,7 @@ class KycController extends Controller
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
-            dd($token_json);
+           
             if($get_token->failed()) {  
                 return response([
                     'status' => $get_token->status(),
