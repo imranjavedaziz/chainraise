@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
 
 class MakeInvestmentController extends Controller
 {
-
+//Live Wala
     protected $productionAuth;
     protected $fortressBaseUrl;
 
@@ -50,17 +50,16 @@ class MakeInvestmentController extends Controller
     }
     public function submitInvestment(Request $request)
     {
-        
+       // dump($request->investment_amount);dd(1);
         $request->validate([
             'offer_id' => 'required',
             'investment_amount' => 'integer',
         ]);
-        dd($request);
         $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $investment_amount = $request->investment_amount;
         $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
         find($request->offer_id);
-        $investmentSteps = InvestmentStep::where('offer_id',$offer->id)->orderBy('priority','asc')->get();
+ $investmentSteps = InvestmentStep::where('offer_id',$offer->id)->orderBy('priority','asc')->get();
         $user = User::where('id', Auth::user()->id)->first();
         $fortress_personal_identity = Auth::user()->fortress_personal_identity;
         $fortress_id = Auth::user()->fortress_id;
@@ -78,11 +77,11 @@ class MakeInvestmentController extends Controller
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
             if($get_token->failed()){
-                Session::put('error','Internal Server Error');  
+                Session::put('error','Internal Server Error');
                 return redirect()->back()->with('error','Internal Server Error');
             }
         }catch(Exception $error){
-            Session::put('error','Internal Server Error');  
+            Session::put('error','Internal Server Error');
             return redirect()->back()->with('error','Internal Server Error');
         }
 
