@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
 
 class MakeInvestmentController extends Controller
 {
-    //Local controller
+    //Local controller is there
     protected $productionAuth;
     protected $fortressBaseUrl;
 
