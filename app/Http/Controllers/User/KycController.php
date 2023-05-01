@@ -69,6 +69,7 @@ class KycController extends Controller
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);  
+            dd($token_json);
             if ($get_token->failed()) {
                 $errors[] = 'Error While Creating Token';
                 return response([
@@ -425,7 +426,7 @@ class KycController extends Controller
           
 
         }catch(Exception $check_kyc_error){
-            dd($check_kyc_error);
+            
             return response([ 
                 'success'  => false,
                 'data'   => $check_kyc_error,
@@ -470,6 +471,7 @@ class KycController extends Controller
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true);
+            dd($token_json);
             if($get_token->failed()) {  
                 return response([
                     'status' => $get_token->status(),
@@ -583,26 +585,35 @@ class KycController extends Controller
 
     public function kycDocumentUpoad(Request $request)
     {
-         
         $request->validate([
             'id' => 'required',
         ]);
         $user = User::find($request->id);
-        if($user->fortress_personal_identity == null){
-            return response([
-                'status' => false,
-                'message' =>'Please run KYC Check First then try again',
-            ]);
-        }
         $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $fortress_base_url = 'https://api.fortressapi.com/api/trust/v1/'; 
-        if($user->user_type  == 'entity'){
+        if($user->user_type  == 'entity'){ 
+            if($user->identity_container_id == null || $user->business_id == null){
+                return response([
+                    'status' => false,
+                    'message' =>'Please run KYC Process First for your entity/busines account',
+                ]);
+            }
+            
             $id =  $user->business_id; 
             $endPoint = 'https://api.fortressapi.com/api/compliance/v1/business-identities/'.$id.'/documents';
-        }  else{
+        }else{
+
+            if($user->fortress_id == null || $user->fortress_personal_identity == null){
+                return response([
+                    'status' => false,
+                    'message' =>'Please run KYC Process First for your personal/individual account',
+                ]);
+            }
+ 
             $id =  $user->fortress_personal_identity;
             $endPoint = $fortress_base_url.'personal-identities/'.$id.'/documents';
         } 
+        
         
         $get_token = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -615,13 +626,11 @@ class KycController extends Controller
         ]);
         $token_json =  json_decode((string) $get_token->getBody(), true);   
 
-        dd( $user->user_type);
-        dd( $endPoint);
         try{ 
             $mediaCollection = $user->getFirstMedia('kyc_document_collection');  
             //$path =  $mediaCollection->getFullUrl();
             $path = "https://mgmotors.com.pk/storage/img/details_4/homepage_models-mg-zs-ev-new.jpg";
-            $document_path = fopen('https://i.brecorder.com/primary/2022/05/626e8e55ac3c3.jpg', 'r');   
+            $document_path = fopen($path, 'r');   
             $url = $endPoint;
             $upload_document = Http::attach('DocumentType', $user->identityVerification->doc_type)->
             attach('DocumentFront', $document_path)->
@@ -630,14 +639,13 @@ class KycController extends Controller
             post($url);
             $json_upload_document =  json_decode((string) $upload_document->getBody(), true);
             $status = $upload_document->status();
-            dd($json_upload_document);
             if($status == 400){
                 foreach($json_upload_document['errors'] as $error) {
                     if(is_array($error)) {
-                      $errors[] = 'Try to change document type';
-                      $errors[] = $error[0];
+                    $errors[] = 'Try to change document type';
+                    $errors[] = $error[0];
                     }
-                  }
+                }
                 $errors[] = 'Error While Uploading '.$user->user_type.' documents';
                 $errors[] = $json_upload_document['errors'];
                 $errors[] = $json_upload_document['title'];    
@@ -659,7 +667,8 @@ class KycController extends Controller
                         'success'  => false,
                         'errors' => $errors,
                     ]);
-                }    
+                }
+                $errors[] = 'Error While uploading Documents'; 
                 return response([
                     'status' => $upload_document->status(),
                     'data'   => $json_upload_document,

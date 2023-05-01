@@ -2511,8 +2511,8 @@
 
         $('body').on('click', '.update_document', function() {
             var id = $(this).data('id');
-            //$('.loader_img_for_document_upload').removeClass('d-none');
-            //$('.update_document').addClass('d-none');
+            //$('.loader_img_for_update_document').removeClass('d-none');
+            //$('.update_document').addClass('d-none'); 
             $.ajax({
                 url: "{{ route('user.kyc.document.update') }}",
                 method: 'POST',
@@ -2521,10 +2521,10 @@
                 },
                 success: function(response) {
 
-                    //$('.loader_img_for_document_upload').addClass('d-none');
+                    //$('.loader_img_for_update_document').addClass('d-none');
                     //$('.update_document').removeClass('d-none');
-
-                    $('.update_document_wrapper').load(' .update_document_wrapper');
+                    console.log(response);
+                    //$('.update_document_wrapper').load(' .update_document_wrapper');
                     if (response.status == 201) {
                         toastr.success('Document Has Been Updated', "Success");
                     } else {

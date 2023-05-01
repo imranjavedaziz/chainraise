@@ -97,7 +97,8 @@ class OfferController extends Controller
     }
     public function save(Request $request)
     {
-    
+        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
+        $fortress_base_url = 'https://api.fortressapi.com/api/trust/v1/'; 
         $request->validate([
             'issuer' => 'required',
             'offer_name' => 'required',
@@ -130,7 +131,7 @@ class OfferController extends Controller
         if($user->check_kyc == true ){ 
             $upgrade_existing_l0 = Http::withToken($token_json['access_token'])->
             withHeaders(['Content-Type' => 'application/json'])->
-            get('https://api.fortressapi.com/api/trust/v1/personal-identities/'.$user->fortress_personal_identity);
+            get($fortress_base_url.'personal-identities/'.$user->fortress_personal_identity);
             $json_upgrade_existing_l0 = json_decode((string) $upgrade_existing_l0->getBody(), true);
             if($upgrade_existing_l0->failed()){ 
                 return redirect()->back()->with('error','Internal Server Error');
@@ -184,7 +185,7 @@ class OfferController extends Controller
                     $user = User::find($request->issuer);
                     $custodial_account = Http::withToken($token_json['access_token'])->withHeaders([
                         'Content-Type' => 'application/json',
-                    ])->post('https://api.fortressapi.com/api/trust/v1/custodial-accounts', [
+                    ])->post($fortress_base_url.'custodial-accounts', [
                         'type' => 'personal',
                         'personalIdentityId' => $user->fortress_personal_identity,
                     ]);
