@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
 
 class MakeInvestmentController extends Controller
 {
-    //Local controller is there this is new bee
+    //Local controller is there this is new bee updated
     protected $productionAuth;
     protected $fortressBaseUrl;
 
