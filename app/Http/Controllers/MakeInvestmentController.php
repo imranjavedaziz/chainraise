@@ -319,16 +319,13 @@ class MakeInvestmentController extends Controller
         }
     }
     public function save(Request $request)
-    {
-
+    { 
         $request->validate([
             'offer_id' => 'required',
             'user_guid' => 'required',
             'templates' => 'required',
             'investment_amount' => 'required',
-        ]);
-
-
+        ]); 
         $custodial_account = Custodial::where('offer_id', $request->offer_id)->first();
         if (!$custodial_account) {
             Session::put('error', 'Custodial Account Id Not Found for Selected Offer');
@@ -343,10 +340,8 @@ class MakeInvestmentController extends Controller
             $member_id = $value;
         }
         $identityId = Auth::user()->fortress_personal_identity;
-        $offer = Offer::with('user')->findOrFail($request->offer_id);
-
-        try {
-
+        $offer = Offer::with('user')->findOrFail($request->offer_id); 
+        try { 
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
             ])->post('https://fortress-prod.us.auth0.com/oauth/token', [
@@ -361,8 +356,7 @@ class MakeInvestmentController extends Controller
         } catch (Exception $error) {
             Session::put('error', 'Internal Server Error');
             return redirect()->route('dashboard');
-        }
-
+        } 
         try {
             $member_identity_url = $this->fortressBaseUrl . "financial-institutions/members";
             $member_identity = Http::withToken($token_json['access_token'])->post(
@@ -387,8 +381,7 @@ class MakeInvestmentController extends Controller
                 Session::put('error', $accounts['title']);
                 return redirect()->back();
             }
-            $accountGuid  = '';
-
+            $accountGuid  = ''; 
             //dd($accounts_Json);
             foreach ($accounts_Json as $account) {
                 //if($account['accountType'] == 'CHECKING'){
@@ -402,8 +395,7 @@ class MakeInvestmentController extends Controller
             return redirect()->route('dashboard');
         }
         //Now that you have the accountGuid, you will follow up with one last call to create a persistent object referencing the linked bank.
-        if (Auth::user()->external_account == null) {
-
+        if (Auth::user()->external_account == null) { 
             try {
                 $acc_user = User::find(Auth::user()->id);
                 $externalAccountsURL =  $this->fortressBaseUrl . "external-accounts/financial";
@@ -467,13 +459,13 @@ class MakeInvestmentController extends Controller
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_POSTFIELDS => '{
-            "template_id":"' . $request->templates . '",
-            "title":"Loan Agreement - Saver package",
-            "metadata":"ID0001",
-            "locale":"en",
-            "test":"no",
-            "custom_webhook_url":"https://google.com",
-            "signers":[
+                "template_id":"' . $request->templates . '",
+                "title":"Loan Agreement - Saver package",
+                "metadata":"ID0001",
+                "locale":"en",
+                "test":"no",
+                "custom_webhook_url":"https://google.com",
+                "signers":[
                 {
                     "name":"' . $offer->user->name . '",
                     "email":"' . $offer->user->email . '",
