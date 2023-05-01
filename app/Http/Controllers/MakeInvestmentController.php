@@ -356,12 +356,12 @@ class MakeInvestmentController extends Controller
         try{
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
-                'grant_type' => 'password',
-                'username'   => 'tayyabshahzad@sublimesolutions.org',
-                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+            ])->post('https://fortress-prod.us.auth0.com/oauth/token', [
+                 'grant_type' => 'password',
+                'username'   => 'Portal@chainraise.io',
+                'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
-                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+                'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]); 
             $token_json =  json_decode((string) $get_token->getBody(), true); 
             // dd($token_json['access_token']);
@@ -409,15 +409,23 @@ class MakeInvestmentController extends Controller
             $accounts_url =  $this->fortressBaseUrl."financial-institutions/accounts/".$identityId.'/'.$member_id;
             $accounts = Http::withToken($token_json['access_token'])->get($accounts_url);
             $accounts_Json =  json_decode((string) $accounts->getBody(), true);
-            $accountGuid  = '';
+if($accounts->failed()){
+	$status = $accounts->status();
+	Session::put('error',$accounts['title']);
+return redirect()->back();
+}           
+ $accountGuid  = '';
+
+//dd($accounts_Json);
             foreach($accounts_Json as $account){
-                if($account['accountType'] == 'CHECKING'){
-                    $accountGuid = $account['accountGuid'];
-                }    
+                //if($account['accountType'] == 'CHECKING'){
+                  //  $accountGuid = $account['accountGuid'];
+              //  }
+$accountGuid = $account['accountGuid'];      
             }
             
         }catch(Exception $error){  
-            dd($error);
+          //  dd($error);
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
