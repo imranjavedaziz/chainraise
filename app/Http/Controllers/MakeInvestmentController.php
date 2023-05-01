@@ -50,12 +50,13 @@ class MakeInvestmentController extends Controller
     }
     public function submitInvestment(Request $request)
     {
-      
+        
         $request->validate([
             'offer_id' => 'required',
             'investment_amount' => 'integer',
         ]);
-      
+        dd($request);
+        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $investment_amount = $request->investment_amount;
         $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
         find($request->offer_id);
