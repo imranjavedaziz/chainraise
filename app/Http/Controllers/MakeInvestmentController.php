@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Session;
 
 class MakeInvestmentController extends Controller
 {
-
+    //Local controller
     protected $productionAuth;
     protected $fortressBaseUrl;
 
@@ -54,8 +54,7 @@ class MakeInvestmentController extends Controller
         $request->validate([
             'offer_id' => 'required',
             'investment_amount' => 'integer',
-        ]);
-        dd($request);
+        ]); 
         $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $investment_amount = $request->investment_amount;
         $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
@@ -354,16 +353,17 @@ class MakeInvestmentController extends Controller
         $identityId = Auth::user()->fortress_personal_identity;
         $offer = Offer::with('user')->findOrFail($request->offer_id);  
         
-        try{
-            $get_token = Http::withHeaders([
+        try{ 
+
+             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+            ])->post($this->productionAuth, [
                 'grant_type' => 'password',
-                'username'   => 'tayyabshahzad@sublimesolutions.org',
-                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+                'username'   => 'Portal@chainraise.io',
+                'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
-                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
-            ]); 
+                'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
+            ]);
             $token_json =  json_decode((string) $get_token->getBody(), true); 
             // dd($token_json['access_token']);
         }catch(Exception $error){ 
@@ -400,8 +400,7 @@ class MakeInvestmentController extends Controller
             ]);
             $member_identity =  json_decode((string) $member_identity->getBody(), true);
            
-        }catch(Exception $error){
-            dd($error);
+        }catch(Exception $error){ 
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
