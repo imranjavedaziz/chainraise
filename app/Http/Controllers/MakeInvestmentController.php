@@ -411,9 +411,10 @@ class MakeInvestmentController extends Controller
             $accounts_Json =  json_decode((string) $accounts->getBody(), true);
             $accountGuid  = '';
             foreach($accounts_Json as $account){
-                if($account['accountType'] == 'CHECKING'){
-                    $accountGuid = $account['accountGuid'];
-                }    
+                // if($account['accountType'] == 'CHECKING'){
+                //     $accountGuid = $account['accountGuid'];
+                // }  
+                $accountGuid = $account['accountGuid'];  
             }
             
         }catch(Exception $error){  
