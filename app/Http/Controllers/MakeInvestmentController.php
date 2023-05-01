@@ -25,7 +25,8 @@ use Illuminate\Support\Facades\Session;
 
 class MakeInvestmentController extends Controller
 {
-//Live Wala
+    //Local controller is there
+
     protected $productionAuth;
     protected $fortressBaseUrl;
 
@@ -55,7 +56,8 @@ class MakeInvestmentController extends Controller
             'offer_id' => 'required',
             'investment_amount' => 'integer',
         ]);
-        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
+ 
+       $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $investment_amount = $request->investment_amount;
         $offer = Offer::with('user', 'user.userDetail', 'investmentRestrictions', 'offerDetail','investmentSteps')->
         find($request->offer_id);
@@ -353,16 +355,26 @@ class MakeInvestmentController extends Controller
         $identityId = Auth::user()->fortress_personal_identity;
         $offer = Offer::with('user')->findOrFail($request->offer_id);  
         
-        try{
-            $get_token = Http::withHeaders([
+        try{ 
+
+             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
+<<<<<<< HEAD
             ])->post('https://fortress-prod.us.auth0.com/oauth/token', [
                  'grant_type' => 'password',
+=======
+            ])->post($this->productionAuth, [
+                'grant_type' => 'password',
+>>>>>>> 7eeea4ec5588f65394be4041977129e0f65d5146
                 'username'   => 'Portal@chainraise.io',
                 'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
+<<<<<<< HEAD
             ]); 
+=======
+            ]);
+>>>>>>> 7eeea4ec5588f65394be4041977129e0f65d5146
             $token_json =  json_decode((string) $get_token->getBody(), true); 
             // dd($token_json['access_token']);
         }catch(Exception $error){ 
@@ -399,8 +411,7 @@ class MakeInvestmentController extends Controller
             ]);
             $member_identity =  json_decode((string) $member_identity->getBody(), true);
            
-        }catch(Exception $error){
-            dd($error);
+        }catch(Exception $error){ 
             Session::put('error','Internal Server Error');  
             return redirect()->route('dashboard');
         }
@@ -418,10 +429,17 @@ return redirect()->back();
 
 //dd($accounts_Json);
             foreach($accounts_Json as $account){
+<<<<<<< HEAD
                 //if($account['accountType'] == 'CHECKING'){
                   //  $accountGuid = $account['accountGuid'];
               //  }
 $accountGuid = $account['accountGuid'];      
+=======
+                // if($account['accountType'] == 'CHECKING'){
+                //     $accountGuid = $account['accountGuid'];
+                // }  
+                $accountGuid = $account['accountGuid'];  
+>>>>>>> 7eeea4ec5588f65394be4041977129e0f65d5146
             }
             
         }catch(Exception $error){  
