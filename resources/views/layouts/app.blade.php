@@ -2,7 +2,7 @@
 <html lang="en"  @hasrole('investor') data-theme="dark" @endhasrole>
 <!--begin::Head-->
 <head>
-    <title> @yield('title') | Chainraise </title>
+    <title> @yield('title') | Chainraise A Investment Portal </title>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="{{asset('assets/media/logos/favicon.ico')}}" />
     <!--begin::Fonts(mandatory for all pages)-->
