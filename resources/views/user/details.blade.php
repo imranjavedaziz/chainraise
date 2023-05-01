@@ -1074,7 +1074,8 @@
                     <!--end::Card-->
                 </div>
                 <!--end:::Accounts Tab pane-->
-
+                <!--end:::Accounts Tab pane-->
+                
                 <!--begin:::Profile Tab pane-->
                 <div class="tab-pane fade" id="kt_profile_tab" role="tabpanel">
                     <!--begin::Card-->
