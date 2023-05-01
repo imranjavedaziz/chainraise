@@ -543,11 +543,16 @@ class UserController extends Controller
     }
     public function invesmentUpdate(Request $request)
     {
+      
         $request->validate([
             'id' => 'required',
             'type'=>'required',
         ]);
-
+        if ($request->filled('password') && !empty($request->input('password'))) {
+           $user = User::find($request->id);
+           $user->password  =  Hash::make($request->password);
+           $user->save();
+        }  
         if($request->type == 'investor'){
             $request->validate([
                 'net_worth' => 'required',

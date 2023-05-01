@@ -1232,10 +1232,13 @@
                                                         value="not set">(not set)</option>
                                                 </select>
                                             </div>
+
+                                          
                                         </div>
 
                                     </div>
                                 @endif
+                                
                                 {{-- Issuer Details  --}}
                                 @if ($user->hasRole('issuer'))
                                     <div class="card-body">
@@ -1300,7 +1303,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endif
+                                @endif  
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label>Password <span class="text-danger">*</span></label>
+                                            <input type="password" name="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                
 
                                 <div class="card-footer">
                                     <div class="row">
