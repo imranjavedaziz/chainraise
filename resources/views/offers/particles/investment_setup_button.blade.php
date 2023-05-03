@@ -20,33 +20,52 @@
                 <!--begin:Form-->
                 <form id="kt_modal_new_target_form" class="form" action="#"> 
                     <div class="row">
-                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section" data-content="Complete Account Form" >
+
+                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Income Verification (Reg CF)">
+                            <div class="align-items-center border border-dashed border-primary   px-7 py-3"> 
+                                <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Income Verification (Reg CF) </span> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Payment Method">
+                            <div class="align-items-center border border-dashed border-primary    px-7 py-3"> 
+                                <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Payment Method </span> 
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="E-Sign Document">
+                            <div class="align-items-center border border-dashed border-primary px-7 py-3"> 
+                                <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> E-Sign Document </span> 
+                            </div>
+                        </div>
+
+                        {{-- <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section" data-content="Complete Account Form" >
                             <div class="align-items-center border border-dashed border-primary  px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Complete Account Form </span> 
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Select Account Type">
+                        {{-- <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Select Account Type">
                             <div class="align-items-center border border-dashed border-primary px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Select Account Type </span> 
                             </div>
-                        </div>
+                        </div> --}}
 
 
-                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Complete Profile Form">
+                        {{-- <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Complete Profile Form">
                             <div class="align-items-center border border-dashed border-primary  px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Complete Profile Form </span> 
                             </div>
-                        </div>
+                        </div> --}}
 
 
-                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Complete User Form">
+                        {{-- <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Complete User Form">
                             <div class="align-items-center border border-dashed border-primary px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Complete User Form </span> 
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Accreditation">
+                        {{-- <div class="col-lg-12  mb-5 section_wrapper add_investment_button_section"  data-content="Accreditation">
                             <div class="align-items-center border border-dashed border-primary  px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Accreditation </span> 
                             </div>
@@ -108,7 +127,7 @@
                             <div class="align-items-center border border-dashed border-primary   px-7 py-3"> 
                                 <span class="fs-5 text-dark text-hover-primary fw-semibold w-375px min-w-200px content_box"> Investment Limits </span> 
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
                 <!--end:Form-->

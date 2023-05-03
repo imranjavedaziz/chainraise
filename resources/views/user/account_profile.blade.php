@@ -78,9 +78,7 @@
                             @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
                         style="background-image: url('{{ $photo_path }}')">
                         <!--begin::Preview existing avatar-->
-                        <div class="image-input-wrapper" style="background-image: none;"></div>
-
-
+                        <div class="image-input-wrapper" style="background-image: none;"></div> 
                     </div>
                     <!--end::Pic-->
                     <!--begin::Info-->
@@ -95,9 +93,7 @@
                                         @if($user->userDetail){{ $user->userDetail->last_name }}@endif
                                         - <small class="text-info">
                                             {{ ucfirst($user->roles()->pluck('name')->implode(' ')) }}</small>
-                                    </span>
-
-
+                                    </span>  
                                 </div>
                                 <!--end::Name-->
                                 <!--begin::Info-->
@@ -181,381 +177,625 @@
                         <!--begin::Card header-->
                         <div class="card-body p-9 pt-4">
                             <form class="form" method="post" action="{{ route('user.issuer.account.update') }}"
-                                enctype="multipart/form-data"> @csrf
-                                <input type="hidden" name="id" id="" value="{{ $user->id }}">
-                                <div class="card-body">
-                                    <div class="form-group row mb-10">
-                                        <input type="hidden" name="type" value="investor">
+                            enctype="multipart/form-data"> @csrf
+                            <input type="hidden" name="id" id="" value="{{ $user->id }}">
+                            <div class="card-body">
+                                <div class="form-group row mb-10">
+                                    <input type="hidden" name="type" value="investor">
+                                    <div class="col-lg-12 mb-3">
+                                        <h3>
+                                            CONTACT INFORMATION
+                                        </h3>
+                                        @if ($errors->any())
+                                            <div>
+                                                @foreach ($errors->all() as $error)
+                                                    <div
+                                                        class="fv-plugins-message-container invalid-feedback mb-3 text-center">
+                                                        <div data-field="email" data-validator="notEmpty">
+                                                            {{ $error }}
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <br>
+                                        @endif
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-10">
+                                            <div class="row mb-10">
+                                                <div class="col-lg-4">
+                                                    <label>First Name: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="First Name*" required name="first_name"
+                                                        value="{{ $user->name }}" />
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <label>Middle Name: <span class="text-danger"></span></label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Middle Name" name="middle_name"
+                                                        @if ($user->userDetail) value="{{ $user->userDetail->middle_name }}" @endif />
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <label>Last Name: <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Last Name" name="last_name"
+                                                        @if ($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-2">
+                                                    <label>Title:</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Title" name="title"
+                                                            @if ($user->userDetail) value="{{ $user->userDetail->title }}" @endif />
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-7 row">
+                                                    <label>Phone Number: <span class="text-danger">*</span> </label>
+                                                    <div class="col-lg-4">
+                                                        <select class="form-control cc" name="cc"
+                                                            data-control="select2">
+                                                            @include('user.partials.cc')
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" name="phone"
+                                                                id="phone_number" value="{{ $user->phone }}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label>Date of Birth <span class="text-danger">*</span> </label>
+                                                    <div class="input-group" id="">
+                                                        <input type="date" class="form-control"
+                                                            placeholder="Date of Birth*" required name="dob"
+                                                            @if ($user->userDetail) value="{{ $user->userDetail->dob }}" @endif>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 pt-6">
+                                            <div class="image-input image-input-outline image-input-empty"
+                                                data-kt-image-input="true"
+                                                @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
+                                            @else
+                                            @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
+                                                style="background-image: url('{{ $photo_path }}')">
+                                                <!--begin::Preview existing avatar-->
+                                                <div class="image-input-wrapper w-150px h-150px"
+                                                    style="background-image: none;"></div>
+                                                <!--end::Preview existing avatar-->
+                                                <!--begin::Label-->
+                                                <label
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                    aria-label="Change avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-pencil-fill fs-7"></i>
+                                                    <!--begin::Inputs-->
+                                                    <input type="file" name="profile_avatar"
+                                                        accept=".png, .jpg, .jpeg">
+                                                    <input type="hidden" name="avatar_remove" value="1">
+                                                    <!--end::Inputs-->
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Cancel-->
+                                                <span
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                    aria-label="Cancel avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-x fs-2"></i>
+                                                </span>
+                                                <!--end::Cancel-->
+                                                <!--begin::Remove-->
+                                                <span
+                                                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                    data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                    aria-label="Remove avatar" data-kt-initialized="1">
+                                                    <i class="bi bi-x fs-2"></i>
+                                                </span>
+                                                <!--end::Remove-->
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12 mb-5">
+                                        <label>User Type: <span class="text-danger">*</span> </label>
+                                        <select class="form-control user_type" data-control="select2"
+                                            name="user_type">
+                                            <option value="individual"
+                                                @if ($user->user_type == 'individual') selected @endif> Individual </option>
+                                            <option value="entity" @if ($user->user_type == 'entity') selected @endif>
+                                                Entity </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-10">
+                                    @if ($user->hasRole('issuer'))
                                         <div class="col-lg-12 mb-3">
                                             <h3>
-                                                CONTACT INFORMATION
+                                                COMPANY INFORMATION
                                             </h3>
-                                            @if ($errors->any())
-                                                <div>
-                                                    @foreach ($errors->all() as $error)
-                                                        <div
-                                                            class="fv-plugins-message-container invalid-feedback mb-3 text-center">
-                                                            <div data-field="email" data-validator="notEmpty">
-                                                                {{ $error }}
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                                <br>
-                                            @endif
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-10">
-                                                <div class="row mb-10">
-                                                    <div class="col-lg-4">
-                                                        <label>First Name: <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="First Name*" required name="first_name"
-                                                            value="{{ $user->name }}" />
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <label>Middle Name: <span class="text-danger"></span></label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Middle Name" name="middle_name"
-                                                            @if($user->userDetail) value="{{ $user->userDetail->middle_name }}" @endif />
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <label>Last Name: <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Last Name" name="last_name" required
-                                                            @if($user->userDetail) value="{{ $user->userDetail->last_name }}" @endif/>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-4">
-                                                        <label>Title:</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control"
-                                                                placeholder="Title" name="title"
-                                                                @if($user->userDetail) value="{{ $user->userDetail->title }}" @endif/>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 row">
-                                                        <label>Phone Number: <span class="text-danger">*</span> </label>
-                                                        <div class="col-lg-3">
-                                                            <select class="form-control cc" name="cc">
-                                                                @include('user.partials.cc')
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-lg-9">
-                                                            <div class="input-group">
-                                                                <input type="number" class="form-control"
-                                                                    placeholder="(201) 555-0123" name="phone"
-                                                                    value="{{ $user->phone }}" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <label>Date of Birth <span class="text-danger">*</span> </label>
-                                                        <div class="input-group" id="">
-                                                            <input type="date" class="form-control"
-                                                                placeholder="Date of Birth*" required name="dob"
-                                                                @if($user->userDetail) value="{{ $user->userDetail->dob }}" @endif>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2 pt-6">
-                                                <div class="image-input image-input-outline image-input-empty"
-                                                    data-kt-image-input="true"
-                                                    @if ($user->getFirstMediaUrl('profile_photo', 'thumb')) @php $photo_path = $user->getFirstMediaUrl('profile_photo', 'thumb')@endphp
-                                                @else
-                                                @php $photo_path = "http://127.0.0.1:8000/assets/media/svg/avatars/blank.svg";  @endphp @endif
-                                                    style="background-image: url('{{ $photo_path }}')">
-                                                    <!--begin::Preview existing avatar-->
-                                                    <div class="image-input-wrapper w-150px h-150px"
-                                                        style="background-image: none;"></div>
-                                                    <!--end::Preview existing avatar-->
-                                                    <!--begin::Label-->
-                                                    <label
-                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                                        aria-label="Change avatar" data-kt-initialized="1">
-                                                        <i class="bi bi-pencil-fill fs-7"></i>
-                                                        <!--begin::Inputs-->
-                                                        <input type="file" name="profile_avatar"
-                                                            accept=".png, .jpg, .jpeg">
-                                                        <input type="hidden" name="avatar_remove" value="1">
-                                                        <!--end::Inputs-->
-                                                    </label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Cancel-->
-                                                    <span
-                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                                        aria-label="Cancel avatar" data-kt-initialized="1">
-                                                        <i class="bi bi-x fs-2"></i>
-                                                    </span>
-                                                    <!--end::Cancel-->
-                                                    <!--begin::Remove-->
-                                                    <span
-                                                        class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                                        aria-label="Remove avatar" data-kt-initialized="1">
-                                                        <i class="bi bi-x fs-2"></i>
-                                                    </span>
-                                                    <!--end::Remove-->
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-                                    </div>
-                                    <div class="form-group row mb-10">
-
-
-                                    </div>
-
-                                    <div class="form-group row mb-10">
-                                        @if($user->user_type == 'entity')
-                                            <div class="col-lg-12 mb-3">
-                                                <h3>
-                                                    COMPANY INFORMATION
-                                                </h3>
-                                            </div>
-
-                                            <div class="col-lg-6 mb-10">
-                                                <label>Entity Name <span class="text-danger">*</span> </label>
-                                                <input type="text" class="form-control" name="entity_name"
-                                                    placeholder="Entity Name"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif required>
-                                            </div>
-                                            @endif
-                                            <div class="clear-fix"></div>
-
-                                        <div class="col-lg-12 mb-3">
-                                            <h6>
-                                                Address
-                                            </h6>
-                                        </div>
-
-
-                                        {{-- End Issuer Details --}}
-
-
-                                        <div class="col-lg-6">
-                                            <label>Address <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="address"
-                                            @if($user->userDetail) value="{{ $user->userDetail->address }}" @endif  placeholder="Street Address*"
+                                        {{-- Issuer Details --}}
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Entity Name <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="entity_name"
+                                                placeholder="Entity Name"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->entity_name }}" @endif
                                                 required>
                                         </div>
 
-                                        <div class="col-lg-6">
-                                            <label> Suit / Unit </label>
-                                            <input type="text" class="form-control" name="suit"
-                                            @if($user->userDetail)   value="{{ $user->userDetail->suit }}" @endif placeholder="Suit / Unit">
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-4">
-                                            <label>City <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="city"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->city }}" @endif placeholder="City*" required>
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <label>State / Region <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="state"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->state }}" @endif placeholder="State / Region*"
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Ein <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="ein"
+                                                id="ein_number" placeholder="Ein"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->ein }}" @endif
                                                 required>
                                         </div>
 
-                                        <div class="col-lg-4">
-                                            <label>Zip / Postal Code <span class="text-danger">*</span> </label>
-                                            <input type="text" class="form-control" name="zip" id="zip_code"
-                                              @if($user->userDetail)  value="{{ $user->userDetail->zip }}" @endif placeholder="Zip / Postal Code*"
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Naics <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="naics" id="naics"
+                                                placeholder="Naics"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->naics }}" @endif
                                                 required>
                                         </div>
-                                    </div>
 
 
-                                        <div class="form-group row mb-10">
-                                            <div class="col-lg-6">
-                                                <label>State/Region of Legal Formation <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text" class="form-control" name="legal_formation"
-                                                    placeholder="State/Region of Legal Formation*"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->legal_formation }}" @endif required>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <label>Date of Incorporation <span class="text-danger">*</span> </label>
-                                                <input type="date" class="form-control" name="date_incorporation"
-                                                    placeholder="Date of Incorporation*"
-                                                    @if($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif required>
-                                            </div>
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Naics Description <span class="text-danger">*</span> </label>
+                                            <input type="text" class="form-control" name="naics_description"
+                                                id="naics_description" placeholder="Naics Description"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->naics_description }}" @endif
+                                                required>
                                         </div>
 
 
 
-                                    <div class="card-title mt-6 mb-3">
-                                        <h2>Identity Verification</h2>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="form-group mb-10 col-lg-4">
-                                            <label> Social Security # <small>(US Investors Only)</small>
-                                                <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Primary Contact Social Security" required
-                                                name="primary_contact_social_security"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->primary_contact_social_security }}" @endif />
+                                        <div class="col-lg-6 mb-10">
+                                            <label>Website <span class="text-danger">*</span> </label>
+                                            <input type="url" class="form-control" name="website"
+                                                id="website_address" placeholder="Website Address"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->website }}" @endif
+                                                required>
                                         </div>
 
-                                            <div class="form-group mb-10 col-lg-4">
-                                                <label> Tax Entity Type <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" placeholder="Tax Entity Type"
-                                                    required name="tax_entity_type"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->tax_entity_type }}" @endif />
-                                            </div>
-                                            <div class="form-group mb-10 col-lg-4">
-                                                <label> Tax Identification # <span class="text-danger">*</span> </label>
-                                                <input type="number" class="form-control"
-                                                    placeholder="Tax Identification" required name="tax_identification"
-                                                    @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
-                                            </div> 
-                                        <div class="row">
 
-                                        </div>
-
-                                    </div>
-
-                                    <div class="form-group row mb-10">
-                                        <div class="col-lg-4">
-                                            <label>Nationality <span class="text-danger">*</span></label>
-                                            <select class="form-select nationality" required data-control="select2"
-                                                name="nationality" data-placeholder="Select an option"
-                                                data-live-search="true">
-                                                @include('user.country')
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label>Country of Residence <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="country_residence"
-                                                @if ($user->identityVerification) value="{{ $user->identityVerification->country_residence }}" @endif>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <label>Identification Type <span class="text-danger">*</span></label>
-                                            <select class="form-control">
-                                                <option value=""> Passport  </option>
-                                                <option value="">  Driver's License </option>
-                                                <option value="">  National Identity  </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div
-                                            class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
-                                            <div
-                                                class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
-                                                <div class="col-lg-12 mb-5">
-                                                    <a href="{{ $user->getFirstMediaUrl('kyc_document_collection', 'thumb') }}"
-                                                        download title="Download Document File">
-                                                        <i class="la la-download"></i>
-                                                    </a>
-                                                </div>
-
-                                                <button type="button"
-                                                    class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1">
-                                                    <i class="fa fa-upload"></i>
-                                                    Upload Document
-                                                </button>
-                                                <input type="file" name="kyc_document"
-                                                    class="new_profile_photo  d-none change_photo"
-                                                    data-type="project_logo">
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    @if($user->hasRole('investor'))
-                                    <div class="col-lg-12">
-                                        <div class="card-body bg-danger" style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
-                                            <div class="card-title mt-6 mb-3">
-                                                <h2>Important Note </h2>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                            name="e_sign_agreement"
-                                                            @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif> 
-                                                            <span class="form-check-label fw-semibold" style="color:#ffffff">
-                                                                I have read the <a href="https://fortresstrustcompany.com/disclosures-e-sign
-                                                                " target="_blank">  E-Sign Agreement </a> and understand I will not receive documents in the mail.
-                                                            </span>
-                                                    </label>  
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <label class="form-check form-check-custom form-check-solid me-10">
-                                                        <input class="form-check-input h-15px w-15px" type="checkbox" required
-                                                            name="disclosures"
-                                                            @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif> 
-                                                            <span class="form-check-label fw-semibold" style="color:#ffffff"> I have read and agree to the following: </span>
-                                                    </label>  
-                                                    
-                                                </div>
-                                                <div class="d-flex align-items-center mt-4">
-                                                    <ul>
-                                                        <li>
-                                                            <a href="" target="_blank"> <b>“Chainraise” Terms of Service and Privacy Policy</b> </a> 
-                                                        </li>
-                                                        <li>
-                                                            <a href="https://fortresstrustcompany.com/disclosures-consumer" target="_blank">  <b>Fortress Trust Consumer Disclosures</b> </a> 
-                                                        </li>
-                                                        <li>
-                                                            <a href="https://fortress.xyz/terms-of-use" target="_blank">  <b> Fortress  Trust Privacy Policy and Terms and Conditions </b> </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{{ asset('assets/documents/forme-fortress-fevocable-trust.docx') }}" download="Forme-Fortress-Revocable-Trust.docx">  <b>Fortress Trust Account Agreement</b> </a> 
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="align-items-center mt-4">
-                                                    <p>
-                                                        <b>
-                                                            USA Patriot Act Disclosure - The below disclosure should be displayed before CIP information is collected. In our case, name and phone number.
-                                                        </b>
-                                                    </p>
-                                                    <p>
-                                                        <b>
-                                                        "IMPORTANT INFORMATION ABOUT PROCEDURES FOR OPENING A NEW ACCOUNT: To help the government fight the funding of terrorism and money laundering activities, federal law requires all financial institutions to obtain, verify, and record information that identifies each person who opens an Account. What this means for you: When you open an Account, we will ask for your name, address, date of birth, and other information that will allow us to identify you. We may also ask to see a copy of your driver's license or other identifying documents."
-                                                        </b>
-                                                    </p>
-                                                </div>
-                                            
-                                            </div> 
-
-                                        </div>
-                                    </div>
+                                        <div class="clear-fix"></div>
                                     @endif
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-lg-12 text-center ">
+                                    <div class="col-lg-12 mb-3">
+                                        <h6>
+                                            Address
+                                        </h6>
+                                    </div>
 
-                                            <button type="submit" class="btn-sm btn mr-2 no-radius btn-dark">
-                                                 Update Account
+
+                                    {{-- End Issuer Details --}}
+
+
+                                    <div class="col-lg-6">
+                                        <label>Address <span class="text-danger">*</span> </label>
+                                        <input type="text" class="form-control" name="address"
+                                            @if ($user->userDetail) value="{{ $user->userDetail->address }}" @endif
+                                            placeholder="Street Address*" required>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label> Suit / Unit </label>
+                                        <input type="text" class="form-control" name="suit"
+                                            @if ($user->userDetail) value="{{ $user->userDetail->suit }}" @endif
+                                            placeholder="Suit / Unit">
+                                    </div>
+                                </div>  
+                                <div class="form-group row mb-10">
+                                    <div class="col-lg-4">
+                                        <label>City <span class="text-danger">*</span> </label>
+                                        <input type="text" class="form-control" name="city"
+                                            @if ($user->userDetail) value="{{ $user->userDetail->city }}" @endif
+                                            placeholder="City*" required>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>State / Region <span class="text-danger">*</span> </label>
+                                        <input type="text" class="form-control" name="state"
+                                            @if ($user->userDetail) value="{{ $user->userDetail->state }}" @endif
+                                            placeholder="State / Region*" required>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label>Zip / Postal Code <span class="text-danger">*</span> </label>
+                                        <input type="text" class="form-control" name="zip" id="zip_code"
+                                            @if ($user->userDetail) value="{{ $user->userDetail->zip }}" @endif
+                                            placeholder="Zip / Postal Code*" required>
+                                    </div>
+                                </div> 
+                                @if ($user->hasRole('issuer'))
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label>State/Region of Legal Formation <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" name="legal_formation"
+                                                placeholder="State/Region of Legal Formation*"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->legal_formation }}" @endif
+                                                required>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <label>Date of Incorporation <span class="text-danger">*</span> </label>
+                                            <input type="date" class="form-control" name="date_incorporation"
+                                                placeholder="Date of Incorporation*"
+                                                @if ($user->userDetail) value="{{ $user->userDetail->date_incorporation }}" @endif
+                                                required>
+                                        </div>
+                                    </div>
+                                @endif 
+                                
+                                <div class="row">
+                                    @if ($user->hasRole('investor'))
+                                        <div class="col-lg-12 text-center ">
+                                            <label class="form-check form-check-custom form-check-solid">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="agree_consent_electronic"
+                                                    @if ($user->agree_consent_electronic == 1) checked @endif
+                                                    id="electronic_delivery_check_box">
+                                                <span class="form-check-label fw-semibold"> Wil I agree to the Consent
+                                                    to
+                                                    Electronic Delivery</span>
+                                            </label>
+                                        </div>
+                                    @endif 
+                                </div> 
+                                <div class="card-title mt-6 mb-3">
+                                    <h2>Identity Verification</h2>
+                                </div>
+                                <div class="row">
+                                    @if ($user->hasRole('issuer'))
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label>
+                                                Primary Contact Social Security # <small>(US Investors Only)</small>
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input  class="form-control"
+                                                        placeholder="Primary Contact Social Security"   
+                                                        name="primary_contact_social_security" 
+                                                        @if ($user->identityVerification && $user->identityVerification->primary_contact_social_security != null)
+                                                        type="password"
+                                                        value="999-99-9999" readonly
+                                                        @else
+                                                        required
+                                                        type="text"
+                                                        @endif  
+                                                        id="primary_contact_social_security"   />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary  no-radius" id="show_ssn_field"
+                                                        type="button">x</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label> Tax Entity Type <span class="text-danger">*</span> </label>
+                                            <select class="form-select tax_entity_type" required
+                                                data-control="select2" name="tax_entity_type"
+                                                data-placeholder="Select an option" data-live-search="true">
+                                                <option value="IRA">IRA</option>
+                                                <option value="Trust">Trust</option>
+                                                <option value="Corporation">Corporation</option>
+                                                <option value="LLC">LLC</option>
+                                                <option value="Partnership">Partnership</option>
+                                                <option value="Non-Profit">Non-Profit</option>
+                                                <option value="Foregin Corporation">Foregin Corporation</option>
+                                                <option value="Custodial">Custodial</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-10 col-lg-4">
+                                            <label> Tax Identification # <span class="text-danger">*</span> </label>
+                                            <input type="number" class="form-control"
+                                                placeholder="Tax Identification" required name="tax_identification"
+                                                @if ($user->identityVerification) value="{{ $user->identityVerification->tax_identification }}" @endif />
+                                        </div>
+                                    @else
+                                        <div class="form-group mb-10 col-lg-12">
+                                            <label> Social Security # <small>(US Investors Only) * </small>
+                                            <div class="input-group">
+                                                <input  class="form-control"
+                                                placeholder="Primary Contact Social Security"   
+                                                name="primary_contact_social_security" 
+                                                @if ($user->identityVerification && $user->identityVerification->primary_contact_social_security != null)
+                                                type="password"
+                                                value="999-99-9999" readonly
+                                                @else
+                                                required
+                                                type="text"
+                                                @endif  
+                                                id="primary_contact_social_security"   />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary  no-radius"
+                                                        id="show_ssn_field" type="button">x</button>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    @endif
+                                    <div class="row">
+                                        <div class="form-group mb-10 col-lg-12 text-right kyc_buttons">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <strong>
+                                                        KYC STATUS :
+                                                        <span class="text-success kyc_level_wrapper">
+                                                            @if ($user->kyc)
+                                                                {{ ucfirst($user->kyc->kyc_level) }}
+                                                            @endif
+                                                        </span>
+                                                    </strong>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <strong>
+                                                        DOCUMENT STATUS :
+                                                        <span class="text-success kyc_doc_wrapper">
+                                                            @if ($user->kyc)
+                                                                {{ ucfirst($user->kyc->doc_status) }}
+                                                            @endif
+                                                        </span>
+                                                    </strong>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                                <div class="form-group row mb-10">
+                                    <div class="col-lg-3">
+                                        <label>Nationality <span class="text-danger">*</span></label>
+                                        <select class="form-select nationality" required data-control="select2"
+                                            name="nationality" data-placeholder="Select an option"
+                                            data-live-search="true">
+                                            @include('user.country')
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label>Country of Residence <span class="text-danger">*</span></label>
+                                        <select class="form-select country_residence" required data-control="select2"
+                                            name="country_residence" data-placeholder="Select an option"
+                                            data-live-search="true">
+                                            @include('user.country')
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="fw-semibold"> Document Type</label>
+                                        <select class="form-select doc_type" data-control="select2"
+                                            data-placeholder="Select Document Type" required name="doc_type">
+                                            @if ($user->hasRole('issuer'))
+                                                <option value="other">Other</option>
+                                                <option value="proofOfAddress">Proof Of Address</option>
+                                                <option value="proofOfCompanyFormation"> Proof Of Company Formation
+                                                </option>
+                                            @else
+                                                <option value="license">License</option>
+                                                <option value="identificationCard"> Identification Card </option>
+                                                <option value="passport"> Passport </option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="notice   bg-light-dark rounded border-dark border border-dashed p-6 text-center mb-12 change_photo_wrapper">
+                                        <div  class="text-center mt-5 mb-md-0 mb-lg-5 mb-md-0 mb-lg-5 mb-lg-0 mb-5 d-flex flex-column change_photo_wrapper">
+                                            <div class="col-lg-12 mb-5">
+                                                <a href="{{ $user->getFirstMediaUrl('kyc_document_collection', 'thumb') }}"
+                                                    download title="Download Document File">
+                                                    <i class="la la-download"></i>
+                                                </a>
+                                            </div>
+                                            <button type="button"
+                                                class="kyc_document_upload_btn btn btn-sm btn-dark-primary btn-square mb-1">
+                                                <i class="fa fa-upload"></i>
+                                                Upload Document
                                             </button>
+                                            <input type="file" name="kyc_document"
+                                                class="new_profile_photo  d-none change_photo"
+                                                data-type="project_logo">
+                                        </div>
+
+                                    </div>
+
+                                </div> 
+                                @if($user->hasRole('investor'))
+                                    <div class="card-body bg-danger"
+                                        style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
+                                        <div class="card-title mt-6 mb-3">
+                                            <h2>Important Note </h2>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        required name="e_sign_agreement"
+                                                        @if ($user->trustSetting and $user->trustSetting->e_sign_agreement == 1) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold" style="color:#ffffff">
+                                                        I have read the <a
+                                                            href="https://fortresstrustcompany.com/disclosures-e-sign
+                                                            "
+                                                            target="_blank"> E-Sign Agreement </a> and understand I
+                                                        will not receive documents in the mail.
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <div class="d-flex align-items-center">
+                                                <label class="form-check form-check-custom form-check-solid me-10">
+                                                    <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                        required name="disclosures"
+                                                        @if ($user->trustSetting and $user->trustSetting->disclosures == 1) checked="checked" @endif>
+                                                    <span class="form-check-label fw-semibold" style="color:#ffffff">
+                                                        I have read and agree to the following: </span>
+                                                </label>
+
+                                            </div>
+                                            <div class="d-flex align-items-center mt-4">
+                                                <ul>
+                                                    <li>
+                                                        <a href="" target="_blank"> <b>“Chainraise” Terms of
+                                                                Service and Privacy Policy</b> </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="https://fortresstrustcompany.com/disclosures-consumer"
+                                                            target="_blank"> <b>Fortress Trust Consumer Disclosures</b>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="https://fortress.xyz/terms-of-use" target="_blank">
+                                                            <b> Fortress Trust Privacy Policy and Terms and Conditions
+                                                            </b> </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ asset('assets/documents/forme-fortress-fevocable-trust.docx') }}"
+                                                            download="Forme-Fortress-Revocable-Trust.docx"> <b>Fortress
+                                                                Trust Account Agreement</b> </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="align-items-center mt-4">
+                                                <p>
+                                                    <b>
+                                                        USA Patriot Act Disclosure - The below disclosure should be
+                                                        displayed before CIP information is collected. In our case, name
+                                                        and phone number.
+                                                    </b>
+                                                </p>
+                                                <p>
+                                                    <b>
+                                                        "IMPORTANT INFORMATION ABOUT PROCEDURES FOR OPENING A NEW
+                                                        ACCOUNT: To help the government fight the funding of terrorism
+                                                        and money laundering activities, federal law requires all
+                                                        financial institutions to obtain, verify, and record information
+                                                        that identifies each person who opens an Account. What this
+                                                        means for you: When you open an Account, we will ask for your
+                                                        name, address, date of birth, and other information that will
+                                                        allow us to identify you. We may also ask to see a copy of your
+                                                        driver's license or other identifying documents."
+                                                    </b>
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                @endif
+                                <div class="card-title mt-6">
+                                    <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
+                                            data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                            data-kt-initialized="1"></i></h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <div class="d-flex align-items-center">
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="bypass_account_setup"
+                                                    @if ($user->trustSetting and $user->trustSetting->bypass_account_setup == 1) checked="checked" @endif>
+
+                                                <span class="form-check-label fw-semibold">Bypass Account Setup<i
+                                                        class="fas fa-exclamation-circle ms-2 fs-7"
+                                                        data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                                        data-kt-initialized="1"></i></span>
+                                            </label>
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="bypass_kyc_checkup"
+                                                    @if ($user->trustSetting and $user->trustSetting->bypass_kyc_checkup == 1) checked="checked" @endif>
+                                                <span class="form-check-label fw-semibold">Bypass KYC Checks</span>
+                                            </label>
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="bypass_accreditation_checks"
+                                                    @if ($user->trustSetting and $user->trustSetting->bypass_accreditation_checks == 1) checked="checked" @endif>
+                                                <span class="form-check-label fw-semibold">Bypass Accreditation
+                                                    Checks</span>
+                                            </label>
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="bypass_document_restrictions"
+                                                    @if ($user->trustSetting and $user->bypass_document_restrictions == 1) checked="checked" @endif>
+                                                <span class="form-check-label fw-semibold">Bypass Document
+                                                    Restrictions</span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-6">
+                                        <div class="d-flex align-items-center">
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="view_all_invite_offers"
+                                                    @if ($user->trustSetting and $user->trustSetting->view_all_invite_offers == true) checked="checked" @endif>
+                                                <span class="form-check-label fw-semibold">View All Invite Only
+                                                    Offers</span>
+                                            </label>
+                                            <label class="form-check form-check-custom form-check-solid me-10">
+                                                <input class="form-check-input h-15px w-15px" type="checkbox"
+                                                    name="allow_manual_ach_bank_input"
+                                                    @if ($user->trustSetting and $user->trustSetting->allow_manual_ach_bank_input == true) checked="checked" @endif>
+                                                <span class="form-check-label fw-semibold">Allow Manual ACH Bank
+                                                    Input<i class="fas fa-exclamation-circle ms-2 fs-7"
+                                                        data-bs-toggle="tooltip" aria-label="Specify a target priorty"
+                                                        data-kt-initialized="1"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div> 
+                                <div class="card-body">
+                                    <div class="form-group row mb-10">
+                                        <div class="col-lg-6">
+                                            <label class="fw-semibold">Bypass Restrictions on Specific
+                                                Documents</label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Select an Offer">
+                                                <option></option>
+                                                <option value="1">Option 1</option>
+                                                <option value="2">Option 2</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label class="hidden"></label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Select a Document">
+                                                <option></option>
+                                                <option value="1">Option 1</option>
+                                                <option value="2">Option 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <label class="fw-semibold">Bypass E-Sign Document Restrictions</label>
+                                            <select class="form-select" data-control="select2"
+                                                data-placeholder="Select an E-Sign Template">
+                                                <option></option>
+                                                <option value="1">Option 1</option>
+                                                <option value="2">Option 2</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <button type="submit" class="btn-sm btn btn-primary mr-2 no-radius btn-dark">
+                                            Update Account </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         </div>
                         <!--end::Card body-->
                     </div>
@@ -1363,133 +1603,59 @@
             $('.nationality').val('{{ $user->identityVerification->nationality }}')
         @endif
     </script>
-    <script>
-        $('.kyc_document_upload_btn').click(function() {
-            var imgBtnWrapper = $(this).closest('.change_photo_wrapper');
-            imgBtnWrapper.find('.change_photo').click();
-        });
-        $('.check_kyc').click(function() {
-
-            var id = $(this).data('id');
-            Swal.fire({
-                title: "Are you sure to to check KYC status ?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, check KYC status!",
-                customClass: {
-                    confirmButton: "btn-danger"
-                }
-            }).then(function(result) {
-                if (result.value) {
-                    $('.loader_img').removeClass('d-none');
-                    $('.check_kyc').addClass('d-none');
-                    $.ajax({
-                        url: "{{ route('user.kyc.check') }}",
-                        method: 'POST',
-                        data: {
-                            id: id
-                        },
-                        success: function(response) {
-                            if (response.status) {
-                                if (response.status == 200) {
-                                    toastr.success(
-                                        'Verification has been competed checking Updating KYC Level',  "Success");
-                                } else if (response.status == 201) {
-                                    toastr.success(
-                                        'Verification has been competed checking Updating KYC Level',
-                                        "Success");
-                                } else if (response.status == 400) {
-                                    jQuery.each(response.data.errors, function(index, item) {
-                                        console.log(item);
-                                        toastr.error(item, "Error");
-                                    });
-                                    // toastr.error(response.data.title, "Error");
-                                } else if (response.status == 401) {
-                                    toastr.error('Unauthorized Access Denied', "Error");
-                                } else if (response.status == 404) {
-                                    toastr.error(response.data.title, "Error");
-                                }
-                                if (response.status == 409) {
-                                    toastr.error(response.data.title, "Error");
-                                }
-                                if (response.status == 'document') {
-                                    toastr.error('Please Upload Document First', "Error");
-                                }
-                                if (response.status == false) {
-                                    toastr.error('Internal Server Error', "Error");
-                                }
-                                $('.loader_img').addClass('d-none');
-                                $('.check_kyc').removeClass('d-none');
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
-        $('body').on('click','.re_run_kyc' , function() {
-            $('.loader_img_for_re_run_kyc').removeClass('d-none');
-            $('.re_run_kyc').addClass('d-none');
-            var id = $(this).data('id');
-            $.ajax({
-                url: "{{ route('user.re.run.kyc.level') }}",
-                method: 'POST',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    $('.loader_img_for_re_run_kyc').addClass('d-none');
-                     $('.re_run_kyc').removeClass('d-none');
-                    $('.kyc_wrapper').load(' .kyc_wrapper');
-                    $('.kyc_doc_wrapper').load(' .kyc_doc_wrapper');
-                    $('.check_kyc_leavel').load(' .check_kyc_leavel');
-                    $('.kyc_level_wrapper').load(' .kyc_level_wrapper');
-                    if (response.status == 200) {
-                        toastr.success('KYC Level Has Been Updated',  "Success");
-                    }
-                    if(response.status == false){
-                        toastr.error(response.message,  "Error");
-                    }
-
-                }
-            });
-        });
-        $('body').on('click','.update_document', function() {
-            var id = $(this).data('id');
-            $('.loader_img_for_document_upload').removeClass('d-none');
-            $('.update_document').addClass('d-none');
-            $.ajax({
-                url: "{{ route('user.kyc.document.update') }}",
-                method: 'POST',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-
-                    $('.loader_img_for_document_upload').addClass('d-none');
-                    $('.update_document').removeClass('d-none');
-
-                    $('.update_document_wrapper').load(' .update_document_wrapper');
-                    if (response.status == 201) {
-                        toastr.success('Document Has Been Updated',  "Success");
-                    }else{
-                        toastr.error('Error while updating status',  "Error");
-                    }
-                }
-            });
-        });
-
-
+    <script> 
+        Inputmask({
+            "mask": "-999-999-9999"
+        }).mask("#phone_number"); 
 
 
     </script>
     <script>
+         $('.checkbox').click(function() {
+            if ($('.identification_information').is(':checked')) {
+                $('.information_fields').show('slow');
+            } else {
+                $('.information_fields').hide('slow');
+            }
+        });
         jQuery(function(){
            jQuery('#kt_documents_tab').click();
         });
-        @if($user->cc)
-             $('.cc').val('{{  $user->cc  }}')
+        @if ($user->cc)
+            $('.cc').val('{{ $user->cc }}')
         @endif
+        @if ($user->user_type)
+            $('.user_type').val('{{ $user->user_type }}')
+        @endif
+
+        @if ($user->identityVerification)
+            $('.tax_entity_type').val('{{ $user->identityVerification->tax_entity_type }}')
+        @endif
+        @if ($user->identityVerification)
+            $('.country_residence').val('{{ $user->identityVerification->country_residence }}')
+        @endif
+
+        @if ($user->identityVerification)
+            $('.doc_type').val('{{ $user->identityVerification->doc_type }}')
+        @endif
+        const passwordInput = document.getElementById("primary_contact_social_security");
+        const toggleButton = document.getElementById("show_ssn_field"); 
+        if (toggleButton && passwordInput) {
+            toggleButton.addEventListener("click", () => { 
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    passwordInput.value = "";
+                    passwordInput.removeAttribute('readonly');
+                    $('#primary_contact_social_security').attr('required', true);
+                    Inputmask({
+                        "mask": "999-99-9999"
+                    }).mask("#primary_contact_social_security");
+
+                }  
+            });
+        }
+        Inputmask({
+                        "mask": "***-**-***"
+        }).mask("#primary_contact_social_security");
         </script>
 @endsection

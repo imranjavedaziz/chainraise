@@ -13,38 +13,24 @@
         <!--begin::Toolbar container-->
         <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
             <!--begin::Page title-->
-            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <!--begin::Title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3"> 
                 <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
                     Issuer
-                </h1>
-                <!--end::Title-->
-                <!--begin::Breadcrumb-->
-                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                    <!--begin::Item-->
+                </h1> 
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1"> 
                     <li class="breadcrumb-item text-muted">
                         <a href="{{route('dashboard')}}" class="text-muted text-hover-primary">Home</a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
+                    </li> 
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
+                    </li> 
                     <li class="breadcrumb-item text-muted">
                           <a href="{{ route('user.index')}}"> Listings </a>
-                    </li>
-
+                    </li> 
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                    </li>
-
-                    <li class="breadcrumb-item text-muted"> Issuer </li>
-
-
-
-
+                    </li> 
+                    <li class="breadcrumb-item text-muted"> Issuer </li> 
                     <!--end::Item-->
                 </ul>
                 <!--end::Breadcrumb-->
@@ -52,9 +38,7 @@
             <!--end::Page title-->
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
-                <!--begin::Filter menu-->
-
-
+                <!--begin::Filter menu-->  
             </div>
             <!--end::Actions-->
         </div>
@@ -72,8 +56,7 @@
                                 <span class="card-label fw-bold fs-3 mb-1">  Issuer &nbsp;   </span>
                             </h3>
                         </div>
-                    </div>
- 
+                    </div> 
                     <form class="form row" method="post" action="{{ route('user.save') }}" enctype="multipart/form-data"> @csrf
                         <div class="card-body">
                             <div class="form-group row mb-10">
@@ -86,29 +69,23 @@
                                 <div class="col-lg-3">
                                     <label>First Name: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="First Name*" required name="first_name" value="{{ old('first_name') }}" />
-                                </div>
-
+                                </div> 
                                 <div class="col-lg-3">
                                     <label>Middle Name: <span class="text-danger"></span></label>
                                     <input type="text" class="form-control" placeholder="Middle Name" name="middle_name" value="{{ old('middle_name') }}" />
-                                </div>
-
+                                </div> 
                                 <div class="col-lg-3">
                                     <label>Last Name: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" />
                                 </div>
-                            </div>
-
-
+                            </div> 
                             <div class="form-group row mb-10">
                                 <div class="col-lg-2">
                                     <label>Title:</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title') }}" />
-
+                                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{ old('title') }}" /> 
                                     </div>
-                                </div>
-
+                                </div> 
                                 <div class="col-lg-5">
                                     <label>Phone Number: <span class="text-danger">*</span> </label>
                                     <div class="row">
@@ -123,9 +100,7 @@
                                             value="{{ old('phone')}}"/> 
                                         </div>
                                     </div> 
-                                </div>
-
-                               
+                                </div> 
                                 <div class="col-lg-3">
                                     <label>Date of Birth <span class="text-danger">*</span> </label>
                                     <div class="input-group" id="">
@@ -135,8 +110,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
-
+                                <div class="col-lg-2"> 
                                     <div class="image-input image-input-outline image-input-empty" data-kt-image-input="true" style="background-image: url('{{asset('assets/media/svg/avatars/blank.svg')}}')">
                                         <!--begin::Preview existing avatar-->
                                         <div class="image-input-wrapper w-125px h-125px" style="background-image: none;"></div>
@@ -160,8 +134,7 @@
                                             <i class="bi bi-x fs-2"></i>
                                         </span>
                                         <!--end::Remove-->
-                                    </div>
-
+                                    </div> 
                                 </div>
                             </div>
                             <div class="form-group row mb-10">

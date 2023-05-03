@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Crypt;
 class KycController extends Controller
 {
 
@@ -48,15 +48,17 @@ class KycController extends Controller
         ]); 
         $errors = []; 
         $user = User::with('userDetail')->find($request->id);  
-        if (!$user->getFirstMediaUrl('kyc_document_collection')) {
-            $errors[] = 'Please Upload Document First';
-            return response([
-                'status' => 'document',
-                'success' => false,
-                'errors' => $errors,
-            ]);
-        }
-        
+        $decodedSsn = Crypt::decryptString($user->identityVerification->primary_contact_social_security);  
+        if ($user->hasRole('issuer')) {
+            if (!$user->getFirstMediaUrl('kyc_document_collection')) {
+                $errors[] = 'Please Upload Document First';
+                return response([
+                    'status' => 'document',
+                    'success' => false,
+                    'errors' => $errors,
+                ]);
+            }
+        }   
         // Token Request
         try {
             $get_token = Http::withHeaders([
@@ -68,8 +70,7 @@ class KycController extends Controller
                 'audience'   => 'https://fortressapi.com/api',
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
-            $token_json =  json_decode((string) $get_token->getBody(), true);  
-            dd($token_json);
+            $token_json =  json_decode((string) $get_token->getBody(), true);   
             if ($get_token->failed()) {
                 $errors[] = 'Error While Creating Token';
                 return response([
@@ -85,9 +86,10 @@ class KycController extends Controller
                     'errors' => $errors,
                 ]);
         }  
-      
-        if($user->user_type  == 'individual'){    
+        $date_of_birth = $user->userDetail->dob; 
+        if($user->user_type  == 'individual'){     
             if($user->fortress_id == null){   
+                
                 try{ 
                     $identity_containers = Http::withToken($token_json['access_token'])->withHeaders([
                         'Content-Type' => 'application/json',
@@ -95,10 +97,11 @@ class KycController extends Controller
                         'firstName' => $user->name,
                         'middleName' => $user->userDetail->middle_name,
                         'lastName' => $user->userDetail->last_name,
-                        'phone' =>  '+'.$user->cc.$user->phone,
+                        'phone' =>  $user->cc.$user->phone,
                         'email' => $user->email,
-                        'ssn' => $user->identityVerification->primary_contact_social_security,
+                        'ssn' => $decodedSsn,
                         'upgradeKYC' => false,
+                        "dateOfBirth" => $date_of_birth,
                         'address' => [
                             'street1' => $user->userDetail->address, 
                             'postalCode' => $user->userDetail->zip,
@@ -107,8 +110,7 @@ class KycController extends Controller
                             'country' => $user->identityVerification->nationality,
                         ] 
                     ]);
-                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);    
-                    
+                    $json_identity_containers =  json_decode((string) $identity_containers->getBody(), true);     
                     if ($identity_containers->failed()) { 
                         $status = $identity_containers->status(); 
                         if($status == 409){
@@ -159,10 +161,11 @@ class KycController extends Controller
                         'firstName' => $user->name,
                         'middleName' => $user->userDetail->middle_name,
                         'lastName' => $user->userDetail->last_name,
-                        'phone' =>  '+'.$user->cc.$user->phone,
+                        'phone' =>  $user->cc.$user->phone,
                         'email' => $user->email,
-                        'ssn' => $user->identityVerification->primary_contact_social_security,
+                        'ssn' => $decodedSsn,
                         "upgradeKYC" => false,
+                        "dateOfBirth" => $date_of_birth,
                         'address' => [
                             'street1' => $user->userDetail->address, 
                             'postalCode' => $user->userDetail->zip,
@@ -227,7 +230,7 @@ class KycController extends Controller
                         'companyName' => $user->userDetail->entity_name,
                         'ein' => $user->userDetail->ein,
                         'website' =>  $user->userDetail->website,
-                        'phone' => '+'.$user->cc.$user->phone,
+                        'phone' => $user->cc.$user->phone,
                         'email' => $user->email,
                         'address' => [
                             'street1' => $user->userDetail->address, 
@@ -440,6 +443,31 @@ class KycController extends Controller
 
     public function re_run_kyc(Request $request)
     {
+
+        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token';  
+        try{
+            $get_token = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($production_auth, [
+                'grant_type' => 'password',
+                'username'   => 'Portal@chainraise.io',
+                'password'   => '?dm3JeXgkgQNA?ue8sHI',
+                'audience'   => 'https://fortressapi.com/api',
+                'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
+            ]);
+            $token_json =  json_decode((string) $get_token->getBody(), true); 
+            if($get_token->failed()) {  
+                return response([
+                    'status' => $get_token->status(),
+                    'data'   => $token_json,
+                ]);
+            }
+        }catch(Exception $token_error){
+            return response([
+                'status' => $token_json->status(),
+                'data'   => $token_json,
+            ]);
+        } 
         $request->validate([
             'id' => 'required',
         ]);
@@ -459,7 +487,7 @@ class KycController extends Controller
                 ]);
             } 
         } 
-        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
+       
         try{
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -470,8 +498,7 @@ class KycController extends Controller
                 'audience'   => 'https://fortressapi.com/api',
                 'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
-            $token_json =  json_decode((string) $get_token->getBody(), true);
-           
+            $token_json =  json_decode((string) $get_token->getBody(), true); 
             if($get_token->failed()) {  
                 return response([
                     'status' => $get_token->status(),
@@ -536,16 +563,18 @@ class KycController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
+        $production_auth = 'https://fortress-prod.us.auth0.com/oauth/token'; 
         $user = User::find($request->id);
+        $decodedSsn = Crypt::decryptString($user->identityVerification->primary_contact_social_security);  
         try {
             $get_token = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://fortress-sandbox.us.auth0.com/oauth/token', [
+            ])->post($production_auth, [
                 'grant_type' => 'password',
-                'username'   => 'tayyabshahzad@sublimesolutions.org',
-                'password'   => 'x0A1PGhevtkJu4qeXBXF',
+                'username'   => 'Portal@chainraise.io',
+                'password'   => '?dm3JeXgkgQNA?ue8sHI',
                 'audience'   => 'https://fortressapi.com/api',
-                'client_id'  => 'pY6XoVugk1wCYYsiiPuJ5weqMoNUjXbn',
+                'client_id'  => 'cNjCgEyfVDyBSxCixDEyYesohVwdNICH',
             ]);
             $token_json =  json_decode((string) $get_token->getBody(), true); 
             if($get_token->failed()) {
@@ -563,7 +592,7 @@ class KycController extends Controller
                 'phone' =>  $user->phone,
                 'email' => $user->email,
                 'dateOfBirth' => "1990-09-02",
-                'ssn' => $user->identityVerification->primary_contact_social_security,
+                'ssn' => $decodedSsn,
                 'address.street1' => $user->userDetail->address,
                 'address.street2' => '-',
                 'address.postalCode' => $user->userDetail->zip,
@@ -571,10 +600,7 @@ class KycController extends Controller
                 'address.state' => $user->userDetail->state,
                 'address.country' => $user->identityVerification->nationality,
                 'upgradeKYC'=>true,
-            ]);
-            dd($update_existing_personal);
-
-
+            ]); 
 
         }catch(Exception $error){
             return response([

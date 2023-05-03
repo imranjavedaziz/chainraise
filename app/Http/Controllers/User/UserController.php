@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
 class UserController extends Controller
 {
     public function custom_login($email,$password)
@@ -333,7 +334,7 @@ class UserController extends Controller
     }
     public function issuerAccountUpdate(Request $request)
     {   
-        
+     
         $request->validate([
             //Users Table
             'id' => 'required',
@@ -403,12 +404,19 @@ class UserController extends Controller
              'date_incorporation'=>$request->date_incorporation,
              'state'=> $request->state,'zip'=> $request->zip,'entity_name'=>$request->entity_name
             ]
-        );
+        ); 
         
+        if($request->primary_contact_social_security == '999-99-999'){ 
+            $ssn = $user->identityVerification->primary_contact_social_security;
+        }else{ 
+            $ssn = Crypt::encryptString($request->primary_contact_social_security);
+        }   
+        
+         
         $identityVerification = IdentityVerification::updateOrCreate(
             ['user_id' => $request->id],
             [
-             'primary_contact_social_security' => $request->primary_contact_social_security,
+             'primary_contact_social_security' => $ssn,
              'tax_entity_type' => $request->tax_entity_type,
              'tax_identification' => $request->tax_identification,
              'nationality' => $request->nationality,
@@ -672,7 +680,6 @@ class UserController extends Controller
             return redirect()->back()->with('error','Error while creating user');
         }
     }
-
     public function childDetails(Request $request)
     {
         $request->validate([
@@ -769,7 +776,6 @@ class UserController extends Controller
              return redirect()->back()->with('error','Error while creating user');
          }
     }
-
     public function childUDelete(Request $request)
     {
         $request->validate([
@@ -806,7 +812,6 @@ class UserController extends Controller
         $investors =User::role('investor')->get();
         return view('user.account_profile',compact('user','accreditations','offers','childs','id','folders','investors'));
     }
-
     public function template()
     {
         $e_sign = Http::get('https://esignatures.io/api/templates?token=3137a61a-7db9-41f9-b2bd-39a8d7918fb5');
@@ -968,6 +973,4 @@ class UserController extends Controller
        
         
     }
-
-
 }

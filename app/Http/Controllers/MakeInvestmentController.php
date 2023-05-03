@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\AccountGUID;
 use App\Models\Custodial;
 use App\Models\ExternalAccount;
@@ -22,21 +21,18 @@ use  Illuminate\Support\Collection;
 use File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
 class MakeInvestmentController extends Controller
 {
 
     // New Updated Code
 
     protected $productionAuth;
-    protected $fortressBaseUrl;
-
+    protected $fortressBaseUrl; 
     public function __construct()
     {
         $this->productionAuth = 'https://fortress-prod.us.auth0.com/oauth/token';
         $this->fortressBaseUrl = 'https://api.fortressapi.com/api/trust/v1/';
     }
-
     public function make()
     {
         $user = User::with('userDetail', 'identityVerification')->find(Auth::user()->id);
@@ -237,7 +233,6 @@ class MakeInvestmentController extends Controller
 
         return view('investment.step-3-investment-limits', compact('external_account', 'offer_id', 'investment_amount', 'user'));
     }
-
     public function step_four(Request $request)
     {
 
@@ -331,6 +326,7 @@ class MakeInvestmentController extends Controller
             Session::put('error', 'Custodial Account Id Not Found for Selected Offer');
             return redirect()->route('dashboard');
         }
+       
         $member_id = explode(',', $request->user_guid);
         $filteredArray = array_filter($member_id, function ($value) {
             return $value !== '';
@@ -356,26 +352,28 @@ class MakeInvestmentController extends Controller
         } catch (Exception $error) {
             Session::put('error', 'Internal Server Error');
             return redirect()->route('dashboard');
-        } 
+        }
+       
         try {
             $member_identity_url = $this->fortressBaseUrl . "financial-institutions/members";
             $member_identity = Http::withToken($token_json['access_token'])->post(
                 $member_identity_url,
                 [
-                    'identityId' => $identityId,
-                    'memberGuid' => $member_id,
+                    'identityId' => $identityId,//Identity object pertaining to the end user
+                    'memberGuid' => $member_id, //member_guid returned from successful bank linking in
                 ]
-            );
-            $member_identity =  json_decode((string) $member_identity->getBody(), true);
+            ); 
+            $member_identity =  json_decode((string) $member_identity->getBody(), true);  
         } catch (Exception $error) {
             Session::put('error', 'Internal Server Error');
             return redirect()->route('dashboard');
         }
         //Retrieve any bank accounts that are connected
+      
         try {
             $accounts_url =  $this->fortressBaseUrl . "financial-institutions/accounts/" . $identityId . '/' . $member_id;
             $accounts = Http::withToken($token_json['access_token'])->get($accounts_url);
-            $accounts_Json =  json_decode((string) $accounts->getBody(), true);
+            $accounts_Json =  json_decode((string) $accounts->getBody(), true);  
             if ($accounts->failed()) {
                 $status = $accounts->status();
                 Session::put('error', $accounts['title']);

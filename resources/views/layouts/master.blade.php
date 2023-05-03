@@ -783,15 +783,21 @@
                     url: "{{  route('login') }}",  
                     data: formData,
                     success: function(response) {  
+                      
                         $('.success_message').text('Login Success Page Reloading  ....'); 
                         setTimeout(function() {
                             location.reload();
                         }, 2000); 
                     },
                     error: function(xhr, status, error) {
-                        var errorMessage = JSON.parse(xhr.responseText);  
+                         
+                        var errorMessage = JSON.parse(xhr.responseText);   
                         $('.error_message').text(errorMessage.message);
-                        $('.submit_button').prop('disabled ',false); 
+                        setTimeout(function() {
+                        $('.submit_button').prop('disabled', false);
+                        }, 100);
+                       // $('.submit_button').prop('disabled ',false); 
+
                         $('.submit_button').text('Sign In'); 
                     } 
                 });
