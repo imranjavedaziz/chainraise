@@ -47,10 +47,13 @@ class KycController extends Controller
         $request->validate([
             'id' => 'required',
         ]); 
+
         $errors = []; 
         $user = User::with('userDetail')->find($request->id);  
-        $decodedSsn = Crypt::decryptString($user->identityVerification->primary_contact_social_security);  
-        if ($user->hasRole('issuer')) {
+      // dd($user->identityVerification->primary_contact_social_security);
+ $decodedSsn = Crypt::decryptString($user->identityVerification->primary_contact_social_security);  
+//dd($decode
+   if ($user->hasRole('issuer')) {
             if (!$user->getFirstMediaUrl('kyc_document_collection')) {
                 $errors[] = 'Please Upload Document First';
                 return response([
@@ -59,7 +62,8 @@ class KycController extends Controller
                     'errors' => $errors,
                 ]);
             }
-        }   
+        }
+//dd(1);   
         // Token Request
         try {
             $get_token = Http::withHeaders([
