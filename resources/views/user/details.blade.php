@@ -530,7 +530,7 @@
 
                                         <div class="col-lg-6">
                                             <label> Suit / Unit </label>
-                                            <input type="text" class="form-control" name="suit"
+                                            <input type="number" class="form-control" name="suit"
                                                 @if ($user->userDetail) value="{{ $user->userDetail->suit }}" @endif
                                                 placeholder="Suit / Unit">
                                         </div>
@@ -825,7 +825,7 @@
                                         </div>
 
                                     </div> 
-                                    @if($user->hasRole('investor'))
+                                    @if($user->hasRole('issuer'))
                                         <div class="card-body bg-danger"
                                             style=" color:#fff!important;border-radius:5px;font-size:15px;  ">
                                             <div class="card-title mt-6 mb-3">
@@ -2571,7 +2571,7 @@
             "mask": "99-9999999"
         }).mask("#ein_number");
         Inputmask({
-                        "mask": "***-**-***"
+                        "mask": "***-**-****"
         }).mask("#primary_contact_social_security");
     </script>
 @endsection

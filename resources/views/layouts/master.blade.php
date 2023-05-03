@@ -350,7 +350,7 @@
                                     <div class="col-12 d-flex align-items-center">
                                         <div class="form-group form-check">
                                             <input type="checkbox" name="terms"
-                                                class="form-check-input show_password" required>
+                                                class="form-check-input  " required>
                                             <a href="{{ route('privacy.policy') }}" class="form-check-label" target="_blank"
                                                 style="padding: 0px; font-size: 14px; font-weight: 500;"> Agree terms &
                                                 privacy policy
