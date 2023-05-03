@@ -50,7 +50,7 @@ class KycController extends Controller
 
         $errors = []; 
         $user = User::with('userDetail')->find($request->id);  
-      // dd($user->identityVerification->primary_contact_social_security);
+      /// dd($user->identityVerification->primary_contact_social_security);
  $decodedSsn = Crypt::decryptString($user->identityVerification->primary_contact_social_security);  
 //dd($decode
    if ($user->hasRole('issuer')) {
