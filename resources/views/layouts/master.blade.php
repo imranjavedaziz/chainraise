@@ -276,8 +276,7 @@
                     <h5 style="color: #000000; text-align: center;">Sign Up</h5>
                     <div class="container py-3 px-5 ">
                         <div class="row justify-content-around">
-                            <div
-                                class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
+                            <div   class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                                 <a href="{{ route('login.facebook') }}">
                                     <i class="fab fa-facebook" style="font-size: 25px;"></i>
                                 </a>
@@ -286,10 +285,8 @@
                                 class="col-3 border border-dark d-flex align-items-center justify-content-center py-2 ">
                                 <a href="{{ route('login.google') }}">
                                     <i class="fab fa-google" style="font-size: 25px;"></i>
-                                </a>
-
-                            </div>
-
+                                </a> 
+                            </div> 
                         </div>
                     </div>
                     <div class="container py-3 px-5 ">
@@ -359,7 +356,7 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2 col-12 mt-3 mb-2 mx-auto">
-                                    <button class="btn btn-primary" type="submit">Sign in</button>
+                                    <button class="btn btn-primary" type="submit">Sign Up</button>
                                 </div>
                             </form>
                         </div>

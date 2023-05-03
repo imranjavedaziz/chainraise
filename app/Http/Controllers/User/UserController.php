@@ -197,8 +197,7 @@ class UserController extends Controller
         return view('user.investor.create');
     }
     public function save(Request $request)
-    {
-        
+    { 
         $request->validate([
             'email' => 'required|unique:users',
             'first_name' => 'required',
@@ -222,8 +221,7 @@ class UserController extends Controller
             $agree_consent_electronic = true;
         }else{
             $agree_consent_electronic =false;
-        }
-        
+        } 
         DB::beginTransaction();
         try{
             $user = new User;

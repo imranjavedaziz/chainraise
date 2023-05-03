@@ -42,8 +42,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'last_name' => 'Dummy',
-            'phone'=>'2333',
+            'last_name' => '-', 
             'agree_consent_electronic'=>true,
             'status'=>'active',
             'user_type'=> $request->user_type,

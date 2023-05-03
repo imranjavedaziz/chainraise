@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->boolean('agree_consent_electronic')->default(false);
             $table->enum('status',['active','inactive']);
             $table->enum('is_primary',['yes','no'])->default('yes');

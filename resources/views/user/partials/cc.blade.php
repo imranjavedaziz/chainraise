@@ -1,5 +1,5 @@
-<option data-countryCode="GB" value="+44" Selected>UK (+44)</option>
-<option data-countryCode="US" value="+1">USA (+1)</option>
+<option data-countryCode="GB" value="+44" >UK (+44)</option>
+<option data-countryCode="US" value="+1" Selected>USA (+1)</option>
 <optgroup label="Other countries">
     <option data-countryCode="DZ" value="+213">Algeria (+213)</option>
     <option data-countryCode="AD" value="+376">Andorra (+376)</option>

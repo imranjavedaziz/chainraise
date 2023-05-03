@@ -305,7 +305,7 @@
                                     </div>  
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-lg-12 mb-5">
+                                    <div class="col-lg-6 mb-5">
                                         <label>User Type: <span class="text-danger">*</span> </label>
                                         <select class="form-control user_type" data-control="select2"
                                             name="user_type">
@@ -400,21 +400,21 @@
                                         <label>City <span class="text-danger">*</span> </label>
                                         <input type="text" class="form-control" name="city"
                                             @if ($user->userDetail) value="{{ $user->userDetail->city }}" @endif
-                                            placeholder="City*" required>
+                                            placeholder="City" required>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label>State / Region <span class="text-danger">*</span> </label>
                                         <input type="text" class="form-control" name="state"
                                             @if ($user->userDetail) value="{{ $user->userDetail->state }}" @endif
-                                            placeholder="State / Region*" required>
+                                            placeholder="State / Region" required>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label>Zip / Postal Code <span class="text-danger">*</span> </label>
-                                        <input type="text" class="form-control" name="zip" id="zip_code"
+                                        <input type="number" class="form-control" name="zip" id="zip_code" min="5" max="5"
                                             @if ($user->userDetail) value="{{ $user->userDetail->zip }}" @endif
-                                            placeholder="Zip / Postal Code*" required>
+                                            placeholder="Zip / Postal Code (12345)" required>
                                     </div>
                                 </div> 
                                 @if ($user->hasRole('issuer'))
@@ -689,6 +689,7 @@
 
                                     </div>
                                 @endif
+                                @if($user->hasRole('issuer'))
                                 <div class="card-title mt-6">
                                     <h2>Trust Setting<i class="fas fa-exclamation-circle ms-2 fs-7"
                                             data-bs-toggle="tooltip" aria-label="Specify a target priorty"
@@ -786,6 +787,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <div class="card-footer">
                                 <div class="row">
@@ -1658,4 +1660,4 @@
                         "mask": "***-**-****"
         }).mask("#primary_contact_social_security");
         </script>
-@endsection
+@endsection 
