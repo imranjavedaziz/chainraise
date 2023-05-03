@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 class KycController extends Controller
 {
+    //New Comment on KYC 
 
     public function updateKycCheck($id){ 
         $user = User::find($id);  
